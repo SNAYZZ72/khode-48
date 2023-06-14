@@ -4,8 +4,9 @@ const Header = () => {
     
         return (
             <div className="Header">
-                <p>Header</p>
-    
+                <header>
+                    <h1>Header</h1>
+                </header>
             </div>
         );
     }
