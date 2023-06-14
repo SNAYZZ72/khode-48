@@ -1,11 +1,12 @@
 import React from 'react';
 import { Navbar, Nav, Button, Container } from 'react-bootstrap';
+import logo from '../../logo.png'
 
 const Header = () => {
   return (
     <Navbar sticky="top" expand="lg">
       <Container>
-        <Navbar.Brand>MON LOGO</Navbar.Brand>
+        <Navbar.Brand><img src={logo} alt="Logo" style={{ width: '200px', height: 'auto' }}/></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">

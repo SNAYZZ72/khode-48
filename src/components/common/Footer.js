@@ -17,13 +17,13 @@ const Footer = () => {
         <Nav.Link href="/country" style={{ color: 'white', fontWeight: "500" }}>CHANGE COUNTRY</Nav.Link>
       </Nav>
       <Nav>
-        <Nav.Link href="https://twitter.com" style={{ color: 'white', fontSize: '50px', margin: '10px' }}>
+        <Nav.Link href="https://twitter.com" style={{ color: 'white', fontSize: '45px', margin: '10px' }}>
           <FontAwesomeIcon icon={faTwitter} />
         </Nav.Link>
-        <Nav.Link href="https://www.facebook.com" style={{ color: 'white', fontSize: '50px', margin: '10px' }}>
+        <Nav.Link href="https://www.facebook.com" style={{ color: 'white', fontSize: '45px', margin: '10px' }}>
           <FontAwesomeIcon icon={faFacebook} />
         </Nav.Link>
-        <Nav.Link href="https://www.instagram.com" style={{ color: 'white', fontSize: '50px', margin: '10px' }}>
+        <Nav.Link href="https://www.instagram.com" style={{ color: 'white', fontSize: '45px', margin: '10px' }}>
           <FontAwesomeIcon icon={faInstagram} />
         </Nav.Link>
       </Nav>
