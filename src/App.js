@@ -5,10 +5,10 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //import Pages
-import Home from './components/homepage/Homepage';
-import Footer from './components/common/Footer';
+import Home from './components/Home/Homepage';
 
 //import Components
+import Footer from './components/common/Footer';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
