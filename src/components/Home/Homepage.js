@@ -62,7 +62,14 @@ const Home = () => {
                             onClick={() => handleProfileSelect('young')}
                             active={profileType === 'young'}
                             className="w-100 text-center d-grid"
-                            style={{ fontWeight: 'bold', color: 'blue' }}
+                            style={{
+                                fontWeight: 'bold',
+                                color: '#F24726',
+                                border: profileType === 'young' ? '4px solid #F24726' : 'none',
+                                display: 'flex',
+                                alignItems: 'center',
+                                borderRadius: '15px',
+                            }}
                         >
                             <div>
                                 <img src="../young-profile-image.png" alt="Young Profile" style={{ width: '80px', height: '80px' }} />
@@ -73,7 +80,14 @@ const Home = () => {
                             onClick={() => handleProfileSelect('company')}
                             active={profileType === 'company'}
                             className="w-100 text-center d-grid"
-                            style={{ fontWeight: 'bold', color: 'green' }}
+                            style={{
+                                fontWeight: 'bold',
+                                color: '#F24726',
+                                border: profileType === 'company' ? '4px solid #F24726' : 'none',
+                                display: 'flex',
+                                alignItems: 'center',
+                                borderRadius: '15px',
+                            }}
                         >
                             <div>
                                 <img src="../company-profile-image.png" alt="Company Profile" style={{ width: '80px', height: '80px' }} />
@@ -84,7 +98,14 @@ const Home = () => {
                             onClick={() => handleProfileSelect('intermediary')}
                             active={profileType === 'intermediary'}
                             className="w-100 text-center d-grid"
-                            style={{ fontWeight: 'bold', color: 'purple' }}
+                            style={{
+                                fontWeight: 'bold',
+                                color: '#F24726',
+                                border: profileType === 'intermediary' ? '4px solid #F24726' : 'none',
+                                display: 'flex',
+                                alignItems: 'center',
+                                borderRadius: '15px',
+                            }}
                         >
                             <div>
                                 <img src="../intermediary-profile-image.png" alt="Intermediary Profile" style={{ width: '80px', height: '80px' }} />
@@ -102,7 +123,10 @@ const Home = () => {
                     <div className="container text-center">
                         <h2>{t('youthProfile')}</h2>
                         <p>{t('youthProfileDescription')}</p>
-                        <Button variant="primary" onClick={handleLogin}>{t('login')}</Button>
+                        <Button variant="primary" onClick={handleLogin} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('login')}
+                        </Button>
+
                     </div>
                 )}
 
@@ -110,7 +134,10 @@ const Home = () => {
                     <div className="container text-center">
                         <h2>{t('companyProfile')}</h2>
                         <p>{t('companyProfileDescription')}</p>
-                        <Button variant="primary" onClick={handleLogin}>{t('login')}</Button>
+                        <Button variant="primary" onClick={handleLogin} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('login')}
+                        </Button>
+
                     </div>
                 )}
 
@@ -118,7 +145,10 @@ const Home = () => {
                     <div className="container text-center">
                         <h2>{t('intermediaryProfile')}</h2>
                         <p>{t('intermediaryProfileDescription')}</p>
-                        <Button variant="primary" onClick={handleLogin}>{t('login')}</Button>
+                        <Button variant="primary" onClick={handleLogin} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('login')}
+                        </Button>
+
                     </div>
                 )}
             </Container>
@@ -142,17 +172,35 @@ const Home = () => {
                             <input type="password" className="form-control" id="password" placeholder={t('enterPassword')} />
                         </div>
                         <br />
-                        <Button variant="primary" type="submit">{t('submit')}</Button>
+                        <Button variant="primary" type="submit" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('submit')}
+                        </Button>
                     </form>
                     {profileType === 'young' && (
-                        <p>{t('dontHaveYoungAccount')} <a href="/registery">{t('createYoungAccount')}</a></p>
+                        <p>
+                            {t('dontHaveYoungAccount')}{' '}
+                            <a href="/registery" style={{ color: '#F24726' }}>
+                                {t('createYoungAccount')}
+                            </a>
+                        </p>
                     )}
                     {profileType === 'company' && (
-                        <p>{t('dontHaveCompanyAccount')} <a href="/signup/company">{t('createCompanyAccount')}</a></p>
+                        <p>
+                            {t('dontHaveCompanyAccount')}{' '}
+                            <a href="/signup/company" style={{ color: '#F24726' }}>
+                                {t('createCompanyAccount')}
+                            </a>
+                        </p>
                     )}
                     {profileType === 'intermediary' && (
-                        <p>{t('dontHaveIntermediaryAccount')} <a href="/signup/intermediary">{t('createIntermediaryAccount')}</a></p>
+                        <p>
+                            {t('dontHaveIntermediaryAccount')}{' '}
+                            <a href="/signup/intermediary" style={{ color: '#F24726' }}>
+                                {t('createIntermediaryAccount')}
+                            </a>
+                        </p>
                     )}
+
                 </Modal.Body>
             </Modal>
         </div>
