@@ -143,7 +143,7 @@ const Home = () => {
                         <Button variant="primary" type="submit">{t('submit')}</Button>
                     </form>
                     {profileType === 'young' && (
-                        <p>{t('dontHaveYoungAccount')} <a href="/signup/young">{t('createYoungAccount')}</a></p>
+                        <p>{t('dontHaveYoungAccount')} <a href="/registery">{t('createYoungAccount')}</a></p>
                     )}
                     {profileType === 'company' && (
                         <p>{t('dontHaveCompanyAccount')} <a href="/signup/company">{t('createCompanyAccount')}</a></p>

@@ -7,9 +7,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //import Pages
 import Home from './components/Home/Homepage';
 import About from './components/Pages/About';
+import RegisterPageY from "./components/Pages/RegisteredYouth";
 
 //import Components
-import Footer from './components/common/Footer';
+// import Footer from './components/common/Footer';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -22,9 +23,10 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/registery" element={<RegisterPageY />} />
           </Routes>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </Router>
     </div>
   );
