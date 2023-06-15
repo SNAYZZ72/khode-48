@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //import Pages
 import Home from './components/Home/Homepage';
 import About from './components/Pages/About';
+import Contact from './components/Pages/Contact';
 import RegisterPageY from "./components/Pages/RegisteredYouth";
 
 //import Components
@@ -27,6 +28,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/contact" element ={<Contact />}/>
               <Route path="/registery" element={<RegisterPageY />} />
             </Routes>
           </div>
