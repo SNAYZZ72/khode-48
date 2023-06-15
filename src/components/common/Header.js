@@ -24,7 +24,7 @@ const Header = () => {
   }, []);
 
   return (
-    <Navbar sticky="top" expand="lg" style={{ opacity: showHeader ? 1 : 0, transition: 'opacity 0.2s' }}>
+    <Navbar sticky="top" expand="lg" style={{ opacity: showHeader ? 1 : 0, transition: 'opacity 0s' }}>
       <Container>
         <Navbar.Brand>
           <a href="/" style={{ textDecoration: 'none' }}>

@@ -46,69 +46,69 @@ const Contact = () => {
         <div>
             <Header />
             <div className="container">
-            <h1>{t('Contact')}</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="row mb-3">
-                    <div className="col">
-                        <label htmlFor="firstName" className="form-label">{t('Your Name')}</label>
+                <h1>{t('Contact')}</h1>
+                <form onSubmit={handleSubmit}>
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label htmlFor="firstName" className="form-label">{t('Your Name')}</label>
+                            <input
+                                type="text"
+                                id="firstName"
+                                className="form-control"
+                                value={firstName}
+                                onChange={handleFirstNameChange}
+                                placeholder={t('Andrés')}
+                                required
+                            />
+                        </div>
+                        <div className="col">
+                            <label htmlFor="lastName" className="form-label">{t('Lastname')}</label>
+                            <input
+                                type="text"
+                                id="lastName"
+                                className="form-control"
+                                value={lastName}
+                                onChange={handleLastNameChange}
+                                placeholder={t('Iniesta')}
+                            />
+                        </div>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="email" className="form-label">{t('E-mail')}</label>
                         <input
-                            type="text"
-                            id="firstName"
+                            type="email"
+                            id="email"
                             className="form-control"
-                            value={firstName}
-                            onChange={handleFirstNameChange}
-                            placeholder={t('Andrés')}
+                            value={email}
+                            onChange={handleEmailChange}
+                            placeholder={t('ex: myname@example.com')}
                             required
                         />
                     </div>
-                    <div className="col">
-                        <label htmlFor="lastName" className="form-label">{t('Lastname')}</label>
+                    <div className="mb-3">
+                        <label htmlFor="subject" className="form-label">{t('Subject')}</label>
                         <input
                             type="text"
-                            id="lastName"
+                            id="subject"
                             className="form-control"
-                            value={lastName}
-                            onChange={handleLastNameChange}
-                            placeholder={t('Iniesta')}
+                            value={subject}
+                            onChange={handleSubjectChange}
+                            required
                         />
                     </div>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="email" className="form-label">{t('E-mail')}</label>
-                    <input
-                        type="email"
-                        id="email"
-                        className="form-control"
-                        value={email}
-                        onChange={handleEmailChange}
-                        placeholder={t('ex: myname@example.com')}
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="subject" className="form-label">{t('Subject')}</label>
-                    <input
-                        type="text"
-                        id="subject"
-                        className="form-control"
-                        value={subject}
-                        onChange={handleSubjectChange}
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="message" className="form-label">{t('Message')}</label>
-                    <textarea
-                        id="message"
-                        className="form-control"
-                        value={message}
-                        onChange={handleMessageChange}
-                        required
-                    />
-                </div>
-                <button type="submit" className="btn btn-primary">{t('Submit')}</button>
-            </form>
-        </div>
+                    <div className="mb-3">
+                        <label htmlFor="message" className="form-label">{t('Message')}</label>
+                        <textarea
+                            id="message"
+                            className="form-control"
+                            value={message}
+                            onChange={handleMessageChange}
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="btn btn-primary">{t('Submit')}</button>
+                </form>
+            </div>
         </div>
     );
 };
