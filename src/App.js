@@ -12,6 +12,7 @@ import Home from './components/Home/Homepage';
 import About from './components/Pages/About';
 import Contact from './components/Pages/Contact';
 import RegisterPageY from "./components/Pages/RegisteredYouth";
+import RegisterPageC from "./components/Pages/RegisteredCompanies";
 
 //import Components
 import Footer from './components/common/Footer';
@@ -30,6 +31,7 @@ export default function App() {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element ={<Contact />}/>
               <Route path="/registery" element={<RegisterPageY />} />
+              <Route path="/registerC" element={<RegisterPageC />} />
             </Routes>
           </div>
           <Footer />
