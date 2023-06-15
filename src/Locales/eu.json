@@ -26,6 +26,16 @@
     "createCompanyAccount": "Sortu Enpresa Kontua",
     "dontHaveIntermediaryAccount": "Ez duzu intermediario konturik?",
     "createIntermediaryAccount": "Sortu Intermediario Kontua",
+
+    "Contact": "Kontaktatu",
+    "Your Name": "Zure Izena",
+    "Lastname": "Abizena",
+    "E-mail": "E-posta",
+    "ex: myname@example.com": "adb: nireizena@adibidea.com",
+    "Subject": "Gaia",
+    "Message": "Mezua",
+    "Submit": "Bidali",
+    
     "aboutTitle": "Guri buruz",
     "aboutDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer convallis metus non volutpat cursus. Sed semper aliquet magna, a pretium sem dapibus nec.",
     "mission": "Gure misioa",
@@ -36,6 +46,8 @@
     "value1": "Balio 1",
     "value2": "Balio 2",
     "value3": "Balio 3",
+
+
     "Young People Register": "Gazteak Erregistratu",
     "fullName": "Izen osoa",
     "firstName": "Izena",
