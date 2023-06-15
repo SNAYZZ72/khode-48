@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from '../common/Header';
+import Header from '../common/Header'
 
 const About = () => {
     const { t } = useTranslation();

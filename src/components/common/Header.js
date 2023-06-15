@@ -4,7 +4,7 @@ import logo from '../../logo.png';
 
 //import components
 import LanguageSelector from './LanguageSelector';
-// import about from './components/Pages/about/About'
+// import about from './components/Pages/About/About'
 
 const Header = () => {
   return (

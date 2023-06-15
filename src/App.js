@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 //import Pages
 import Home from './components/Home/Homepage';
-import About from './components/Pages/about/About';
+import About from './components/Pages/About';
 
 //import Components
 import Footer from './components/common/Footer';
