@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 //import Pages
 import Home from './components/homepage/Homepage';
+import Footer from './components/common/Footer';
 
 //import Components
 
@@ -21,6 +22,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
           </Routes>
         </div>
+        <Footer />
       </Router>
     </div>
   );
