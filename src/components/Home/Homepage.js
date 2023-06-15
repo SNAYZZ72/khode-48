@@ -60,7 +60,7 @@ const Home = () => {
             </Container>
 
             <Container>
-                <Navbar bg="light" expand="lg">
+                <Navbar>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
