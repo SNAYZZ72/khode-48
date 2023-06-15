@@ -72,6 +72,7 @@ const Contact = () => {
                                 value={lastName}
                                 onChange={handleLastNameChange}
                                 placeholder={t('Iniesta')}
+                                required
                             />
                         </div>
                     </div>
