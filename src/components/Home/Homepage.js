@@ -31,65 +31,67 @@ const Home = () => {
 
             {/* Labels indicating the number of registered students, companies, and intermediaries */}
             <Container>
-                <div className="text-center">
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <div style={{ marginRight: '200px' }}>
+                <div className="text-center" style={{ paddingTop: '30px' }}>
+                    <div className="d-flex justify-content-center align-items-center">
+                        <div className="mr-4">
                             <h1 style={{ fontWeight: 'bold' }}>{studentCount}</h1>
                             <h3>{t('youngPeople')}</h3>
-                            <p>{t('loremIpsum')}</p>
+                            <p style={{ maxWidth: '80%', textAlign: 'center', margin: 'auto' }}>{t('loremIpsum')}</p>
                         </div>
-                        <div style={{ marginRight: '200px' }}>
+                        <div className="mr-4">
                             <h1 style={{ fontWeight: 'bold' }}>{companyCount}</h1>
                             <h3>{t('companies')}</h3>
-                            <p>{t('loremIpsum')}</p>
+                            <p style={{ maxWidth: '80%', textAlign: 'center', margin: 'auto' }}>{t('loremIpsum')}</p>
                         </div>
                         <div>
                             <h1 style={{ fontWeight: 'bold' }}>{intermediaryCount}</h1>
                             <h3>{t('intermediaries')}</h3>
-                            <p>{t('loremIpsum')}</p>
+                            <p style={{ maxWidth: '80%', textAlign: 'center', margin: 'auto' }}>{t('loremIpsum')}</p>
                         </div>
                     </div>
                 </div>
             </Container>
 
+
+
             <Container>
-            <h1 style={{ fontWeight: 'bold', textAlign: 'center', paddingTop: '50px' }}>{t('titleprofile')}</h1>
+                <h1 style={{ fontWeight: 'bold', textAlign: 'center', paddingTop: '30px' }}>{t('titleprofile')}</h1>
                 <Navbar>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="mx-auto">
-                            <Nav.Link
-                                onClick={() => handleProfileSelect('young')}
-                                active={profileType === 'young'}
-                                style={{ fontWeight: 'bold', color: 'blue' }}
-                            >
-                                <div style={{ display: 'grid', textAlign: 'center' }}>
+                    <Nav className="w-100 d-flex">
+                        <Nav.Link
+                            onClick={() => handleProfileSelect('young')}
+                            active={profileType === 'young'}
+                            className="w-100 text-center d-grid"
+                            style={{ fontWeight: 'bold', color: 'blue' }}
+                        >
+                            <div>
                                 <img src="../young-profile-image.png" alt="Young Profile" style={{ width: '80px', height: '80px' }} />
-                                {t('young')}
-                                </div>
-                            </Nav.Link>
-                            <Nav.Link
-                                onClick={() => handleProfileSelect('company')}
-                                active={profileType === 'company'}
-                                style={{ fontWeight: 'bold', color: 'green' }}
-                            >
-                                <div style={{ display: 'grid', textAlign: 'center' }}>
+                            </div>
+                            <div>{t('young')}</div>
+                        </Nav.Link>
+                        <Nav.Link
+                            onClick={() => handleProfileSelect('company')}
+                            active={profileType === 'company'}
+                            className="w-100 text-center d-grid"
+                            style={{ fontWeight: 'bold', color: 'green' }}
+                        >
+                            <div>
                                 <img src="../company-profile-image.png" alt="Company Profile" style={{ width: '80px', height: '80px' }} />
-                                {t('company')}
-                                </div>
-                            </Nav.Link>
-                            <Nav.Link
-                                onClick={() => handleProfileSelect('intermediary')}
-                                active={profileType === 'intermediary'}
-                                style={{ fontWeight: 'bold', color: 'purple' }}
-                            >
-                                <div style={{ display: 'grid', textAlign: 'center' }}>
+                            </div>
+                            <div>{t('company')}</div>
+                        </Nav.Link>
+                        <Nav.Link
+                            onClick={() => handleProfileSelect('intermediary')}
+                            active={profileType === 'intermediary'}
+                            className="w-100 text-center d-grid"
+                            style={{ fontWeight: 'bold', color: 'purple' }}
+                        >
+                            <div>
                                 <img src="../intermediary-profile-image.png" alt="Intermediary Profile" style={{ width: '80px', height: '80px' }} />
-                                {t('intermediary')}
-                                </div>
-                            </Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
+                            </div>
+                            <div>{t('intermediary')}</div>
+                        </Nav.Link>
+                    </Nav>
                 </Navbar>
             </Container>
 
