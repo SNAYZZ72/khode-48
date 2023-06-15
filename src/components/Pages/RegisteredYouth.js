@@ -130,20 +130,13 @@ const RegisterPage = () => {
                     <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="gender">{t('gender')}</label>
-                            <div className="col">
-                                <div className="form-check form-check-inline mr-2">
-                                    <input type="radio" className="form-check-input" id="genderFemale" value="female" name="gender" />
-                                    <label className="form-check-label" htmlFor="genderFemale">{t('female')}</label>
-                                </div>
-                                <div className="form-check form-check-inline mr-2">
-                                    <input type="radio" className="form-check-input" id="genderMale" value="male" name="gender" />
-                                    <label className="form-check-label" htmlFor="genderMale">{t('male')}</label>
-                                </div>
-                                <div className="form-check form-check-inline mr-2">
-                                    <input type="radio" className="form-check-input" id="genderNonBinary" value="nonBinary" name="gender" />
-                                    <label className="form-check-label" htmlFor="genderNonBinary">{t('nonBinary')}</label>
-                                </div>
-                            </div>
+                            <select className="form-control" id="gender">
+                                    <option value="">{t('selectGender')}</option>
+                                    <option value="female">{t('female')}</option>
+                                    <option value="male">{t('male')}</option>
+                                    <option value="nonBinary">{t('nonBinary')}</option>
+                                    <option value="preferNotToSay">{t('preferNotToSay')}</option>
+                            </select>
                         </div>
                         <div className="col">
                             <label htmlFor="dateOfBirth">{t('dateOfBirth')}</label>
@@ -194,6 +187,20 @@ const RegisterPage = () => {
                                 value={confirmPassword}
                                 onChange={handleConfirmPasswordChange}
                             />
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label htmlFor="educationalLevel">{t('educationalLevel')}</label>
+                            <select className="form-control" id="educationalLevel">
+                                <option value="primary">{t('primary')}</option>
+                                <option value="secondary">{t('secondary')}</option>
+                                <option value="higherEducation">{t('higherEducation')}</option>
+                            </select>
+                        </div>
+                        <div className="col">
+                            <label htmlFor="lastName">{t('lastName')}</label>
+                            <input type="text" className="form-control" id="lastName" />
                         </div>
                     </div>
                     <div className="form-group">
