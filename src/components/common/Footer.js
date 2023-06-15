@@ -5,30 +5,35 @@ import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg
 
 const Footer = () => {
   return (
-    <Navbar style={{ backgroundColor: '#F24726' }}>
+    <Navbar style={{ backgroundColor: '#F24726' }} className="d-flex justify-content-between align-items-center">
       <Nav className="flex-column">
-        <Nav.Link href="/contact" style={{ color: 'white', fontWeight: "500", marginLeft: '10px' }}>CONTACT</Nav.Link>
-        <Nav.Link href="/about" style={{ color: 'white', fontWeight: "500", marginLeft: '10px' }}>ABOUT US</Nav.Link>
-        <Nav.Link href="/terms" style={{ color: 'white', fontWeight: "500", marginLeft: '10px' }}>TERMS & CONDITIONS</Nav.Link>
+        {/* Contenu de la première colonne */}
+        <Nav.Link href="/contact" style={{ color: 'white', fontWeight: '500', marginLeft: '10px' }}>CONTACT</Nav.Link>
+        <Nav.Link href="/about" style={{ color: 'white', fontWeight: '500', marginLeft: '10px' }}>ABOUT US</Nav.Link>
+        <Nav.Link href="/terms" style={{ color: 'white', fontWeight: '500', marginLeft: '10px' }}>TERMS & CONDITIONS</Nav.Link>
       </Nav>
-      <Nav className="flex-column">
-        <Nav.Link href="/faq" style={{ color: 'white', fontWeight: "500", marginLeft: '20px' }}>FAQ</Nav.Link>
-        <Nav.Link href="/careers" style={{ color: 'white', fontWeight: "500", marginLeft: '20px' }}>CAREERS</Nav.Link>
-        <Nav.Link href="/country" style={{ color: 'white', fontWeight: "500", marginLeft: '20px' }}>CHANGE COUNTRY</Nav.Link>
-      </Nav>
-      <Nav className="flex-column">
-        <Nav.Link href="https://twitter.com" style={{ color: 'white', fontSize: '20px', marginLeft: '20px' }}>
+      <Nav className="align-items-center">
+        {/* Contenu de la dernière colonne */}
+        <Nav.Link href="https://twitter.com" style={{ color: 'white', fontSize: '40px', marginLeft: '20px' }}>
           <FontAwesomeIcon icon={faTwitter} />
         </Nav.Link>
-        <Nav.Link href="https://www.facebook.com" style={{ color: 'white', fontSize: '20px', marginLeft: '20px' }}>
+        <Nav.Link href="https://www.facebook.com" style={{ color: 'white', fontSize: '40px', marginLeft: '20px' }}>
           <FontAwesomeIcon icon={faFacebook} />
         </Nav.Link>
-        <Nav.Link href="https://www.instagram.com" style={{ color: 'white', fontSize: '20px', marginLeft: '20px' }}>
+        <Nav.Link href="https://www.instagram.com" style={{ color: 'white', fontSize: '40px', marginLeft: '20px' }}>
           <FontAwesomeIcon icon={faInstagram} />
         </Nav.Link>
       </Nav>
+      <Nav className="flex-column text-end">
+        {/* Contenu de la colonne centrale */}
+        <Nav.Link href="/faq" style={{ color: 'white', fontWeight: '500', marginLeft: '20px' }}>FAQ</Nav.Link>
+        <Nav.Link href="/careers" style={{ color: 'white', fontWeight: '500', marginLeft: '20px' }}>CAREERS</Nav.Link>
+        <Nav.Link href="/country" style={{ color: 'white', fontWeight: '500', marginLeft: '20px' }}>CHANGE COUNTRY</Nav.Link>
+      </Nav>
+
     </Navbar>
   );
 }
 
 export default Footer;
+

@@ -31,7 +31,7 @@ const Home = () => {
 
             {/* Labels indicating the number of registered students, companies, and intermediaries */}
             <Container>
-                <div className="text-center" style={{ paddingTop: '30px' }}>
+                <div className="text-center" style={{ paddingTop: '15px' }}>
                     <div className="d-flex justify-content-center align-items-center">
                         <div className="mr-4">
                             <h1 style={{ fontWeight: 'bold' }}>{studentCount}</h1>
@@ -55,7 +55,7 @@ const Home = () => {
 
 
             <Container>
-                <h1 style={{ fontWeight: 'bold', textAlign: 'center', paddingTop: '30px' }}>{t('titleprofile')}</h1>
+                <h2 style={{ fontWeight: 'bold', textAlign: 'center', paddingTop: '15px' }}>{t('titleprofile')}</h2>
                 <Navbar>
                     <Nav className="w-100 d-flex">
                         <Nav.Link
