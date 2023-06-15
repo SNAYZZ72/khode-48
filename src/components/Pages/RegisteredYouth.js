@@ -117,7 +117,7 @@ const RegisterPage = () => {
                     <label htmlFor="cv">{t('uploadCV')}</label>
                     <input type="file" className="form-control-file" id="cv" onChange={handleFileChange} />
                 </div>
-                <button type="submit" className="btn btn-primary">{t('registerButton')}</button>
+                <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>{t('registerButton')}</button>
             </form>
         </div>
     );
