@@ -27,6 +27,15 @@
   "dontHaveIntermediaryAccount": "¿No tienes una cuenta de intermediario?",
   "createIntermediaryAccount": "Crear cuenta de intermediario",
 
+  "Contact": "Contacto",
+  "Your Name": "Tu Nombre",
+  "Lastname": "Apellido",
+  "E-mail": "Correo Electrónico",
+  "ex: myname@example.com": "ej: micorreo@example.com",
+  "Subject": "Asunto",
+  "Message": "Mensaje",
+  "Submit": "Enviar",
+
   "aboutTitle": "Acerca de nosotros",
   "aboutDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer convallis metus non volutpat cursus. Sed semper aliquet magna, a pretium sem dapibus nec.",
   "mission": "Nuestra misión",
