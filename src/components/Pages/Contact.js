@@ -45,8 +45,10 @@ const Contact = () => {
     return (
         <div>
             <Header />
-            <div className="container">
+            <div className="text-center" style={{ paddingTop: '15px' }}>
                 <h1>{t('Contact')}</h1>
+            </div>
+            <div className="container">
                 <form onSubmit={handleSubmit}>
                     <div className="row mb-3">
                         <div className="col">
@@ -106,7 +108,7 @@ const Contact = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary">{t('Submit')}</button>
+                    <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>{t('Submit')}</button>
                 </form>
             </div>
         </div>

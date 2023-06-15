@@ -8,9 +8,10 @@ const About = () => {
     return (
         <div className="About">
             <Header />
+            <div className="text-center" style={{ paddingTop: '15px' }}>
+                <h1>{t('aboutTitle')}</h1>
+            </div>
             <div className="container">
-                <h2 className="mt-4">{t('aboutTitle')}</h2>
-                <p>{t('aboutDescription')}</p>
                 <div className="row mt-4">
                     <div className="col-md-6">
                         <h3>{t('mission')}</h3>
