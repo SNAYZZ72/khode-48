@@ -24,5 +24,17 @@
   "dontHaveCompanyAccount": "¿No tienes una cuenta de empresa?",
   "createCompanyAccount": "Crear cuenta de empresa",
   "dontHaveIntermediaryAccount": "¿No tienes una cuenta de intermediario?",
-  "createIntermediaryAccount": "Crear cuenta de intermediario"
+  "createIntermediaryAccount": "Crear cuenta de intermediario",
+
+"aboutTitle": "Acerca de nosotros",
+"aboutDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer convallis metus non volutpat cursus. Sed semper aliquet magna, a pretium sem dapibus nec.",
+"mission": "Nuestra misión",
+"missionDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia viverra justo ac consequat. Sed suscipit feugiat elit vitae vulputate.",
+"vision": "Nuestra visión",
+"visionDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel dui purus. Phasellus non purus non lorem facilisis ultrices.",
+"values": "Nuestros valores",
+"value1": "Valor 1",
+"value2": "Valor 2",
+"value3": "Valor 3"
+
 }

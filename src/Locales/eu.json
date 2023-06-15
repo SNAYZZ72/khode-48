@@ -24,5 +24,16 @@
     "dontHaveCompanyAccount": "Ez duzu enpresa konturik?",
     "createCompanyAccount": "Sortu Enpresa Kontua",
     "dontHaveIntermediaryAccount": "Ez duzu intermediario konturik?",
-    "createIntermediaryAccount": "Sortu Intermediario Kontua"
+    "createIntermediaryAccount": "Sortu Intermediario Kontua",
+
+    "aboutTitle": "Guri buruz",
+    "aboutDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer convallis metus non volutpat cursus. Sed semper aliquet magna, a pretium sem dapibus nec.",
+    "mission": "Gure misioa",
+    "missionDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia viverra justo ac consequat. Sed suscipit feugiat elit vitae vulputate.",
+    "vision": "Gure ikuspegia",
+    "visionDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel dui purus. Phasellus non purus non lorem facilisis ultrices.",
+    "values": "Gure balioak",
+    "value1": "Balio 1",
+    "value2": "Balio 2",
+    "value3": "Balio 3"
 }

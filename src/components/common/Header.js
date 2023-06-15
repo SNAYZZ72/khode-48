@@ -1,15 +1,20 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import logo from '../../logo.png';
+
+//import components
 import LanguageSelector from './LanguageSelector';
+// import about from './components/Pages/about/About'
 
 const Header = () => {
   return (
     <Navbar sticky="top" expand="lg">
       <Container>
-        <Navbar.Brand>
+      <Navbar.Brand>
+        <a href="/" style={{ textDecoration: 'none' }}>
           <img src={logo} alt="Logo" style={{ width: '200px', height: 'auto', position: 'fixed', left: '10px', top: '10px' }} />
-        </Navbar.Brand>
+        </a>
+      </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
