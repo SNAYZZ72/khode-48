@@ -195,7 +195,7 @@ const Home = () => {
                     {profileType === 'intermediary' && (
                         <p>
                             {t('dontHaveIntermediaryAccount')}{' '}
-                            <a href="/signup/intermediary" style={{ color: '#F24726' }}>
+                            <a href="/registerI" style={{ color: '#F24726' }}>
                                 {t('createIntermediaryAccount')}
                             </a>
                         </p>
