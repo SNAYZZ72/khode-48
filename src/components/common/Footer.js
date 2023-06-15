@@ -5,7 +5,7 @@ import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg
 
 const Footer = () => {
   return (
-    <Navbar fixed="bottom" style={{ backgroundColor: '#F24726' }}>
+    <Navbar style={{ backgroundColor: '#F24726' }}>
       <Nav className="flex-column">
         <Nav.Link href="/contact" style={{ color: 'white', fontWeight: "500", marginLeft: '10px' }}>CONTACT</Nav.Link>
         <Nav.Link href="/about" style={{ color: 'white', fontWeight: "500", marginLeft: '10px' }}>ABOUT US</Nav.Link>

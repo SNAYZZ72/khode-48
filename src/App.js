@@ -20,9 +20,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 export default function App() {
   return (
     <I18nextProvider i18n={i18n}>
-      <div className="app-container">
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Router>
-          <div className="main-content">
+        <div style={{ flex: 1, marginBottom: '10px' }}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
