@@ -119,18 +119,8 @@ const RegisterPage  = () => {
             <form>
                 <div className="row mb-3">
                     <div className="col">
-                        <label htmlFor="fullName">{t('fullName')}</label>
-                        <input type="text" className="form-control" id="fullName" />
-                    </div>
-                    <div className="col">
                         <label htmlFor="firstName">{t('firstName')}</label>
                         <input type="text" className="form-control" id="firstName" />
-                    </div>
-                </div>
-                <div className="row mb-3">
-                    <div className="col">
-                        <label htmlFor="middleName">{t('middleName')}</label>
-                        <input type="text" className="form-control" id="middleName" />
                     </div>
                     <div className="col">
                         <label htmlFor="lastName">{t('lastName')}</label>
