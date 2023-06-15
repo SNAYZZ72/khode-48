@@ -68,3 +68,92 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+# Khode-48
+React project for BBF
+## Commands 
+npx create-react-app my-app --template typescript
+npm start
+npm install react-router-dom
+npm install react-icons
+
+###
+npm install 
+npm start
+npm run build
+
+
+### Unused 
+npm install @mui/material    <!-- Material UI (GOOGLE) es la mejor y más usada librería UI de React.  -->
+npm install react-material-ui-carousel
+npm install react-slick --save
+## Project Structure
+src
+├── assets
+│   ├── images
+│   └── styles
+│       ├── main.css
+│       └── ...
+├── components
+│   ├── common
+│   │   ├── Footer.js
+│   │   ├── Header.js
+│   │   ├── LanguageSelector.js
+│   │   └── ...
+│   ├── homepage
+│   │   ├── Homepage.js
+│   │   └── ...
+│   ├── registration
+│   │   ├── RegistrationForm.js
+│   │   └── ...
+│   ├── contact
+│   │   ├── ContactForm.js
+│   │   └── ...
+│   ├── globaldata
+│   │   ├── InteractiveMap.js
+│   │   ├── GlobalDataSection.js
+│   │   └── ...
+│   ├── selectedprofiles
+│   │   ├── YoungProfiles.js
+│   │   ├── CompanyProfiles.js
+│   │   ├── IntermediaryProfiles.js
+│   │   └── ...
+│   ├── nonregistered
+│   │   ├── NonRegisteredYouth.js
+│   │   ├── NonRegisteredCompanies.js
+│   │   ├── NonRegisteredIntermediaries.js
+│   │   └── ...
+│   ├── registeredyouth
+│   │   ├── RegisteredYouth.js
+│   │   ├── YouthProfileSection.js
+│   │   ├── ScoreSection.js
+│   │   └── ...
+│   ├── registeredcompanies
+│   │   ├── RegisteredCompanies.js
+│   │   ├── CompanyProfileSection.js
+│   │   ├── ProjectCreationSection.js
+│   │   ├── CompanyProjects.js
+│   │   └── ...
+│   ├── registeredintermediaries
+│   │   ├── RegisteredIntermediaries.js
+│   │   └── ...
+│   ├── admin
+│   │   ├── AdminHeader.js
+│   │   ├── AdminSidebar.js
+│   │   ├── AdminDashboard.js
+│   │   ├── UserManagement.js
+│   │   ├── CompanyManagement.js
+│   │   ├── ProjectManagement.js
+│   │   └── ...
+│   ├── candidate
+│   │   ├── CandidateProfile.js
+│   │   └── ...
+│   └── ...
+├── services
+│   ├── firebase.js
+│   └── ...
+├── locales
+│   ├── en.json
+│   └── es.json
+├── App.js
+└── index.js
