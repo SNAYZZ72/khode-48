@@ -111,24 +111,31 @@ const RegisterPage  = () => {
 
     return (
         <div>
-            <Header />
-            <h2 className="mt-4">{t('Young People Register')}</h2>
+        <Header />
+        <div className="text-center" style={{ paddingTop: '15px' }}>
+            <h1>{t('Young People Register')}</h1>
+        </div>
+        <div className="container">
             <form>
-                <div className="form-group">
-                    <label htmlFor="fullName">{t('fullName')}</label>
-                    <input type="text" className="form-control" id="fullName" />
+                <div className="row mb-3">
+                    <div className="col">
+                        <label htmlFor="fullName">{t('fullName')}</label>
+                        <input type="text" className="form-control" id="fullName" />
+                    </div>
+                    <div className="col">
+                        <label htmlFor="firstName">{t('firstName')}</label>
+                        <input type="text" className="form-control" id="firstName" />
+                    </div>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="firstName">{t('firstName')}</label>
-                    <input type="text" className="form-control" id="firstName" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="middleName">{t('middleName')}</label>
-                    <input type="text" className="form-control" id="middleName" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="lastName">{t('lastName')}</label>
-                    <input type="text" className="form-control" id="lastName" />
+                <div className="row mb-3">
+                    <div className="col">
+                        <label htmlFor="middleName">{t('middleName')}</label>
+                        <input type="text" className="form-control" id="middleName" />
+                    </div>
+                    <div className="col">
+                        <label htmlFor="lastName">{t('lastName')}</label>
+                        <input type="text" className="form-control" id="lastName" />
+                    </div>
                 </div>
                 <div className="form-group">
                     <label htmlFor="gender">{t('gender')}</label>
@@ -208,6 +215,7 @@ const RegisterPage  = () => {
                 <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>{t('registerButton')}</button>
             </form>
         </div>
+    </div>
     );
 };
 
