@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../common/Header';
 
-const RegisterPage  = () => {
+const RegisterIntermediary = () => {
     const { t } = useTranslation();
     const [fullName, setFullName] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -331,4 +331,4 @@ const RegisterPage  = () => {
     );
 };
 
-export default RegisterPage;
+export default RegisterIntermediary;
