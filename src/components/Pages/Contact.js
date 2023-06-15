@@ -45,6 +45,7 @@ const Contact = () => {
     return (
         <div>
             <Header />
+            <div className="container">
             <h1>{t('Contact')}</h1>
             <form onSubmit={handleSubmit}>
                 <div className="row mb-3">
@@ -107,6 +108,7 @@ const Contact = () => {
                 </div>
                 <button type="submit" className="btn btn-primary">{t('Submit')}</button>
             </form>
+        </div>
         </div>
     );
 };
