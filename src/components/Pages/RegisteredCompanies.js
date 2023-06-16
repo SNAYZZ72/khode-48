@@ -259,8 +259,6 @@ const RegisterCompanyPage = () => {
                                 onChange={(e) => setLinkedinPage(e.target.value)}
                             />
                         </div>
-                    </div>
-                    <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="twitterPage">{t('Companys Twitter Page')}</label>
                             <input
@@ -271,8 +269,6 @@ const RegisterCompanyPage = () => {
                                 onChange={(e) => setTwitterPage(e.target.value)}
                             />
                         </div>
-                    </div>
-                    <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="facebookPage">{t('Companys Facebook Page')}</label>
                             <input
