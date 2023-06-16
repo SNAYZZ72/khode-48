@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../common/Header';
 import zxcvbn from 'zxcvbn';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { Modal, Button } from 'react-bootstrap';
 
 // Define the function to determine the color based on password strength score
 function getPasswordStrengthColor(score) {
@@ -48,6 +49,7 @@ const RegisterPage = () => {
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [passwordScore, setPasswordScore] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -79,6 +81,17 @@ const RegisterPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // Perform form submission logic here
+        const currentDate = new Date();
+        const selectedDate = new Date(formData.dateOfBirth);
+        const minimumAge = 8; // Minimum age in years
+
+        selectedDate.setFullYear(selectedDate.getFullYear() + minimumAge);
+
+        if (selectedDate >= currentDate) {
+            // Date of birth does not meet the minimum age requirement, show an error message or take appropriate action
+            setShowErrorModal(true);
+            return;
+        }
         // You can send the form data to a backend server or perform any other actions
         // Reset form fields after submission if needed
         setFormData({
@@ -112,6 +125,10 @@ const RegisterPage = () => {
     const validatePassword = (password) => {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
         return regex.test(password);
+    };
+
+    const handleModalClose = () => {
+        setShowErrorModal(false);
     };
 
     return (
@@ -290,7 +307,8 @@ const RegisterPage = () => {
                         <div className="col">
                             <label htmlFor="confirmPassword">{t('confirmPassword')}</label>
                             <input
-                                type="password"
+
+                                type={showPassword ? 'text' : 'password'}
                                 className="form-control"
                                 id="confirmPassword"
                                 name="confirmPassword"
@@ -354,6 +372,19 @@ const RegisterPage = () => {
                     </div>
                 </form>
             </div>
+            <Modal show={showErrorModal} onHide={handleModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Error</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>{t('An error occurred. Please check your input and try again.')}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleModalClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };
