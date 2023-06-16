@@ -324,7 +324,7 @@ const RegisterPage = () => {
                     </div>
                     <div className="container text-center">
                         <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                            {t('register')}
+                            {t('registerButton')}
                         </button>
                     </div>
                 </form>

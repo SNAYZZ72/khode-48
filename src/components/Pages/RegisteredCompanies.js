@@ -281,14 +281,11 @@ const RegisterCompanyPage = () => {
                             />
                         </div>
                     </div>
-                    <button
-                        type="submit"
-                        className="btn btn-primary"
-                        style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                        required
-                    >
-                        {t('registerButton')}
-                    </button>
+                    <div className="container text-center">
+                        <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('registerButton')}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
