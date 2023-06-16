@@ -369,6 +369,7 @@ const RegisterPage = () => {
                                     type="button"
                                     className="btn btn-outline-secondary"
                                     onClick={toggleShowPassword}
+                                    style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: showPassword ? 'rgba(0, 0, 0, 0.125)' : 'white' }}
                                 >
                                     {showPassword ? 'Hide' : 'Show'}
                                 </button>
