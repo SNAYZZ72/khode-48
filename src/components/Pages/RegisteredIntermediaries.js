@@ -2,333 +2,300 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../common/Header';
 
-const RegisterIntermediary = () => {
+const RegisterIntermediaryPage = () => {
     const { t } = useTranslation();
-    const [fullName, setFullName] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [middleName, setMiddleName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [gender, setGender] = useState('');
-    const [dateOfBirth, setDateOfBirth] = useState('');
-    const [address, setAddress] = useState('');
+    const [companyName, setCompanyName] = useState('');
+    const [commercialName, setCommercialName] = useState('');
+    const [addressLine1, setAddressLine1] = useState('');
     const [city, setCity] = useState('');
-    const [state, setState] = useState('');
     const [postalCode, setPostalCode] = useState('');
+    const [country, setCountry] = useState('');
+    const [industry, setIndustry] = useState('');
+    const [maturity, setMaturity] = useState('');
+    const [primarySector, setPrimarySector] = useState('');
+    const [linkedinPage, setLinkedinPage] = useState('');
+    const [twitterPage, setTwitterPage] = useState('');
+    const [facebookPage, setFacebookPage] = useState('');
+    const [contactFirstName, setContactFirstName] = useState('');
+    const [contactLastName, setContactLastName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [educationalLevel, setEducationalLevel] = useState('');
-    const [cvFile, setCvFile] = useState(null);
-
-    const handleFullNameChange = (e) => {
-        setFullName(e.target.value);
-    };
-
-    const handleFirstNameChange = (e) => {
-        setFirstName(e.target.value);
-    };
-
-    const handleMiddleNameChange = (e) => {
-        setMiddleName(e.target.value);
-    };
-
-    const handleLastNameChange = (e) => {
-        setLastName(e.target.value);
-    };
-
-    const handleGenderChange = (e) => {
-        setGender(e.target.value);
-    };
-
-    const handleDateOfBirthChange = (e) => {
-        setDateOfBirth(e.target.value);
-    };
-
-    const handleAddressChange = (e) => {
-        setAddress(e.target.value);
-    };
-
-    const handleCityChange = (e) => {
-        setCity(e.target.value);
-    };
-
-    const handleStateChange = (e) => {
-        setState(e.target.value);
-    };
-
-    const handlePostalCodeChange = (e) => {
-        setPostalCode(e.target.value);
-    };
-
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-    };
-
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-    };
-
-    const handleConfirmPasswordChange = (e) => {
-        setConfirmPassword(e.target.value);
-    };
-
-    const handlePhoneNumberChange = (e) => {
-        setPhoneNumber(e.target.value);
-    };
-
-    const handleEducationalLevelChange = (e) => {
-        setEducationalLevel(e.target.value);
-    };
-
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        setCvFile(file);
-    };
+    const [confirmPass, setConfirmPass] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Perform form submission logic here
-        // You can send the form data to a backend server or perform any other actions
-        // Reset form fields after submission if needed
-        setFullName('');
-        setFirstName('');
-        setMiddleName('');
-        setLastName('');
-        setGender('');
-        setDateOfBirth('');
-        setAddress('');
-        setCity('');
-        setState('');
-        setPostalCode('');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        setPhoneNumber('');
-        setEducationalLevel('');
-        setCvFile(null);
+        // Perform form submission or data processing here
     };
 
     return (
         <div className="container">
             <Header />
-            <h2 className="mt-4">{t('Young People Register')}</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="fullName">{t('Full Name')}</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="fullName"
-                        value={fullName}
-                        onChange={handleFullNameChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="firstName">{t('First Name')}</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="firstName"
-                        value={firstName}
-                        onChange={handleFirstNameChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="middleName">{t('Middle Name')}</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="middleName"
-                        value={middleName}
-                        onChange={handleMiddleNameChange}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="lastName">{t('Last Name')}</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="lastName"
-                        value={lastName}
-                        onChange={handleLastNameChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="gender">{t('Gender')}</label>
-                    <div className="form-check">
-                        <input
-                            type="radio"
-                            className="form-check-input"
-                            id="genderFemale"
-                            value="female"
-                            name="gender"
-                            checked={gender === 'female'}
-                            onChange={handleGenderChange}
-                        />
-                        <label className="form-check-label" htmlFor="genderFemale">{t('Female')}</label>
+            <div className="mt-4">
+                <h2>{t('CompanyRegister')}</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label htmlFor="companyName">{t('Company name')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="companyName"
+                                value={companyName}
+                                onChange={(e) => setCompanyName(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="col">
+                            <label htmlFor="commercialName">{t('Commercials name')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="commercialName"
+                                value={commercialName}
+                                onChange={(e) => setCommercialName(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
-                    <div className="form-check">
-                        <input
-                            type="radio"
-                            className="form-check-input"
-                            id="genderMale"
-                            value="male"
-                            name="gender"
-                            checked={gender === 'male'}
-                            onChange={handleGenderChange}
-                        />
-                        <label className="form-check-label" htmlFor="genderMale">{t('Male')}</label>
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label htmlFor="addressLine">{t('addressLine')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="addressLine"
+                                value={addressLine1}
+                                onChange={(e) => setAddressLine1(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
-                    <div className="form-check">
-                        <input
-                            type="radio"
-                            className="form-check-input"
-                            id="genderNonBinary"
-                            value="nonBinary"
-                            name="gender"
-                            checked={gender === 'nonBinary'}
-                            onChange={handleGenderChange}
-                        />
-                        <label className="form-check-label" htmlFor="genderNonBinary">{t('Non-Binary')}</label>
+                    <div className="row mb-3">
+                        <div className="col-md-4">
+                            <label htmlFor="city">{t('city')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="city"
+                                value={city}
+                                onChange={(e) => setCity(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="col-md-4">
+                            <label htmlFor="postalCode">{t('postalCode')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="postalCode"
+                                value={postalCode}
+                                onChange={(e) => setPostalCode(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="col-md-4">
+                            <label htmlFor="country">{t('country')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="country"
+                                value={country}
+                                onChange={(e) => setCountry(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="dateOfBirth">{t('Date of Birth')}</label>
-                    <input
-                        type="date"
-                        className="form-control"
-                        id="dateOfBirth"
-                        value={dateOfBirth}
-                        onChange={handleDateOfBirthChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="address">{t('Address')}</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="address"
-                        value={address}
-                        onChange={handleAddressChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="city">{t('City')}</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="city"
-                        value={city}
-                        onChange={handleCityChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="state">{t('State')}</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="state"
-                        value={state}
-                        onChange={handleStateChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="postalCode">{t('Postal Code')}</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="postalCode"
-                        value={postalCode}
-                        onChange={handlePostalCodeChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="email">{t('Email')}</label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        id="email"
-                        value={email}
-                        onChange={handleEmailChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">{t('Password')}</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        id="password"
-                        value={password}
-                        onChange={handlePasswordChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="confirmPassword">{t('Confirm Password')}</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        id="confirmPassword"
-                        value={confirmPassword}
-                        onChange={handleConfirmPasswordChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="phoneNumber">{t('Phone Number')}</label>
-                    <input
-                        type="tel"
-                        className="form-control"
-                        id="phoneNumber"
-                        value={phoneNumber}
-                        onChange={handlePhoneNumberChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="educationalLevel">{t('Educational Level')}</label>
-                    <select
-                        className="form-control"
-                        id="educationalLevel"
-                        value={educationalLevel}
-                        onChange={handleEducationalLevelChange}
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label htmlFor="industry">{t('Select your main sector')}</label>
+                            <select
+                                className="form-control"
+                                id="industry"
+                                value={industry}
+                                onChange={(e) => setIndustry(e.target.value)}
+                                required
+                            >
+                                <option value="">{t('Select')}</option>
+                                <option value="Digital">{t('Digital')}</option>
+                                <option value="Industry">{t('Industry')}</option>
+                                <option value="Social and Solidarity Economy">{t('Social and Solidarity Economy')}</option>
+                                <option value="Cultural and Creative Industry">{t('Cultural and Creative Industry')}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label htmlFor="maturity">{t('What is the maturity of your project?')}</label>
+                            <select
+                                className="form-control"
+                                id="maturity"
+                                value={maturity}
+                                onChange={(e) => setMaturity(e.target.value)}
+                                required
+                            >
+                                <option value="">{t('Select')}</option>
+                                <option value="Ideation">{t('Ideation')}</option>
+                                <option value="Minimum Viable Product">{t('Minimum Viable Product')}</option>
+                                <option value="First Customer / First Users">{t('First Customer / First Users')}</option>
+                                <option value="Commercialization">{t('Commercialization')}</option>
+                                <option value="International">{t('International')}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label htmlFor="primarySector">{t('Select your primary sector')}</label>
+                            <select
+                                className="form-control"
+                                id="primarySector"
+                                value={primarySector}
+                                onChange={(e) => setPrimarySector(e.target.value)}
+                                required
+                            >
+                                <option value="">{t('Select')}</option>
+                                <option value="Banking / Insurance">{t('Banking / Insurance')}</option>
+                                <option value="Construction">{t('Construction')}</option>
+                                <option value="Chemical">{t('Chemical')}</option>
+                                <option value="Medical Devices">{t('Medical Devices')}</option>
+                                <option value="Biotechnology">{t('Biotechnology')}</option>
+                                <option value="Commerce / Distribution">{t('Commerce / Distribution')}</option>
+                                <option value="Event / Communication">{t('Event / Communication')}</option>
+                                <option value="Pharmaceutical Industry">{t('Pharmaceutical Industry')}</option>
+                                <option value="IT / Telecommunications">{t('IT / Telecommunications')}</option>
+                                <option value="Textile / Clothing">{t('Textile / Clothing')}</option>
+                                <option value="Transportation / Logistics">{t('Transportation / Logistics')}</option>
+                                <option value="Sports and Leisure">{t('Sports and Leisure')}</option>
+                                <option value="Tourism / Catering">{t('Tourism / Catering')}</option>
+                                <option value="e-Health and Well-being">{t('e-Health and Well-being')}</option>
+                                <option value="Education / Training">{t('Education / Training')}</option>
+                                <option value="Energy">{t('Energy')}</option>
+                                <option value="Legal">{t('Legal')}</option>
+                                <option value="Digital Industry">{t('Digital Industry')}</option>
+                                <option value="Business Services">{t('Business Services')}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label htmlFor="contactFirstName">{t('ContactFirstName')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="contactFirstName"
+                                value={contactFirstName}
+                                onChange={(e) => setContactFirstName(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="col">
+                            <label htmlFor="contactLastName">{t('ContactLastName')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="contactLastName"
+                                value={contactLastName}
+                                onChange={(e) => setContactLastName(e.target.value)}
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label htmlFor="phoneNumber">{t('phoneNumber')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="phoneNumber"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="col">
+                            <label htmlFor="email">{t('email')}</label>
+                            <input
+                                type="email"
+                                className="form-control"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label htmlFor="password">{t('password')}</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="col">
+                            <label htmlFor="confirmPassword">{t('confirmPassword')}</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                id="confirmPassword"
+                                value={confirmPass}
+                                onChange={(e) => setConfirmPass(e.target.value)}
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label htmlFor="linkedinPage">{t('Companys Linkedin Page')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="linkedinPage"
+                                value={linkedinPage}
+                                onChange={(e) => setLinkedinPage(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label htmlFor="twitterPage">{t('Companys Twitter Page')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="twitterPage"
+                                value={twitterPage}
+                                onChange={(e) => setTwitterPage(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label htmlFor="facebookPage">{t('Companys Facebook Page')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="facebookPage"
+                                value={facebookPage}
+                                onChange={(e) => setFacebookPage(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <button
+                        type="submit"
+                        className="btn btn-primary"
+                        style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
                         required
                     >
-                        <option value="primary">{t('Primary')}</option>
-                        <option value="secondary">{t('Secondary')}</option>
-                        <option value="higherEducation">{t('Higher Education')}</option>
-                    </select>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="cv">{t('Upload CV')}</label>
-                    <input
-                        type="file"
-                        className="form-control-file"
-                        id="cv"
-                        onChange={handleFileChange}
-                        required
-                    />
-                </div>
-                <button
-                    type="submit"
-                    className="btn btn-primary"
-                    style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                >
-                    {t('Register Button')}
-                </button>
-            </form>
+                        {t('registerButton')}
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };
 
-export default RegisterIntermediary;
+export default RegisterIntermediaryPage;
