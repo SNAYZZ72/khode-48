@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../common/Header';
 import zxcvbn from 'zxcvbn';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Modal, Button } from 'react-bootstrap';
+import axios from 'axios';
 
 // Define the function to determine the color based on password strength score
 function getPasswordStrengthColor(score) {
@@ -45,7 +46,66 @@ const RegisterPage = () => {
         phoneNumber: '',
         educationalLevel: '',
         cvFile: null,
+        countries: [],
+        cities: [], // Store the list of cities
+        postalCodes: [], // Store the list of postal codes
     });
+
+    useEffect(() => {
+        fetchCountries();
+        fetchCities();
+        fetchPostalCodes();
+    }, []);
+
+    const fetchCountries = async () => {
+        try {
+            const response = await axios.get('https://restcountries.com/v3.1/all');
+            const countries = response.data.map((country) => ({
+                name: country.name.common,
+                code: country.cca2,
+            }));
+            countries.sort((a, b) => a.name.localeCompare(b.name));
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                countries,
+            }));
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+        }
+    };
+
+    const fetchCities = async () => {
+        try {
+            const response = await axios.get('<API_ENDPOINT_FOR_CITIES>');
+            const cities = response.data.map((city) => ({
+                name: city.name,
+            }));
+            cities.sort((a, b) => a.name.localeCompare(b.name)); // Sort cities alphabetically
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                cities,
+            }));
+        } catch (error) {
+            console.error('Error fetching cities:', error);
+        }
+    };
+
+    const fetchPostalCodes = async () => {
+        try {
+            const response = await axios.get('<API_ENDPOINT_FOR_POSTAL_CODES>');
+            const postalCodes = response.data.map((postalCode) => ({
+                code: postalCode.code,
+            }));
+            postalCodes.sort((a, b) => a.code.localeCompare(b.code)); // Sort postal codes alphabetically
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                postalCodes,
+            }));
+        } catch (error) {
+            console.error('Error fetching postal codes:', error);
+        }
+    };
+
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [passwordScore, setPasswordScore] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
@@ -120,6 +180,7 @@ const RegisterPage = () => {
             // Passwords don't match or don't meet the requirements, show an error message or take appropriate action
             setPasswordsMatch(false);
         }
+
     };
 
     const validatePassword = (password) => {
@@ -130,6 +191,7 @@ const RegisterPage = () => {
     const handleModalClose = () => {
         setShowErrorModal(false);
     };
+
 
     return (
         <div>
@@ -211,39 +273,57 @@ const RegisterPage = () => {
                         </div>
                         <div className="col-md-2">
                             <label htmlFor="country">{t('country')}</label>
-                            <input
-                                type="text"
+                            <select
                                 className="form-control"
                                 id="country"
                                 name="country"
                                 value={formData.country}
                                 onChange={handleInputChange}
                                 required
-                            />
+                            >
+                                <option value="">{t('selectCountry')}</option>
+                                {formData.countries.map((country) => (
+                                    <option key={country.code} value={country.code}>
+                                        {country.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                         <div className="col-md-2">
                             <label htmlFor="city">{t('city')}</label>
-                            <input
-                                type="text"
+                            <select
                                 className="form-control"
                                 id="city"
                                 name="city"
                                 value={formData.city}
                                 onChange={handleInputChange}
                                 required
-                            />
+                            >
+                                <option value="">{t('selectCity')}</option>
+                                {formData.cities.map((city) => (
+                                    <option key={city.name} value={city.name}>
+                                        {city.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                         <div className="col-md-2">
                             <label htmlFor="postalCode">{t('postalCode')}</label>
-                            <input
-                                type="text"
+                            <select
                                 className="form-control"
                                 id="postalCode"
                                 name="postalCode"
                                 value={formData.postalCode}
                                 onChange={handleInputChange}
                                 required
-                            />
+                            >
+                                <option value="">{t('selectPostalCode')}</option>
+                                {formData.postalCodes.map((postalCode) => (
+                                    <option key={postalCode.code} value={postalCode.code}>
+                                        {postalCode.code}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                     <div className="row mb-3">
