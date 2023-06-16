@@ -257,41 +257,15 @@ const RegisterPage = () => {
                             </select>
                         </div>
                         <div className="col">
-                            <label htmlFor="lastName">{t('lastName')}</label>
+                            <label htmlFor="cv">{t('uploadCV')}</label>
                             <input
-                                type="text"
-                                className="form-control"
-                                id="lastName"
-                                value={lastName}
-                                onChange={handleLastNameChange}
+                                type="file"
+                                className="form-control-file"
+                                id="cv"
+                                onChange={handleFileChange}
                                 required
                             />
                         </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="educationalLevel">{t('educationalLevel')}</label>
-                        <select
-                            className="form-control"
-                            id="educationalLevel"
-                            value={educationalLevel}
-                            onChange={handleEducationalLevelChange}
-                            required
-                        >
-                            <option value="primary">{t('primary')}</option>
-                            <option value="secondary">{t('secondary')}</option>
-                            <option value="higherEducation">{t('higherEducation')}</option>
-                        </select>
-                    </div>
-                    <br />
-                    <div className="form-group">
-                        <label htmlFor="cv">{t('uploadCV')}</label>
-                        <input
-                            type="file"
-                            className="form-control-file"
-                            id="cv"
-                            onChange={handleFileChange}
-                            required
-                        />
                     </div>
                     <br />
                     <button
