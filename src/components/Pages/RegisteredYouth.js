@@ -108,7 +108,7 @@ const RegisterPage = () => {
                 <h1>{t('Young People Register')}</h1>
             </div>
             <div className="container">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} style={{ paddingBottom: '15px' }}>
                     <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="firstName">{t('firstName')}</label>
@@ -293,14 +293,26 @@ const RegisterPage = () => {
                             />
                         </div>
                     </div>
-                    <div className="row mb-3">
+                    <div className='row mb-3'>
                         <div className="col">
-                            <ReCAPTCHA sitekey="your-recaptcha-sitekey" />
+                            <label htmlFor="information">{t('information')}</label>
+                            <textarea
+                                className="form-control"
+                                id="information"
+                                name="information"
+                                value={formData.information}
+                                onChange={handleInputChange}
+                            />
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                        {t('register')}
-                    </button>
+                    <div className="">
+                        <ReCAPTCHA sitekey="your-recaptcha-sitekey" />
+                    </div>
+                    <div className="container text-center">
+                        <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('register')}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
