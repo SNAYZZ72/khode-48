@@ -24,11 +24,10 @@ const Header = () => {
   }, []);
 
   return (
-    <Navbar sticky="top" expand="lg" style={{ opacity: showHeader ? 1 : 0, transition: 'opacity 0s' }}>
-      <Container>
+    <Navbar sticky="top" expand="lg" style={{ opacity: showHeader ? 1 : 0, transition: 'opacity 0s', paddingLeft: '20px', paddingRight: '20px' }}>
         <Navbar.Brand>
           <a href="/" style={{ textDecoration: 'none' }}>
-            <img src={logo} alt="Logo" style={{ width: '200px', height: 'auto', position: 'fixed', left: '10px', top: '10px' }} />
+            <img src={logo} alt="Logo" style={{ width: '200px', height: 'auto', position: 'fixed', left: '20px', top: '10px' }} />
           </a>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -58,7 +57,6 @@ const Header = () => {
             <LanguageSelector />
           </Nav>
         </Navbar.Collapse>
-      </Container>
     </Navbar>
   );
 };

@@ -11,8 +11,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './components/Home/Homepage';
 import About from './components/Pages/About';
 import Contact from './components/Pages/Contact';
+//import register
 import RegisterPageY from "./components/Pages/RegisteredYouth";
 import RegisterPageC from "./components/Pages/RegisteredCompanies";
+import RegisterPageI from "./components/Pages/RegisteredIntermediaries";
+//import Home profile
+import HomeYouth from "./components/Pages/HomeYouth";
+import HomeCompany from "./components/Pages/HomeCompany";
+import HomeIntemediary from "./components/Pages/HomeIntermediary"
 
 //import Components
 import Footer from './components/common/Footer';
@@ -32,6 +38,10 @@ export default function App() {
               <Route path="/contact" element ={<Contact />}/>
               <Route path="/registery" element={<RegisterPageY />} />
               <Route path="/registerC" element={<RegisterPageC />} />
+              <Route path="/registerI" element={<RegisterPageI />} />
+              <Route path="/homeYouth" element={<HomeYouth />} />
+              <Route path="/homeCompany" element={<HomeCompany />} />
+              <Route path="/homeIntermediary" element={<HomeIntemediary />} />
             </Routes>
           </div>
           <Footer />

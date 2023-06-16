@@ -8,27 +8,27 @@ const Footer = () => {
     <Navbar style={{ backgroundColor: '#F24726' }} className="d-flex justify-content-between align-items-center">
       <Nav className="flex-column">
         {/* Contenu de la première colonne */}
-        <Nav.Link href="/contact" style={{ color: 'white', fontWeight: '500', marginLeft: '10px' }}>CONTACT</Nav.Link>
-        <Nav.Link href="/about" style={{ color: 'white', fontWeight: '500', marginLeft: '10px' }}>ABOUT US</Nav.Link>
-        <Nav.Link href="/terms" style={{ color: 'white', fontWeight: '500', marginLeft: '10px' }}>TERMS & CONDITIONS</Nav.Link>
+        <Nav.Link href="/contact" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginLeft: '10px' }}>CONTACT</Nav.Link>
+        <Nav.Link href="/about" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginLeft: '10px' }}>ABOUT US</Nav.Link>
+        <Nav.Link href="/terms" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginLeft: '10px' }}>TERMS & CONDITIONS</Nav.Link>
       </Nav>
       <Nav className="align-items-center">
         {/* Contenu de la dernière colonne */}
-        <Nav.Link href="https://twitter.com" style={{ color: 'white', fontSize: '40px', marginLeft: '20px' }}>
+        <Nav.Link href="https://twitter.com" target="_blank" style={{ color: 'white', fontSize: '40px' }}>
           <FontAwesomeIcon icon={faTwitter} />
         </Nav.Link>
-        <Nav.Link href="https://www.facebook.com" style={{ color: 'white', fontSize: '40px', marginLeft: '20px' }}>
+        <Nav.Link href="https://www.facebook.com" target="_blank" style={{ color: 'white', fontSize: '40px' }}>
           <FontAwesomeIcon icon={faFacebook} />
         </Nav.Link>
-        <Nav.Link href="https://www.instagram.com" style={{ color: 'white', fontSize: '40px', marginLeft: '20px' }}>
+        <Nav.Link href="https://www.instagram.com" target="_blank" style={{ color: 'white', fontSize: '40px' }}>
           <FontAwesomeIcon icon={faInstagram} />
         </Nav.Link>
       </Nav>
       <Nav className="flex-column text-end">
         {/* Contenu de la colonne centrale */}
-        <Nav.Link href="/faq" style={{ color: 'white', fontWeight: '500', marginLeft: '20px' }}>FAQ</Nav.Link>
-        <Nav.Link href="/careers" style={{ color: 'white', fontWeight: '500', marginLeft: '20px' }}>CAREERS</Nav.Link>
-        <Nav.Link href="/country" style={{ color: 'white', fontWeight: '500', marginLeft: '20px' }}>CHANGE COUNTRY</Nav.Link>
+        <Nav.Link href="/faq" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginRight: '10px' }}>FAQ</Nav.Link>
+        <Nav.Link href="/careers" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginRight: '10px' }}>CAREERS</Nav.Link>
+        <Nav.Link href="/country" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginRight: '10px' }}>CHANGE COUNTRY</Nav.Link>
       </Nav>
 
     </Navbar>
