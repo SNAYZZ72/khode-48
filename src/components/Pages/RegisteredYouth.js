@@ -1,79 +1,73 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../common/Header';
+import zxcvbn from 'zxcvbn';
+import ReCAPTCHA from 'react-google-recaptcha';
+
+// Define the function to determine the color based on password strength score
+function getPasswordStrengthColor(score) {
+    if (score < 3) {
+        return 'danger';
+    } else if (score < 4) {
+        return 'warning';
+    } else {
+        return 'success';
+    }
+}
+
+// Define the function to get the password strength text based on score
+function getPasswordStrengthText(score) {
+    if (score < 3) {
+        return 'Weak';
+    } else if (score < 4) {
+        return 'Moderate';
+    } else {
+        return 'Strong';
+    }
+}
 
 const RegisterPage = () => {
     const { t } = useTranslation();
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [gender, setGender] = useState('');
-    const [dateOfBirth, setDateOfBirth] = useState('');
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [postalCode, setPostalCode] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [educationalLevel, setEducationalLevel] = useState('');
-    const [cvFile, setCvFile] = useState(null);
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        gender: '',
+        dateOfBirth: '',
+        address: '',
+        city: '',
+        state: '',
+        postalCode: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        phoneNumber: '',
+        educationalLevel: '',
+        cvFile: null,
+    });
+    const [passwordsMatch, setPasswordsMatch] = useState(true);
+    const [passwordScore, setPasswordScore] = useState(0);
 
-    const handleFirstNameChange = (e) => {
-        setFirstName(e.target.value);
-    };
-
-    const handleLastNameChange = (e) => {
-        setLastName(e.target.value);
-    };
-
-    const handleGenderChange = (e) => {
-        setGender(e.target.value);
-    };
-
-    const handleDateOfBirthChange = (e) => {
-        setDateOfBirth(e.target.value);
-    };
-
-    const handleAddressChange = (e) => {
-        setAddress(e.target.value);
-    };
-
-    const handleCityChange = (e) => {
-        setCity(e.target.value);
-    };
-
-    const handleStateChange = (e) => {
-        setState(e.target.value);
-    };
-
-    const handlePostalCodeChange = (e) => {
-        setPostalCode(e.target.value);
-    };
-
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-    };
-
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-    };
-
-    const handleConfirmPasswordChange = (e) => {
-        setConfirmPassword(e.target.value);
-    };
-
-    const handlePhoneNumberChange = (e) => {
-        setPhoneNumber(e.target.value);
-    };
-
-    const handleEducationalLevelChange = (e) => {
-        setEducationalLevel(e.target.value);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
     };
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        setCvFile(file);
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            cvFile: file,
+        }));
+    };
+
+    const handlePasswordChange = (e) => {
+        const { value } = e.target;
+        const score = zxcvbn(value).score;
+        setPasswordScore(score);
+        handleInputChange(e);
     };
 
     const handleSubmit = (e) => {
@@ -81,22 +75,32 @@ const RegisterPage = () => {
         // Perform form submission logic here
         // You can send the form data to a backend server or perform any other actions
         // Reset form fields after submission if needed
-        setFirstName('');
-        setLastName('');
-        setGender('');
-        setDateOfBirth('');
-        setAddress('');
-        setCity('');
-        setState('');
-        setPostalCode('');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        setPhoneNumber('');
-        setEducationalLevel('');
-        setCvFile(null);
-    };
+        setFormData({
+            firstName: '',
+            lastName: '',
+            gender: '',
+            dateOfBirth: '',
+            address: '',
+            city: '',
+            state: '',
+            postalCode: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            phoneNumber: '',
+            educationalLevel: '',
+            cvFile: null,
+        });
 
+        if (formData.password === formData.confirmPassword) {
+            // Passwords match, perform form submission or data processing here
+            setPasswordsMatch(true);
+            // Rest of your code...
+        } else {
+            // Passwords don't match, show an error message or take appropriate action
+            setPasswordsMatch(false);
+        }
+    };
     return (
         <div>
             <Header />
@@ -112,8 +116,9 @@ const RegisterPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="firstName"
-                                value={firstName}
-                                onChange={handleFirstNameChange}
+                                name="firstName"
+                                value={formData.firstName}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -123,8 +128,9 @@ const RegisterPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="lastName"
-                                value={lastName}
-                                onChange={handleLastNameChange}
+                                name="lastName"
+                                value={formData.lastName}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -135,8 +141,9 @@ const RegisterPage = () => {
                             <select
                                 className="form-control"
                                 id="gender"
-                                value={gender}
-                                onChange={handleGenderChange}
+                                name="gender"
+                                value={formData.gender}
+                                onChange={handleInputChange}
                                 required
                             >
                                 <option value="">{t('selectGender')}</option>
@@ -152,8 +159,9 @@ const RegisterPage = () => {
                                 type="date"
                                 className="form-control"
                                 id="dateOfBirth"
-                                value={dateOfBirth}
-                                onChange={handleDateOfBirthChange}
+                                name="dateOfBirth"
+                                value={formData.dateOfBirth}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -165,8 +173,9 @@ const RegisterPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="address"
-                                value={address}
-                                onChange={handleAddressChange}
+                                name="address"
+                                value={formData.address}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -176,8 +185,9 @@ const RegisterPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="city"
-                                value={city}
-                                onChange={handleCityChange}
+                                name="city"
+                                value={formData.city}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -187,8 +197,9 @@ const RegisterPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="postalCode"
-                                value={postalCode}
-                                onChange={handlePostalCodeChange}
+                                name="postalCode"
+                                value={formData.postalCode}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -200,8 +211,9 @@ const RegisterPage = () => {
                                 type="email"
                                 className="form-control"
                                 id="email"
-                                value={email}
-                                onChange={handleEmailChange}
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -211,8 +223,9 @@ const RegisterPage = () => {
                                 type="tel"
                                 className="form-control"
                                 id="phoneNumber"
-                                value={phoneNumber}
-                                onChange={handlePhoneNumberChange}
+                                name="phoneNumber"
+                                value={formData.phoneNumber}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -224,10 +237,16 @@ const RegisterPage = () => {
                                 type="password"
                                 className="form-control"
                                 id="password"
-                                value={password}
+                                name="password"
+                                value={formData.password}
                                 onChange={handlePasswordChange}
                                 required
                             />
+                            {passwordScore > 0 && (
+                                <p className={`text-${getPasswordStrengthColor(passwordScore)}`}>
+                                    {getPasswordStrengthText(passwordScore)}
+                                </p>
+                            )}
                         </div>
                         <div className="col">
                             <label htmlFor="confirmPassword">{t('confirmPassword')}</label>
@@ -235,46 +254,52 @@ const RegisterPage = () => {
                                 type="password"
                                 className="form-control"
                                 id="confirmPassword"
-                                value={confirmPassword}
-                                onChange={handleConfirmPasswordChange}
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
                     </div>
+                    {!passwordsMatch && (
+                        <p className="text-danger">{t('passwordsDoNotMatch')}</p>
+                    )}
                     <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="educationalLevel">{t('educationalLevel')}</label>
                             <select
                                 className="form-control"
                                 id="educationalLevel"
-                                value={educationalLevel}
-                                onChange={handleEducationalLevelChange}
+                                name="educationalLevel"
+                                value={formData.educationalLevel}
+                                onChange={handleInputChange}
                                 required
                             >
-                                <option value="primary">{t('primary')}</option>
-                                <option value="secondary">{t('secondary')}</option>
-                                <option value="higherEducation">{t('higherEducation')}</option>
+                                <option value="">{t('selectEducationalLevel')}</option>
+                                <option value="highSchool">{t('highSchool')}</option>
+                                <option value="bachelorsDegree">{t('bachelorsDegree')}</option>
+                                <option value="mastersDegree">{t('mastersDegree')}</option>
+                                <option value="doctoralDegree">{t('doctoralDegree')}</option>
                             </select>
                         </div>
                         <div className="col">
-                            <label htmlFor="cv">{t('uploadCV')}</label>
+                            <label htmlFor="cvFile">{t('cvFile')}</label>
                             <input
                                 type="file"
-                                className="form-control-file"
-                                id="cv"
+                                className="form-control"
+                                id="cvFile"
+                                name="cvFile"
                                 onChange={handleFileChange}
-                                required
                             />
                         </div>
                     </div>
-                    <br />
-                    <button
-                        type="submit"
-                        className="btn btn-primary"
-                        style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                        required
-                    >
-                        {t('registerButton')}
+                    <div className="row mb-3">
+                        <div className="col">
+                            <ReCAPTCHA sitekey="your-recaptcha-sitekey" />
+                        </div>
+                    </div>
+                    <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                        {t('register')}
                     </button>
                 </form>
             </div>
