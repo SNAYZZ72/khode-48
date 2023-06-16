@@ -94,15 +94,21 @@ const RegisterPage = () => {
             cvFile: null,
         });
 
-        if (formData.password === formData.confirmPassword) {
-            // Passwords match, perform form submission or data processing here
+        if (formData.password === formData.confirmPassword && validatePassword(formData.password)) {
+            // Passwords match and meet the requirements
             setPasswordsMatch(true);
             // Rest of your code...
         } else {
-            // Passwords don't match, show an error message or take appropriate action
+            // Passwords don't match or don't meet the requirements, show an error message or take appropriate action
             setPasswordsMatch(false);
         }
     };
+
+    const validatePassword = (password) => {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+        return regex.test(password);
+    };
+
     return (
         <div>
             <Header />
@@ -259,6 +265,11 @@ const RegisterPage = () => {
                             {passwordScore > 0 && (
                                 <p className={`text-${getPasswordStrengthColor(passwordScore)}`}>
                                     {getPasswordStrengthText(passwordScore)}
+                                </p>
+                            )}
+                            {!validatePassword(formData.password) && (
+                                <p className="text-danger">
+                                    {t('Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.')}
                                 </p>
                             )}
                         </div>
