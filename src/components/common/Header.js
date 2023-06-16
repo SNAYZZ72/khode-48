@@ -24,7 +24,7 @@ const Header = () => {
   }, []);
 
   return (
-    <Navbar sticky="top" expand="lg" style={{ height: '60px' ,paddingLeft: '20px', paddingRight: '20px', backgroundColor: 'white', boxShadow: showHeader ? 'none' : '0px 1px 0px black' }}>
+    <Navbar sticky="top" expand="lg" style={{ paddingBottom: '10px', paddingLeft: '20px', paddingRight: '20px', backgroundColor: 'white', boxShadow: showHeader ? 'none' : '0px 1px 0px black' }}>
         <Navbar.Brand>
           <a href="/" style={{ textDecoration: 'none' }}>
             <img src={logo} alt="Logo" style={{ width: '200px' }} />
