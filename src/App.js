@@ -11,6 +11,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './components/Home/Homepage';
 import About from './components/Pages/About';
 import Contact from './components/Pages/Contact';
+import FAQ from './components/Pages/FAQ';
+import Terms from './components/Pages/Terms';
+import Career from './components/Pages/Career';
 //import register
 import RegisterPageY from "./components/Pages/RegisteredYouth";
 import RegisterPageC from "./components/Pages/RegisteredCompanies";
@@ -20,11 +23,19 @@ import HomeYouth from "./components/Pages/HomeYouth";
 import HomeCompany from "./components/Pages/HomeCompany";
 import HomeIntemediary from "./components/Pages/HomeIntermediary"
 
+//import Profile
+import ProfileYouth from "./components/Pages/ProfileYouth";
+
 //import Components
 import Footer from './components/common/Footer';
 
+//import CookieConsent
+import CookieConsent from './components/CookieConsent/CookieConsent';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+
 
 export default function App() {
   return (
@@ -36,16 +47,21 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element ={<Contact />}/>
+              <Route path="/FAQ" element ={<FAQ />}/>
+              <Route path="/terms" element ={<Terms />}/>
+              <Route path="/careers" element ={<Career />}/>
               <Route path="/registery" element={<RegisterPageY />} />
               <Route path="/registerC" element={<RegisterPageC />} />
               <Route path="/registerI" element={<RegisterPageI />} />
               <Route path="/homeYouth" element={<HomeYouth />} />
               <Route path="/homeCompany" element={<HomeCompany />} />
               <Route path="/homeIntermediary" element={<HomeIntemediary />} />
+              <Route path="/profileYouth" element={<ProfileYouth />} />
             </Routes>
           </div>
           <Footer />
         </Router>
+        <CookieConsent /> {/* Ajout du composant CookieConsent */}
       </div>
     </I18nextProvider>
   );

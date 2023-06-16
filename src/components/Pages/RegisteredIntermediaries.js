@@ -29,11 +29,13 @@ const RegisterIntermediaryPage = () => {
     };
 
     return (
-        <div className="container">
+        <div>
             <Header />
-            <div className="mt-4">
-                <h2>{t('CompanyRegister')}</h2>
-                <form onSubmit={handleSubmit}>
+            <div className="text-center" style={{ paddingBottom: '15px' }}>
+                <h1>{t('IntermediariesRegister')}</h1>
+            </div>
+            <div className="container">
+                <form onSubmit={handleSubmit} style={{ paddingBottom: '15px' }}>
                     <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="companyName">{t('Company name')}</label>
@@ -58,8 +60,9 @@ const RegisterIntermediaryPage = () => {
                             />
                         </div>
                     </div>
+
                     <div className="row mb-3">
-                        <div className="col">
+                        <div className="col-md-6">
                             <label htmlFor="addressLine">{t('addressLine')}</label>
                             <input
                                 type="text"
@@ -70,9 +73,18 @@ const RegisterIntermediaryPage = () => {
                                 required
                             />
                         </div>
-                    </div>
-                    <div className="row mb-3">
-                        <div className="col-md-4">
+                        <div className="col-md-2">
+                            <label htmlFor="country">{t('country')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="country"
+                                value={country}
+                                onChange={(e) => setCountry(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="col-md-2">
                             <label htmlFor="city">{t('city')}</label>
                             <input
                                 type="text"
@@ -83,7 +95,7 @@ const RegisterIntermediaryPage = () => {
                                 required
                             />
                         </div>
-                        <div className="col-md-4">
+                        <div className="col-md-2">
                             <label htmlFor="postalCode">{t('postalCode')}</label>
                             <input
                                 type="text"
@@ -91,17 +103,6 @@ const RegisterIntermediaryPage = () => {
                                 id="postalCode"
                                 value={postalCode}
                                 onChange={(e) => setPostalCode(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="col-md-4">
-                            <label htmlFor="country">{t('country')}</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="country"
-                                value={country}
-                                onChange={(e) => setCountry(e.target.value)}
                                 required
                             />
                         </div>
@@ -259,8 +260,6 @@ const RegisterIntermediaryPage = () => {
                                 onChange={(e) => setLinkedinPage(e.target.value)}
                             />
                         </div>
-                    </div>
-                    <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="twitterPage">{t('Companys Twitter Page')}</label>
                             <input
@@ -271,8 +270,6 @@ const RegisterIntermediaryPage = () => {
                                 onChange={(e) => setTwitterPage(e.target.value)}
                             />
                         </div>
-                    </div>
-                    <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="facebookPage">{t('Companys Facebook Page')}</label>
                             <input
@@ -284,14 +281,11 @@ const RegisterIntermediaryPage = () => {
                             />
                         </div>
                     </div>
-                    <button
-                        type="submit"
-                        className="btn btn-primary"
-                        style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                        required
-                    >
-                        {t('registerButton')}
-                    </button>
+                    <div className="container text-center">
+                        <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('registerButton')}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

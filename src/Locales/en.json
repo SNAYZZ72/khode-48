@@ -47,6 +47,10 @@
   "value2": "Value 2",
   "value3": "Value 3",
 
+  "termsTitle": "Terms & Conditions",
+
+  "careerTitle": "Career",
+
   "Young People Register": "Young People Register",
   "fullName": "Full Name",
   "firstName": "First Name",
@@ -116,5 +120,14 @@
   "ContactLastName" : "Contact Last Name",
   "Companys Linkedin Page": "Company's Linkedin Page",
   "Companys Twitter Page": "Company's Twitter Page",
-  "Companys Facebook Page": "Company's Facebook Page"
+  "Companys Facebook Page": "Company's Facebook Page",
+
+  "IntermediariesRegister": "Intermediaries Register",
+
+  "profile": "Profile",
+  "age": "Age",
+  "education": "Education",
+  "language": "Language",
+  "skills": "Skills development",
+  "edit": "Edit profile"
 }

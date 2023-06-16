@@ -47,6 +47,10 @@
   "value2": "Valor 2",
   "value3": "Valor 3",
 
+  "termsTitle": "Condiciones generales",
+
+  "careerTitle": "Carrera",
+
   "Young People Register": "Registro de Jóvenes",
   "fullName": "Nombre completo",
   "firstName": "Nombre",
@@ -114,5 +118,14 @@
   "ContactLastName": "Apellido del contacto",
   "Companys Linkedin Page": "Página de Linkedin de la empresa",
   "Companys Twitter Page": "Página de Twitter de la empresa",
-  "Companys Facebook Page": "Página de Facebook de la empresa"
+  "Companys Facebook Page": "Página de Facebook de la empresa",
+
+  "IntermediariesRegister": "Registro de Intermediarios",
+
+  "profile": "Perfil",
+  "age": "Años",
+  "education": "Formación",
+  "language": "Idioma",
+  "skills": "Desarrollo de competencias",
+  "edit": "Editar perfil"
 }
