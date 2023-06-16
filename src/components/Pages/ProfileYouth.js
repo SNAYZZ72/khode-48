@@ -9,7 +9,7 @@ const ProfileYouth = () => {
         lastName: 'Doe',
         age: 18,
         city: 'Villejeune',
-        aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. '
+        aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J ai un permis de conduire et une voiture. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J ai un permis de conduire et une voiture. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J ai un permis de conduire et une voiture. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J ai un permis de conduire et une voiture. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J ai un permis de conduire et une voiture. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J ai un permis de conduire et une voiture. '
     });
 
     const handleEditProfile = () => {
@@ -93,17 +93,53 @@ const ProfileYouth = () => {
                         <div className="col-md-5">
                             <div className="row">
                                 <div className="col">
-                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>Age: {formData.age}</p>
+                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>Age : {formData.age}</p>
                                 </div>
                                 <div className="col">
-                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>City: {formData.city}</p>
+                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>City : {formData.city}</p>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col">
-                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px', maxHeight: '200px', overflowY: 'auto' }}>
+                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px', height: '140px', overflowY: 'auto' }}>
                                         {formData.aboutme}
                                     </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row justify-content-center">
+                        <div className="col-md-7">
+                            <div className="row">
+                                <div className="col">
+                                    <h3>Education</h3>
+                                    {/* Ajoutez ici vos informations d'éducation */}
+                                    <div className="col">
+                                        <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.city}</p>
+                                    </div>
+                                    <div className="col">
+                                        <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.city}</p>
+                                    </div>
+                                </div>
+                                <div className="col">
+                                    <h3>Langage</h3>
+                                    {/* Ajoutez ici vos informations de langage */}
+                                    <div className="col">
+                                        <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.city}</p>
+                                    </div>
+                                    <div className="col">
+                                        <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.city}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row justify-content-center">
+                        <div className="col-md-7">
+                            <div className="row">
+                                <div className="col">
+                                    <h3>Skills development</h3>
+                        
                                 </div>
                             </div>
                         </div>
