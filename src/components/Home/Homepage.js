@@ -34,17 +34,17 @@ const Home = () => {
                         <div className="mb-4">
                             <h1 style={{ fontWeight: 'bold' }}>{studentCount}</h1>
                             <h3>{t('youngPeople')}</h3>
-                            <p>{t('loremIpsum')}</p>
+                            <p style={{ maxWidth: '80%', textAlign: 'center', margin: 'auto' }}>{t('loremIpsum')}</p>
                         </div>
                         <div className="mb-4">
                             <h1 style={{ fontWeight: 'bold' }}>{companyCount}</h1>
                             <h3>{t('companies')}</h3>
-                            <p>{t('loremIpsum')}</p>
+                            <p style={{ maxWidth: '80%', textAlign: 'center', margin: 'auto' }}>{t('loremIpsum')}</p>
                         </div>
                         <div className="mb-4">
                             <h1 style={{ fontWeight: 'bold' }}>{intermediaryCount}</h1>
                             <h3>{t('intermediaries')}</h3>
-                            <p>{t('loremIpsum')}</p>
+                            <p style={{ maxWidth: '80%', textAlign: 'center', margin: 'auto' }}>{t('loremIpsum')}</p>
                         </div>
                     </div>
                 </div>
@@ -53,11 +53,11 @@ const Home = () => {
             <Container>
                 <h2 style={{ fontWeight: 'bold', textAlign: 'center', paddingTop: '15px' }}>{t('titleprofile')}</h2>
                 <Navbar>
-                    <Nav className="w-100 d-flex flex-wrap justify-content-center">
+                    <Nav className="w-100 d-flex">
                         <Nav.Link
                             onClick={() => handleProfileSelect('young')}
                             active={profileType === 'young'}
-                            className="text-center d-flex flex-column align-items-center mb-3"
+                            className="w-100 text-center d-grid"
                             style={{
                                 fontWeight: 'bold',
                                 color: '#F24726',
@@ -66,13 +66,13 @@ const Home = () => {
                                 padding: '10px',
                             }}
                         >
-                            <img src="../young-profile-image.png" alt="Young Profile" style={{ width: '80px', height: '80px' }} />
+                            <div><img src="../young-profile-image.png" alt="Young Profile" style={{ width: '80px', height: '80px' }} /></div>
                             <div>{t('young')}</div>
                         </Nav.Link>
                         <Nav.Link
                             onClick={() => handleProfileSelect('company')}
                             active={profileType === 'company'}
-                            className="text-center d-flex flex-column align-items-center mb-3"
+                            className="w-100 text-center d-grid"
                             style={{
                                 fontWeight: 'bold',
                                 color: '#F24726',
@@ -81,13 +81,13 @@ const Home = () => {
                                 padding: '10px',
                             }}
                         >
-                            <img src="../company-profile-image.png" alt="Company Profile" style={{ width: '80px', height: '80px' }} />
+                            <div><img src="../company-profile-image.png" alt="Company Profile" style={{ width: '80px', height: '80px' }} /></div>
                             <div>{t('company')}</div>
                         </Nav.Link>
                         <Nav.Link
                             onClick={() => handleProfileSelect('intermediary')}
                             active={profileType === 'intermediary'}
-                            className="text-center d-flex flex-column align-items-center mb-3"
+                            className="w-100 text-center d-grid"
                             style={{
                                 fontWeight: 'bold',
                                 color: '#F24726',
@@ -96,7 +96,7 @@ const Home = () => {
                                 padding: '10px',
                             }}
                         >
-                            <img src="../intermediary-profile-image.png" alt="Intermediary Profile" style={{ width: '80px', height: '80px' }} />
+                            <div><img src="../intermediary-profile-image.png" alt="Intermediary Profile" style={{ width: '80px', height: '80px' }} /></div>
                             <div>{t('intermediary')}</div>
                         </Nav.Link>
                     </Nav>
