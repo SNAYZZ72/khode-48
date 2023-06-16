@@ -23,8 +23,13 @@ import HomeIntemediary from "./components/Pages/HomeIntermediary"
 //import Components
 import Footer from './components/common/Footer';
 
+//import CookieConsent
+import CookieConsent from './components/CookieConsent/CookieConsent';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+
 
 export default function App() {
   return (
@@ -46,6 +51,7 @@ export default function App() {
           </div>
           <Footer />
         </Router>
+        <CookieConsent /> {/* Ajout du composant CookieConsent */}
       </div>
     </I18nextProvider>
   );
