@@ -47,6 +47,7 @@ const RegisterPage = () => {
     });
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [passwordScore, setPasswordScore] = useState(0);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -69,6 +70,10 @@ const RegisterPage = () => {
         const score = zxcvbn(value).score;
         setPasswordScore(score);
         handleInputChange(e);
+    };
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
     };
 
     const handleSubmit = (e) => {
@@ -253,15 +258,24 @@ const RegisterPage = () => {
                     <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="password">{t('password')}</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                id="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handlePasswordChange}
-                                required
-                            />
+                            <div className="input-group">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    className="form-control"
+                                    id="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handlePasswordChange}
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-secondary"
+                                    onClick={toggleShowPassword}
+                                >
+                                    {showPassword ? 'Hide' : 'Show'}
+                                </button>
+                            </div>
                             {passwordScore > 0 && (
                                 <p className={`text-${getPasswordStrengthColor(passwordScore)}`}>
                                     {getPasswordStrengthText(passwordScore)}
