@@ -85,31 +85,34 @@ const ProfileYouth = () => {
                     </form>
                 </div>
             ) : (
-                <div className="container text-center">
-                        <div className="row mb-3">
-                            <div className="col-md-2">
-                                <img src="../intermediary-profile-image.png" alt="Intermediary Profile" style={{ width: '200px', height: '200px' }} />
-                            </div>
-                            <div className="col-md-5">
-                                <div className="row">
-                                    <div className="col">
-                                        <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px'}}>Age: {formData.age}</p>
-                                    </div>
-                                    <div className="col">
-                                        <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px'}}>City: {formData.city}</p>
-                                    </div>
+                <div className="container">
+                    <div className="row mb-3 justify-content-center">
+                        <div className="col-md-2 text-center">
+                            <img src="../intermediary-profile-image.png" alt="Intermediary Profile" style={{ width: '200px', height: '200px', marginBottom: '15px' }} />
+                        </div>
+                        <div className="col-md-5">
+                            <div className="row">
+                                <div className="col">
+                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>Age: {formData.age}</p>
                                 </div>
-                                <div className="row">
-                                    <div className="col">
-                                        <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px', maxHeight: '200px', overflowY: 'auto' }}>
-                                            {formData.aboutme}
-                                        </p>
-                                    </div>
+                                <div className="col">
+                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>City: {formData.city}</p>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col">
+                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px', maxHeight: '200px', overflowY: 'auto' }}>
+                                        {formData.aboutme}
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                    <button onClick={handleEditProfile} className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>Edit Profile</button>
+                    </div>
+                    <div className="text-center">
+                        <button onClick={handleEditProfile} className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>Edit Profile</button>
+                    </div>
                 </div>
+
             )
             }
         </div >
