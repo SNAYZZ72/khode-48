@@ -23,6 +23,9 @@ import HomeYouth from "./components/Pages/HomeYouth";
 import HomeCompany from "./components/Pages/HomeCompany";
 import HomeIntemediary from "./components/Pages/HomeIntermediary"
 
+//import Profile
+import ProfileYouth from "./components/Pages/ProfileYouth";
+
 //import Components
 import Footer from './components/common/Footer';
 
@@ -53,6 +56,7 @@ export default function App() {
               <Route path="/homeYouth" element={<HomeYouth />} />
               <Route path="/homeCompany" element={<HomeCompany />} />
               <Route path="/homeIntermediary" element={<HomeIntemediary />} />
+              <Route path="/profileYouth" element={<ProfileYouth />} />
             </Routes>
           </div>
           <Footer />
