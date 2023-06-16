@@ -28,7 +28,7 @@ const LanguageSelector = () => {
     };
 
     return (
-        <div style={{ paddingTop: '7px' }}>
+        <div style={{ paddingTop: '5px' }}>
             <button
                 className={`btn btn-link p-0 m-0 ${currentLanguage === 'en' ? 'active' : ''}`}
                 onClick={() => changeLanguage('en')}

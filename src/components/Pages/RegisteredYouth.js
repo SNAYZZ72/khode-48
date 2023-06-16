@@ -283,7 +283,7 @@ const RegisterPage = () => {
                             </select>
                         </div>
                         <div className="col">
-                            <label htmlFor="cvFile">{t('cvFile')}</label>
+                            <label htmlFor="cvFile">{t('uploadCV')}</label>
                             <input
                                 type="file"
                                 className="form-control"
