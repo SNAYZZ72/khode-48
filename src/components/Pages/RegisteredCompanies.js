@@ -31,7 +31,7 @@ const RegisterCompanyPage = () => {
     return (
         <div>
             <Header />
-            <div className="text-center" style={{ paddingTop: '15px' }}>
+            <div className="text-center" style={{ paddingBottom: '15px' }}>
                 <h1>{t('CompanyRegister')}</h1>
             </div>
             <div className="container">
