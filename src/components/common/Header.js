@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
-import logo from '../../logo.png';
+import logo from '../../kode48-color-only.png';
 
 //import components
 import LanguageSelector from './LanguageSelector';
@@ -24,10 +24,10 @@ const Header = () => {
   }, []);
 
   return (
-    <Navbar sticky="top" expand="lg" style={{ paddingBottom: '10px', paddingLeft: '20px', paddingRight: '20px', backgroundColor: 'white', boxShadow: showHeader ? 'none' : '0px 1px 0px black' }}>
+    <Navbar sticky="top" expand="lg" style={{ paddingLeft: '20px', paddingRight: '20px', backgroundColor: 'white', boxShadow: showHeader ? 'none' : '0px 1px 0px black' }}>
         <Navbar.Brand>
           <a href="/" style={{ textDecoration: 'none' }}>
-            <img src={logo} alt="Logo" style={{ width: '200px' }} />
+            <img src={logo} alt="Logo" style={{ width: '120px' }} />
           </a>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -36,21 +36,21 @@ const Header = () => {
             <Nav.Link
               href="/"
               className={location.pathname === '/' ? 'active-link' : ''}
-              style={{ color: location.pathname === '/' ? '#F24726' : 'black', textDecoration: location.pathname === '/' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px', marginTop: '5px' }}
+              style={{ color: location.pathname === '/' ? '#F24726' : 'black', textDecoration: location.pathname === '/' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
             >
               HOME
             </Nav.Link>
             <Nav.Link
               href="/contact"
               className={location.pathname === '/contact' ? 'active-link' : ''}
-              style={{ color: location.pathname === '/contact' ? '#F24726' : 'black', textDecoration: location.pathname === '/contact' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px', marginTop: '5px' }}
+              style={{ color: location.pathname === '/contact' ? '#F24726' : 'black', textDecoration: location.pathname === '/contact' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
             >
               CONTACT
             </Nav.Link>
             <Nav.Link
               href="/about"
               className={location.pathname === '/about' ? 'active-link' : ''}
-              style={{ color: location.pathname === '/about' ? '#F24726' : 'black', textDecoration: location.pathname === '/about' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px', marginTop: '5px' }}
+              style={{ color: location.pathname === '/about' ? '#F24726' : 'black', textDecoration: location.pathname === '/about' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
             >
               ABOUT US
             </Nav.Link>
