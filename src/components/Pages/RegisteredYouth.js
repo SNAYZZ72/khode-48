@@ -35,6 +35,7 @@ const RegisterPage = () => {
         dateOfBirth: '',
         address: '',
         city: '',
+        country: '',
         state: '',
         postalCode: '',
         email: '',
@@ -82,6 +83,7 @@ const RegisterPage = () => {
             dateOfBirth: '',
             address: '',
             city: '',
+            country: '',
             state: '',
             postalCode: '',
             email: '',
@@ -104,7 +106,7 @@ const RegisterPage = () => {
     return (
         <div>
             <Header />
-            <div className="text-center" style={{ paddingTop: '15px' }}>
+            <div className="text-center" style={{ paddingBottom: '15px' }}>
                 <h1>{t('Young People Register')}</h1>
             </div>
             <div className="container">
@@ -167,7 +169,7 @@ const RegisterPage = () => {
                         </div>
                     </div>
                     <div className="row mb-3">
-                        <div className="col-md-8">
+                        <div className="col-md-6">
                             <label htmlFor="address">{t('address')}</label>
                             <input
                                 type="text"
@@ -175,6 +177,18 @@ const RegisterPage = () => {
                                 id="address"
                                 name="address"
                                 value={formData.address}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <div className="col-md-2">
+                            <label htmlFor="country">{t('country')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="country"
+                                name="country"
+                                value={formData.country}
                                 onChange={handleInputChange}
                                 required
                             />

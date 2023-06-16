@@ -29,7 +29,7 @@ const Home = () => {
             <Header />
 
             <Container>
-                <div className="text-center" style={{ paddingTop: '15px' }}>
+                <div className="text-center" style={{ paddingBottom: '15px' }}>
                     <div className="d-flex flex-wrap justify-content-center align-items-center">
                         <div className="mb-4">
                             <h1 style={{ fontWeight: 'bold' }}>{studentCount}</h1>
@@ -51,7 +51,7 @@ const Home = () => {
             </Container>
 
             <Container>
-                <h2 style={{ fontWeight: 'bold', textAlign: 'center', paddingTop: '15px' }}>{t('titleprofile')}</h2>
+                <h2 style={{ fontWeight: 'bold', textAlign: 'center' }}>{t('titleprofile')}</h2>
                 <Navbar>
                     <Nav className="w-100 d-flex">
                         <Nav.Link
