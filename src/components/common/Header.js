@@ -24,10 +24,10 @@ const Header = () => {
   }, []);
 
   return (
-    <Navbar sticky="top" expand="lg" style={{ paddingLeft: '20px', paddingRight: '20px', backgroundColor: 'white', boxShadow: showHeader ? 'none' : '0px 1px 0px black' }}>
+    <Navbar sticky="top" expand="lg" style={{ height: '60px' ,paddingLeft: '20px', paddingRight: '20px', backgroundColor: 'white', boxShadow: showHeader ? 'none' : '0px 1px 0px black' }}>
         <Navbar.Brand>
           <a href="/" style={{ textDecoration: 'none' }}>
-            <img src={logo} alt="Logo" style={{ width: '200px', height: 'auto', position: 'fixed', left: '10px', top: '0px' }} />
+            <img src={logo} alt="Logo" style={{ width: '200px' }} />
           </a>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
