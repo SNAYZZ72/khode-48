@@ -33,6 +33,7 @@ const RegisterPage = () => {
 
     return (
         <div className="container">
+            <Header />
             <div className="mt-4">
                 <h2>Registration Form</h2>
                 <form onSubmit={handleSubmit}>
