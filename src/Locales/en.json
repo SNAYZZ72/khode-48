@@ -120,5 +120,12 @@
   "Companys Twitter Page": "Company's Twitter Page",
   "Companys Facebook Page": "Company's Facebook Page",
 
-  "IntermediariesRegister": "Intermediaries Register"
+  "IntermediariesRegister": "Intermediaries Register",
+
+  "profile": "Profile",
+  "age": "Age",
+  "education": "Education",
+  "language": "Language",
+  "skills": "Skills development",
+  "edit": "Edit profile"
 }

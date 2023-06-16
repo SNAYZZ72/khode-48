@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../common/Header';
 
 const ProfileYouth = () => {
+    const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
         firstName: 'John',
@@ -34,7 +35,7 @@ const ProfileYouth = () => {
         <div>
             <Header />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{formData.firstName} {formData.lastName} Profile</h1>
+                <h1>{formData.firstName} {formData.lastName} {t('profile')}</h1>
             </div>
 
             {isEditing ? (
@@ -93,10 +94,10 @@ const ProfileYouth = () => {
                         <div className="col-md-5">
                             <div className="row">
                                 <div className="col">
-                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>Age : {formData.age}</p>
+                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{t('age')} : {formData.age}</p>
                                 </div>
                                 <div className="col">
-                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>City : {formData.city}</p>
+                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{t('city')} : {formData.city}</p>
                                 </div>
                             </div>
                             <div className="row">
@@ -112,7 +113,7 @@ const ProfileYouth = () => {
                         <div className="col-md-7">
                             <div className="row">
                                 <div className="col">
-                                    <h3>Education</h3>
+                                    <h3>{t('education')}</h3>
                                     {/* Ajoutez ici vos informations d'éducation */}
                                     <div className="col">
                                         <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.city}</p>
@@ -122,7 +123,7 @@ const ProfileYouth = () => {
                                     </div>
                                 </div>
                                 <div className="col">
-                                    <h3>Langage</h3>
+                                    <h3>{t('language')}</h3>
                                     {/* Ajoutez ici vos informations de langage */}
                                     <div className="col">
                                         <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.city}</p>
@@ -138,14 +139,14 @@ const ProfileYouth = () => {
                         <div className="col-md-7">
                             <div className="row">
                                 <div className="col">
-                                    <h3>Skills development</h3>
-                        
+                                    <h3>{t('skills')}</h3>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="text-center">
-                        <button onClick={handleEditProfile} className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>Edit Profile</button>
+                        <button onClick={handleEditProfile} className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>{t('edit')}</button>
                     </div>
                 </div>
 
