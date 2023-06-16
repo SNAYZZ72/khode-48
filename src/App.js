@@ -11,6 +11,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './components/Home/Homepage';
 import About from './components/Pages/About';
 import Contact from './components/Pages/Contact';
+import FAQ from './components/Pages/FAQ';
+import Terms from './components/Pages/Terms';
+import Career from './components/Pages/Career';
 //import register
 import RegisterPageY from "./components/Pages/RegisteredYouth";
 import RegisterPageC from "./components/Pages/RegisteredCompanies";
@@ -36,6 +39,9 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element ={<Contact />}/>
+              <Route path="/FAQ" element ={<FAQ />}/>
+              <Route path="/terms" element ={<Terms />}/>
+              <Route path="/careers" element ={<Career />}/>
               <Route path="/registery" element={<RegisterPageY />} />
               <Route path="/registerC" element={<RegisterPageC />} />
               <Route path="/registerI" element={<RegisterPageI />} />

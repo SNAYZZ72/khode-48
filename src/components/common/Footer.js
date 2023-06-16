@@ -26,7 +26,7 @@ const Footer = () => {
       </Nav>
       <Nav className="flex-column text-end">
         {/* Contenu de la colonne centrale */}
-        <Nav.Link href="/faq" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginRight: '10px' }}>FAQ</Nav.Link>
+        <Nav.Link href="/FAQ" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginRight: '10px' }}>FAQ</Nav.Link>
         <Nav.Link href="/careers" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginRight: '10px' }}>CAREERS</Nav.Link>
         <Nav.Link href="/country" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginRight: '10px' }}>CHANGE COUNTRY</Nav.Link>
       </Nav>
