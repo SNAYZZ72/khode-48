@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { PieChart, Pie, Tooltip, Legend } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import Header from '../common/Header';
 
@@ -93,6 +94,16 @@ const ProfileYouth = () => {
         setLanguageList(newLanguageList);
         localStorage.setItem('languageList', JSON.stringify(newLanguageList));
     };
+
+    const chartData = [
+        { name: 'Proactivity', value: formData.proactivity },
+        { name: 'Creativity', value: formData.creativity },
+        { name: 'Initiative', value: formData.initiative },
+        { name: 'Empathy', value: formData.empathy },
+        { name: 'Leadership', value: formData.leadership },
+        { name: 'Teamwork', value: formData.teamwork }
+    ];
+
 
     useEffect(() => {
         const storedFormData = localStorage.getItem('formData');
@@ -239,7 +250,7 @@ const ProfileYouth = () => {
                 </div >
 
             ) : (
-                
+
                 <div className="container">
                     <div className="row mb-3 justify-content-center">
                         <div className="col-md-2 text-center">
@@ -306,6 +317,20 @@ const ProfileYouth = () => {
                             <div className="row">
                                 <div className="col">
                                     <h3>{t('skills')}</h3>
+                                    <PieChart width={350} height={250}>
+                                        <Pie
+                                            dataKey="value"
+                                            isAnimationActive={false}
+                                            data={chartData}
+                                            cx="50%"
+                                            cy="50%"
+                                            outerRadius={80}
+                                            fill="#8884d8"
+                                            label
+                                        />
+                                        <Tooltip />
+                                        <Legend />
+                                    </PieChart>
                                 </div>
                                 <div className="col">
                                     <h3>Skills points</h3>
