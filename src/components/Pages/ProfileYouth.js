@@ -37,6 +37,11 @@ const ProfileYouth = () => {
     };
 
     const handleSaveProfile = () => {
+        //  pour le reuf nat
+        if (educationList.some((education) => education.trim() === '')) {
+            alert('Please fill in all education fields.');
+            return;
+        }
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
 
