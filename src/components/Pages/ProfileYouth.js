@@ -331,7 +331,7 @@ const ProfileYouth = () => {
                                 <div className="col">
                                     <h3>{t('skills')}</h3>
                                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                        <PieChart width={window.innerWidth * 0.5} height={window.innerHeight * 0.5}>
+                                        <PieChart width={window.innerWidth * 0.3} height={window.innerHeight * 0.4}>
                                             <Pie
                                                 dataKey="value"
                                                 isAnimationActive={false}
