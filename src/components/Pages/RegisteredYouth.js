@@ -7,7 +7,7 @@ import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 // Define the function to determine the color based on password strength score
-function getPasswordStrengthColor(score) {
+const getPasswordStrengthColor = (score) => {
     if (score < 3) {
         return 'danger';
     } else if (score < 4) {
@@ -18,7 +18,7 @@ function getPasswordStrengthColor(score) {
 }
 
 // Define the function to get the password strength text based on score
-function getPasswordStrengthText(score) {
+const getPasswordStrengthText = (score) => {
     if (score < 3) {
         return 'Weak';
     } else if (score < 4) {
@@ -191,6 +191,19 @@ const RegisterPage = () => {
     const handleModalClose = () => {
         setShowErrorModal(false);
     };
+
+    const handleCaptchaChange = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_CAPTCHA_SITE_KEY
+        : '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
+    console.log("captcha site key", handleCaptchaChange);
+    const [captchaToken, setCaptchaToken] = useState(null);
+    useEffect(() => {
+        console.log("captcha token", captchaToken);
+    }
+        , [captchaToken])
+    const onCaptchaChange = (token) => {
+        setCaptchaToken(token);
+    };
+
 
 
     return (
@@ -444,7 +457,7 @@ const RegisterPage = () => {
                         </div>
                     </div>
                     <div className="">
-                        <ReCAPTCHA sitekey="your-recaptcha-sitekey" />
+                        <ReCAPTCHA sitekey="6LcXnqImAAAAACTwFwV6xsuTgqx36rljsxKw8oXU" onChange={handleCaptchaChange} />
                     </div>
                     <div className="container text-center">
                         <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
