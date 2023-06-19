@@ -49,6 +49,7 @@ const CookieConsent = () => {
           <div className="modal-footer">
             <button className="btn btn-primary" onClick={handleAccept}>{t('acceptAll')}</button>
             <button className="btn btn-secondary" onClick={handleAccept}>{t('accept')}</button>
+            <button className="btn btn-link" onClick={handleDecline}>{t('decline')}</button>
             <div className="text-center mt-2">
               <a className="btn btn-link" href="#configure">{t('configure')}</a>
             </div>
