@@ -30,7 +30,7 @@ const ProfileYouth = () => {
         empathy: 49,
         leadership: 16,
         teamwork: 78,
-        total: 242
+        points: 242
     });
 
     const [educationList, setEducationList] = useState([
@@ -391,6 +391,27 @@ const ProfileYouth = () => {
                                     >
                                         {formData.aboutme}
                                     </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row justify-content-center">
+                        <div className="col-md-7">
+                            <div className="row">
+                                <div className="col">
+                                    <h3>Total points</h3>
+                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.points}</p>
+                                </div>
+                                <div className="col">
+                                    <h3>Hide profile</h3>
+                                    {/* toggle button for a variable hide profile or not */}
+                                    <label className="switch">
+                                        <input type="checkbox" />
+                                        <span className="slider round">
+                                            <span className="on">ON</span>
+                                            <span className="off">OFF</span>
+                                        </span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
