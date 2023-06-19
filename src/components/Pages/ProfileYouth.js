@@ -11,6 +11,8 @@ const ProfileYouth = () => {
         age: false,
         city: false,
         aboutme: false,
+        education: false,
+        language: false
     });
 
     const [formData, setFormData] = useState({
@@ -46,9 +48,15 @@ const ProfileYouth = () => {
     const handleSaveProfile = () => {
         //  pour le reuf said
         if (educationList.some((education) => education.trim() === '')) {
-            alert('Please fill in all education fields.');
+            alert('Veuillez remplir tous les champs de formation.');
             return;
         }
+
+        if (languageList.some((language) => language.trim() === '')) {
+            alert('Veuillez remplir tous les champs de langue.');
+            return;
+        }
+
         // test Check for empty fields
         if (!formData.age) {
             setFormErrors((prevErrors) => ({ ...prevErrors, age: true }));
@@ -65,11 +73,23 @@ const ProfileYouth = () => {
             return;
         }
 
+        if (!formData.education) {
+            setFormErrors((prevErrors) => ({ ...prevErrors, education: true }));
+            return;
+        }
+
+        if (!formData.language) {
+            setFormErrors((prevErrors) => ({ ...prevErrors, language: true }));
+            return;
+        }
+
         // Reset form errors
         setFormErrors({
             age: false,
             city: false,
             aboutme: false,
+            education: false,
+            language: false
         });
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
