@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import React, { useState, useEffect } from 'react';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import Header from '../common/Header';
 
@@ -123,7 +123,7 @@ const ProfileYouth = () => {
     }, []);
 
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-        const radius = innerRadius + (outerRadius - innerRadius) * 1.9;
+        const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
         const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
         const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));
         const percentage = (percent * 100).toFixed(1);
@@ -330,24 +330,28 @@ const ProfileYouth = () => {
                             <div className="row">
                                 <div className="col">
                                     <h3>{t('skills')}</h3>
-                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                        <PieChart width={window.innerWidth * 0.3} height={window.innerHeight * 0.4}>
-                                            <Pie
-                                                dataKey="value"
-                                                isAnimationActive={false}
-                                                data={chartData}
-                                                cx="50%"
-                                                cy="50%"
-                                                outerRadius={80}
-                                                label={renderCustomizedLabel}
-                                            >
-                                                {chartData.map((entry, index) => (
-                                                    <Cell key={index} fill={entry.color} />
-                                                ))}
-                                            </Pie>
-                                            <Tooltip />
-                                        </PieChart>
+                                    <div>
+                                        <ResponsiveContainer height={300} width="100%">
+                                            <PieChart>
+                                                <Pie
+                                                    dataKey="value"
+                                                    isAnimationActive={false}
+                                                    data={chartData}
+                                                    cx="50%"
+                                                    cy="50%"
+                                                    outerRadius={80}
+                                                    label={renderCustomizedLabel}
+                                                >
+                                                    {chartData.map((entry, index) => (
+                                                        <Cell key={index} fill={entry.color} />
+                                                    ))}
+                                                </Pie>
+                                                <Tooltip />
+                                            </PieChart>
+                                        </ResponsiveContainer>
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
