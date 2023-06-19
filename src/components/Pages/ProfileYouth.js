@@ -10,7 +10,14 @@ const ProfileYouth = () => {
         lastName: 'Doe',
         age: 18,
         city: 'Villejeune',
-        aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j\'ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J\'ai un permis de conduire et une voiture.'
+        aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j\'ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J\'ai un permis de conduire et une voiture.',
+        proactivity: 10,
+        creativity: 52,
+        initiative: 37,
+        empathy: 49,
+        leadership: 16,
+        teamwork: 78,
+        total: 242
     });
 
     const [educationList, setEducationList] = useState([
@@ -230,7 +237,9 @@ const ProfileYouth = () => {
                         </div>
                     </form>
                 </div >
+
             ) : (
+                
                 <div className="container">
                     <div className="row mb-3 justify-content-center">
                         <div className="col-md-2 text-center">
@@ -297,6 +306,48 @@ const ProfileYouth = () => {
                             <div className="row">
                                 <div className="col">
                                     <h3>{t('skills')}</h3>
+                                </div>
+                                <div className="col">
+                                    <h3>Skills points</h3>
+                                    <div className="row">
+                                        <div className="col">
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
+                                                Proactivity: {formData.proactivity}
+                                            </p>
+                                        </div>
+                                        <div className="col">
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
+                                                Creativity: {formData.creativity}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col">
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
+                                                Initiative: {formData.initiative}
+                                            </p>
+                                        </div>
+                                        <div className="col">
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
+                                                Empathy: {formData.empathy}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col">
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
+                                                Leadership: {formData.leadership}
+                                            </p>
+                                        </div>
+                                        <div className="col">
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
+                                                Teamwork: {formData.teamwork}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
+                                        Total: {formData.total}
+                                    </p>
                                 </div>
                             </div>
                         </div>
