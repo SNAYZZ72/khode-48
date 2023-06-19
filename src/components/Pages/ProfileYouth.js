@@ -270,7 +270,7 @@ const ProfileYouth = () => {
                             <img
                                 src="../intermediary-profile-image.png"
                                 alt="Intermediary Profile"
-                                style={{ width: '200px', height: '200px', marginBottom: '15px' }}
+                                style={{ width: '90%', height: 'auto', marginBottom: '15px' }}
                             />
                         </div>
                         <div className="col-md-5">
