@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PieChart, Pie, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import Header from '../common/Header';
 
@@ -96,12 +96,12 @@ const ProfileYouth = () => {
     };
 
     const chartData = [
-        { name: 'Proactivity', value: formData.proactivity },
-        { name: 'Creativity', value: formData.creativity },
-        { name: 'Initiative', value: formData.initiative },
-        { name: 'Empathy', value: formData.empathy },
-        { name: 'Leadership', value: formData.leadership },
-        { name: 'Teamwork', value: formData.teamwork }
+        { name: 'Proactivity', value: formData.proactivity, color: '#FF0000' },
+        { name: 'Creativity', value: formData.creativity, color: '#00FF00' },
+        { name: 'Initiative', value: formData.initiative, color: '#0000FF' },
+        { name: 'Empathy', value: formData.empathy, color: '#FFFF00' },
+        { name: 'Leadership', value: formData.leadership, color: '#00FFFF' },
+        { name: 'Teamwork', value: formData.teamwork, color: '#FF00FF' }
     ];
 
 
@@ -121,6 +121,19 @@ const ProfileYouth = () => {
             setLanguageList(JSON.parse(storedLanguageList));
         }
     }, []);
+
+    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+        const radius = innerRadius + (outerRadius - innerRadius) * 1.9;
+        const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
+        const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));
+        const percentage = (percent * 100).toFixed(1);
+
+        return (
+            <text x={x} y={y} fill="black" textAnchor="middle" dominantBaseline="central">
+                {`${chartData[index].name}: ${percentage}%`}
+            </text>
+        );
+    };
 
     return (
         <div>
@@ -317,62 +330,24 @@ const ProfileYouth = () => {
                             <div className="row">
                                 <div className="col">
                                     <h3>{t('skills')}</h3>
-                                    <PieChart width={350} height={250}>
-                                        <Pie
-                                            dataKey="value"
-                                            isAnimationActive={false}
-                                            data={chartData}
-                                            cx="50%"
-                                            cy="50%"
-                                            outerRadius={80}
-                                            fill="#8884d8"
-                                            label
-                                        />
-                                        <Tooltip />
-                                        <Legend />
-                                    </PieChart>
-                                </div>
-                                <div className="col">
-                                    <h3>Skills points</h3>
-                                    <div className="row">
-                                        <div className="col">
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                                Proactivity: {formData.proactivity}
-                                            </p>
-                                        </div>
-                                        <div className="col">
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                                Creativity: {formData.creativity}
-                                            </p>
-                                        </div>
+                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                        <PieChart width={window.innerWidth * 0.5} height={window.innerHeight * 0.5}>
+                                            <Pie
+                                                dataKey="value"
+                                                isAnimationActive={false}
+                                                data={chartData}
+                                                cx="50%"
+                                                cy="50%"
+                                                outerRadius={80}
+                                                label={renderCustomizedLabel}
+                                            >
+                                                {chartData.map((entry, index) => (
+                                                    <Cell key={index} fill={entry.color} />
+                                                ))}
+                                            </Pie>
+                                            <Tooltip />
+                                        </PieChart>
                                     </div>
-                                    <div className="row">
-                                        <div className="col">
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                                Initiative: {formData.initiative}
-                                            </p>
-                                        </div>
-                                        <div className="col">
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                                Empathy: {formData.empathy}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col">
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                                Leadership: {formData.leadership}
-                                            </p>
-                                        </div>
-                                        <div className="col">
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                                Teamwork: {formData.teamwork}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        Total: {formData.total}
-                                    </p>
                                 </div>
                             </div>
                         </div>
