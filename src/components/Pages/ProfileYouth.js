@@ -34,13 +34,13 @@ const ProfileYouth = () => {
     });
 
     const [educationList, setEducationList] = useState([
-        "Formation de base",
-        "Ingénieur"
+        "Basic Education",
+        "Engineering"
     ]);
 
     const [languageList, setLanguageList] = useState([
-        "Anglais",
-        "Espagnol",
+        "English",
+        "Spanish",
         "Basque"
     ]);
 
@@ -60,18 +60,7 @@ const ProfileYouth = () => {
     };
 
     const handleSaveProfile = () => {
-        //  pour le reuf said
-        if (educationList.some((education) => education.trim() === '')) {
-            alert('Veuillez remplir tous les champs de formation.');
-            return;
-        }
-
-        if (languageList.some((language) => language.trim() === '')) {
-            alert('Veuillez remplir tous les champs de langue.');
-            return;
-        }
-
-        // test Check for empty fields
+        // Vérifier si les champs requis sont remplis
         if (!formData.age) {
             setFormErrors((prevErrors) => ({ ...prevErrors, age: true }));
             return;
@@ -97,7 +86,17 @@ const ProfileYouth = () => {
             return;
         }
 
-        // Reset form errors
+        if (educationList.some((education) => education.trim() === '')) {
+            alert('Please fill in all education fields.');
+            return;
+        }
+
+        if (languageList.some((language) => language.trim() === '')) {
+            alert('Please fill in all language fields.');
+            return;
+        }
+
+        // Réinitialiser les erreurs de formulaire
         setFormErrors({
             age: false,
             city: false,
@@ -105,6 +104,7 @@ const ProfileYouth = () => {
             education: false,
             language: false
         });
+
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
 
@@ -119,6 +119,7 @@ const ProfileYouth = () => {
         localStorage.setItem('educationList', JSON.stringify(educationList));
         localStorage.setItem('languageList', JSON.stringify(languageList));
     };
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -249,6 +250,10 @@ const ProfileYouth = () => {
                                     value={formData.city}
                                     onChange={handleInputChange}
                                 />
+                                {formErrors.city && (
+                                    <div className="invalid-feedback">City field is required</div>
+                                )}
+
                             </div>
                         </div>
                         <div className="row mb-3">
@@ -261,6 +266,10 @@ const ProfileYouth = () => {
                                     value={formData.aboutme}
                                     onChange={handleInputChange}
                                 />
+                                {formErrors.aboutme && (
+                                    <div className="invalid-feedback">About me field is required</div>
+                                )}
+
                             </div>
                         </div>
                         <div className="row mb-3">
@@ -274,6 +283,9 @@ const ProfileYouth = () => {
                                     accept="image/*"
                                     onChange={handleImageUpload}
                                 />
+                                {formErrors.image && (
+                                    <div className="invalid-feedback">Image field is required</div>
+                                )}
                             </div>
                         </div>
                         <div className="row mb-3">
