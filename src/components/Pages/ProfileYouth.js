@@ -265,8 +265,9 @@ const ProfileYouth = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="image">{t('image')}</label>
+                                <label htmlFor="image">Profile picture</label>
                                 <input
+                                    className="form-control"
                                     type="file"
                                     id="image"
                                     name="image"
