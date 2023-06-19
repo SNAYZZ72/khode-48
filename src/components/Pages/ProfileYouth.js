@@ -39,12 +39,12 @@ const ProfileYouth = () => {
     const handleSaveProfile = () => {
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
+
         // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
         localStorage.setItem('formData', JSON.stringify(formData));
         localStorage.setItem('educationList', JSON.stringify(educationList));
         localStorage.setItem('languageList', JSON.stringify(languageList));
     };
-
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
