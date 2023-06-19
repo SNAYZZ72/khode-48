@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../common/Header';
 
@@ -10,8 +10,19 @@ const ProfileYouth = () => {
         lastName: 'Doe',
         age: 18,
         city: 'Villejeune',
-        aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J ai un permis de conduire et une voiture. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J ai un permis de conduire et une voiture. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J ai un permis de conduire et une voiture. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J ai un permis de conduire et une voiture. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J ai un permis de conduire et une voiture. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J ai un permis de conduire et une voiture. '
+        aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j\'ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J\'ai un permis de conduire et une voiture.'
     });
+
+    const [educationList, setEducationList] = useState([
+        "Formation de base",
+        "Ingénieur"
+    ]);
+
+    const [languageList, setLanguageList] = useState([
+        "Anglais",
+        "Espagnol",
+        "Basque"
+    ]);
 
     const handleEditProfile = () => {
         setIsEditing(true);
@@ -21,7 +32,11 @@ const ProfileYouth = () => {
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
         // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
+        localStorage.setItem('formData', JSON.stringify(formData));
+        localStorage.setItem('educationList', JSON.stringify(educationList));
+        localStorage.setItem('languageList', JSON.stringify(languageList));
     };
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -30,6 +45,64 @@ const ProfileYouth = () => {
             [name]: value,
         }));
     };
+
+
+    const handleEducationChange = (index, value) => {
+        setEducationList((prevList) => {
+            const newList = [...prevList];
+            newList[index] = value;
+            return newList;
+        });
+    };
+
+    const handleLanguageChange = (index, value) => {
+        setLanguageList((prevList) => {
+            const newList = [...prevList];
+            newList[index] = value;
+            return newList;
+        });
+    };
+
+    const handleAddEducation = () => {
+        const newEducationList = [...educationList, ''];
+        setEducationList(newEducationList);
+        localStorage.setItem('educationList', JSON.stringify(newEducationList));
+    };
+
+    const handleRemoveEducation = (index) => {
+        const newEducationList = educationList.filter((_, i) => i !== index);
+        setEducationList(newEducationList);
+        localStorage.setItem('educationList', JSON.stringify(newEducationList));
+    };
+
+    const handleAddLanguage = () => {
+        const newLanguageList = [...languageList, ''];
+        setLanguageList(newLanguageList);
+        localStorage.setItem('languageList', JSON.stringify(newLanguageList));
+    };
+
+    const handleRemoveLanguage = (index) => {
+        const newLanguageList = languageList.filter((_, i) => i !== index);
+        setLanguageList(newLanguageList);
+        localStorage.setItem('languageList', JSON.stringify(newLanguageList));
+    };
+
+    useEffect(() => {
+        const storedFormData = localStorage.getItem('formData');
+        if (storedFormData) {
+            setFormData(JSON.parse(storedFormData));
+        }
+
+        const storedEducationList = localStorage.getItem('educationList');
+        if (storedEducationList) {
+            setEducationList(JSON.parse(storedEducationList));
+        }
+
+        const storedLanguageList = localStorage.getItem('languageList');
+        if (storedLanguageList) {
+            setLanguageList(JSON.parse(storedLanguageList));
+        }
+    }, []);
 
     return (
         <div>
@@ -40,69 +113,157 @@ const ProfileYouth = () => {
 
             {isEditing ? (
                 <div className="container">
-                    <h2>Edit Profile</h2>
+                    <h2>{t('edit')}</h2>
                     <form>
-                        <div>
-                            <label htmlFor="age">Âge :</label>
-                            <input
-                                type="number"
-                                id="age"
-                                name="age"
-                                value={formData.age}
-                                onChange={handleInputChange}
-                            />
+                        <div className="row mb-3">
+                            <div className="col">
+                                <label htmlFor="age">{t('age')}</label>
+                                <input
+                                    className="form-control"
+                                    type="number"
+                                    id="age"
+                                    name="age"
+                                    value={formData.age}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
                         </div>
-                        <div>
-                            <label htmlFor="address">Adresse :</label>
-                            <input
-                                type="text"
-                                id="address"
-                                name="address"
-                                value={formData.address}
-                                onChange={handleInputChange}
-                            />
+                        <div className="row mb-3">
+                            <div className="col">
+                                <label htmlFor="city">{t('city')}</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    id="city"
+                                    name="city"
+                                    value={formData.city}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
                         </div>
-                        <div>
-                            <label htmlFor="city">Ville :</label>
-                            <input
-                                type="text"
-                                id="city"
-                                name="city"
-                                value={formData.city}
-                                onChange={handleInputChange}
-                            />
+                        <div className="row mb-3">
+                            <div className="col">
+                                <label htmlFor="aboutme">About me</label>
+                                <textarea
+                                    className="form-control"
+                                    id="aboutme"
+                                    name="aboutme"
+                                    value={formData.aboutme}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
                         </div>
-                        <div>
-                            <label htmlFor="country">Pays :</label>
-                            <input
-                                type="text"
-                                id="country"
-                                name="country"
-                                value={formData.country}
-                                onChange={handleInputChange}
-                            />
+                        <div className="row mb-3">
+                            <div className="col">
+                                <h3>{t('education')}</h3>
+                                {educationList.map((education, index) => (
+                                    <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
+                                        <input
+                                            className='form-control'
+                                            type="text"
+                                            value={education}
+                                            onChange={(e) => handleEducationChange(index, e.target.value)}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemoveEducation(index)}
+                                            className="btn btn-outline-secondary"
+                                            style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(255, 0, 0, 0.5)' }}
+                                        >
+                                            -
+                                        </button>
+                                    </div>
+                                ))}
+                                <div className='text-center'>
+                                    <button
+                                        type="button"
+                                        onClick={handleAddEducation}
+                                        className="btn btn-outline-secondary"
+                                        style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(0, 255, 0, 0.5)' }}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <button onClick={handleSaveProfile} className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>Register</button>
+                        <div className="row mb-3">
+                            <div className="col">
+                                <h3>{t('language')}</h3>
+                                {languageList.map((language, index) => (
+                                    <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
+                                        <input
+                                            className='form-control'
+                                            type="text"
+                                            value={language}
+                                            onChange={(e) => handleLanguageChange(index, e.target.value)}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemoveLanguage(index)}
+                                            className="btn btn-outline-secondary"
+                                            style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(255, 0, 0, 0.5)' }}
+                                        >
+                                            -
+                                        </button>
+                                    </div>
+                                ))}
+                                <div className='text-center'>
+                                    <button
+                                        type="button"
+                                        onClick={handleAddLanguage}
+                                        className="btn btn-outline-secondary"
+                                        style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(0, 255, 0, 0.5)' }}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="text-center">
+                            <button
+                                onClick={handleSaveProfile}
+                                className="btn btn-primary"
+                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                            >
+                                {t('registerButton')}
+                            </button>
+                        </div>
                     </form>
-                </div>
+                </div >
             ) : (
                 <div className="container">
                     <div className="row mb-3 justify-content-center">
                         <div className="col-md-2 text-center">
-                            <img src="../intermediary-profile-image.png" alt="Intermediary Profile" style={{ width: '200px', height: '200px', marginBottom: '15px' }} />
+                            <img
+                                src="../intermediary-profile-image.png"
+                                alt="Intermediary Profile"
+                                style={{ width: '200px', height: '200px', marginBottom: '15px' }}
+                            />
                         </div>
                         <div className="col-md-5">
                             <div className="row">
                                 <div className="col">
-                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{t('age')} : {formData.age}</p>
+                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
+                                        {t('age')}: {formData.age}
+                                    </p>
                                 </div>
                                 <div className="col">
-                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{t('city')} : {formData.city}</p>
+                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
+                                        {t('city')}: {formData.city}
+                                    </p>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col">
-                                    <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px', height: '140px', overflowY: 'auto' }}>
+                                    <p
+                                        style={{
+                                            border: "3px solid #F24726",
+                                            padding: '5px',
+                                            borderRadius: '10px',
+                                            height: '140px',
+                                            overflowY: 'auto'
+                                        }}
+                                    >
                                         {formData.aboutme}
                                     </p>
                                 </div>
@@ -114,23 +275,19 @@ const ProfileYouth = () => {
                             <div className="row">
                                 <div className="col">
                                     <h3>{t('education')}</h3>
-                                    {/* Ajoutez ici vos informations d'éducation */}
-                                    <div className="col">
-                                        <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.city}</p>
-                                    </div>
-                                    <div className="col">
-                                        <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.city}</p>
-                                    </div>
+                                    {educationList.map((education, index) => (
+                                        <div className="col" key={index}>
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{education}</p>
+                                        </div>
+                                    ))}
                                 </div>
                                 <div className="col">
                                     <h3>{t('language')}</h3>
-                                    {/* Ajoutez ici vos informations de langage */}
-                                    <div className="col">
-                                        <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.city}</p>
-                                    </div>
-                                    <div className="col">
-                                        <p style={{ border: "4px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.city}</p>
-                                    </div>
+                                    {languageList.map((language, index) => (
+                                        <div className="col" key={index}>
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{language}</p>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -140,18 +297,21 @@ const ProfileYouth = () => {
                             <div className="row">
                                 <div className="col">
                                     <h3>{t('skills')}</h3>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="text-center">
-                        <button onClick={handleEditProfile} className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>{t('edit')}</button>
+                        <button
+                            onClick={handleEditProfile}
+                            className="btn btn-primary"
+                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                        >
+                            {t('edit')}
+                        </button>
                     </div>
                 </div>
-
-            )
-            }
+            )}
         </div >
     );
 };
