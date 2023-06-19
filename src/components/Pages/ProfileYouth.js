@@ -6,6 +6,13 @@ import Header from '../common/Header';
 const ProfileYouth = () => {
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
+    //test
+    const [formErrors, setFormErrors] = useState({
+        age: false,
+        city: false,
+        aboutme: false,
+    });
+
     const [formData, setFormData] = useState({
         firstName: 'John',
         lastName: 'Doe',
@@ -42,11 +49,28 @@ const ProfileYouth = () => {
             alert('Please fill in all education fields.');
             return;
         }
-        //  pour le reuf said
-        if (languageList.some((language) => language.trim() === '')) {
-            alert('Please fill in all language fields.');
+        // test Check for empty fields
+        if (!formData.age) {
+            setFormErrors((prevErrors) => ({ ...prevErrors, age: true }));
             return;
         }
+
+        if (!formData.city) {
+            setFormErrors((prevErrors) => ({ ...prevErrors, city: true }));
+            return;
+        }
+
+        if (!formData.aboutme) {
+            setFormErrors((prevErrors) => ({ ...prevErrors, aboutme: true }));
+            return;
+        }
+
+        // Reset form errors
+        setFormErrors({
+            age: false,
+            city: false,
+            aboutme: false,
+        });
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
 
@@ -160,13 +184,18 @@ const ProfileYouth = () => {
                             <div className="col">
                                 <label htmlFor="age">{t('age')}</label>
                                 <input
-                                    className="form-control"
                                     type="number"
                                     id="age"
                                     name="age"
                                     value={formData.age}
                                     onChange={handleInputChange}
+                                    // Add error class based on formErrors.age
+                                    className={formErrors.age ? 'form-control is-invalid' : 'form-control'}
                                 />
+                                {formErrors.age && (
+                                    <div className="invalid-feedback">Age field is required</div>
+                                )}
+
                             </div>
                         </div>
                         <div className="row mb-3">
