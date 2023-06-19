@@ -41,15 +41,16 @@ export default function App() {
   return (
     <I18nextProvider i18n={i18n}>
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <CookieConsent />
         <Router>
-        <div style={{ flex: 1, marginBottom: '10px' }}>
+          <div style={{ flex: 1, marginBottom: '10px' }}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
-              <Route path="/contact" element ={<Contact />}/>
-              <Route path="/FAQ" element ={<FAQ />}/>
-              <Route path="/terms" element ={<Terms />}/>
-              <Route path="/careers" element ={<Career />}/>
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/FAQ" element={<FAQ />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/careers" element={<Career />} />
               <Route path="/registery" element={<RegisterPageY />} />
               <Route path="/registerC" element={<RegisterPageC />} />
               <Route path="/registerI" element={<RegisterPageI />} />
@@ -61,7 +62,6 @@ export default function App() {
           </div>
           <Footer />
         </Router>
-        <CookieConsent /> {/* Ajout du composant CookieConsent */}
       </div>
     </I18nextProvider>
   );
