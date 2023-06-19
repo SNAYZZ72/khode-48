@@ -6,7 +6,9 @@ import Header from '../common/Header';
 const ProfileYouth = () => {
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
+    const [hideProfile, setHideProfile] = useState(false);
     const [image, setImage] = useState(null);
+
     //test
     const [formErrors, setFormErrors] = useState({
         age: false,
@@ -61,38 +63,9 @@ const ProfileYouth = () => {
 
     const handleSaveProfile = () => {
         // Vérifier si les champs requis sont remplis
-        if (!formData.age) {
-            setFormErrors((prevErrors) => ({ ...prevErrors, age: true }));
-            return;
-        }
-
-        if (!formData.city) {
-            setFormErrors((prevErrors) => ({ ...prevErrors, city: true }));
-            return;
-        }
-
-        if (!formData.aboutme) {
-            setFormErrors((prevErrors) => ({ ...prevErrors, aboutme: true }));
-            return;
-        }
-
-        if (!formData.education) {
-            setFormErrors((prevErrors) => ({ ...prevErrors, education: true }));
-            return;
-        }
-
-        if (!formData.language) {
-            setFormErrors((prevErrors) => ({ ...prevErrors, language: true }));
-            return;
-        }
-
-        if (educationList.some((education) => education.trim() === '')) {
-            alert('Please fill in all education fields.');
-            return;
-        }
-
-        if (languageList.some((language) => language.trim() === '')) {
-            alert('Please fill in all language fields.');
+        if (!formData.age || !formData.city || !formData.aboutme || !formData.education || !formData.language) {
+            setIsEditing(false); // Hide profile if required fields are not filled
+            alert('Please fill in all the required fields to enable your profile.');
             return;
         }
 
@@ -178,6 +151,11 @@ const ProfileYouth = () => {
         { name: 'Leadership', value: formData.leadership, color: '#00FFFF' },
         { name: 'Teamwork', value: formData.teamwork, color: '#FF00FF' }
     ];
+
+    const handleToggle = () => {
+        setHideProfile(!hideProfile);
+    };
+
 
 
     useEffect(() => {
@@ -373,7 +351,7 @@ const ProfileYouth = () => {
                         <div className="col-md-2 text-center">
                             <img
                                 src={selectedImage || image || '../intermediary-profile-image.png'}
-                                alt="Profile picture"
+                                alt="Profile pictur"
                                 style={{ width: '90%', height: 'auto', marginBottom: '15px' }}
                             />
                         </div>
@@ -415,15 +393,20 @@ const ProfileYouth = () => {
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.points}</p>
                                 </div>
                                 <div className="col">
-                                    <h3>Hide profile</h3>
-                                    {/* toggle button for a variable hide profile or not */}
-                                    <label className="switch">
-                                        <input type="checkbox" />
-                                        <span className="slider round">
-                                            <span className="on">ON</span>
-                                            <span className="off">OFF</span>
-                                        </span>
-                                    </label>
+                                    <h3>{hideProfile ? t('hideProfile') : t('showProfile')}</h3>
+                                    {/* switch toggle button to hide profile */}
+                                    <div className="form-check form-switch">
+                                        <input
+                                            className="form-check-input"
+                                            type="checkbox"
+                                            id="flexSwitchCheckDefault"
+                                            checked={hideProfile}
+                                            onChange={handleToggle}
+                                        />
+                                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+                                            {hideProfile ? t('hide') : t('show')}
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
