@@ -6,6 +6,7 @@ import Header from '../common/Header';
 const ProfileYouth = () => {
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
+    const [image, setImage] = useState(null);
     //test
     const [formErrors, setFormErrors] = useState({
         age: false,
@@ -14,6 +15,8 @@ const ProfileYouth = () => {
         education: false,
         language: false
     });
+
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const [formData, setFormData] = useState({
         firstName: 'John',
@@ -40,6 +43,17 @@ const ProfileYouth = () => {
         "Espagnol",
         "Basque"
     ]);
+
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            setSelectedImage(e.target.result);
+        };
+
+        reader.readAsDataURL(file);
+    };
 
     const handleEditProfile = () => {
         setIsEditing(true);
@@ -93,6 +107,12 @@ const ProfileYouth = () => {
         });
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
+
+        // Mettre à jour l'image avec la nouvelle image sélectionnée
+        setImage(selectedImage);
+
+        // Réinitialiser l'état de l'image sélectionnée
+        setSelectedImage(null);
 
         // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
         localStorage.setItem('formData', JSON.stringify(formData));
@@ -245,6 +265,18 @@ const ProfileYouth = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
+                                <label htmlFor="image">{t('image')}</label>
+                                <input
+                                    type="file"
+                                    id="image"
+                                    name="image"
+                                    accept="image/*"
+                                    onChange={handleImageUpload}
+                                />
+                            </div>
+                        </div>
+                        <div className="row mb-3">
+                            <div className="col">
                                 <h3>{t('education')}</h3>
                                 {educationList.map((education, index) => (
                                     <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
@@ -327,8 +359,8 @@ const ProfileYouth = () => {
                     <div className="row mb-3 justify-content-center">
                         <div className="col-md-2 text-center">
                             <img
-                                src="../intermediary-profile-image.png"
-                                alt="Intermediary Profile"
+                                src={selectedImage || image || '../intermediary-profile-image.png'}
+                                alt="Profile picture"
                                 style={{ width: '90%', height: 'auto', marginBottom: '15px' }}
                             />
                         </div>
@@ -425,7 +457,8 @@ const ProfileYouth = () => {
                         </button>
                     </div>
                 </div>
-            )}
+            )
+            }
         </div >
     );
 };
