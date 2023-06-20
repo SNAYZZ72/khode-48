@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTranslation } from 'react-i18next';
-import Header from '../common/Header';
+import HeaderYouth from '../common/HeaderYouth';
 
 const ProfileYouth = () => {
     const { t } = useTranslation();

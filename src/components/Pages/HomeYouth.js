@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from '../common/Header';
+import HeaderYouth from '../common/HeaderYouth';
 // import firebase from 'firebase'; // Import Firebase library or SDK
 
 const HomeProjects = () => {
