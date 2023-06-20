@@ -190,7 +190,7 @@ const ProfileYouth = () => {
 
     return (
         <div>
-            <Header />
+            <HeaderYouth />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
                 <h1>{formData.firstName} {formData.lastName} {t('profile')}</h1>
             </div>

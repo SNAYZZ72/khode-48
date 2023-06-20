@@ -53,7 +53,7 @@ const HomeIntermediary = () => {
 
     return (
         <div>
-            <Header />
+            <HeaderIntermediary />
             <div className="container">
                 <h2>{t('home.company.title')}</h2>
                 <div className="row mb-3">

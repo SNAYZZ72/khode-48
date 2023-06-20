@@ -155,7 +155,7 @@ const ProfileIntermediary = () => {
 
     return (
         <div>
-            <Header />
+            <HeaderIntermediary />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
                 <h1>{formData.intermediaryName} {t('profile')}</h1>
             </div>

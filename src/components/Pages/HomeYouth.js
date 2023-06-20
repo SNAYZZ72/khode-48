@@ -52,7 +52,7 @@ const HomeProjects = () => {
 
     return (
         <div>
-            <Header />
+            <HeaderYouth />
             <div className="container">
                 <h2>{t('home.projects.title')}</h2>
                 <div className="mb-3">

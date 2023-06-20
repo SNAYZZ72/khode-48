@@ -159,7 +159,7 @@ const ProfileCompany = () => {
 
     return (
         <div>
-            <Header />
+            <HeaderCompany />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
                 <h1>{formData.companyName} {t('profile')}</h1>
             </div>
