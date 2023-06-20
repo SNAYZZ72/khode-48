@@ -25,6 +25,7 @@ import HomeIntemediary from "./components/Pages/HomeIntermediary"
 
 //import Profile
 import ProfileYouth from "./components/Pages/ProfileYouth";
+import ProfileCompany from "./components/Pages/ProfileCompany";
 
 //import Components
 import Footer from './components/common/Footer';
@@ -58,6 +59,7 @@ export default function App() {
               <Route path="/homeCompany" element={<HomeCompany />} />
               <Route path="/homeIntermediary" element={<HomeIntemediary />} />
               <Route path="/profileYouth" element={<ProfileYouth />} />
+              <Route path="/profileCompany" element={<ProfileCompany />} />
             </Routes>
           </div>
           <Footer />
