@@ -337,13 +337,13 @@ const ProfileCompany = () => {
                                     <h3>{t('socialMedia')}</h3>
                                     <Nav className="align-items-center" style={{ marginTop: "-15px", marginLeft: "-15px" }}>
                                         {/* Contenu de la dernière colonne */}
-                                        <Nav.Link href="https://twitter.com" target="_blank" style={{ color: '#F24726', fontSize: '40px' }}>
+                                        <Nav.Link href="https://twitter.com" target="_blank" style={{ color: '#F24726', fontSize: '30px' }}>
                                             <FontAwesomeIcon icon={faTwitter} />
                                         </Nav.Link>
-                                        <Nav.Link href="https://www.facebook.com" target="_b    lank" style={{ color: '#F24726', fontSize: '40px' }}>
+                                        <Nav.Link href="https://www.facebook.com" target="_b    lank" style={{ color: '#F24726', fontSize: '30px' }}>
                                             <FontAwesomeIcon icon={faFacebook} />
                                         </Nav.Link>
-                                        <Nav.Link href="https://www.instagram.com" target="_blank" style={{ color: '#F24726', fontSize: '40px' }}>
+                                        <Nav.Link href="https://www.instagram.com" target="_blank" style={{ color: '#F24726', fontSize: '30px' }}>
                                             <FontAwesomeIcon icon={faInstagram} />
                                         </Nav.Link>
                                     </Nav>

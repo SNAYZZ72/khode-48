@@ -34,25 +34,25 @@ const HeaderYouth = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <Nav.Link
-              href="/"
-              className={location.pathname === '/' ? 'active-link' : ''}
-              style={{ color: location.pathname === '/' ? '#F24726' : 'black', textDecoration: location.pathname === '/' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
+              href="/profileYouth"
+              className={location.pathname === '/profileYouth' ? 'active-link' : ''}
+              style={{ color: location.pathname === '/profileYouth' ? '#F24726' : 'black', textDecoration: location.pathname === '/profileYouth' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
+            >
+              PROFILE
+            </Nav.Link>
+            <Nav.Link
+              href="/homeYouth"
+              className={location.pathname === '/homeYouth' ? 'active-link' : ''}
+              style={{ color: location.pathname === '/homeYouth' ? '#F24726' : 'black', textDecoration: location.pathname === '/homeYouth' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
             >
               HOME
             </Nav.Link>
             <Nav.Link
-              href="/contact"
-              className={location.pathname === '/contact' ? 'active-link' : ''}
-              style={{ color: location.pathname === '/contact' ? '#F24726' : 'black', textDecoration: location.pathname === '/contact' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
+              href="/"
+              className={location.pathname === '/' ? 'active-link' : ''}
+              style={{ color: location.pathname === '/' ? '#F24726' : 'black', textDecoration: location.pathname === '/' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
             >
-              CONTACT
-            </Nav.Link>
-            <Nav.Link
-              href="/about"
-              className={location.pathname === '/about' ? 'active-link' : ''}
-              style={{ color: location.pathname === '/about' ? '#F24726' : 'black', textDecoration: location.pathname === '/about' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
-            >
-              ABOUT US
+              LOGOUT
             </Nav.Link>
             <LanguageSelector />
           </Nav>
