@@ -1,96 +1,113 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import HeaderCompany from '../common/HeaderCompany';
-// import firebase from 'firebase'; // Import Firebase library or SDK
 
 const HomeCompany = () => {
     const { t } = useTranslation();
-    const [profiles, setProfiles] = useState([]);
-    const [selectedProfile, setSelectedProfile] = useState(null);
+
+    const projectsData = [
+        {
+            id: 1,
+            title: 'Project 1',
+            description: 'Description of Project 1',
+            company: 'Company A',
+        },
+        {
+            id: 2,
+            title: 'Project 2',
+            description: 'Description of Project 2',
+            company: 'Company B',
+        },
+        {
+            id: 3,
+            title: 'Project 3',
+            description: 'Description of Project 3',
+            company: 'Company C',
+        },
+        // Add more projects as needed
+    ];
+
+    const [projects, setProjects] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [filterOption, setFilterOption] = useState(''); // Add your filter options here
+    const [filterQuery, setFilterQuery] = useState('');
 
     useEffect(() => {
-        // Fetch data from Firebase and update the profiles state
-        // const fetchProfiles = async () => {
-        //     try {
-        //         const profilesRef = firebase.database().ref('profiles'); // Update with your Firebase database reference
-        //         const snapshot = await profilesRef.once('value');
-        //         const profilesData = snapshot.val();
-        //         const profilesArray = Object.values(profilesData);
-        //         setProfiles(profilesArray);
-        //     } catch (error) {
-        //         console.error('Error fetching profiles:', error);
-        //     }
-        // };
-
-        // fetchProfiles();
+        // Simulating API call to fetch projects data
+        setTimeout(() => {
+            setProjects(projectsData);
+        }, 1000);
     }, []);
 
-    const handleProfileSelection = (profile) => {
-        setSelectedProfile(profile);
-    };
-
-    const handleSearch = (event) => {
+    const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
     };
 
-    const handleFilter = (event) => {
-        setFilterOption(event.target.value);
+    const handleFilterChange = (event) => {
+        setFilterQuery(event.target.value);
     };
 
-    // Apply search and filter to profiles
-    const filteredProfiles = profiles.filter((profile) => {
-        const fullName = profile.fullName.toLowerCase();
-        const firstName = profile.firstName.toLowerCase();
-        const lastName = profile.lastName.toLowerCase();
+    const filteredProjects = projects.filter((project) =>
+        project.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        (filterQuery === '' || project.company === filterQuery)
+    );
 
-        return (
-            fullName.includes(searchQuery.toLowerCase()) &&
-            (filterOption === '' || profile.filterProperty === filterOption) // Replace 'filterProperty' with your actual property to filter on
-        );
-    });
+    const handleSeeMore = (project) => {
+        // Implement your logic here to handle "See More" button click
+        console.log('See More clicked:', project);
+    };
 
     return (
-        <div>
+        <>
             <HeaderCompany />
             <div className="container">
-                <h2>{t('home.company.title')}</h2>
-                <div className="row mb-3">
-                    <div className="col-md-6">
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder={t('home.company.searchPlaceholder')}
-                            value={searchQuery}
-                            onChange={handleSearch}
-                        />
-                    </div>
-                    <div className="col-md-6">
-                        <select
-                            className="form-control"
-                            value={filterOption}
-                            onChange={handleFilter}
-                        >
-                            <option value="">{t('home.company.filterAll')}</option>
-                            {/* Add your filter options as <option> elements */}
-                        </select>
-                    </div>
+                <h2>{t('Projects')}</h2>
+
+                <div className="input-group mb-3">
+                    <span className="input-group-text">{t('Search')}:</span>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                    />
                 </div>
-                <div className="row">
-                    {filteredProfiles.map((profile) => (
-                        <div key={profile.id} className="col-sm-12 col-md-6 col-lg-4">
-                            {/* Render profile card */}
-                        </div>
-                    ))}
+
+                <div className="input-group mb-3">
+                    <span className="input-group-text">{t('Filter')}:</span>
+                    <select
+                        className="form-select"
+                        value={filterQuery}
+                        onChange={handleFilterChange}
+                    >
+                        <option value="">{t('All')}</option>
+                        <option value="Company A">Company A</option>
+                        <option value="Company B">Company B</option>
+                        <option value="Company C">Company C</option>
+                    </select>
                 </div>
-                {selectedProfile && (
-                    <div className="mt-4">
-                        {/* Render selected profile details */}
-                    </div>
+
+                {filteredProjects.length === 0 ? (
+                    <p>{t('No projects found.')}</p>
+                ) : (
+                    <ul className="list-group">
+                        {filteredProjects.map((project) => (
+                            <li key={project.id} className="list-group-item">
+                                <h3>{project.title}</h3>
+                                <p>{t('Description')}: {project.description}</p>
+                                <p>{t('Company')}: {project.company}</p>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={() => handleSeeMore(project)}
+                                    style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                >
+                                    {t('See More')}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
                 )}
             </div>
-        </div>
+        </>
     );
 };
 
