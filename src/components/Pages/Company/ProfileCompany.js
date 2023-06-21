@@ -73,16 +73,11 @@ const ProfileCompany = () => {
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
 
-        // Mettre à jour l'image avec la nouvelle image sélectionnée
-        setImage(selectedImage);
-
-        // Réinitialiser l'état de l'image sélectionnée
-        setSelectedImage(null);
-
         // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
         localStorage.setItem('formData', JSON.stringify(formData));
         localStorage.setItem('projectList', JSON.stringify(projectList));
         localStorage.setItem('challengeList', JSON.stringify(challengeList));
+        localStorage.setItem('image', selectedImage);
     };
 
 
