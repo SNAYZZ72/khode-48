@@ -7,10 +7,10 @@ const ProfileYouth = () => {
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
     const [hideProfile, setHideProfile] = useState(false);
-    const [image, setImage] = useState(null);
+    const [youthImage, setYouthImage] = useState(null);
 
     //test
-    const [formErrors, setFormErrors] = useState({
+    const [youthFormErrors, setYouthFormErrors] = useState({
         age: false,
         city: false,
         aboutme: false,
@@ -18,9 +18,9 @@ const ProfileYouth = () => {
         language: false
     });
 
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedYouthImage, setSelectedYouthImage] = useState(null);
 
-    const [formData, setFormData] = useState({
+    const [youthFormData, setYouthFormData] = useState({
         firstName: 'John',
         lastName: 'Doe',
         age: 18,
@@ -51,7 +51,7 @@ const ProfileYouth = () => {
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            setSelectedImage(e.target.result);
+            setSelectedYouthImage(e.target.result);
         };
 
         reader.readAsDataURL(file);
@@ -63,16 +63,16 @@ const ProfileYouth = () => {
 
     const handleSaveProfile = () => {
         // Vérifier si les champs requis sont remplis
-        if (!formData.age || !formData.city || !formData.aboutme || !educationList.length || !languageList.length) {
+        if (!youthFormData.age || !youthFormData.city || !youthFormData.aboutme || !educationList.length || !languageList.length) {
             alert('Please fill in all the required fields to enable your profile.');
             return;
         }
 
         // Réinitialiser les erreurs de formulaire
-        setFormErrors({
+        setYouthFormErrors({
             age: false,
-            city: false,
-            aboutme: false,
+            youthCity: false,
+            youthAboutme: false,
             education: false,
             language: false
         });
@@ -81,17 +81,17 @@ const ProfileYouth = () => {
         setIsEditing(false);
 
         // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
-        localStorage.setItem('formData', JSON.stringify(formData));
+        localStorage.setItem('youthFormData', JSON.stringify(youthFormData));
         localStorage.setItem('educationList', JSON.stringify(educationList));
         localStorage.setItem('languageList', JSON.stringify(languageList));
-        localStorage.setItem('image', JSON.stringify(selectedImage));
+        localStorage.setItem('youthImage', JSON.stringify(selectedYouthImage));
     };
 
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
+        setYouthFormData((prevYouthFormData) => ({
+            ...prevYouthFormData,
             [name]: value,
         }));
     };
@@ -138,24 +138,22 @@ const ProfileYouth = () => {
     };
 
     const chartData = [
-        { name: 'Proactivity', value: formData.proactivity, color: '#FF0000' },
-        { name: 'Creativity', value: formData.creativity, color: '#00FF00' },
-        { name: 'Initiative', value: formData.initiative, color: '#0000FF' },
-        { name: 'Empathy', value: formData.empathy, color: '#FFFF00' },
-        { name: 'Leadership', value: formData.leadership, color: '#00FFFF' },
-        { name: 'Teamwork', value: formData.teamwork, color: '#FF00FF' }
+        { name: 'Proactivity', value: youthFormData.proactivity, color: '#FF0000' },
+        { name: 'Creativity', value: youthFormData.creativity, color: '#00FF00' },
+        { name: 'Initiative', value: youthFormData.initiative, color: '#0000FF' },
+        { name: 'Empathy', value: youthFormData.empathy, color: '#FFFF00' },
+        { name: 'Leadership', value: youthFormData.leadership, color: '#00FFFF' },
+        { name: 'Teamwork', value: youthFormData.teamwork, color: '#FF00FF' }
     ];
 
     const handleToggle = () => {
         setHideProfile(!hideProfile);
     };
 
-
-
     useEffect(() => {
-        const storedFormData = localStorage.getItem('formData');
-        if (storedFormData) {
-            setFormData(JSON.parse(storedFormData));
+        const storedYouthFormData = localStorage.getItem('youthFormData');
+        if (storedYouthFormData) {
+            setYouthFormData(JSON.parse(storedYouthFormData));
         }
 
         const storedEducationList = localStorage.getItem('educationList');
@@ -168,11 +166,11 @@ const ProfileYouth = () => {
             setLanguageList(JSON.parse(storedLanguageList));
         }
         
-        const storedImage = localStorage.getItem('image');
-        if (storedImage) {
-            setSelectedImage(JSON.parse(storedImage));
+        const storedYouthImage = localStorage.getItem('youthImage');
+        if (storedYouthImage) {
+            setSelectedYouthImage(JSON.parse(storedYouthImage));
         }
-        
+
     }, []);
 
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
@@ -192,7 +190,7 @@ const ProfileYouth = () => {
         <div>
             <HeaderYouth />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{formData.firstName} {formData.lastName} {t('profile')}</h1>
+                <h1>{youthFormData.firstName} {youthFormData.lastName} {t('profile')}</h1>
             </div>
 
             {isEditing ? (
@@ -206,12 +204,12 @@ const ProfileYouth = () => {
                                     type="number"
                                     id="age"
                                     name="age"
-                                    value={formData.age}
+                                    value={youthFormData.age}
                                     onChange={handleInputChange}
                                     // Add error class based on formErrors.age
-                                    className={formErrors.age ? 'form-control is-invalid' : 'form-control'}
+                                    className={youthFormErrors.age ? 'form-control is-invalid' : 'form-control'}
                                 />
-                                {formErrors.age && (
+                                {youthFormErrors.age && (
                                     <div className="invalid-feedback">Age field is required</div>
                                 )}
 
@@ -225,10 +223,10 @@ const ProfileYouth = () => {
                                     type="text"
                                     id="city"
                                     name="city"
-                                    value={formData.city}
+                                    value={youthFormData.city}
                                     onChange={handleInputChange}
                                 />
-                                {formErrors.city && (
+                                {youthFormErrors.city && (
                                     <div className="invalid-feedback">City field is required</div>
                                 )}
 
@@ -241,10 +239,10 @@ const ProfileYouth = () => {
                                     className="form-control"
                                     id="aboutme"
                                     name="aboutme"
-                                    value={formData.aboutme}
+                                    value={youthFormData.aboutme}
                                     onChange={handleInputChange}
                                 />
-                                {formErrors.aboutme && (
+                                {youthFormErrors.aboutme && (
                                     <div className="invalid-feedback">About me field is required</div>
                                 )}
 
@@ -256,12 +254,12 @@ const ProfileYouth = () => {
                                 <input
                                     className="form-control"
                                     type="file"
-                                    id="image"
-                                    name="image"
-                                    accept="image/*"
+                                    id="youthImage"
+                                    name="youthImage"
+                                    accept="youthImage/*"
                                     onChange={handleImageUpload}
                                 />
-                                {formErrors.image && (
+                                {youthFormErrors.image && (
                                     <div className="invalid-feedback">Image field is required</div>
                                 )}
                             </div>
@@ -350,8 +348,8 @@ const ProfileYouth = () => {
                     <div className="row mb-3 justify-content-center">
                         <div className="col-md-2 text-center">
                             <img
-                                src={selectedImage || image || '../intermediary-profile-image.png'}
-                                alt="Profile pictur"
+                                src={selectedYouthImage || youthImage || '../intermediary-profile-image.png'}
+                                alt="Profile picture"
                                 style={{ width: '90%', height: 'auto', marginBottom: '15px' }}
                             />
                         </div>
@@ -359,12 +357,12 @@ const ProfileYouth = () => {
                             <div className="row">
                                 <div className="col">
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        {t('age')}: {formData.age}
+                                        {t('age')}: {youthFormData.age}
                                     </p>
                                 </div>
                                 <div className="col">
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        {t('city')}: {formData.city}
+                                        {t('city')}: {youthFormData.city}
                                     </p>
                                 </div>
                             </div>
@@ -379,7 +377,7 @@ const ProfileYouth = () => {
                                             overflowY: 'auto'
                                         }}
                                     >
-                                        {formData.aboutme}
+                                        {youthFormData.aboutme}
                                     </p>
                                 </div>
                             </div>
@@ -390,7 +388,7 @@ const ProfileYouth = () => {
                             <div className="row">
                                 <div className="col">
                                     <h3>Total points</h3>
-                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.points}</p>
+                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{youthFormData.points}</p>
                                 </div>
                                 <div className="col">
                                     <h3>{hideProfile ? t('hideProfile') : t('showProfile')}</h3>

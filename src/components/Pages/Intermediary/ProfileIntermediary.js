@@ -10,18 +10,18 @@ const ProfileIntermediary = () => {
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
     const [hideProfile, setHideProfile] = useState(false);
-    const [image, setImage] = useState(null);
+    const [intermediaryImage, setIntermediaryImage] = useState(null);
 
     //test
-    const [formErrors, setFormErrors] = useState({
+    const [intermediaryFormErrors, setIntermediaryFormErrors] = useState({
         city: false,
         aboutme: false,
         program: false,
     });
 
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedIntermediaryImage, setSelectedIntermediaryImage] = useState(null);
 
-    const [formData, setFormData] = useState({
+    const [intermediaryFormData, setIntermediaryFormData] = useState({
         intermediaryName: 'Googaz',
         city: 'Villejeune',
         aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j\'ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J\'ai un permis de conduire et une voiture.',
@@ -44,7 +44,7 @@ const ProfileIntermediary = () => {
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            setSelectedImage(e.target.result);
+            setSelectedIntermediaryImage(e.target.result);
         };
 
         reader.readAsDataURL(file);
@@ -56,13 +56,13 @@ const ProfileIntermediary = () => {
 
     const handleSaveProfile = () => {
         // Vérifier si les champs requis sont remplis
-        if (!formData.city || !formData.aboutme || !programList.length) {
+        if (!intermediaryFormData.city || !intermediaryFormData.aboutme || !programList.length) {
             alert('Please fill in all the required fields to enable your profile.');
             return;
         }
 
         // Réinitialiser les erreurs de formulaire
-        setFormErrors({
+        setIntermediaryFormErrors({
             city: false,
             aboutme: false,
             program: false
@@ -72,16 +72,16 @@ const ProfileIntermediary = () => {
         setIsEditing(false);
 
         // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
-        localStorage.setItem('formData', JSON.stringify(formData));
+        localStorage.setItem('intermediaryFormData', JSON.stringify(intermediaryFormData));
         localStorage.setItem('programList', JSON.stringify(programList));
-        localStorage.setItem('image', JSON.stringify(selectedImage));
+        localStorage.setItem('intermediaryImage', JSON.stringify(selectedIntermediaryImage));
     };
 
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
+        setIntermediaryFormData((prevIntermediaryFormData) => ({
+            ...prevIntermediaryFormData,
             [name]: value,
         }));
     };
@@ -108,24 +108,22 @@ const ProfileIntermediary = () => {
     };
 
     const chartData = [
-        { name: 'Proactivity', value: formData.proactivity, color: '#FF0000' },
-        { name: 'Creativity', value: formData.creativity, color: '#00FF00' },
-        { name: 'Initiative', value: formData.initiative, color: '#0000FF' },
-        { name: 'Empathy', value: formData.empathy, color: '#FFFF00' },
-        { name: 'Leadership', value: formData.leadership, color: '#00FFFF' },
-        { name: 'Teamwork', value: formData.teamwork, color: '#FF00FF' }
+        { name: 'Proactivity', value: intermediaryFormData.proactivity, color: '#FF0000' },
+        { name: 'Creativity', value: intermediaryFormData.creativity, color: '#00FF00' },
+        { name: 'Initiative', value: intermediaryFormData.initiative, color: '#0000FF' },
+        { name: 'Empathy', value: intermediaryFormData.empathy, color: '#FFFF00' },
+        { name: 'Leadership', value: intermediaryFormData.leadership, color: '#00FFFF' },
+        { name: 'Teamwork', value: intermediaryFormData.teamwork, color: '#FF00FF' }
     ];
 
     const handleToggle = () => {
         setHideProfile(!hideProfile);
     };
 
-
-
     useEffect(() => {
-        const storedFormData = localStorage.getItem('formData');
-        if (storedFormData) {
-            setFormData(JSON.parse(storedFormData));
+        const storedIntermediaryFormData = localStorage.getItem('intermediaryFormData');
+        if (storedIntermediaryFormData) {
+            setIntermediaryFormData(JSON.parse(storedIntermediaryFormData));
         }
 
         const storedProgramList = localStorage.getItem('programList');
@@ -133,11 +131,11 @@ const ProfileIntermediary = () => {
             setProgramList(JSON.parse(storedProgramList));
         }
 
-        const storedImage = localStorage.getItem('image');
-        if (storedImage) {
-            setImage(JSON.parse(storedImage));
+        const storedIntermediaryImage = localStorage.getItem('intermediaryImage');
+        if (storedIntermediaryImage) {
+            setIntermediaryImage(JSON.parse(storedIntermediaryImage));
         }
-        
+
     }, []);
 
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
@@ -157,7 +155,7 @@ const ProfileIntermediary = () => {
         <div>
             <HeaderIntermediary />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{formData.intermediaryName} {t('profile')}</h1>
+                <h1>{intermediaryFormData.intermediaryName} {t('profile')}</h1>
             </div>
 
             {isEditing ? (
@@ -172,10 +170,10 @@ const ProfileIntermediary = () => {
                                     type="text"
                                     id="city"
                                     name="city"
-                                    value={formData.city}
+                                    value={intermediaryFormData.city}
                                     onChange={handleInputChange}
                                 />
-                                {formErrors.city && (
+                                {intermediaryFormErrors.city && (
                                     <div className="invalid-feedback">City field is required</div>
                                 )}
 
@@ -188,10 +186,10 @@ const ProfileIntermediary = () => {
                                     className="form-control"
                                     id="aboutme"
                                     name="aboutme"
-                                    value={formData.aboutme}
+                                    value={intermediaryFormData.aboutme}
                                     onChange={handleInputChange}
                                 />
-                                {formErrors.aboutme && (
+                                {intermediaryFormErrors.aboutme && (
                                     <div className="invalid-feedback">About me field is required</div>
                                 )}
 
@@ -199,18 +197,15 @@ const ProfileIntermediary = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="image">Profile picture</label>
+                                <label>Profile picture</label>
                                 <input
                                     className="form-control"
                                     type="file"
-                                    id="image"
-                                    name="image"
-                                    accept="image/*"
+                                    id="intermediaryImage"
+                                    name="intermediaryImage"
+                                    accept="intermediaryImage/*"
                                     onChange={handleImageUpload}
                                 />
-                                {formErrors.image && (
-                                    <div className="invalid-feedback">Image field is required</div>
-                                )}
                             </div>
                         </div>
                         <div className="row mb-3">
@@ -264,7 +259,7 @@ const ProfileIntermediary = () => {
                     <div className="row mb-3 justify-content-center">
                         <div className="col-md-2 text-center">
                             <img
-                                src={selectedImage || image || '../intermediary-profile-image.png'}
+                                src={selectedIntermediaryImage || intermediaryImage || '../intermediary-profile-image.png'}
                                 alt="Profile picture"
                                 style={{ width: '90%', height: 'auto', marginBottom: '15px' }}
                             />
@@ -273,7 +268,7 @@ const ProfileIntermediary = () => {
                             <div className="row">
                                 <div className="col">
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        {t('city')}: {formData.city}
+                                        {t('city')}: {intermediaryFormData.city}
                                     </p>
                                 </div>
                             </div>
@@ -288,7 +283,7 @@ const ProfileIntermediary = () => {
                                             overflowY: 'auto'
                                         }}
                                     >
-                                        {formData.aboutme}
+                                        {intermediaryFormData.aboutme}
                                     </p>
                                 </div>
                             </div>

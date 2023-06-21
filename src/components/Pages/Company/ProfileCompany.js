@@ -9,21 +9,21 @@ const ProfileCompany = () => {
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
     const [hideProfile, setHideProfile] = useState(false);
-    const [image, setImage] = useState(null);
+    const [companyImage, setCompanyImage] = useState(null);
     const [studentCount, setStudentCount] = useState(5);
     const [challengeCount, setChallengeCount] = useState(7);
 
     //test
-    const [formErrors, setFormErrors] = useState({
+    const [companyFormErrors, setCompanyFormErrors] = useState({
         city: false,
         aboutme: false,
         project: false,
         challenge: false
     });
 
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedCompanyImage, setSelectedCompanyImage] = useState(null);
 
-    const [formData, setFormData] = useState({
+    const [companyFormData, setCompanyFormData] = useState({
         companyName: 'Guuk',
         city: 'Villejeune',
         aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j\'ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J\'ai un permis de conduire et une voiture.',
@@ -45,7 +45,7 @@ const ProfileCompany = () => {
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            setSelectedImage(e.target.result);
+            setSelectedCompanyImage(e.target.result);
         };
 
         reader.readAsDataURL(file);
@@ -57,13 +57,13 @@ const ProfileCompany = () => {
 
     const handleSaveProfile = () => {
         // Vérifier si les champs requis sont remplis
-        if (!formData.city || !formData.aboutme || !projectList.length || !challengeList.length) {
+        if (!companyFormData.city || !companyFormData.aboutme || !projectList.length || !challengeList.length) {
             alert('Please fill in all the required fields to enable your profile.');
             return;
         }
 
         // Réinitialiser les erreurs de formulaire
-        setFormErrors({
+        setCompanyFormErrors({
             city: false,
             aboutme: false,
             project: false,
@@ -74,17 +74,17 @@ const ProfileCompany = () => {
         setIsEditing(false);
 
         // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
-        localStorage.setItem('formData', JSON.stringify(formData));
+        localStorage.setItem('companyFormData', JSON.stringify(companyFormData));
         localStorage.setItem('projectList', JSON.stringify(projectList));
         localStorage.setItem('challengeList', JSON.stringify(challengeList));
-        localStorage.setItem('image', JSON.stringify(selectedImage));
+        localStorage.setItem('companyImage', JSON.stringify(selectedCompanyImage));
     };
 
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
+        setCompanyFormData((prevCompanyFormData) => ({
+            ...prevCompanyFormData,
             [name]: value,
         }));
     };
@@ -135,9 +135,9 @@ const ProfileCompany = () => {
     };
 
     useEffect(() => {
-        const storedFormData = localStorage.getItem('formData');
-        if (storedFormData) {
-            setFormData(JSON.parse(storedFormData));
+        const storedCompanyFormData = localStorage.getItem('companyFormData');
+        if (storedCompanyFormData) {
+            setCompanyFormData(JSON.parse(storedCompanyFormData));
         }
 
         const storedProjectList = localStorage.getItem('projectList');
@@ -150,9 +150,9 @@ const ProfileCompany = () => {
             setChallengeList(JSON.parse(storedChallengeList));
         }
 
-        const storedImage = localStorage.getItem('image');
-        if (storedImage) {
-            setImage(storedImage);
+        const storedCompanyImage = localStorage.getItem('companyImage');
+        if (storedCompanyImage) {
+            setSelectedCompanyImage(JSON.parse(storedCompanyImage));
         }
     }, []);
 
@@ -160,7 +160,7 @@ const ProfileCompany = () => {
         <div>
             <HeaderCompany />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{formData.companyName} {t('profile')}</h1>
+                <h1>{companyFormData.companyName} {t('profile')}</h1>
             </div>
 
             {isEditing ? (
@@ -175,10 +175,10 @@ const ProfileCompany = () => {
                                     type="text"
                                     id="city"
                                     name="city"
-                                    value={formData.city}
+                                    value={companyFormData.city}
                                     onChange={handleInputChange}
                                 />
-                                {formErrors.city && (
+                                {companyFormErrors.city && (
                                     <div className="invalid-feedback">City field is required</div>
                                 )}
 
@@ -191,28 +191,25 @@ const ProfileCompany = () => {
                                     className="form-control"
                                     id="aboutme"
                                     name="aboutme"
-                                    value={formData.aboutme}
+                                    value={companyFormData.aboutme}
                                     onChange={handleInputChange}
                                 />
-                                {formErrors.aboutme && (
+                                {companyFormErrors.aboutme && (
                                     <div className="invalid-feedback">About me field is required</div>
                                 )}
                             </div>
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="image">Profile picture</label>
+                                <label>Profile picture</label>
                                 <input
                                     className="form-control"
                                     type="file"
-                                    id="image"
-                                    name="image"
-                                    accept="image/*"
+                                    id="companyImage"
+                                    name="companyImage"
+                                    accept="companyImage/*"
                                     onChange={handleImageUpload}
                                 />
-                                {formErrors.image && (
-                                    <div className="invalid-feedback">Image field is required</div>
-                                )}
                             </div>
                         </div>
                         <div className="row mb-3">
@@ -299,8 +296,8 @@ const ProfileCompany = () => {
                     <div className="row mb-3 justify-content-center">
                         <div className="col-md-2 text-center">
                             <img
-                                src={selectedImage || image || '../intermediary-profile-image.png'}
-                                alt="Profile pictur"
+                                src={selectedCompanyImage || companyImage || '../intermediary-profile-image.png'}
+                                alt="Profile picture"
                                 style={{ width: '90%', height: 'auto', marginBottom: '15px' }}
                             />
                         </div>
@@ -308,7 +305,7 @@ const ProfileCompany = () => {
                             <div className="row">
                                 <div className="col">
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        {t('city')}: {formData.city}
+                                        {t('city')}: {companyFormData.city}
                                     </p>
                                 </div>
                             </div>
@@ -323,7 +320,7 @@ const ProfileCompany = () => {
                                             overflowY: 'auto'
                                         }}
                                     >
-                                        {formData.aboutme}
+                                        {companyFormData.aboutme}
                                     </p>
                                 </div>
                             </div>
