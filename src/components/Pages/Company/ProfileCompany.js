@@ -57,8 +57,7 @@ const ProfileCompany = () => {
 
     const handleSaveProfile = () => {
         // Vérifier si les champs requis sont remplis
-        if (!formData.city || !formData.aboutme || !formData.project || !formData.challenge) {
-            setIsEditing(false); // Hide profile if required fields are not filled
+        if (!formData.city || !formData.aboutme || !projectList.length || !challengeList.length) {
             alert('Please fill in all the required fields to enable your profile.');
             return;
         }
