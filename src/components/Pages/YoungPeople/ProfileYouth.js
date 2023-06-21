@@ -63,8 +63,7 @@ const ProfileYouth = () => {
 
     const handleSaveProfile = () => {
         // Vérifier si les champs requis sont remplis
-        if (!formData.age || !formData.city || !formData.aboutme || !formData.education || !formData.language) {
-            setIsEditing(false); // Hide profile if required fields are not filled
+        if (!formData.age || !formData.city || !formData.aboutme || !educationList.length || !languageList.length) {
             alert('Please fill in all the required fields to enable your profile.');
             return;
         }
