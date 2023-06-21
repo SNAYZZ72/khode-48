@@ -154,6 +154,11 @@ const ProfileCompany = () => {
         if (storedChallengeList) {
             setChallengeList(JSON.parse(storedChallengeList));
         }
+
+        const storedImage = localStorage.getItem('image');
+        if (storedImage) {
+            setImage(storedImage);
+        }
     }, []);
 
     return (
