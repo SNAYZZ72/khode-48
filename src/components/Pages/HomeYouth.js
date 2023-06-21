@@ -92,9 +92,9 @@ const HomeProjects = () => {
     };
 
     return (
+        <>
+        <HeaderYouth />
         <div className="container">
-            <HeaderYouth />
-
             <h2>{t('Young People Profiles')}</h2>
 
             <div className="input-group mb-3">
@@ -195,6 +195,7 @@ const HomeProjects = () => {
                 </Modal.Footer>
             </Modal>
         </div>
+        </>
     );
 };
 
