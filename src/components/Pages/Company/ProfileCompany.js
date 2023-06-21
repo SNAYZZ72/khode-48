@@ -77,7 +77,7 @@ const ProfileCompany = () => {
         localStorage.setItem('formData', JSON.stringify(formData));
         localStorage.setItem('projectList', JSON.stringify(projectList));
         localStorage.setItem('challengeList', JSON.stringify(challengeList));
-        localStorage.setItem('image', selectedImage);
+        localStorage.setItem('image', JSON.stringify(selectedImage));
     };
 
 

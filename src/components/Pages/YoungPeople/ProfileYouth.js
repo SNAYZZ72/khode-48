@@ -80,16 +80,11 @@ const ProfileYouth = () => {
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
 
-        // Mettre à jour l'image avec la nouvelle image sélectionnée
-        setImage(selectedImage);
-
-        // Réinitialiser l'état de l'image sélectionnée
-        setSelectedImage(null);
-
         // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
         localStorage.setItem('formData', JSON.stringify(formData));
         localStorage.setItem('educationList', JSON.stringify(educationList));
         localStorage.setItem('languageList', JSON.stringify(languageList));
+        localStorage.setItem('image', JSON.stringify(selectedImage));
     };
 
 
@@ -172,6 +167,12 @@ const ProfileYouth = () => {
         if (storedLanguageList) {
             setLanguageList(JSON.parse(storedLanguageList));
         }
+        
+        const storedImage = localStorage.getItem('image');
+        if (storedImage) {
+            setSelectedImage(JSON.parse(storedImage));
+        }
+        
     }, []);
 
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {

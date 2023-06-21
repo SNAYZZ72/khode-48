@@ -71,15 +71,10 @@ const ProfileIntermediary = () => {
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
 
-        // Mettre à jour l'image avec la nouvelle image sélectionnée
-        setImage(selectedImage);
-
-        // Réinitialiser l'état de l'image sélectionnée
-        setSelectedImage(null);
-
         // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
         localStorage.setItem('formData', JSON.stringify(formData));
         localStorage.setItem('programList', JSON.stringify(programList));
+        localStorage.setItem('image', JSON.stringify(selectedImage));
     };
 
 
@@ -137,6 +132,12 @@ const ProfileIntermediary = () => {
         if (storedProgramList) {
             setProgramList(JSON.parse(storedProgramList));
         }
+
+        const storedImage = localStorage.getItem('image');
+        if (storedImage) {
+            setImage(JSON.parse(storedImage));
+        }
+        
     }, []);
 
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
