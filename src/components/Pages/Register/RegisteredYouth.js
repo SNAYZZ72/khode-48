@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from '../common/Header';
+import Header from '../../common/Header/Header';
 import zxcvbn from 'zxcvbn';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Modal, Button } from 'react-bootstrap';

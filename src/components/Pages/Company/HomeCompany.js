@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import HeaderCompany from '../common/HeaderCompany';
+import HeaderCompany from '../../common/Header/HeaderCompany';
 
 const HomeCompany = () => {
     const { t } = useTranslation();

@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTranslation } from 'react-i18next';
-import HeaderIntermediary from '../common/HeaderIntermediary';
-import { Navbar, Nav } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import HeaderYouth from '../../common/Header/HeaderYouth';
 
-const ProfileIntermediary = () => {
+const ProfileYouth = () => {
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
     const [hideProfile, setHideProfile] = useState(false);
@@ -14,15 +11,19 @@ const ProfileIntermediary = () => {
 
     //test
     const [formErrors, setFormErrors] = useState({
+        age: false,
         city: false,
         aboutme: false,
-        program: false,
+        education: false,
+        language: false
     });
 
     const [selectedImage, setSelectedImage] = useState(null);
 
     const [formData, setFormData] = useState({
-        intermediaryName: 'Googaz',
+        firstName: 'John',
+        lastName: 'Doe',
+        age: 18,
         city: 'Villejeune',
         aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j\'ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J\'ai un permis de conduire et une voiture.',
         proactivity: 10,
@@ -34,9 +35,15 @@ const ProfileIntermediary = () => {
         points: 242
     });
 
-    const [programList, setProgramList] = useState([
+    const [educationList, setEducationList] = useState([
         "Basic Education",
         "Engineering"
+    ]);
+
+    const [languageList, setLanguageList] = useState([
+        "English",
+        "Spanish",
+        "Basque"
     ]);
 
     const handleImageUpload = (event) => {
@@ -56,7 +63,7 @@ const ProfileIntermediary = () => {
 
     const handleSaveProfile = () => {
         // Vérifier si les champs requis sont remplis
-        if (!formData.city || !formData.aboutme || !formData.program) {
+        if (!formData.age || !formData.city || !formData.aboutme || !formData.education || !formData.language) {
             setIsEditing(false); // Hide profile if required fields are not filled
             alert('Please fill in all the required fields to enable your profile.');
             return;
@@ -64,9 +71,11 @@ const ProfileIntermediary = () => {
 
         // Réinitialiser les erreurs de formulaire
         setFormErrors({
+            age: false,
             city: false,
             aboutme: false,
-            program: false
+            education: false,
+            language: false
         });
 
         // Effectuer la logique de sauvegarde du profil
@@ -80,7 +89,8 @@ const ProfileIntermediary = () => {
 
         // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
         localStorage.setItem('formData', JSON.stringify(formData));
-        localStorage.setItem('programList', JSON.stringify(programList));
+        localStorage.setItem('educationList', JSON.stringify(educationList));
+        localStorage.setItem('languageList', JSON.stringify(languageList));
     };
 
 
@@ -93,24 +103,44 @@ const ProfileIntermediary = () => {
     };
 
 
-    const handleProgramChange = (index, value) => {
-        setProgramList((prevList) => {
+    const handleEducationChange = (index, value) => {
+        setEducationList((prevList) => {
             const newList = [...prevList];
             newList[index] = value;
             return newList;
         });
     };
 
-    const handleAddProgram = () => {
-        const newProgramList = [...programList, ''];
-        setProgramList(newProgramList);
-        localStorage.setItem('programList', JSON.stringify(newProgramList));
+    const handleLanguageChange = (index, value) => {
+        setLanguageList((prevList) => {
+            const newList = [...prevList];
+            newList[index] = value;
+            return newList;
+        });
     };
 
-    const handleRemoveProgram = (index) => {
-        const newProgramList = programList.filter((_, i) => i !== index);
-        setProgramList(newProgramList);
-        localStorage.setItem('programList', JSON.stringify(newProgramList));
+    const handleAddEducation = () => {
+        const newEducationList = [...educationList, ''];
+        setEducationList(newEducationList);
+        localStorage.setItem('educationList', JSON.stringify(newEducationList));
+    };
+
+    const handleRemoveEducation = (index) => {
+        const newEducationList = educationList.filter((_, i) => i !== index);
+        setEducationList(newEducationList);
+        localStorage.setItem('educationList', JSON.stringify(newEducationList));
+    };
+
+    const handleAddLanguage = () => {
+        const newLanguageList = [...languageList, ''];
+        setLanguageList(newLanguageList);
+        localStorage.setItem('languageList', JSON.stringify(newLanguageList));
+    };
+
+    const handleRemoveLanguage = (index) => {
+        const newLanguageList = languageList.filter((_, i) => i !== index);
+        setLanguageList(newLanguageList);
+        localStorage.setItem('languageList', JSON.stringify(newLanguageList));
     };
 
     const chartData = [
@@ -134,9 +164,14 @@ const ProfileIntermediary = () => {
             setFormData(JSON.parse(storedFormData));
         }
 
-        const storedProgramList = localStorage.getItem('programList');
-        if (storedProgramList) {
-            setProgramList(JSON.parse(storedProgramList));
+        const storedEducationList = localStorage.getItem('educationList');
+        if (storedEducationList) {
+            setEducationList(JSON.parse(storedEducationList));
+        }
+
+        const storedLanguageList = localStorage.getItem('languageList');
+        if (storedLanguageList) {
+            setLanguageList(JSON.parse(storedLanguageList));
         }
     }, []);
 
@@ -155,15 +190,33 @@ const ProfileIntermediary = () => {
 
     return (
         <div>
-            <HeaderIntermediary />
+            <HeaderYouth />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{formData.intermediaryName} {t('profile')}</h1>
+                <h1>{formData.firstName} {formData.lastName} {t('profile')}</h1>
             </div>
 
             {isEditing ? (
                 <div className="container">
                     <h2>{t('edit')}</h2>
                     <form>
+                        <div className="row mb-3">
+                            <div className="col">
+                                <label htmlFor="age">{t('age')}</label>
+                                <input
+                                    type="number"
+                                    id="age"
+                                    name="age"
+                                    value={formData.age}
+                                    onChange={handleInputChange}
+                                    // Add error class based on formErrors.age
+                                    className={formErrors.age ? 'form-control is-invalid' : 'form-control'}
+                                />
+                                {formErrors.age && (
+                                    <div className="invalid-feedback">Age field is required</div>
+                                )}
+
+                            </div>
+                        </div>
                         <div className="row mb-3">
                             <div className="col">
                                 <label htmlFor="city">{t('city')}</label>
@@ -215,18 +268,18 @@ const ProfileIntermediary = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <h3>{t('program')}</h3>
-                                {programList.map((program, index) => (
+                                <h3>{t('education')}</h3>
+                                {educationList.map((education, index) => (
                                     <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
                                         <input
                                             className='form-control'
                                             type="text"
-                                            value={program}
-                                            onChange={(e) => handleProgramChange(index, e.target.value)}
+                                            value={education}
+                                            onChange={(e) => handleEducationChange(index, e.target.value)}
                                         />
                                         <button
                                             type="button"
-                                            onClick={() => handleRemoveProgram(index)}
+                                            onClick={() => handleRemoveEducation(index)}
                                             className="btn btn-outline-secondary"
                                             style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(255, 0, 0, 0.5)' }}
                                         >
@@ -237,7 +290,40 @@ const ProfileIntermediary = () => {
                                 <div className='text-center'>
                                     <button
                                         type="button"
-                                        onClick={handleAddProgram}
+                                        onClick={handleAddEducation}
+                                        className="btn btn-outline-secondary"
+                                        style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(0, 255, 0, 0.5)' }}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row mb-3">
+                            <div className="col">
+                                <h3>{t('language')}</h3>
+                                {languageList.map((language, index) => (
+                                    <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
+                                        <input
+                                            className='form-control'
+                                            type="text"
+                                            value={language}
+                                            onChange={(e) => handleLanguageChange(index, e.target.value)}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemoveLanguage(index)}
+                                            className="btn btn-outline-secondary"
+                                            style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(255, 0, 0, 0.5)' }}
+                                        >
+                                            -
+                                        </button>
+                                    </div>
+                                ))}
+                                <div className='text-center'>
+                                    <button
+                                        type="button"
+                                        onClick={handleAddLanguage}
                                         className="btn btn-outline-secondary"
                                         style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(0, 255, 0, 0.5)' }}
                                     >
@@ -265,12 +351,17 @@ const ProfileIntermediary = () => {
                         <div className="col-md-2 text-center">
                             <img
                                 src={selectedImage || image || '../intermediary-profile-image.png'}
-                                alt="Profile picture"
+                                alt="Profile pictur"
                                 style={{ width: '90%', height: 'auto', marginBottom: '15px' }}
                             />
                         </div>
                         <div className="col-md-5">
                             <div className="row">
+                                <div className="col">
+                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
+                                        {t('age')}: {formData.age}
+                                    </p>
+                                </div>
                                 <div className="col">
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
                                         {t('city')}: {formData.city}
@@ -298,19 +389,8 @@ const ProfileIntermediary = () => {
                         <div className="col-md-7">
                             <div className="row">
                                 <div className="col">
-                                    <h3>{t('socialMedia')}</h3>
-                                    <Nav className="align-items-center" style={{ marginTop: "-15px", marginLeft: "-15px" }}>
-                                        {/* Contenu de la dernière colonne */}
-                                        <Nav.Link href="https://twitter.com" target="_blank" style={{ color: '#F24726', fontSize: '30px' }}>
-                                            <FontAwesomeIcon icon={faTwitter} />
-                                        </Nav.Link>
-                                        <Nav.Link href="https://www.facebook.com" target="_b    lank" style={{ color: '#F24726', fontSize: '30px' }}>
-                                            <FontAwesomeIcon icon={faFacebook} />
-                                        </Nav.Link>
-                                        <Nav.Link href="https://www.instagram.com" target="_blank" style={{ color: '#F24726', fontSize: '30px' }}>
-                                            <FontAwesomeIcon icon={faInstagram} />
-                                        </Nav.Link>
-                                    </Nav>
+                                    <h3>Total points</h3>
+                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{formData.points}</p>
                                 </div>
                                 <div className="col">
                                     <h3>{hideProfile ? t('hideProfile') : t('showProfile')}</h3>
@@ -335,10 +415,18 @@ const ProfileIntermediary = () => {
                         <div className="col-md-7">
                             <div className="row">
                                 <div className="col">
-                                    <h3>{t('program')}</h3>
-                                    {programList.map((program, index) => (
+                                    <h3>{t('education')}</h3>
+                                    {educationList.map((education, index) => (
                                         <div className="col" key={index}>
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{program}</p>
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{education}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="col">
+                                    <h3>{t('language')}</h3>
+                                    {languageList.map((language, index) => (
+                                        <div className="col" key={index}>
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{language}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -392,4 +480,4 @@ const ProfileIntermediary = () => {
     );
 };
 
-export default ProfileIntermediary;
+export default ProfileYouth;

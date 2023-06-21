@@ -1,15 +1,15 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from '../common/Header'
+import Header from '../../common/Header/Header'
 
-const Career = () => {
+const Terms = () => {
     const { t } = useTranslation();
 
     return (
-        <div className="Career">
+        <div className="Terms">
             <Header />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{t('careerTitle')}</h1>
+                <h1>{t('termsTitle')}</h1>
             </div>
             <div className="container">
                 <div className="row mt-4">
@@ -35,4 +35,4 @@ const Career = () => {
     );
 };
 
-export default Career;
+export default Terms;

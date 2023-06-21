@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
-import logo from '../../kode48-color-only.png';
+import logo from './kode48-color-only.png';
 
 //import components
-import LanguageSelector from './LanguageSelector';
+import LanguageSelector from '../LanguageSelector';
 
 const Header = () => {
   const [showHeader, setShowHeader] = useState(true);

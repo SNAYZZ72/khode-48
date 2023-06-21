@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
-import logo from '../../kode48-color-only.png';
+import logo from './kode48-color-only.png';
 
 //import components
-import LanguageSelector from './LanguageSelector';
+import LanguageSelector from '../LanguageSelector';
 
-const HeaderIntermediary = () => {
+const HeaderCompany = () => {
     const [showHeader, setShowHeader] = useState(true);
     const location = useLocation();
 
@@ -34,16 +34,16 @@ const HeaderIntermediary = () => {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ms-auto">
                     <Nav.Link
-                        href="/profileIntermediary"
-                        className={location.pathname === '/profileIntermediary' ? 'active-link' : ''}
-                        style={{ color: location.pathname === '/profileIntermediary' ? '#F24726' : 'black', textDecoration: location.pathname === '/profileIntermediary' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
+                        href="/profileCompany"
+                        className={location.pathname === '/profileCompany' ? 'active-link' : ''}
+                        style={{ color: location.pathname === '/profileCompany' ? '#F24726' : 'black', textDecoration: location.pathname === '/profileCompany' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
                     >
                         PROFILE
                     </Nav.Link>
                     <Nav.Link
-                        href="/homeIntermediary"
-                        className={location.pathname === '/homeIntermediary' ? 'active-link' : ''}
-                        style={{ color: location.pathname === '/homeIntermediary' ? '#F24726' : 'black', textDecoration: location.pathname === '/homeIntermediary' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
+                        href="/homeCompany"
+                        className={location.pathname === '/homeCompany' ? 'active-link' : ''}
+                        style={{ color: location.pathname === '/homeCompany' ? '#F24726' : 'black', textDecoration: location.pathname === '/homeCompany' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
                     >
                         HOME
                     </Nav.Link>
@@ -61,4 +61,4 @@ const HeaderIntermediary = () => {
     );
 };
 
-export default HeaderIntermediary;
+export default HeaderCompany;

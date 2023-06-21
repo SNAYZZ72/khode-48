@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import HeaderYouth from '../common/HeaderYouth';
+import HeaderYouth from '../../common/Header/HeaderYouth';
 import { Modal, Button } from 'react-bootstrap';
 
-const HomeProjects = () => {
+const HomeYouth = () => {
     const { t } = useTranslation();
 
     const profilesData = [
@@ -199,4 +199,4 @@ const HomeProjects = () => {
     );
 };
 
-export default HomeProjects;
+export default HomeYouth;

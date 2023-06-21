@@ -9,24 +9,24 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 //import Pages
 import Home from './components/Home/Homepage';
-import About from './components/Pages/About';
-import Contact from './components/Pages/Contact';
-import FAQ from './components/Pages/FAQ';
-import Terms from './components/Pages/Terms';
-import Career from './components/Pages/Career';
+import About from './components/Pages/Footer/About';
+import Contact from './components/Pages/Footer/Contact';
+import FAQ from './components/Pages/Footer/FAQ';
+import Terms from './components/Pages/Footer/Terms';
+import Career from './components/Pages/Footer/Career';
 //import register
-import RegisterPageY from "./components/Pages/RegisteredYouth";
-import RegisterPageC from "./components/Pages/RegisteredCompanies";
-import RegisterPageI from "./components/Pages/RegisteredIntermediaries";
+import RegisterPageY from "./components/Pages/Register/RegisteredYouth";
+import RegisterPageC from "./components/Pages/Register/RegisteredCompanies";
+import RegisterPageI from "./components/Pages/Register/RegisteredIntermediaries";
 //import Home profile
-import HomeYouth from "./components/Pages/HomeYouth";
-import HomeCompany from "./components/Pages/HomeCompany";
-import HomeIntemediary from "./components/Pages/HomeIntermediary"
+import HomeYouth from "./components/Pages/YoungPeople/HomeYouth";
+import HomeCompany from "./components/Pages/Company/HomeCompany";
+import HomeIntemediary from "./components/Pages/Intermediary/HomeIntermediary"
 
 //import Profile
-import ProfileYouth from "./components/Pages/ProfileYouth";
-import ProfileCompany from "./components/Pages/ProfileCompany";
-import ProfileIntermediary from "./components/Pages/ProfileIntermediary";
+import ProfileYouth from "./components/Pages/YoungPeople/ProfileYouth";
+import ProfileCompany from "./components/Pages/Company/ProfileCompany";
+import ProfileIntermediary from "./components/Pages/Intermediary/ProfileIntermediary";
 
 //import Components
 import Footer from './components/common/Footer';

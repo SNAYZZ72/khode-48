@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Nav, Navbar, Button, Container, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import Header from '../common/Header';
+import Header from '../common/Header/Header';
 
 const Home = () => {
     const { t } = useTranslation();

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from '../common/Header';
+import Header from '../../common/Header/Header';
 
 const RegisterCompanyPage = () => {
     const { t } = useTranslation();
