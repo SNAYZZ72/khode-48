@@ -13,6 +13,7 @@ const Home = () => {
     const [companyCount, setCompanyCount] = useState(15);
     const [intermediaryCount, setIntermediaryCount] = useState(200);
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const [isLoggingIn, setIsLoggingIn] = useState(false); // New state to track login process
 
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
@@ -28,7 +29,7 @@ const Home = () => {
     };
 
     const handleLogin = async () => {
-        //setIsLoggingIn(true); // Set isLoggingIn to true when login starts
+        setIsLoggingIn(true); // Set isLoggingIn to true when login starts
         try {
           await auth.signInWithEmailAndPassword(email, password);
           navigate('/HomeYouth')
@@ -37,12 +38,14 @@ const Home = () => {
           alert ('Wrong email or password');   
           //login failed
         }
-        //setIsLoggingIn(false); // Set isLoggingIn to false when login finishes
+        setIsLoggingIn(false); // Set isLoggingIn to false when login finishes
         handleCloseModal(); // Close the modal
-    };
+      };
 
     const handleCloseModal = () => {
-        setShowLoginModal(false);
+        if (!isLoggingIn) { // Only close the modal if not currently logging in
+            setShowLoginModal(false);
+        }
     };
 
     return (
@@ -135,12 +138,11 @@ const Home = () => {
                     </div>
                 )}
 
-
                 {profileType === 'company' && (
                     <div className="container text-center">
                         <h2>{t('companyProfile')}</h2>
                         <p>{t('companyProfileDescription')}</p>
-                        <Button variant="primary" onClick={handleLogin} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                        <Button variant="primary" onClick={handleLoginDisplay} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
                             {t('login')}
                         </Button>
                     </div>
@@ -150,7 +152,7 @@ const Home = () => {
                     <div className="container text-center">
                         <h2>{t('intermediaryProfile')}</h2>
                         <p>{t('intermediaryProfileDescription')}</p>
-                        <Button variant="primary" onClick={handleLogin} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                        <Button variant="primary" onClick={handleLoginDisplay} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
                             {t('login')}
                         </Button>
                     </div>
@@ -162,21 +164,36 @@ const Home = () => {
                     <Modal.Title>{t('login')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form>
+                    <div>
                         <div className="form-group">
                             <label htmlFor="email">{t('email')}</label>
-                            <input type="email" className="form-control" id="email" placeholder={t('enterEmail')} />
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />                       
                         </div>
                         <br />
                         <div className="form-group">
                             <label htmlFor="password">{t('password')}</label>
-                            <input type="password" className="form-control" id="password" placeholder={t('enterPassword')} />
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />                        
                         </div>
                         <br />
-                        <Button variant="primary" type="submit" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                            {t('submit')}
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                            onClick={handleLogin}
+                        >
+                        {t('login')}
                         </Button>
-                    </form>
+                    </div>
 
                     {profileType === 'young' && (
                         <p>
@@ -189,7 +206,7 @@ const Home = () => {
                     {profileType === 'company' && (
                         <p>
                             {t('dontHaveCompanyAccount')}{' '}
-                            <a href="/registerC" style={{ color: '#F24726' }}>
+                            <a href="/auth" style={{ color: '#F24726' }}>
                                 {t('createCompanyAccount')}
                             </a>
                         </p>

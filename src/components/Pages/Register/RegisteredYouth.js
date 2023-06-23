@@ -62,7 +62,6 @@ const RegisterPage = () => {
         gender: formData.gender,
         dateOfBirth: formData.dateOfBirth,
         city: formData.city,
-        state: formData.state,
         postalCode: formData.postalCode,
         email: formData.email,
         phoneNumber: formData.phoneNumber,
@@ -161,6 +160,14 @@ const RegisterPage = () => {
         setShowPassword(!showPassword);
     };
 
+    const doesPasswordMatch = () => {
+        if(formData.password === formData.confirmPassword){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Perform form submission logic here
@@ -187,50 +194,56 @@ const RegisterPage = () => {
 
         // You can send the form data to a backend server or perform any other actions
         // if handleREgister return no error then result is true and the following code can execute
-        const result = await handleRegister();
-
-        if(result) {
-            // Set the user data
-            setSentData({
-                firstName: formData.firstName || '',
-                lastName: formData.lastName || '',
-                gender: formData.gender || '',
-                dateOfBirth: formData.dateOfBirth || '',
-                city: formData.city || '',
-                postalCode: formData.postalCode || '',
-                email: formData.email || '',
-                phoneNumber: formData.phoneNumber || '',
-                educationalLevel: formData.educationalLevel || '',
-            });
-
-            // Set the user data under the new unique ID
-            newUserRef.set(sentData)
-            .then(() => {
-                console.log('User data saved successfully');
-            })
-            .catch((error) => {
-                console.log('Error saving user data:', error.message);
-            });
         
-            setExistEmail(false);
+        if(doesPasswordMatch() && validatePassword(formData.password)) {
+            const result = await handleRegister();
 
-            // Reset form fields after submission if needed
-            setFormData({
-                firstName: '',
-                lastName: '',
-                gender: '',
-                dateOfBirth: '',
-                city: '',
-                postalCode: '',
-                email: '',
-                password: '',
-                confirmPassword: '',
-                phoneNumber: '',
-                educationalLevel: '',
-            });
-            return true;
-        } else {
-            return false;
+            if(result) {
+                // Set the user data
+                setSentData({
+                    firstName: formData.firstName || '',
+                    lastName: formData.lastName || '',
+                    gender: formData.gender || '',
+                    dateOfBirth: formData.dateOfBirth || '',
+                    city: formData.city || '',
+                    postalCode: formData.postalCode || '',
+                    email: formData.email || '',
+                    phoneNumber: formData.phoneNumber || '',
+                    educationalLevel: formData.educationalLevel || '',
+                });
+
+                // Set the user data under the new unique ID
+                newUserRef.set(sentData)
+                /*
+                debbuging
+                .then(() => {
+                    console.log('User data saved successfully');
+                })
+                .catch((error) => {
+                    console.log('Error saving user data:', error.message);
+                });
+                */
+            
+                setExistEmail(false);
+
+                // Reset form fields after submission if needed
+                setFormData({
+                    firstName: '',
+                    lastName: '',
+                    gender: '',
+                    dateOfBirth: '',
+                    city: '',
+                    postalCode: '',
+                    email: '',
+                    password: '',
+                    confirmPassword: '',
+                    phoneNumber: '',
+                    educationalLevel: '',
+                });
+                return true;
+            } else {
+                return false;
+            }
         }
     };
 
@@ -463,7 +476,6 @@ const RegisterPage = () => {
                             type="submit" 
                             className="btn btn-primary" 
                             style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                            onClic={handleRegister}
                             >
                             {t('registerButton')}
                         </button>
