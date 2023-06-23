@@ -201,6 +201,9 @@ const RegisterPage = () => {
                     educationalLevel: formData.educationalLevel || '',
                 };
 
+                console.log(formData.firstName);
+                console.log(sentData);
+
                 // Set the user data under the new unique ID
                 newUserRef.set(sentData)
                 /*

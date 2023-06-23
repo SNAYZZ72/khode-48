@@ -3,6 +3,9 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import logo from './kode48-color-only.png';
 
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../../firebase'; 
+
 //import components
 import LanguageSelector from '../LanguageSelector';
 
@@ -22,6 +25,17 @@ const HeaderYouth = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await auth.signOut(); // Sign out the user from Firebase Authentication
+      // Perform any additional actions after successful logout
+    } catch (error) {
+      console.error('Error logging out:', error);
+      // Handle the error appropriately
+    }
+  };
+  
 
   return (
     <Navbar sticky="top" expand="lg" style={{ paddingLeft: '20px', paddingRight: '20px', backgroundColor: showHeader ? 'white' : 'rgba(255, 255, 255, 0.95)', boxShadow: showHeader ? 'none' : '0px 1px 0px rgba(0, 0, 0, 0.2)' }}>
@@ -51,6 +65,7 @@ const HeaderYouth = () => {
               href="/"
               className={location.pathname === '/' ? 'active-link' : ''}
               style={{ color: location.pathname === '/' ? '#F24726' : 'black', textDecoration: location.pathname === '/' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
+              onClick={handleLogout}
             >
               LOGOUT
             </Nav.Link>
