@@ -326,7 +326,7 @@ const RegisterPage = () => {
                         </div>
                     </div>
                     <div className="row mb-3">    
-                        <div className="col-md-2">
+                        <div className="col">
                             <label htmlFor="city">{t('city')}</label>
                             <input
                                 className="form-control"
@@ -338,7 +338,7 @@ const RegisterPage = () => {
                             >
                             </input>
                         </div>
-                        <div className="col-md-2">
+                        <div className="col">
                             <label htmlFor="postalCode">{t('postalCode')}</label>
                             <input
                                 className="form-control"

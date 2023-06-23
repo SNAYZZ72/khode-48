@@ -214,7 +214,7 @@ const Home = () => {
                     {profileType === 'company' && (
                         <p>
                             {t('dontHaveCompanyAccount')}{' '}
-                            <a href="/auth" style={{ color: '#F24726' }}>
+                            <a href="/registerC" style={{ color: '#F24726' }}>
                                 {t('createCompanyAccount')}
                             </a>
                         </p>

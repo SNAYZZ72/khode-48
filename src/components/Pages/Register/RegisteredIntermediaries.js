@@ -62,29 +62,7 @@ const RegisterIntermediaryPage = () => {
                     </div>
 
                     <div className="row mb-3">
-                        <div className="col-md-6">
-                            <label htmlFor="addressLine">{t('addressLine')}</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="addressLine"
-                                value={addressLine1}
-                                onChange={(e) => setAddressLine1(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="country">{t('country')}</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="country"
-                                value={country}
-                                onChange={(e) => setCountry(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="col-md-2">
+                        <div className="col">
                             <label htmlFor="city">{t('city')}</label>
                             <input
                                 type="text"
@@ -95,7 +73,7 @@ const RegisterIntermediaryPage = () => {
                                 required
                             />
                         </div>
-                        <div className="col-md-2">
+                        <div className="col">
                             <label htmlFor="postalCode">{t('postalCode')}</label>
                             <input
                                 type="text"
@@ -124,8 +102,6 @@ const RegisterIntermediaryPage = () => {
                                 <option value="Cultural and Creative Industry">{t('Cultural and Creative Industry')}</option>
                             </select>
                         </div>
-                    </div>
-                    <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="maturity">{t('What is the maturity of your project?')}</label>
                             <select
@@ -143,8 +119,6 @@ const RegisterIntermediaryPage = () => {
                                 <option value="International">{t('International')}</option>
                             </select>
                         </div>
-                    </div>
-                    <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="primarySector">{t('Select your primary sector')}</label>
                             <select
