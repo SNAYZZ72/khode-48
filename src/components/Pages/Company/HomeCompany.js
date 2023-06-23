@@ -9,7 +9,7 @@ const HomeCompany = () => {
 
     const profilesData = [
         {
-            name: 'John',
+            name: 'John Doe',
             age: 20,
             location: 'bilbao',
             totalPoints: 150,
@@ -18,7 +18,7 @@ const HomeCompany = () => {
                 { name: 'Design', acquiredPoints: 50 },
             ],
             projects: 5,
-            profilePhoto: 'john-profile.jpg', // Add the profile photo path here
+            profilePhoto: '../intermediary-profile-image.png', // Add the profile photo path here
         },
         {
             name: 'Sarah',
@@ -94,108 +94,131 @@ const HomeCompany = () => {
 
     return (
         <>
-        <HeaderCompany />
-        <div className="container">
-            <h2>{t('Young People Profiles')}</h2>
+            <HeaderCompany />
+            <div className="container">
+                <h2>{t('Young People Profiles')}</h2>
 
-            <div className="input-group mb-3">
-                <span className="input-group-text">{t('Search')}:</span>
-                <input
-                    type="text"
-                    className="form-control"
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                />
-            </div>
-            <div className="input-group mb-3">
-                <span className="input-group-text">
-                    {t('Filter')}:
-                </span>
-                <select
-                    className="form-select"
-                    value={filterQuery}
-                    onChange={handleFilterChange}
-                >
-                    <option value="">{t('All')}</option>
-                    <option value="Coding">{t('Coding')}</option>
-                    <option value="Design">{t('Design')}</option>
-                    <option value="Marketing">{t('Marketing')}</option>
-                    <option value="Photography">{t('Photography')}</option>
-                </select>
-            </div>
-
-            {filteredProfiles.length === 0 ? (
-                <p>{t('No profiles found.')}</p>
-            ) : (
-                <ul className="list-group">
-                    {filteredProfiles.map((profile, index) => (
-                        <li key={index} className="list-group-item profile-item">
-                            <div className="profile-header">
-                                <div className="profile-photo">
-                                    <img src={profile.profilePhoto} alt={profile.name} />
-                                </div>
-                                <div className="profile-details">
-                                    <h3>{profile.name}</h3>
-                                    <p>{t('Age')}: {profile.age}</p>
-                                    <p>{t('Location')}: {profile.location}</p>
-                                    <p>{t('Total Points')}: {profile.totalPoints}</p>
-                                </div>
-                            </div>
-                            <p>{t('Skills')}:</p>
-                            <ul className="list-group">
-                                {profile.skills.map((skill, skillIndex) => (
-                                    <li key={skillIndex} className="list-group-item">
-                                        {skill.name} - {t('Acquired Points')}: {skill.acquiredPoints}
-                                    </li>
-                                ))}
-                            </ul>
-                            <br />
-                            <button
-                                className="btn btn-primary"
-                                onClick={() => handleSeeMore(profile)}
-                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                <div className="row mb-3">
+                    <div className="col-md-9">
+                        <div className="input-group">
+                            <span className="input-group-text">{t('Search')}:</span>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                            />
+                        </div>
+                    </div>
+                    <div className="col-md-3">
+                        <div className="input-group">
+                            <span className="input-group-text">
+                                {t('Filter')}:
+                            </span>
+                            <select
+                                className="form-select"
+                                value={filterQuery}
+                                onChange={handleFilterChange}
                             >
-                                {t('See More')}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            )}
+                                <option value="">{t('All')}</option>
+                                <option value="Coding">{t('Coding')}</option>
+                                <option value="Design">{t('Design')}</option>
+                                <option value="Marketing">{t('Marketing')}</option>
+                                <option value="Photography">{t('Photography')}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {filteredProfiles.length === 0 ? (
+                    <p>{t('No profiles found.')}</p>
+                ) : (
+                    <ul className="list-group">
+                        {filteredProfiles.map((profile, index) => (
+                            <li key={index} className="list-group-item profile-item">
+                                <div className="row mb-3">
+                                    <div className="col-md-2 text-center">
+                                        <div className="profile-photo">
+                                            <img src={profile.profilePhoto} alt={profile.name} style={{ width: '80%', height: 'auto' }} />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className="row">
+                                            <div className="col">
+                                                <h2>{profile.name}</h2>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="row">
+                                                <p>{t('Age')}: {profile.age}</p>
+                                            </div>
+                                            <div className="row">
+                                                <p>{t('Location')}: {profile.location}</p>
+                                            </div>
+                                            <div className="row">
+                                                <p>{t('Total Points')}: {profile.totalPoints}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-5">
+                                        <ul className="list-group">
+                                            {profile.skills.map((skill, skillIndex) => (
+                                                <li key={skillIndex} className="list-group-item">
+                                                    {skill.name} - {t('Acquired Points')}: {skill.acquiredPoints}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                    <div className="col text-center" style={{ paddingTop: "5.6%" }}>
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => handleSeeMore(profile)}
+                                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                        >
+                                            {t('See More')}
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
 
-            {/* Modal Popup */}
-            <Modal show={selectedProfile} onHide={handleCloseModal} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>{selectedProfile && selectedProfile.name}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {selectedProfile && (
-                        <>
-                            <div className="profile-photo">
-                                <img src={selectedProfile.profilePhoto} alt={selectedProfile.name} />
-                            </div>
-                            <p>{t('Age')}: {selectedProfile.age}</p>
-                            <p>{t('Location')}: {selectedProfile.location}</p>
-                            <p>{t('Total Points')}: {selectedProfile.totalPoints}</p>
-                            <p>{t('Projects Participated')}: {selectedProfile.projects}</p>
-                            <p>{t('Skills')}:</p>
-                            <ul className="list-group">
-                                {selectedProfile.skills.map((skill, skillIndex) => (
-                                    <li key={skillIndex} className="list-group-item">
-                                        {skill.name} - {t('Acquired Points')}: {skill.acquiredPoints}
-                                    </li>
-                                ))}
-                            </ul>
-                            {/* Add additional information here */}
-                        </>
-                    )}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>
-                        {t('Close')}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </div>
+                {/* Modal Popup */}
+                <Modal show={selectedProfile} onHide={handleCloseModal} centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{selectedProfile && selectedProfile.name}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {selectedProfile && (
+                            <>
+                                <div className="text-center">
+                                    <div className="profile-photo">
+                                        <img src={selectedProfile.profilePhoto} alt={selectedProfile.name} style={{ width: "80%" }} />
+                                    </div>
+                                </div>
+                                <p>{t('Age')}: {selectedProfile.age}</p>
+                                <p>{t('Location')}: {selectedProfile.location}</p>
+                                <p>{t('Total Points')}: {selectedProfile.totalPoints}</p>
+                                <p>{t('Projects Participated')}: {selectedProfile.projects}</p>
+                                <p>{t('Skills')}:</p>
+                                <ul className="list-group">
+                                    {selectedProfile.skills.map((skill, skillIndex) => (
+                                        <li key={skillIndex} className="list-group-item">
+                                            {skill.name} - {t('Acquired Points')}: {skill.acquiredPoints}
+                                        </li>
+                                    ))}
+                                </ul>
+                                {/* Add additional information here */}
+                            </>
+                        )}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseModal}>
+                            {t('Close')}
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
         </>
     );
 };
