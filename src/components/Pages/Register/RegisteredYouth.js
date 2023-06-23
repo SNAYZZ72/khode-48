@@ -5,6 +5,10 @@ import zxcvbn from 'zxcvbn';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../../firebase'; 
+import { database } from '../../firebase'; // Import the database instance from your firebase.js file
+
 
 // Define the function to determine the color based on password strength score
 const getPasswordStrengthColor = (score) => {
@@ -30,33 +34,59 @@ const getPasswordStrengthText = (score) => {
 
 const RegisterPage = () => {
     const { t } = useTranslation();
+
+    const userRef = database.ref('users'); // Reference the 'users' node in the database
+    const newUserRef = userRef.push(); // Generate a new unique ID for the user
+    const [error, setError] = useState('');
+    const [existEmail, setExistEmail] = useState(false);
+
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         gender: '',
         dateOfBirth: '',
-        address: '',
         city: '',
-        country: '',
-        state: '',
         postalCode: '',
         email: '',
         password: '',
         confirmPassword: '',
         phoneNumber: '',
         educationalLevel: '',
-        cvFile: null,
-        countries: [],
-        cities: [], // Store the list of cities
-        postalCodes: [], // Store the list of postal codes
+        cities: '', // Store the list of cities
+        postalCodes: '', // Store the list of postal codes
     });
 
+    const [sentData, setSentData] = useState({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        gender: formData.gender,
+        dateOfBirth: formData.dateOfBirth,
+        city: formData.city,
+        state: formData.state,
+        postalCode: formData.postalCode,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber,
+        educationalLevel: formData.educationalLevel,
+    });
+/*
     useEffect(() => {
         fetchCountries();
         fetchCities();
         fetchPostalCodes();
     }, []);
-
+*/
+    const handleRegister = async () => {
+        try {
+            await auth.createUserWithEmailAndPassword(formData.email, formData.password);
+            setExistEmail(false);
+            return true;
+        } catch (error) {
+            setError(error.message);       
+            setExistEmail(true);
+            return false;
+        }
+    };
+/*
     const fetchCountries = async () => {
         try {
             const response = await axios.get('https://restcountries.com/v3.1/all');
@@ -105,25 +135,18 @@ const RegisterPage = () => {
             console.error('Error fetching postal codes:', error);
         }
     };
-
+*/
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [passwordScore, setPasswordScore] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const [test, setTest] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevFormData) => ({
             ...prevFormData,
             [name]: value,
-        }));
-    };
-
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            cvFile: file,
         }));
     };
 
@@ -138,7 +161,7 @@ const RegisterPage = () => {
         setShowPassword(!showPassword);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // Perform form submission logic here
         const currentDate = new Date();
@@ -152,25 +175,6 @@ const RegisterPage = () => {
             setShowErrorModal(true);
             return;
         }
-        // You can send the form data to a backend server or perform any other actions
-        // Reset form fields after submission if needed
-        setFormData({
-            firstName: '',
-            lastName: '',
-            gender: '',
-            dateOfBirth: '',
-            address: '',
-            city: '',
-            country: '',
-            state: '',
-            postalCode: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-            phoneNumber: '',
-            educationalLevel: '',
-            cvFile: null,
-        });
 
         if (formData.password === formData.confirmPassword && validatePassword(formData.password)) {
             // Passwords match and meet the requirements
@@ -181,6 +185,53 @@ const RegisterPage = () => {
             setPasswordsMatch(false);
         }
 
+        // You can send the form data to a backend server or perform any other actions
+        // if handleREgister return no error then result is true and the following code can execute
+        const result = await handleRegister();
+
+        if(result) {
+            // Set the user data
+            setSentData({
+                firstName: formData.firstName || '',
+                lastName: formData.lastName || '',
+                gender: formData.gender || '',
+                dateOfBirth: formData.dateOfBirth || '',
+                city: formData.city || '',
+                postalCode: formData.postalCode || '',
+                email: formData.email || '',
+                phoneNumber: formData.phoneNumber || '',
+                educationalLevel: formData.educationalLevel || '',
+            });
+
+            // Set the user data under the new unique ID
+            newUserRef.set(sentData)
+            .then(() => {
+                console.log('User data saved successfully');
+            })
+            .catch((error) => {
+                console.log('Error saving user data:', error.message);
+            });
+        
+            setExistEmail(false);
+
+            // Reset form fields after submission if needed
+            setFormData({
+                firstName: '',
+                lastName: '',
+                gender: '',
+                dateOfBirth: '',
+                city: '',
+                postalCode: '',
+                email: '',
+                password: '',
+                confirmPassword: '',
+                phoneNumber: '',
+                educationalLevel: '',
+            });
+            return true;
+        } else {
+            return false;
+        }
     };
 
     const validatePassword = (password) => {
@@ -191,7 +242,7 @@ const RegisterPage = () => {
     const handleModalClose = () => {
         setShowErrorModal(false);
     };
-
+/*
     const handleCaptchaChange = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_CAPTCHA_SITE_KEY
         : '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
     console.log("captcha site key", handleCaptchaChange);
@@ -204,7 +255,7 @@ const RegisterPage = () => {
         setCaptchaToken(token);
     };
 
-
+*/
 
     return (
         <div>
@@ -254,8 +305,6 @@ const RegisterPage = () => {
                                 <option value="">{t('selectGender')}</option>
                                 <option value="female">{t('female')}</option>
                                 <option value="male">{t('male')}</option>
-                                <option value="nonBinary">{t('nonBinary')}</option>
-                                <option value="preferNotToSay">{t('preferNotToSay')}</option>
                             </select>
                         </div>
                         <div className="col">
@@ -271,40 +320,10 @@ const RegisterPage = () => {
                             />
                         </div>
                     </div>
-                    <div className="row mb-3">
-                        <div className="col-md-6">
-                            <label htmlFor="address">{t('address')}</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="address"
-                                name="address"
-                                value={formData.address}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="country">{t('country')}</label>
-                            <select
-                                className="form-control"
-                                id="country"
-                                name="country"
-                                value={formData.country}
-                                onChange={handleInputChange}
-                                required
-                            >
-                                <option value="">{t('selectCountry')}</option>
-                                {formData.countries.map((country) => (
-                                    <option key={country.code} value={country.code}>
-                                        {country.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                    <div className="row mb-3">    
                         <div className="col-md-2">
                             <label htmlFor="city">{t('city')}</label>
-                            <select
+                            <input
                                 className="form-control"
                                 id="city"
                                 name="city"
@@ -312,31 +331,19 @@ const RegisterPage = () => {
                                 onChange={handleInputChange}
                                 required
                             >
-                                <option value="">{t('selectCity')}</option>
-                                {formData.cities.map((city) => (
-                                    <option key={city.name} value={city.name}>
-                                        {city.name}
-                                    </option>
-                                ))}
-                            </select>
+                            </input>
                         </div>
                         <div className="col-md-2">
                             <label htmlFor="postalCode">{t('postalCode')}</label>
-                            <select
+                            <input
                                 className="form-control"
                                 id="postalCode"
                                 name="postalCode"
                                 value={formData.postalCode}
                                 onChange={handleInputChange}
                                 required
-                            >
-                                <option value="">{t('selectPostalCode')}</option>
-                                {formData.postalCodes.map((postalCode) => (
-                                    <option key={postalCode.code} value={postalCode.code}>
-                                        {postalCode.code}
-                                    </option>
-                                ))}
-                            </select>
+                            >        
+                            </input>
                         </div>
                     </div>
                     <div className="row mb-3">
@@ -352,6 +359,11 @@ const RegisterPage = () => {
                                 required
                             />
                         </div>
+                        {existEmail && (
+                            <p className="text-danger">
+                                {t('emailAlreadyExists')}
+                            </p>
+                        )}
                         <div className="col">
                             <label htmlFor="phoneNumber">{t('phoneNumber')}</label>
                             <input
@@ -433,16 +445,6 @@ const RegisterPage = () => {
                                 <option value="doctoralDegree">{t('doctoralDegree')}</option>
                             </select>
                         </div>
-                        <div className="col">
-                            <label htmlFor="cvFile">{t('uploadCV')}</label>
-                            <input
-                                type="file"
-                                className="form-control"
-                                id="cvFile"
-                                name="cvFile"
-                                onChange={handleFileChange}
-                            />
-                        </div>
                     </div>
                     <div className='row mb-3'>
                         <div className="col">
@@ -456,11 +458,13 @@ const RegisterPage = () => {
                             />
                         </div>
                     </div>
-                    <div className="">
-                        <ReCAPTCHA sitekey="6LcXnqImAAAAACTwFwV6xsuTgqx36rljsxKw8oXU" onChange={handleCaptchaChange} />
-                    </div>
                     <div className="container text-center">
-                        <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                        <button 
+                            type="submit" 
+                            className="btn btn-primary" 
+                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                            onClic={handleRegister}
+                            >
                             {t('registerButton')}
                         </button>
                     </div>

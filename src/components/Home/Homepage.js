@@ -3,6 +3,9 @@ import { Nav, Navbar, Button, Container, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Header from '../common/Header/Header';
 
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase'; 
+
 const Home = () => {
     const { t } = useTranslation();
     const [profileType, setProfileType] = useState('');
@@ -11,13 +14,31 @@ const Home = () => {
     const [intermediaryCount, setIntermediaryCount] = useState(200);
     const [showLoginModal, setShowLoginModal] = useState(false);
 
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
     const handleProfileSelect = (type) => {
         setProfileType(type);
     };
 
-    const handleLogin = () => {
-        console.log('Logged in as', profileType);
+    const handleLoginDisplay = () => {
         setShowLoginModal(true);
+    };
+
+    const handleLogin = async () => {
+        //setIsLoggingIn(true); // Set isLoggingIn to true when login starts
+        try {
+          await auth.signInWithEmailAndPassword(email, password);
+          navigate('/HomeYouth')
+          //login successful
+        } catch (error) {
+          alert ('Wrong email or password');   
+          //login failed
+        }
+        //setIsLoggingIn(false); // Set isLoggingIn to false when login finishes
+        handleCloseModal(); // Close the modal
     };
 
     const handleCloseModal = () => {
@@ -108,11 +129,12 @@ const Home = () => {
                     <div className="container text-center">
                         <h2>{t('youthProfile')}</h2>
                         <p>{t('youthProfileDescription')}</p>
-                        <Button variant="primary" onClick={handleLogin} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                        <Button variant="primary" onClick={handleLoginDisplay} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
                             {t('login')}
                         </Button>
                     </div>
                 )}
+
 
                 {profileType === 'company' && (
                     <div className="container text-center">
