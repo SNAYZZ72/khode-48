@@ -201,16 +201,19 @@ const RegisterPage = () => {
             if(result) {
                 // Set the user data
                 setSentData({
-                    firstName: formData.firstName || '',
-                    lastName: formData.lastName || '',
-                    gender: formData.gender || '',
-                    dateOfBirth: formData.dateOfBirth || '',
-                    city: formData.city || '',
-                    postalCode: formData.postalCode || '',
-                    email: formData.email || '',
-                    phoneNumber: formData.phoneNumber || '',
-                    educationalLevel: formData.educationalLevel || '',
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                    gender: formData.gender,
+                    dateOfBirth: formData.dateOfBirth,
+                    city: formData.city,
+                    postalCode: formData.postalCode,
+                    email: formData.email,
+                    phoneNumber: formData.phoneNumber,
+                    educationalLevel: formData.educationalLevel,
                 });
+
+                console.log(formData.firstName);
+                console.log(sentData);
 
                 // Set the user data under the new unique ID
                 newUserRef.set(sentData)

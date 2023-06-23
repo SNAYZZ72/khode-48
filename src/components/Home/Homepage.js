@@ -42,6 +42,14 @@ const Home = () => {
         handleCloseModal(); // Close the modal
       };
 
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            console.log('user is signed in: ', user);
+        } else {
+            console.log('user is not signed in');
+        }
+    });
+
     const handleCloseModal = () => {
         if (!isLoggingIn) { // Only close the modal if not currently logging in
             setShowLoginModal(false);
