@@ -56,17 +56,6 @@ const RegisterPage = () => {
         postalCodes: '', // Store the list of postal codes
     });
 
-    const [sentData, setSentData] = useState({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        gender: formData.gender,
-        dateOfBirth: formData.dateOfBirth,
-        city: formData.city,
-        postalCode: formData.postalCode,
-        email: formData.email,
-        phoneNumber: formData.phoneNumber,
-        educationalLevel: formData.educationalLevel,
-    });
 /*
     useEffect(() => {
         fetchCountries();
@@ -200,7 +189,7 @@ const RegisterPage = () => {
 
             if(result) {
                 // Set the user data
-                setSentData({
+                const sentData = {
                     firstName: formData.firstName || '',
                     lastName: formData.lastName || '',
                     gender: formData.gender || '',
@@ -210,7 +199,7 @@ const RegisterPage = () => {
                     email: formData.email || '',
                     phoneNumber: formData.phoneNumber || '',
                     educationalLevel: formData.educationalLevel || '',
-                });
+                };
 
                 // Set the user data under the new unique ID
                 newUserRef.set(sentData)
