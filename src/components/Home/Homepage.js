@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../common/Header/Header';
 
 import { useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase'; 
 
 const Home = () => {
@@ -28,27 +29,28 @@ const Home = () => {
         setShowLoginModal(true);
     };
 
-    const handleLogin = async () => {
+    const handleLogin = (e) => {
         setIsLoggingIn(true); // Set isLoggingIn to true when login starts
-        try {
-          await auth.signInWithEmailAndPassword(email, password);
-          navigate('/HomeYouth')
-          //login successful
-        } catch (error) {
-          alert ('Wrong email or password');   
-          //login failed
-        }
+        e.preventDefault();
+
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+
+            console.log('user is signed in: ', user);
+            navigate('/HomeYouth')
+            // ...
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            setError(errorMessage);
+            console.log('user is not signed in');
+        });
         setIsLoggingIn(false); // Set isLoggingIn to false when login finishes
         handleCloseModal(); // Close the modal
-      };
-
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            console.log('user is signed in: ', user);
-        } else {
-            console.log('user is not signed in');
-        }
-    });
+    };
 
     const handleCloseModal = () => {
         if (!isLoggingIn) { // Only close the modal if not currently logging in
