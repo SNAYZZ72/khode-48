@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import HeaderYouth from '../../common/Header/HeaderYouth';
-import { doc, setDoc, getDoc } from "firebase/firestore";
-import { db } from '../../../firebase';
+import { doc, setDoc, getDoc, addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from '../../firebase';
+import { getAuth } from "firebase/auth";
 
 const ProfileYouth = () => {
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
     const [hideProfile, setHideProfile] = useState(false);
     const [youthImage, setYouthImage] = useState(null);
+    const [data, setData] = useState({});
+    const auth = getAuth();
 
     //test
     const [youthFormErrors, setYouthFormErrors] = useState({
@@ -61,6 +64,22 @@ const ProfileYouth = () => {
 
     const handleEditProfile = () => {
         setIsEditing(true);
+    };
+
+    const handleAdd = async(e) => {
+        e.preventDefault();
+        const user = auth.currentUser;
+
+        if (user) {
+
+            const res = await setDoc(doc(db, "youth", user.uid), {
+                ...youthFormData,
+                timeStamp: serverTimestamp()
+            });
+        } else {
+            console.log("no user");
+        }
+
     };
 
     const handleSaveProfile = () => {
@@ -466,7 +485,7 @@ const ProfileYouth = () => {
                     </div>
                     <div className="text-center">
                         <button
-                            onClick={handleEditProfile}
+                            onClick={handleAdd}
                             className="btn btn-primary"
                             style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
                         >
