@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import HeaderYouth from '../../common/Header/HeaderYouth';
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from '../../../firebase';
 
 const ProfileYouth = () => {
     const { t } = useTranslation();

@@ -56,13 +56,6 @@ const RegisterPage = () => {
         postalCodes: '', // Store the list of postal codes
     });
 
-/*
-    useEffect(() => {
-        fetchCountries();
-        fetchCities();
-        fetchPostalCodes();
-    }, []);
-*/
     const handleRegister = async () => {
         try {
             await auth.createUserWithEmailAndPassword(formData.email, formData.password);
@@ -74,56 +67,7 @@ const RegisterPage = () => {
             return false;
         }
     };
-/*
-    const fetchCountries = async () => {
-        try {
-            const response = await axios.get('https://restcountries.com/v3.1/all');
-            const countries = response.data.map((country) => ({
-                name: country.name.common,
-                code: country.cca2,
-            }));
-            countries.sort((a, b) => a.name.localeCompare(b.name));
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                countries,
-            }));
-        } catch (error) {
-            console.error('Error fetching countries:', error);
-        }
-    };
 
-    const fetchCities = async () => {
-        try {
-            const response = await axios.get('<API_ENDPOINT_FOR_CITIES>');
-            const cities = response.data.map((city) => ({
-                name: city.name,
-            }));
-            cities.sort((a, b) => a.name.localeCompare(b.name)); // Sort cities alphabetically
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                cities,
-            }));
-        } catch (error) {
-            console.error('Error fetching cities:', error);
-        }
-    };
-
-    const fetchPostalCodes = async () => {
-        try {
-            const response = await axios.get('<API_ENDPOINT_FOR_POSTAL_CODES>');
-            const postalCodes = response.data.map((postalCode) => ({
-                code: postalCode.code,
-            }));
-            postalCodes.sort((a, b) => a.code.localeCompare(b.code)); // Sort postal codes alphabetically
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                postalCodes,
-            }));
-        } catch (error) {
-            console.error('Error fetching postal codes:', error);
-        }
-    };
-*/
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [passwordScore, setPasswordScore] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
