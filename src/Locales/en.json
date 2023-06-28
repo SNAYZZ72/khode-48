@@ -26,7 +26,6 @@
   "createCompanyAccount": "Create Company Account",
   "dontHaveIntermediaryAccount": "Don't have an intermediary account?",
   "createIntermediaryAccount": "Create Intermediary Account",
-
   "Contact": "Contact",
   "Your Name": "Your Name",
   "Lastname": "Last Name",
@@ -35,7 +34,6 @@
   "Subject": "Subject",
   "Message": "Message",
   "Submit": "Submit",
-
   "aboutTitle": "About Us",
   "aboutDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer convallis metus non volutpat cursus. Sed semper aliquet magna, a pretium sem dapibus nec.",
   "mission": "Our Mission",
@@ -46,11 +44,8 @@
   "value1": "Value 1",
   "value2": "Value 2",
   "value3": "Value 3",
-
   "termsTitle": "Terms & Conditions",
-
   "careerTitle": "Career",
-
   "Young People Register": "Young People Register",
   "fullName": "Full Name",
   "firstName": "First Name",
@@ -76,9 +71,7 @@
   "uploadCV": "Upload CV",
   "registerButton": "Register",
   "information": "For further information",
-
   "selectCountry": "Select a country",
-
   "CompanyRegister": "Company Register",
   "Company name": "Company name",
   "Commercials name": "Commercials name",
@@ -116,18 +109,28 @@
   "Legal": "Legal",
   "Digital Industry": "Digital Industry",
   "Business Services": "Business Services",
-  "ContactFirstName" : "Contact First Name",
-  "ContactLastName" : "Contact Last Name",
+  "ContactFirstName": "Contact First Name",
+  "ContactLastName": "Contact Last Name",
   "Companys Linkedin Page": "Company's Linkedin Page",
   "Companys Twitter Page": "Company's Twitter Page",
   "Companys Facebook Page": "Company's Facebook Page",
-
   "IntermediariesRegister": "Intermediaries Register",
-
   "profile": "Profile",
   "age": "Age",
   "education": "Education",
   "language": "Language",
   "skills": "Skills development",
-  "edit": "Edit profile"
+  "edit": "Edit profile",
+  "totalpoints": "Total points",
+  "showProfile": "Show/Hide profile",
+  "hide": "Hide",
+  "show": "Show",
+  "initiative": "Initiative",
+  "empathy": "Empathy",
+  "leadership": "Leadership",
+  "teamwork": "Teamwork",
+  "creativity": "Creativity",
+  "proactivity": "Proactivity",
+  "aboutme": "About me",
+  "profilepicture": "Profile picture"
 }

@@ -26,7 +26,6 @@
   "createCompanyAccount": "Crear cuenta de empresa",
   "dontHaveIntermediaryAccount": "¿No tienes una cuenta de intermediario?",
   "createIntermediaryAccount": "Crear cuenta de intermediario",
-
   "Contact": "Contacto",
   "Your Name": "Tu Nombre",
   "Lastname": "Apellido",
@@ -35,7 +34,6 @@
   "Subject": "Asunto",
   "Message": "Mensaje",
   "Submit": "Enviar",
-
   "aboutTitle": "Acerca de nosotros",
   "aboutDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer convallis metus non volutpat cursus. Sed semper aliquet magna, a pretium sem dapibus nec.",
   "mission": "Nuestra misión",
@@ -46,11 +44,8 @@
   "value1": "Valor 1",
   "value2": "Valor 2",
   "value3": "Valor 3",
-
   "termsTitle": "Condiciones generales",
-
   "careerTitle": "Carrera",
-
   "Young People Register": "Registro de Jóvenes",
   "fullName": "Nombre completo",
   "firstName": "Nombre",
@@ -76,7 +71,6 @@
   "uploadCV": "Cargar CV",
   "registerButton": "Registrar",
   "information": "Para más información",
-
   "CompanyRegister": "Registro de empresa",
   "Company name": "Nombre de la empresa",
   "Commercials name": "Nombre comercial",
@@ -119,13 +113,23 @@
   "Companys Linkedin Page": "Página de Linkedin de la empresa",
   "Companys Twitter Page": "Página de Twitter de la empresa",
   "Companys Facebook Page": "Página de Facebook de la empresa",
-
   "IntermediariesRegister": "Registro de Intermediarios",
-
   "profile": "Perfil",
   "age": "Años",
   "education": "Formación",
   "language": "Idioma",
   "skills": "Desarrollo de competencias",
-  "edit": "Editar perfil"
+  "edit": "Editar perfil",
+  "totalpoints": "Total puntos",
+  "showProfile": "Mostrar/Ocultar perfil",
+  "hide": "Ocultar",
+  "show": "Mostrar",
+  "initiative": "Iniciativa",
+  "empathy": "Empatía",
+  "leadership": "Liderazgo",
+  "teamwork": "Trabajo en equipo",
+  "creativity": "Creatividad",
+  "proactivity": "Proactividad",
+  "aboutme": "Acerca de mí",
+  "profilepicture": "Foto de perfil"
 }
