@@ -65,7 +65,7 @@ export default function App() {
               <Route path="/FAQ" element={<FAQ />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/careers" element={<Career />} />
-              <Route path="/registery" element={<RegisterPageY />} />
+              <Route path="/registerY" element={<RegisterPageY />} />
               <Route path="/registerC" element={<RegisterPageC />} />
               <Route path="/registerI" element={<RegisterPageI />} />
               <Route path="/homeYouth" element={<RequireAuth><HomeYouth /></RequireAuth>} />

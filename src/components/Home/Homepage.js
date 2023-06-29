@@ -214,7 +214,7 @@ const Home = () => {
                     {profileType === 'young' && (
                         <p>
                             {t('dontHaveYoungAccount')}{' '}
-                            <a href="/registery" style={{ color: '#F24726' }}>
+                            <a href="/registerY" style={{ color: '#F24726' }}>
                                 {t('createYoungAccount')}
                             </a>
                         </p>
