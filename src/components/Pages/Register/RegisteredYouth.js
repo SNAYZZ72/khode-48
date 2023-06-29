@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../../common/Header/Header';
 import zxcvbn from 'zxcvbn';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { Modal, Button } from 'react-bootstrap';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase'; 
-import { database } from '../../firebase'; // Import the database instance from your firebase.js file
+import { firestore } from '../../firebase'; // Import the firestore instance from your firebase.js file
+
 
 
 // Define the function to determine the color based on password strength score
@@ -35,8 +33,6 @@ const getPasswordStrengthText = (score) => {
 const RegisterPage = () => {
     const { t } = useTranslation();
 
-    const userRef = database.ref('users'); // Reference the 'users' node in the database
-    const newUserRef = userRef.push(); // Generate a new unique ID for the user
     const [error, setError] = useState('');
     const [existEmail, setExistEmail] = useState(false);
 
@@ -54,15 +50,41 @@ const RegisterPage = () => {
         educationalLevel: '',
         cities: '', // Store the list of cities
         postalCodes: '', // Store the list of postal codes
+        information: '',
     });
 
     const handleRegister = async () => {
         try {
             await auth.createUserWithEmailAndPassword(formData.email, formData.password);
             setExistEmail(false);
+            // Wait for the user to be authenticated and logged in
+            await auth.signInWithEmailAndPassword(formData.email, formData.password);
+
+            // Set the user data
+            const sentData = {
+                firstName: formData.firstName || '',
+                lastName: formData.lastName || '',
+                gender: formData.gender || '',
+                dateOfBirth: formData.dateOfBirth || '',
+                city: formData.city || '',
+                postalCode: formData.postalCode || '',
+                email: formData.email || '',
+                phoneNumber: formData.phoneNumber || '',
+                educationalLevel: formData.educationalLevel || '',
+                information: formData.information || '',
+            };
+            // Get the user ID of the newly created user
+            const userId = auth.currentUser.uid;
+
+            // Get a reference to the parent document
+            const parentDocRef = firestore.collection('users').doc('usersyouth');
+
+            // Set the user data directly under the parent document
+            await parentDocRef.set({ [userId]: sentData }, { merge: true });
             return true;
         } catch (error) {
-            setError(error.message);       
+            setError(error.message);    
+            alert(error.message);   
             setExistEmail(true);
             return false;
         }
@@ -72,7 +94,6 @@ const RegisterPage = () => {
     const [passwordScore, setPasswordScore] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
-    const [test, setTest] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -131,25 +152,7 @@ const RegisterPage = () => {
         if(doesPasswordMatch() && validatePassword(formData.password)) {
             const result = await handleRegister();
 
-            if(result) {
-                // Set the user data
-                const sentData = {
-                    firstName: formData.firstName || '',
-                    lastName: formData.lastName || '',
-                    gender: formData.gender || '',
-                    dateOfBirth: formData.dateOfBirth || '',
-                    city: formData.city || '',
-                    postalCode: formData.postalCode || '',
-                    email: formData.email || '',
-                    phoneNumber: formData.phoneNumber || '',
-                    educationalLevel: formData.educationalLevel || '',
-                };
-
-                console.log(formData.firstName);
-                console.log(sentData);
-
-                // Set the user data under the new unique ID
-                newUserRef.set(sentData)
+            if(result) {               
                 /*
                 debbuging
                 .then(() => {
@@ -175,6 +178,7 @@ const RegisterPage = () => {
                     confirmPassword: '',
                     phoneNumber: '',
                     educationalLevel: '',
+                    information: '',
                 });
                 return true;
             } else {
@@ -191,20 +195,6 @@ const RegisterPage = () => {
     const handleModalClose = () => {
         setShowErrorModal(false);
     };
-/*
-    const handleCaptchaChange = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_CAPTCHA_SITE_KEY
-        : '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
-    console.log("captcha site key", handleCaptchaChange);
-    const [captchaToken, setCaptchaToken] = useState(null);
-    useEffect(() => {
-        console.log("captcha token", captchaToken);
-    }
-        , [captchaToken])
-    const onCaptchaChange = (token) => {
-        setCaptchaToken(token);
-    };
-
-*/
 
     return (
         <div>
@@ -436,3 +426,4 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
+
