@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import HeaderYouth from '../../common/Header/HeaderYouth';
+import { auth } from '../../firebase';
+import { firestore } from '../../firebase';
+
 
 const ProfileYouth = () => {
     const { t } = useTranslation();
@@ -13,19 +16,40 @@ const ProfileYouth = () => {
     const [youthFormErrors, setYouthFormErrors] = useState({
         age: false,
         city: false,
-        aboutme: false,
+        information: false,
         education: false,
         language: false
     });
 
+    //funciton to calculate age of the user based on the date of birth with format : yyyy-mm-dd
+    const calculateAge = (dateOfBirth) => {
+        const today = new Date();
+        const birthDate = new Date(dateOfBirth);
+        let age = today.getFullYear() - birthDate.getFullYear();
+
+        // Check if the user hasn't had their birthday this year yet
+        // If the current month and day are before the birth month and day,
+        // subtract 1 from the age
+
+        const month = today.getMonth() - birthDate.getMonth();
+        if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    };
+
+
+
+
     const [selectedYouthImage, setSelectedYouthImage] = useState(null);
 
     const [youthFormData, setYouthFormData] = useState({
-        firstName: 'John',
-        lastName: 'Doe',
-        age: 18,
-        city: 'Villejeune',
-        aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j\'ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J\'ai un permis de conduire et une voiture.',
+        firstName: '',
+        lastName: '',
+        age: '',
+        city: '',
+        education: '',
+        information: '',
         proactivity: 10,
         creativity: 52,
         initiative: 37,
@@ -35,10 +59,36 @@ const ProfileYouth = () => {
         points: 242
     });
 
-    const [educationList, setEducationList] = useState([
-        "Basic Education",
-        "Engineering"
-    ]);
+    //get data from firestore according to the person logged in
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            const userId = user.uid;
+
+            try {
+                const userDocRef = firestore.collection('users').doc('usersyouth');
+                const userDoc = await userDocRef.get();
+
+                if (userDoc.exists) {
+                    const userData = userDoc.data()[userId];
+                    //setYouthFormData firstname, lastname, city
+                    setYouthFormData({
+                        firstName: userData.firstName,
+                        lastName: userData.lastName,
+                        city: userData.city,
+                        education: userData.educationalLevel,
+                        information: userData.information,
+                        age: calculateAge(userData.dateOfBirth),
+                    });
+                } else {
+                    console.log('User document not found');
+                }
+            } catch (error) {
+                console.log('Error retrieving user data:', error);
+            }
+        } else {
+            console.log('User is not signed in');
+        }
+    });
 
     const [languageList, setLanguageList] = useState([
         "English",
@@ -63,16 +113,17 @@ const ProfileYouth = () => {
 
     const handleSaveProfile = () => {
         // Vérifier si les champs requis sont remplis
-        if (!youthFormData.age || !youthFormData.city || !youthFormData.aboutme || !educationList.length || !languageList.length) {
+        /*
+        if (!youthFormData.age || !youthFormData.city || !youthFormData.information || !languageList.length) {
             alert('Please fill in all the required fields to enable your profile.');
             return;
         }
-
+        */
         // Réinitialiser les erreurs de formulaire
         setYouthFormErrors({
             age: false,
             youthCity: false,
-            youthAboutme: false,
+            youthinformation: false,
             education: false,
             language: false
         });
@@ -80,11 +131,8 @@ const ProfileYouth = () => {
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
 
-        // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
-        localStorage.setItem('youthFormData', JSON.stringify(youthFormData));
-        localStorage.setItem('educationList', JSON.stringify(educationList));
-        localStorage.setItem('languageList', JSON.stringify(languageList));
-        localStorage.setItem('youthImage', JSON.stringify(selectedYouthImage));
+        // Update the user's information in Firestore
+
     };
 
 
@@ -96,33 +144,12 @@ const ProfileYouth = () => {
         }));
     };
 
-
-    const handleEducationChange = (index, value) => {
-        setEducationList((prevList) => {
-            const newList = [...prevList];
-            newList[index] = value;
-            return newList;
-        });
-    };
-
     const handleLanguageChange = (index, value) => {
         setLanguageList((prevList) => {
             const newList = [...prevList];
             newList[index] = value;
             return newList;
         });
-    };
-
-    const handleAddEducation = () => {
-        const newEducationList = [...educationList, ''];
-        setEducationList(newEducationList);
-        localStorage.setItem('educationList', JSON.stringify(newEducationList));
-    };
-
-    const handleRemoveEducation = (index) => {
-        const newEducationList = educationList.filter((_, i) => i !== index);
-        setEducationList(newEducationList);
-        localStorage.setItem('educationList', JSON.stringify(newEducationList));
     };
 
     const handleAddLanguage = () => {
@@ -150,29 +177,6 @@ const ProfileYouth = () => {
         setHideProfile(!hideProfile);
     };
 
-    useEffect(() => {
-        const storedYouthFormData = localStorage.getItem('youthFormData');
-        if (storedYouthFormData) {
-            setYouthFormData(JSON.parse(storedYouthFormData));
-        }
-
-        const storedEducationList = localStorage.getItem('educationList');
-        if (storedEducationList) {
-            setEducationList(JSON.parse(storedEducationList));
-        }
-
-        const storedLanguageList = localStorage.getItem('languageList');
-        if (storedLanguageList) {
-            setLanguageList(JSON.parse(storedLanguageList));
-        }
-        
-        const storedYouthImage = localStorage.getItem('youthImage');
-        if (storedYouthImage) {
-            setSelectedYouthImage(JSON.parse(storedYouthImage));
-        }
-
-    }, []);
-
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
         const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
         const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
@@ -190,31 +194,13 @@ const ProfileYouth = () => {
         <div>
             <HeaderYouth />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{youthFormData.firstName} {youthFormData.lastName} {t('profile')}</h1>
+                <h1>{youthFormData.firstName} {youthFormData.lastName}</h1>
             </div>
 
             {isEditing ? (
                 <div className="container">
                     <h2>{t('edit')}</h2>
                     <form>
-                        <div className="row mb-3">
-                            <div className="col">
-                                <label htmlFor="age">{t('age')}</label>
-                                <input
-                                    type="number"
-                                    id="age"
-                                    name="age"
-                                    value={youthFormData.age}
-                                    onChange={handleInputChange}
-                                    // Add error class based on formErrors.age
-                                    className={youthFormErrors.age ? 'form-control is-invalid' : 'form-control'}
-                                />
-                                {youthFormErrors.age && (
-                                    <div className="invalid-feedback">Age field is required</div>
-                                )}
-
-                            </div>
-                        </div>
                         <div className="row mb-3">
                             <div className="col">
                                 <label htmlFor="city">{t('city')}</label>
@@ -229,23 +215,21 @@ const ProfileYouth = () => {
                                 {youthFormErrors.city && (
                                     <div className="invalid-feedback">City field is required</div>
                                 )}
-
                             </div>
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="aboutme">About me</label>
+                                <label htmlFor="information">About me</label>
                                 <textarea
                                     className="form-control"
-                                    id="aboutme"
-                                    name="aboutme"
-                                    value={youthFormData.aboutme}
+                                    id="information"
+                                    name="information"
+                                    value={youthFormData.information}
                                     onChange={handleInputChange}
                                 />
-                                {youthFormErrors.aboutme && (
+                                {youthFormErrors.information && (
                                     <div className="invalid-feedback">About me field is required</div>
                                 )}
-
                             </div>
                         </div>
                         <div className="row mb-3">
@@ -266,35 +250,18 @@ const ProfileYouth = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <h3>{t('education')}</h3>
-                                {educationList.map((education, index) => (
-                                    <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
-                                        <input
-                                            className='form-control'
-                                            type="text"
-                                            value={education}
-                                            onChange={(e) => handleEducationChange(index, e.target.value)}
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => handleRemoveEducation(index)}
-                                            className="btn btn-outline-secondary"
-                                            style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(255, 0, 0, 0.5)' }}
-                                        >
-                                            -
-                                        </button>
-                                    </div>
-                                ))}
-                                <div className='text-center'>
-                                    <button
-                                        type="button"
-                                        onClick={handleAddEducation}
-                                        className="btn btn-outline-secondary"
-                                        style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(0, 255, 0, 0.5)' }}
-                                    >
-                                        +
-                                    </button>
-                                </div>
+                                <label htmlFor="education">{t('education')}</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    id="education"
+                                    name="education"
+                                    value={youthFormData.education}
+                                    onChange={handleInputChange}
+                                />
+                                {youthFormErrors.education && (
+                                    <div className="invalid-feedback">City field is required</div>
+                                )}
                             </div>
                         </div>
                         <div className="row mb-3">
@@ -377,7 +344,7 @@ const ProfileYouth = () => {
                                             overflowY: 'auto'
                                         }}
                                     >
-                                        {youthFormData.aboutme}
+                                        {youthFormData.information}
                                     </p>
                                 </div>
                             </div>
@@ -414,11 +381,9 @@ const ProfileYouth = () => {
                             <div className="row">
                                 <div className="col">
                                     <h3>{t('education')}</h3>
-                                    {educationList.map((education, index) => (
-                                        <div className="col" key={index}>
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{education}</p>
-                                        </div>
-                                    ))}
+                                    <div className="col">
+                                        <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{youthFormData.education}</p>
+                                    </div>
                                 </div>
                                 <div className="col">
                                     <h3>{t('language')}</h3>
