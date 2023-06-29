@@ -233,7 +233,6 @@ const ProfileYouth = () => {
                                 {youthFormErrors.age && (
                                     <div className="invalid-feedback">Age field is required</div>
                                 )}
-
                             </div>
                         </div>
                         <div className="row mb-3">
