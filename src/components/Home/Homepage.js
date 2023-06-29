@@ -5,6 +5,9 @@ import Header from '../common/Header/Header';
 
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase'; 
+import { firestore } from '../firebase';
+import { doc, getDoc } from "firebase/firestore";
+
 
 const Home = () => {
     const { t } = useTranslation();
@@ -40,13 +43,26 @@ const Home = () => {
         }
         setIsLoggingIn(false); // Set isLoggingIn to false when login finishes
         handleCloseModal(); // Close the modal
-      };
+    };
 
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged(async (user) => {
         if (user) {
-            console.log('user is signed in: ', user);
+          const userId = user.uid;
+      
+          try {
+            const userDocRef = firestore.collection('users').doc('usersyouth');
+            const userDoc = await userDocRef.get();
+      
+            if (userDoc.exists) {
+                const userData = userDoc.data()[userId];
+            } else {
+              console.log('User document not found');
+            }
+          } catch (error) {
+            console.log('Error retrieving user data:', error);
+          }
         } else {
-            console.log('user is not signed in');
+          console.log('User is not signed in');
         }
     });
 
