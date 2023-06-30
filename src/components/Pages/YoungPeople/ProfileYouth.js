@@ -7,15 +7,13 @@ import { firestore } from '../../firebase';
 
 
 const ProfileYouth = () => {
-  const { t } = useTranslation();
-  const [isEditing, setIsEditing] = useState(false);
-  const [hideProfile, setHideProfile] = useState(false);
-  const [youthImage, setYouthImage] = useState(null);
-  const [data, setData] = useState({});
-  const [file, setFile] = useState("");
-  const auth = getAuth();
+    const { t } = useTranslation();
+    const [isEditing, setIsEditing] = useState(false);
+    const [hideProfile, setHideProfile] = useState(false);
+    const [youthImage, setYouthImage] = useState(null);
+    const [data, setData] = useState({});
+    const [file, setFile] = useState("");
 
-    //test
     const [youthFormErrors, setYouthFormErrors] = useState({
         age: false,
         city: false,
@@ -24,15 +22,10 @@ const ProfileYouth = () => {
         language: false
     });
 
-    //funciton to calculate age of the user based on the date of birth with format : yyyy-mm-dd
     const calculateAge = (dateOfBirth) => {
         const today = new Date();
         const birthDate = new Date(dateOfBirth);
         let age = today.getFullYear() - birthDate.getFullYear();
-
-        // Check if the user hasn't had their birthday this year yet
-        // If the current month and day are before the birth month and day,
-        // subtract 1 from the age
 
         const month = today.getMonth() - birthDate.getMonth();
         if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
@@ -40,9 +33,6 @@ const ProfileYouth = () => {
         }
         return age;
     };
-
-
-
 
     const [selectedYouthImage, setSelectedYouthImage] = useState(null);
 
@@ -62,122 +52,147 @@ const ProfileYouth = () => {
         points: 242
     });
 
-    //get data from firestore according to the person logged in
-    auth.onAuthStateChanged(async (user) => {
-        if (user) {
-            const userId = user.uid;
+    useEffect(() => {
+        const fetchData = async () => {
+            if (auth.currentUser) {
+                const userId = auth.currentUser.uid;
 
-            try {
-                const userDocRef = firestore.collection('users').doc('usersyouth');
-                const userDoc = await userDocRef.get();
+                try {
+                    const userDocRef = firestore.collection('users').doc('usersyouth').collection(userId)
+                    const userDoc = await userDocRef.get();
 
-                if (userDoc.exists) {
-                    const userData = userDoc.data()[userId];
-                    //setYouthFormData firstname, lastname, city
-                    setYouthFormData({
-                        firstName: userData.firstName,
-                        lastName: userData.lastName,
-                        city: userData.city,
-                        education: userData.educationalLevel,
-                        information: userData.information,
-                        age: calculateAge(userData.dateOfBirth),
-                    });
-                } else {
-                    console.log('User document not found');
+                    if (userDoc.exists) {
+                        const userData = userDoc.data()[userId];
+                        setYouthFormData((prevFormData) => ({
+                            ...prevFormData,
+                            firstName: userData.firstName,
+                            lastName: userData.lastName,
+                            city: userData.city,
+                            education: userData.educationalLevel,
+                            information: userData.information,
+                            age: calculateAge(userData.dateOfBirth),
+                        }));
+                    } else {
+                        console.log('User document not found');
+                    }
+                } catch (error) {
+                    console.log('Error retrieving user data:', error);
                 }
-            } catch (error) {
-                console.log('Error retrieving user data:', error);
+            } else {
+                console.log('User is not signed in');
             }
-        } else {
-            console.log('User is not signed in');
-        }
-    });
+        };
 
-  const [languageList, setLanguageList] = useState([
-    "English",
-    "Spanish",
-    "Basque",
-  ]);
+        fetchData();
+    }, []);
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
+    const [languageList, setLanguageList] = useState([
+        "English",
+        "Spanish",
+        "Basque",
+    ]);
 
-    reader.onload = (e) => {
-      setSelectedYouthImage(e.target.result);
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            setSelectedYouthImage(e.target.result);
+        };
+
+        reader.readAsDataURL(file);
     };
 
-    reader.readAsDataURL(file);
-  };
+    const handleEditProfile = () => {
+        setIsEditing(true);
+    };
 
-  const handleEditProfile = () => {
-    setIsEditing(true);
-  };
-
-    const handleSaveProfile = () => {
-        // Vérifier si les champs requis sont remplis
-        /*
+    const handleSaveProfile = async () => {
         if (!youthFormData.age || !youthFormData.city || !youthFormData.information || !languageList.length) {
-            alert('Please fill in all the required fields to enable your profile.');
+            alert('Veuillez remplir tous les champs obligatoires pour activer votre profil.');
             return;
         }
-        */
-        // Réinitialiser les erreurs de formulaire
+
         setYouthFormErrors({
             age: false,
-            youthCity: false,
-            youthinformation: false,
+            city: false,
+            information: false,
             education: false,
-            language: false
+            language: false,
         });
 
-    // Effectuer la logique de sauvegarde du profil
-    setIsEditing(false);
+        try {
+            const user = auth.currentUser;
+            if (user) {
+                const userId = user.uid;
 
-        // Update the user's information in Firestore
+                const userDocRef = firestore.collection('users').doc('usersyouth');
 
+                await userDocRef.set({
+                    firstName: youthFormData.firstName,
+                    lastName: youthFormData.lastName,
+                    city: youthFormData.city,
+                    educationalLevel: youthFormData.education,
+                    information: youthFormData.information,
+                    dateOfBirth: calculateBirthDate(youthFormData.age),
+                    languages: languageList,
+                });
+
+                setIsEditing(false);
+                alert('Votre profil a été enregistré avec succès !');
+            } else {
+                console.log('User is not signed in');
+            }
+        } catch (error) {
+            console.log('Error saving user profile:', error);
+        }
     };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setYouthFormData((prevYouthFormData) => ({
-      ...prevYouthFormData,
-      [name]: value,
-    }));
-  };
-
-    const handleLanguageChange = (index, value) => {
-        setLanguageList((prevList) => {
-            const newList = [...prevList];
-            newList[index] = value;
-            return newList;
-        });
+    const handleCancelProfile = () => {
+        setIsEditing(false);
     };
 
-    const handleAddLanguage = () => {
-        const newLanguageList = [...languageList, ''];
-        setLanguageList(newLanguageList);
-        localStorage.setItem('languageList', JSON.stringify(newLanguageList));
+    const handleDeleteLanguage = (language) => {
+        const updatedLanguageList = languageList.filter((item) => item !== language);
+        setLanguageList(updatedLanguageList);
     };
 
-  const handleRemoveLanguage = (index) => {
-    const newLanguageList = languageList.filter((_, i) => i !== index);
-    setLanguageList(newLanguageList);
-    localStorage.setItem("languageList", JSON.stringify(newLanguageList));
-  };
+    const handleAddLanguage = (event) => {
+        const newLanguage = event.target.value;
+        if (newLanguage && !languageList.includes(newLanguage)) {
+            const updatedLanguageList = [...languageList, newLanguage];
+            setLanguageList(updatedLanguageList);
+            event.target.value = '';
+        }
+    };
 
-  const chartData = [
-    { name: "Proactivity", value: youthFormData.proactivity, color: "#FF0000" },
-    { name: "Creativity", value: youthFormData.creativity, color: "#00FF00" },
-    { name: "Initiative", value: youthFormData.initiative, color: "#0000FF" },
-    { name: "Empathy", value: youthFormData.empathy, color: "#FFFF00" },
-    { name: "Leadership", value: youthFormData.leadership, color: "#00FFFF" },
-    { name: "Teamwork", value: youthFormData.teamwork, color: "#FF00FF" },
-  ];
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setYouthFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+    };
 
-  const handleToggle = () => {
-    setHideProfile(!hideProfile);
-  };
+    const calculateBirthDate = (age) => {
+        const today = new Date();
+        const birthYear = today.getFullYear() - age;
+        const birthDate = new Date(birthYear, 0, 1);
+        return birthDate;
+    };
+
+    const chartData = [
+        { name: "Proactivity", value: youthFormData.proactivity, color: "#FF0000" },
+        { name: "Creativity", value: youthFormData.creativity, color: "#00FF00" },
+        { name: "Initiative", value: youthFormData.initiative, color: "#0000FF" },
+        { name: "Empathy", value: youthFormData.empathy, color: "#FFFF00" },
+        { name: "Leadership", value: youthFormData.leadership, color: "#00FFFF" },
+        { name: "Teamwork", value: youthFormData.teamwork, color: "#FF00FF" },
+    ];
+
+    const handleToggle = () => {
+        setHideProfile(!hideProfile);
+    };
 
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
         const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
@@ -185,18 +200,19 @@ const ProfileYouth = () => {
         const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));
         const percentage = (percent * 100).toFixed(1);
 
-    return (
-      <text
-        x={x}
-        y={y}
-        fill="black"
-        textAnchor="middle"
-        dominantBaseline="central"
-      >
-        {`${chartData[index].name}: ${percentage}%`}
-      </text>
-    );
-  };
+        return (
+            <text
+                x={x}
+                y={y}
+                fill="black"
+                textAnchor="middle"
+                dominantBaseline="central"
+            >
+                {`${chartData[index].name}: ${percentage}%`}
+            </text>
+        );
+    };
+
 
     return (
         <div>
@@ -206,117 +222,89 @@ const ProfileYouth = () => {
             </div>
 
             {isEditing ? (
-                <div className="container">
-                    <h2>{t('edit')}</h2>
-                    <form>
-                        <div className="row mb-3">
-                            <div className="col">
-                                <label htmlFor="city">{t('city')}</label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    id="city"
-                                    name="city"
-                                    value={youthFormData.city}
-                                    onChange={handleInputChange}
-                                />
-                                {youthFormErrors.city && (
-                                    <div className="invalid-feedback">City field is required</div>
-                                )}
-                            </div>
-                        </div>
-                        <div className="row mb-3">
-                            <div className="col">
-                                <label htmlFor="information">About me</label>
-                                <textarea
-                                    className="form-control"
-                                    id="information"
-                                    name="information"
-                                    value={youthFormData.information}
-                                    onChange={handleInputChange}
-                                />
-                                {youthFormErrors.information && (
-                                    <div className="invalid-feedback">About me field is required</div>
-                                )}
-                            </div>
-                        </div>
-                        <div className="row mb-3">
-                            <div className="col">
-                                <label htmlFor="image">Profile picture</label>
-                                <input
-                                    className="form-control"
-                                    type="file"
-                                    id="youthImage"
-                                    name="youthImage"
-                                    accept="youthImage/*"
-                                    onChange={handleImageUpload}
-                                />
-                                {youthFormErrors.image && (
-                                    <div className="invalid-feedback">Image field is required</div>
-                                )}
-                            </div>
-                        </div>
-                        <div className="row mb-3">
-                            <div className="col">
-                                <label htmlFor="education">{t('education')}</label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    id="education"
-                                    name="education"
-                                    value={youthFormData.education}
-                                    onChange={handleInputChange}
-                                />
-                                {youthFormErrors.education && (
-                                    <div className="invalid-feedback">City field is required</div>
-                                )}
-                            </div>
-                        </div>
-                        <div className="row mb-3">
-                            <div className="col">
-                                <h3>{t('language')}</h3>
-                                {languageList.map((language, index) => (
-                                    <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
-                                        <input
-                                            className='form-control'
-                                            type="text"
-                                            value={language}
-                                            onChange={(e) => handleLanguageChange(index, e.target.value)}
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => handleRemoveLanguage(index)}
-                                            className="btn btn-outline-secondary"
-                                            style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(255, 0, 0, 0.5)' }}
-                                        >
-                                            -
-                                        </button>
-                                    </div>
-                                ))}
-                                <div className='text-center'>
-                                    <button
-                                        type="button"
-                                        onClick={handleAddLanguage}
-                                        className="btn btn-outline-secondary"
-                                        style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(0, 255, 0, 0.5)' }}
-                                    >
-                                        +
+                <>
+                    <div>
+                        <label htmlFor="firstName">{t('First Name')}</label>
+                        <input
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            value={youthFormData.firstName}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="lastName">{t('Last Name')}</label>
+                        <input
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            value={youthFormData.lastName}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="age">{t('Age')}</label>
+                        <input
+                            type="number"
+                            id="age"
+                            name="age"
+                            value={youthFormData.age}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="city">{t('City')}</label>
+                        <input
+                            type="text"
+                            id="city"
+                            name="city"
+                            value={youthFormData.city}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="education">{t('Education')}</label>
+                        <input
+                            type="text"
+                            id="education"
+                            name="education"
+                            value={youthFormData.education}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="information">{t('Information')}</label>
+                        <textarea
+                            id="information"
+                            name="information"
+                            value={youthFormData.information}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div>
+                        <label>{t('Languages')}</label>
+                        <ul>
+                            {languageList.map((language) => (
+                                <li key={language}>
+                                    {language}
+                                    <button onClick={() => handleDeleteLanguage(language)}>
+                                        {t('Delete')}
                                     </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center">
-                            <button
-                                onClick={handleSaveProfile}
-                                className="btn btn-primary"
-                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                            >
-                                {t('registerButton')}
-                            </button>
-                        </div>
-                    </form>
-                </div >
-
+                                </li>
+                            ))}
+                        </ul>
+                        <input
+                            type="text"
+                            id="newLanguage"
+                            name="newLanguage"
+                            placeholder={t('Add Language')}
+                            onKeyUp={handleAddLanguage}
+                        />
+                    </div>
+                    <button onClick={handleSaveProfile}>{t('Save')}</button>
+                    <button onClick={handleCancelProfile}>{t('Cancel')}</button>
+                </>
             ) : (
 
                 <div className="container">
