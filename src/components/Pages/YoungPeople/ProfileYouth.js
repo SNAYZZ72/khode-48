@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import HeaderYouth from '../../common/Header/HeaderYouth';
 import { auth } from '../../firebase';
 import { firestore } from '../../firebase';
+import { use } from 'i18next';
+
+//let authStateChangedExecuted = false;
+
 
 
 const ProfileYouth = () => {
@@ -59,36 +63,53 @@ const ProfileYouth = () => {
         points: 242
     });
 
+    const authStateChangedExecuted = useRef(false);
+
+
+
     //get data from firestore according to the person logged in
-    auth.onAuthStateChanged(async (user) => {
-        if (user) {
-            const userId = user.uid;
+    useEffect(() => {
+        const handleAuthStateChanged = async (user) => {
+            if (user) {
+                const userId = user.uid;
 
-            try {
-                const userDocRef = firestore.collection('users').doc('usersyouth');
-                const userDoc = await userDocRef.get();
+                try {
+                    const userDocRef = firestore.collection('users').doc('usersyouth');
+                    const userDoc = await userDocRef.get();
 
-                if (userDoc.exists) {
-                    const userData = userDoc.data()[userId];
-                    //setYouthFormData firstname, lastname, city
-                    setYouthFormData({
-                        firstName: userData.firstName,
-                        lastName: userData.lastName,
-                        city: userData.city,
-                        education: userData.educationalLevel,
-                        information: userData.information,
-                        age: calculateAge(userData.dateOfBirth),
-                    });
-                } else {
-                    console.log('User document not found');
+                    if (userDoc.exists) {
+                        const userData = userDoc.data()[userId];
+                        //setYouthFormData firstname, lastname, city
+                        setYouthFormData({
+                            firstName: userData.firstName,
+                            lastName: userData.lastName,
+                            city: userData.city,
+                            education: userData.educationalLevel,
+                            information: userData.information,
+                            age: userData.age,
+                        });
+                        console.log('User data retrieved:', userData.age);
+                    } else {
+                        console.log('User document not found');
+                    }
+                } catch (error) {
+                    console.log('Error retrieving user data:', error);
                 }
-            } catch (error) {
-                console.log('Error retrieving user data:', error);
+            } else {
+                console.log('User is not signed in');
             }
-        } else {
-            console.log('User is not signed in');
+        };
+
+        // Attach the event listener only if it hasn't been executed before
+        if (!authStateChangedExecuted.current) {
+            auth.onAuthStateChanged(handleAuthStateChanged);
+            authStateChangedExecuted.current = true;
         }
-    });
+    }, []);
+    
+
+    // Attach the event listener only if it hasn't been executed before
+    
 
     const [languageList, setLanguageList] = useState([
         "English",
