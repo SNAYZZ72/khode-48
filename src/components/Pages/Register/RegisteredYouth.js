@@ -32,6 +32,7 @@ const getPasswordStrengthText = (score) => {
 
 const RegisterPage = () => {
     const { t } = useTranslation();
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const [error, setError] = useState('');
     const [existEmail, setExistEmail] = useState(false);
@@ -188,6 +189,9 @@ const RegisterPage = () => {
 
                 setExistEmail(false);
 
+                // Show the success modal
+                setShowSuccessModal(true);
+
                 // Reset form fields after submission if needed
                 setFormData({
                     firstName: '',
@@ -211,9 +215,9 @@ const RegisterPage = () => {
     };
 
 
-
     const handleModalClose = () => {
         setShowErrorModal(false);
+        setShowSuccessModal(false); // Close the success modal
     };
 
     return (
@@ -428,16 +432,16 @@ const RegisterPage = () => {
                     </div>
                 </form>
             </div>
-            <Modal show={showErrorModal} onHide={handleModalClose}>
+            <Modal show={showSuccessModal} onHide={handleModalClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Error</Modal.Title>
+                    <Modal.Title>{t('Congratulations!')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>{t('An error occurred. Please check your input and try again.')}</p>
+                    <p>{t('Your account has been successfully created.')}</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleModalClose}>
-                        Close
+                        {t('Close')}
                     </Button>
                 </Modal.Footer>
             </Modal>
