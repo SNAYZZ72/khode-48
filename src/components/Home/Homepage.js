@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../common/Header/Header';
 
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase'; 
+import { auth } from '../firebase';
 import { firestore } from '../firebase';
 import { doc, getDoc } from "firebase/firestore";
 
@@ -34,12 +34,12 @@ const Home = () => {
     const handleLogin = async () => {
         setIsLoggingIn(true); // Set isLoggingIn to true when login starts
         try {
-          await auth.signInWithEmailAndPassword(email, password);
-          navigate('/HomeYouth')
-          //login successful
+            await auth.signInWithEmailAndPassword(email, password);
+            navigate('/HomeYouth')
+            //login successful
         } catch (error) {
-          alert ('Wrong email or password');   
-          //login failed
+            alert('Wrong email or password');
+            //login failed
         }
         setIsLoggingIn(false); // Set isLoggingIn to false when login finishes
         handleCloseModal(); // Close the modal
@@ -47,22 +47,22 @@ const Home = () => {
 
     auth.onAuthStateChanged(async (user) => {
         if (user) {
-          const userId = user.uid;
-      
-          try {
-            const userDocRef = firestore.collection('users').doc('usersyouth');
-            const userDoc = await userDocRef.get();
-      
-            if (userDoc.exists) {
-                const userData = userDoc.data()[userId];
-            } else {
-              console.log('User document not found');
+            const userId = user.uid;
+
+            try {
+                const userDocRef = firestore.collection('users').doc('usersyouth');
+                const userDoc = await userDocRef.get();
+
+                if (userDoc.exists) {
+                    const userData = userDoc.data()[userId];
+                } else {
+                    console.log('User document not found');
+                }
+            } catch (error) {
+                console.log('Error retrieving user data:', error);
             }
-          } catch (error) {
-            console.log('Error retrieving user data:', error);
-          }
         } else {
-          console.log('User is not signed in');
+            console.log('User is not signed in');
         }
     });
 
@@ -189,60 +189,66 @@ const Home = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <div>
-                        <div className="form-group">
-                            <label htmlFor="email">{t('email')}</label>
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />                       
+                        <div className="col" style={{ paddingLeft: "20px", paddingRight: "20px" }}>
+                            <div className="row">
+                                <h4>{t('email')}</h4>
+                                <input
+                                    style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}
+                                    type="email"
+                                    placeholder="Email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
+                            <br />
+                            <div className="row">
+                                <h4>{t('password')}</h4>
+                                <input
+                                    style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}
+                                    type="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
                         </div>
                         <br />
-                        <div className="form-group">
-                            <label htmlFor="password">{t('password')}</label>
-                            <input
-                                type="password"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />                        
-                        </div>
-                        <br />
-                        <Button
-                            variant="primary"
-                            type="submit"
-                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                            onClick={handleLogin}
-                        >
-                        {t('login')}
-                        </Button>
-                    </div>
+                        <div className="text-center">
+                            <Button
+                                variant="primary"
+                                type="submit"
+                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                onClick={handleLogin}
+                            >
+                                {t('login')}
+                            </Button>
 
-                    {profileType === 'young' && (
-                        <p>
-                            {t('dontHaveYoungAccount')}{' '}
-                            <a href="/registery" style={{ color: '#F24726' }}>
-                                {t('createYoungAccount')}
-                            </a>
-                        </p>
-                    )}
-                    {profileType === 'company' && (
-                        <p>
-                            {t('dontHaveCompanyAccount')}{' '}
-                            <a href="/registerC" style={{ color: '#F24726' }}>
-                                {t('createCompanyAccount')}
-                            </a>
-                        </p>
-                    )}
-                    {profileType === 'intermediary' && (
-                        <p>
-                            {t('dontHaveIntermediaryAccount')}{' '}
-                            <a href="/registerI" style={{ color: '#F24726' }}>
-                                {t('createIntermediaryAccount')}
-                            </a>
-                        </p>
-                    )}
+                            {profileType === 'young' && (
+                                <p>
+                                    {t('dontHaveYoungAccount')}{' '}
+                                    <a href="/registery" style={{ color: '#F24726' }}>
+                                        {t('createYoungAccount')}
+                                    </a>
+                                </p>
+                            )}
+                            {profileType === 'company' && (
+                                <p>
+                                    {t('dontHaveCompanyAccount')}{' '}
+                                    <a href="/registerC" style={{ color: '#F24726' }}>
+                                        {t('createCompanyAccount')}
+                                    </a>
+                                </p>
+                            )}
+                            {profileType === 'intermediary' && (
+                                <p>
+                                    {t('dontHaveIntermediaryAccount')}{' '}
+                                    <a href="/registerI" style={{ color: '#F24726' }}>
+                                        {t('createIntermediaryAccount')}
+                                    </a>
+                                </p>
+                            )}
+                        </div>
+                    </div>
                 </Modal.Body>
             </Modal>
         </div>
