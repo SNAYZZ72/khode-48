@@ -190,7 +190,7 @@ const Home = () => {
                 <Modal.Body>
                     <div>
                         <div className="col" style={{ paddingLeft: "20px", paddingRight: "20px" }}>
-                            <div className="row">
+                            <div className="row mb-3">
                                 <h4>{t('email')}</h4>
                                 <input
                                     style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}
@@ -200,8 +200,7 @@ const Home = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
-                            <br />
-                            <div className="row">
+                            <div className="row mb-3">
                                 <h4>{t('password')}</h4>
                                 <input
                                     style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}
@@ -212,7 +211,6 @@ const Home = () => {
                                 />
                             </div>
                         </div>
-                        <br />
                         <div className="text-center">
                             <Button
                                 variant="primary"
