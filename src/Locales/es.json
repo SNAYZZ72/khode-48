@@ -127,5 +127,17 @@
   "education": "Formación",
   "language": "Idioma",
   "skills": "Desarrollo de competencias",
-  "edit": "Editar perfil"
+  "edit": "Editar perfil",
+  "totalpoints": "Total puntos",
+  "showhide": "Mostrar/Ocultar perfil",
+  "hide": "Ocultar",
+  "show": "Mostrar",
+  "initiative": "Iniciativa",
+  "empathy": "Empatía",
+  "leadership": "Liderazgo",
+  "teamwork": "Trabajo en equipo",
+  "creativity": "Creatividad",
+  "proactivity": "Proactividad",
+  "aboutme": "Acerca de mí",
+  "profilepicture": "Foto de perfil"
 }

@@ -262,7 +262,7 @@ const ProfileYouth = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="information">About me</label>
+                                <label htmlFor="information">{t('aboutme')}</label>
                                 <textarea
                                     className="form-control"
                                     id="information"
@@ -277,7 +277,7 @@ const ProfileYouth = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="image">Profile picture</label>
+                                <label htmlFor="image">{t('profilepicture')}</label>
                                 <input
                                     className="form-control"
                                     type="file"
@@ -367,12 +367,12 @@ const ProfileYouth = () => {
                             <div className="row">
                                 <div className="col">
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        {t('age')}: {youthFormData.age}
+                                        <b>{t('age')}:</b> {youthFormData.age}
                                     </p>
                                 </div>
                                 <div className="col">
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        {t('city')}: {youthFormData.city}
+                                        <b>{t('city')}:</b> {youthFormData.city}
                                     </p>
                                 </div>
                             </div>
@@ -387,7 +387,7 @@ const ProfileYouth = () => {
                                             overflowY: 'auto'
                                         }}
                                     >
-                                        {youthFormData.information}
+                                        <b>{t('aboutme')}:</b> {youthFormData.information}
                                     </p>
                                 </div>
                             </div>
@@ -397,11 +397,11 @@ const ProfileYouth = () => {
                         <div className="col-md-7">
                             <div className="row">
                                 <div className="col">
-                                    <h3>Total points</h3>
+                                    <h3>{t('totalpoints')}</h3>
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{youthFormData.points}</p>
                                 </div>
                                 <div className="col">
-                                    <h3>{hideProfile ? t('hideProfile') : t('showProfile')}</h3>
+                                    <h3>{hideProfile ? t('showhide') : t('showhide')}</h3>
                                     {/* switch toggle button to hide profile */}
                                     <div className="form-check form-switch">
                                         <input
