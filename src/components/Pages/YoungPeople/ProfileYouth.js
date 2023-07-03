@@ -54,6 +54,7 @@ const ProfileYouth = () => {
         city: '',
         education: '',
         information: '',
+        language: [],
         proactivity: 10,
         creativity: 52,
         initiative: 37,
@@ -173,6 +174,7 @@ const ProfileYouth = () => {
           });
       
           console.log('User data updated:', userId);
+          console.log('language:', youthFormData.language);
         } catch (error) {
           console.log('Error updating user data:', error);
         }
@@ -315,7 +317,7 @@ const ProfileYouth = () => {
                                         <input
                                             className='form-control'
                                             type="text"
-                                            value={language}
+                                            value={youthFormData.language}
                                             onChange={(e) => handleLanguageChange(index, e.target.value)}
                                         />
                                         <button
