@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../../common/Header/Header';
 import zxcvbn from 'zxcvbn';
 import { Modal, Button } from 'react-bootstrap';
-import { auth } from '../../firebase'; 
+import { auth } from '../../firebase';
 import { firestore } from '../../firebase'; // Import the firestore instance from your firebase.js file
 
 
@@ -83,8 +83,8 @@ const RegisterPage = () => {
             await parentDocRef.set({ [userId]: sentData }, { merge: true });
             return true;
         } catch (error) {
-            setError(error.message);    
-            alert(error.message);   
+            setError(error.message);
+            alert(error.message);
             setExistEmail(true);
             return false;
         }
@@ -94,6 +94,7 @@ const RegisterPage = () => {
     const [passwordScore, setPasswordScore] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const [passwordValid, setPasswordValid] = useState(true);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -103,11 +104,13 @@ const RegisterPage = () => {
         }));
     };
 
+
     const handlePasswordChange = (e) => {
         const { value } = e.target;
         const score = zxcvbn(value).score;
         setPasswordScore(score);
         handleInputChange(e);
+        setPasswordValid(validatePassword(value) || value.length === 0);
     };
 
     const toggleShowPassword = () => {
@@ -115,9 +118,9 @@ const RegisterPage = () => {
     };
 
     const doesPasswordMatch = () => {
-        if(formData.password === formData.confirmPassword){
+        if (formData.password === formData.confirmPassword) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -140,7 +143,9 @@ const RegisterPage = () => {
         if (formData.password === formData.confirmPassword && validatePassword(formData.password)) {
             // Passwords match and meet the requirements
             setPasswordsMatch(true);
-            // Rest of your code...
+            //password validate
+
+
         } else {
             // Passwords don't match or don't meet the requirements, show an error message or take appropriate action
             setPasswordsMatch(false);
@@ -148,11 +153,11 @@ const RegisterPage = () => {
 
         // You can send the form data to a backend server or perform any other actions
         // if handleREgister return no error then result is true and the following code can execute
-        
-        if(doesPasswordMatch() && validatePassword(formData.password)) {
+
+        if (doesPasswordMatch() && validatePassword(formData.password)) {
             const result = await handleRegister();
 
-            if(result) {               
+            if (result) {
                 /*
                 debbuging
                 .then(() => {
@@ -162,7 +167,7 @@ const RegisterPage = () => {
                     console.log('Error saving user data:', error.message);
                 });
                 */
-            
+
                 setExistEmail(false);
 
                 // Reset form fields after submission if needed
@@ -259,7 +264,7 @@ const RegisterPage = () => {
                             />
                         </div>
                     </div>
-                    <div className="row mb-3">    
+                    <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="city">{t('city')}</label>
                             <input
@@ -281,7 +286,7 @@ const RegisterPage = () => {
                                 value={formData.postalCode}
                                 onChange={handleInputChange}
                                 required
-                            >        
+                            >
                             </input>
                         </div>
                     </div>
@@ -343,7 +348,7 @@ const RegisterPage = () => {
                                     {getPasswordStrengthText(passwordScore)}
                                 </p>
                             )}
-                            {!validatePassword(formData.password) && (
+                            {!passwordValid && !validatePassword(formData.password) && formData.password.length > 0 && (
                                 <p className="text-danger">
                                     {t('Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.')}
                                 </p>
@@ -398,11 +403,11 @@ const RegisterPage = () => {
                         </div>
                     </div>
                     <div className="container text-center">
-                        <button 
-                            type="submit" 
-                            className="btn btn-primary" 
+                        <button
+                            type="submit"
+                            className="btn btn-primary"
                             style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                            >
+                        >
                             {t('registerButton')}
                         </button>
                     </div>
