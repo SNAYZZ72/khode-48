@@ -164,7 +164,6 @@ const ProfileYouth = () => {
                 educationalLevel: youthFormData.education,
                 information: youthFormData.information,
                 dateOfBirth: userData.dateOfBirth,
-                postalCode: userData.postalCode,
                 gender: userData.gender,
                 phoneNumber: userData.phoneNumber,
                 email: userData.email,
