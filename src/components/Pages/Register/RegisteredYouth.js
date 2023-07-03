@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../../common/Header/Header';
 import zxcvbn from 'zxcvbn';
 import { Modal, Button } from 'react-bootstrap';
-import { auth } from '../../firebase'; 
+import { auth } from '../../firebase';
 import { firestore } from '../../firebase'; // Import the firestore instance from your firebase.js file
 
 
@@ -83,8 +83,8 @@ const RegisterPage = () => {
             await parentDocRef.set({ [userId]: sentData }, { merge: true });
             return true;
         } catch (error) {
-            setError(error.message);    
-            alert(error.message);   
+            setError(error.message);
+            alert(error.message);
             setExistEmail(true);
             return false;
         }
@@ -115,9 +115,9 @@ const RegisterPage = () => {
     };
 
     const doesPasswordMatch = () => {
-        if(formData.password === formData.confirmPassword){
+        if (formData.password === formData.confirmPassword) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -148,11 +148,11 @@ const RegisterPage = () => {
 
         // You can send the form data to a backend server or perform any other actions
         // if handleREgister return no error then result is true and the following code can execute
-        
-        if(doesPasswordMatch() && validatePassword(formData.password)) {
+
+        if (doesPasswordMatch() && validatePassword(formData.password)) {
             const result = await handleRegister();
 
-            if(result) {               
+            if (result) {
                 /*
                 debbuging
                 .then(() => {
@@ -162,7 +162,7 @@ const RegisterPage = () => {
                     console.log('Error saving user data:', error.message);
                 });
                 */
-            
+
                 setExistEmail(false);
 
                 // Reset form fields after submission if needed
@@ -229,8 +229,6 @@ const RegisterPage = () => {
                                 required
                             />
                         </div>
-                    </div>
-                    <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="gender">{t('gender')}</label>
                             <select
@@ -246,6 +244,8 @@ const RegisterPage = () => {
                                 <option value="male">{t('male')}</option>
                             </select>
                         </div>
+                    </div>
+                    <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="dateOfBirth">{t('dateOfBirth')}</label>
                             <input
@@ -258,8 +258,6 @@ const RegisterPage = () => {
                                 required
                             />
                         </div>
-                    </div>
-                    <div className="row mb-3">    
                         <div className="col">
                             <label htmlFor="city">{t('city')}</label>
                             <input
@@ -270,18 +268,6 @@ const RegisterPage = () => {
                                 onChange={handleInputChange}
                                 required
                             >
-                            </input>
-                        </div>
-                        <div className="col">
-                            <label htmlFor="postalCode">{t('postalCode')}</label>
-                            <input
-                                className="form-control"
-                                id="postalCode"
-                                name="postalCode"
-                                value={formData.postalCode}
-                                onChange={handleInputChange}
-                                required
-                            >        
                             </input>
                         </div>
                     </div>
@@ -398,11 +384,11 @@ const RegisterPage = () => {
                         </div>
                     </div>
                     <div className="container text-center">
-                        <button 
-                            type="submit" 
-                            className="btn btn-primary" 
+                        <button
+                            type="submit"
+                            className="btn btn-primary"
                             style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                            >
+                        >
                             {t('registerButton')}
                         </button>
                     </div>
