@@ -129,5 +129,17 @@
   "education": "Education",
   "language": "Language",
   "skills": "Skills development",
-  "edit": "Edit profile"
+  "edit": "Edit profile",
+  "totalpoints": "Total points",
+  "showhide": "Show/Hide profile",
+  "hide": "Hide",
+  "show": "Show",
+  "initiative": "Initiative",
+  "empathy": "Empathy",
+  "leadership": "Leadership",
+  "teamwork": "Teamwork",
+  "creativity": "Creativity",
+  "proactivity": "Proactivity",
+  "aboutme": "About me",
+  "profilepicture": "Profile picture"
 }
