@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import HeaderCompany from '../../common/Header/HeaderCompany';
 import { Navbar, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { auth } from '../../firebase';
+import { firestore } from '../../firebase';
 
 const ProfileCompany = () => {
     const { t } = useTranslation();
@@ -24,10 +26,47 @@ const ProfileCompany = () => {
     const [selectedCompanyImage, setSelectedCompanyImage] = useState(null);
 
     const [companyFormData, setCompanyFormData] = useState({
-        companyName: 'Guuk',
-        city: 'Villejeune',
-        aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j\'ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J\'ai un permis de conduire et une voiture.',
+        companyName: '',
+        city: '',
+        aboutme: '',
     });
+
+    const authStateChangedExecuted = useRef(false);
+
+    useEffect(() => {
+        const handleAuthStateChanged = async (user) => {
+            if (user) {
+                const userId = user.uid;
+
+                try {
+                    const userDocRef = firestore.collection('users').doc('userscompany');
+                    const userDoc = await userDocRef.get();
+
+                    if (userDoc.exists) {
+                        const userData = userDoc.data()[userId];
+                        //setCompanyFormData
+                        setCompanyFormData({
+                            companyName: userData.companyName,
+                            city: userData.city,
+                            aboutme: userData.aboutme,
+                        });
+                        console.log('User data retrieved: ', userId);
+                    } else {
+                        console.log('User data not found: ', userId);
+                    }
+                } catch (error) {
+                    console.error('Error retrieving user data: ', error);
+                }
+            } else {
+                console.log('User not logged in');
+            }
+        };
+
+        if (!authStateChangedExecuted.current) {
+            auth.onAuthStateChanged(handleAuthStateChanged);
+            authStateChangedExecuted.current = true;
+        }
+    }, []);
 
     const [projectList, setProjectList] = useState([
         "Basic Education",
@@ -55,29 +94,39 @@ const ProfileCompany = () => {
         setIsEditing(true);
     };
 
-    const handleSaveProfile = () => {
-        // Vérifier si les champs requis sont remplis
-        if (!companyFormData.city || !companyFormData.aboutme || !projectList.length || !challengeList.length) {
-            alert('Please fill in all the required fields to enable your profile.');
-            return;
+    //function to get user uid
+    const getUserUid = () => {
+        const user = auth.currentUser;
+        if (user) {
+            return user.uid;
+        } else {
+            return null;
         }
+    };
 
-        // Réinitialiser les erreurs de formulaire
-        setCompanyFormErrors({
-            city: false,
-            aboutme: false,
-            project: false,
-            challenge: false
-        });
-
+    const handleSaveProfile = async (user) => {
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
+        const userId = getUserUid()
+        console.log(userId);
 
-        // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
-        localStorage.setItem('companyFormData', JSON.stringify(companyFormData));
-        localStorage.setItem('projectList', JSON.stringify(projectList));
-        localStorage.setItem('challengeList', JSON.stringify(challengeList));
-        localStorage.setItem('companyImage', JSON.stringify(selectedCompanyImage));
+        try {
+            const userDocRef = firestore.collection('users').doc('userscompany');
+            const userDoc = await userDocRef.get();
+            const userData = userDoc.data()[userId];
+            await userDocRef.update({
+
+                [userId]: {
+                    companyName: userData.companyName,
+                    city: userData.city,
+                    aboutme: userData.aboutme,
+                },
+            });
+
+            console.log('User data updated: ', userId);
+        } catch (error) {
+            console.error('Error updating user data: ', error);
+        }
     };
 
 
@@ -134,28 +183,6 @@ const ProfileCompany = () => {
         setHideProfile(!hideProfile);
     };
 
-    useEffect(() => {
-        const storedCompanyFormData = localStorage.getItem('companyFormData');
-        if (storedCompanyFormData) {
-            setCompanyFormData(JSON.parse(storedCompanyFormData));
-        }
-
-        const storedProjectList = localStorage.getItem('projectList');
-        if (storedProjectList) {
-            setProjectList(JSON.parse(storedProjectList));
-        }
-
-        const storedChallengeList = localStorage.getItem('challengeList');
-        if (storedChallengeList) {
-            setChallengeList(JSON.parse(storedChallengeList));
-        }
-
-        const storedCompanyImage = localStorage.getItem('companyImage');
-        if (storedCompanyImage) {
-            setSelectedCompanyImage(JSON.parse(storedCompanyImage));
-        }
-    }, []);
-
     return (
         <div>
             <HeaderCompany />
@@ -166,10 +193,10 @@ const ProfileCompany = () => {
             {isEditing ? (
                 <div className="container">
                     <h2>{t('edit')}</h2>
-                    <form>
+                    <form onSubmit={handleSaveProfile}>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="city">{t('city')}</label>
+                                <label>{t('city')}</label>
                                 <input
                                     className="form-control"
                                     type="text"
@@ -186,7 +213,7 @@ const ProfileCompany = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="aboutme">About me</label>
+                                <label>About me</label>
                                 <textarea
                                     className="form-control"
                                     id="aboutme"
@@ -280,7 +307,7 @@ const ProfileCompany = () => {
                         </div>
                         <div className="text-center">
                             <button
-                                onClick={handleSaveProfile}
+                                type="submit"
                                 className="btn btn-primary"
                                 style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
                             >

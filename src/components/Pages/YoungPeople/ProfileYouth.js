@@ -42,9 +42,6 @@ const ProfileYouth = () => {
         return age;
     };
 
-
-
-
     const [selectedYouthImage, setSelectedYouthImage] = useState(null);
 
     const [youthFormData, setYouthFormData] = useState({
@@ -246,7 +243,7 @@ const ProfileYouth = () => {
                     <form onSubmit={handleSaveProfile}>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="city">{t('city')}</label>
+                                <label>{t('city')}</label>
                                 <input
                                     className="form-control"
                                     type="text"
@@ -262,7 +259,7 @@ const ProfileYouth = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="information">{t('aboutme')}</label>
+                                <label>{t('aboutme')}</label>
                                 <textarea
                                     className="form-control"
                                     id="information"
@@ -277,7 +274,7 @@ const ProfileYouth = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="image">{t('profilepicture')}</label>
+                                <label>{t('profilepicture')}</label>
                                 <input
                                     className="form-control"
                                     type="file"
@@ -293,7 +290,7 @@ const ProfileYouth = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="education">{t('education')}</label>
+                                <label>{t('education')}</label>
                                 <input
                                     className="form-control"
                                     type="text"
