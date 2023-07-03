@@ -15,8 +15,6 @@ const ProfileYouth = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [hideProfile, setHideProfile] = useState(false);
     const [youthImage, setYouthImage] = useState(null);
-    const [data, setData] = useState({});
-    const [file, setFile] = useState("");
 
     const [youthFormErrors, setYouthFormErrors] = useState({
         age: false,
@@ -139,31 +137,31 @@ const ProfileYouth = () => {
             language: false,
         });
 
-        try {
-            const user = auth.currentUser;
-            if (user) {
-                const userId = user.uid;
+        const userId = auth.currentUser.uid;
+        const userDocRef = firestore.collection('users').doc('usersyouth');
+        const userDoc = await userDocRef.get();
 
-                const userDocRef = firestore.collection('users').doc('usersyouth');
-
-                await userDocRef.set({
-                    firstName: youthFormData.firstName,
-                    lastName: youthFormData.lastName,
-                    city: youthFormData.city,
-                    educationalLevel: youthFormData.education,
-                    information: youthFormData.information,
-                    dateOfBirth: calculateBirthDate(youthFormData.age),
+        if (userDoc.exists) {
+            const userData = userDoc.data();
+            const updatedUserData = {
+                ...userData,
+                [userId]: {
+                    ...youthFormData,
+                    age: calculateAge(youthFormData.age),
                     languages: languageList,
-                });
+                },
+            };
 
-                setIsEditing(false);
-                alert('Votre profil a été enregistré avec succès !');
-            } else {
-                console.log('User is not signed in');
+            try {
+                await userDocRef.set(updatedUserData);
+                console.log('User data saved successfully');
+            } catch (error) {
+                console.log('Error saving user data:', error);
             }
-        } catch (error) {
-            console.log('Error saving user profile:', error);
         }
+
+        setIsEditing(false);
+
     };
 
     const handleCancelProfile = () => {
