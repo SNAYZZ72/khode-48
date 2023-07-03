@@ -168,7 +168,6 @@ const ProfileYouth = () => {
                 gender: userData.gender,
                 phoneNumber: userData.phoneNumber,
                 email: userData.email,
-                
                 // Add any other fields you want to update
             }
           });
