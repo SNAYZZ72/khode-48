@@ -125,6 +125,20 @@ const RegisterPage = () => {
         }
     }
 
+
+
+    const validatePassword = (password) => {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+        if (regex.test(password)) {
+            setError("PPassword must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.");
+            console.log('Invalid');
+            return true;
+        } else {
+            console.log('Valid')
+            return false;
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Perform form submission logic here
@@ -148,7 +162,11 @@ const RegisterPage = () => {
 
         } else {
             // Passwords don't match or don't meet the requirements, show an error message or take appropriate action
-            setPasswordsMatch(false);
+            if (!doesPasswordMatch() || !validatePassword(formData.password)) {
+                setPasswordsMatch(false);
+                return;
+            }
+
         }
 
         // You can send the form data to a backend server or perform any other actions
@@ -192,10 +210,7 @@ const RegisterPage = () => {
         }
     };
 
-    const validatePassword = (password) => {
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
-        return regex.test(password);
-    };
+
 
     const handleModalClose = () => {
         setShowErrorModal(false);
@@ -369,7 +384,7 @@ const RegisterPage = () => {
                         </div>
                     </div>
                     {!passwordsMatch && (
-                        <p className="text-danger">{t('passwordsDoNotMatch')}</p>
+                        <p className="text-danger">{t('Sorry, an error occurred. The passwords do not match or do not meet the required criteria.')}</p>
                     )}
                     <div className="row mb-3">
                         <div className="col">
