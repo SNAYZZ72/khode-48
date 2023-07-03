@@ -86,9 +86,9 @@ const ProfileYouth = () => {
                             city: userData.city,
                             education: userData.educationalLevel,
                             information: userData.information,
-                            age: userData.age,
+                            age: calculateAge(userData.dateOfBirth),
                         });
-                        console.log('User data retrieved:', userData.age);
+                        console.log('User data retrieved:', userId);
                     } else {
                         console.log('User document not found');
                     }
@@ -132,28 +132,51 @@ const ProfileYouth = () => {
         setIsEditing(true);
     };
 
-    const handleSaveProfile = () => {
-        // Vérifier si les champs requis sont remplis
-        /*
-        if (!youthFormData.age || !youthFormData.city || !youthFormData.information || !languageList.length) {
-            alert('Please fill in all the required fields to enable your profile.');
-            return;
+    //function to get user uid
+    const getUserUid = () => {
+        const user = auth.currentUser;
+        if (user) {
+            return user.uid;
+        } else {
+            return null;
         }
-        */
-        // Réinitialiser les erreurs de formulaire
-        setYouthFormErrors({
-            age: false,
-            youthCity: false,
-            youthinformation: false,
-            education: false,
-            language: false
-        });
+    };
 
+    const handleSaveProfile = async (user) => {
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
+        const userId = getUserUid()
+        console.log(userId);
 
-        // Update the user's information in Firestore
 
+        try {
+      
+          // Update the user's information in Firestore
+          const userDocRef = firestore.collection('users').doc('usersyouth');
+          const userDoc = await userDocRef.get();
+          const userData = userDoc.data()[userId];
+          await userDocRef.update({
+            
+            [userId]: {
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                city: youthFormData.city,
+                educationalLevel: youthFormData.education,
+                information: youthFormData.information,
+                dateOfBirth: userData.dateOfBirth,
+                postalCode: userData.postalCode,
+                gender: userData.gender,
+                phoneNumber: userData.phoneNumber,
+                email: userData.email,
+                
+                // Add any other fields you want to update
+            }
+          });
+      
+          console.log('User data updated:', userId);
+        } catch (error) {
+          console.log('Error updating user data:', error);
+        }
     };
 
 
@@ -221,7 +244,7 @@ const ProfileYouth = () => {
             {isEditing ? (
                 <div className="container">
                     <h2>{t('edit')}</h2>
-                    <form>
+                    <form onSubmit={handleSaveProfile}>
                         <div className="row mb-3">
                             <div className="col">
                                 <label htmlFor="city">{t('city')}</label>
@@ -320,7 +343,7 @@ const ProfileYouth = () => {
                         </div>
                         <div className="text-center">
                             <button
-                                onClick={handleSaveProfile}
+                                type="submit"
                                 className="btn btn-primary"
                                 style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
                             >
