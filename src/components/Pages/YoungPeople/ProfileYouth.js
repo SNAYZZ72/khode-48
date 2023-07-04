@@ -47,6 +47,12 @@ const ProfileYouth = () => {
 
     const [selectedYouthImage, setSelectedYouthImage] = useState(null);
 
+    const [languageList, setLanguageList] = useState([
+    ]);
+
+    const [experienceList, setExperienceList] = useState([
+    ]);
+
     const [youthFormData, setYouthFormData] = useState({
         firstName: '',
         lastName: '',
@@ -54,6 +60,9 @@ const ProfileYouth = () => {
         city: '',
         education: '',
         information: '',
+        listLanguages: languageList,    
+        listExperience: experienceList,
+        phoneNumber: '',
         proactivity: 10,
         creativity: 52,
         initiative: 37,
@@ -87,8 +96,13 @@ const ProfileYouth = () => {
                             education: userData.educationalLevel,
                             information: userData.information,
                             age: calculateAge(userData.dateOfBirth),
+                            listLanguages: userData.listLanguages,
+                            listExperience: userData.listExperience,
+                            phoneNumber: userData.phoneNumber,
                         });
-                        console.log('User data retrieved:', userId);
+                        await setLanguageList(userData.listLanguages);
+                        await setExperienceList(userData.listExperience);
+                        console.log('User data retrieved');
                     } else {
                         console.log('User document not found');
                     }
@@ -111,11 +125,7 @@ const ProfileYouth = () => {
     // Attach the event listener only if it hasn't been executed before
     
 
-    const [languageList, setLanguageList] = useState([
-        "English",
-        "Spanish",
-        "Basque"
-    ]);
+   
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -164,16 +174,15 @@ const ProfileYouth = () => {
                 educationalLevel: youthFormData.education,
                 information: youthFormData.information,
                 dateOfBirth: userData.dateOfBirth,
-                postalCode: userData.postalCode,
                 gender: userData.gender,
                 phoneNumber: userData.phoneNumber,
                 email: userData.email,
-                
+                listLanguages: languageList,
+                listExperience: experienceList,
                 // Add any other fields you want to update
             }
           });
-      
-          console.log('User data updated:', userId);
+            console.log('User data updated');
         } catch (error) {
           console.log('Error updating user data:', error);
         }
@@ -187,6 +196,8 @@ const ProfileYouth = () => {
             [name]: value,
         }));
     };
+
+    //function to handle change in language list
 
     const handleLanguageChange = (index, value) => {
         setLanguageList((prevList) => {
@@ -206,6 +217,28 @@ const ProfileYouth = () => {
         const newLanguageList = languageList.filter((_, i) => i !== index);
         setLanguageList(newLanguageList);
         localStorage.setItem('languageList', JSON.stringify(newLanguageList));
+    };
+
+    //function to handle change in experience list
+
+    const handleExperienceChange = (index, value) => {
+        setExperienceList((prevList) => {
+            const newList = [...prevList];
+            newList[index] = value;
+            return newList;
+        });
+    };
+
+    const handleAddExperience = () => {
+        const newExperienceList = [...experienceList, ''];
+        setExperienceList(newExperienceList);   
+        localStorage.setItem('experienceList', JSON.stringify(newExperienceList));
+    };
+
+    const handleRemoveExperience = (index) => {
+        const newExperienceList = experienceList.filter((_, i) => i !== index);
+        setExperienceList(newExperienceList);
+        localStorage.setItem('experienceList', JSON.stringify(newExperienceList));
     };
 
     const chartData = [
@@ -239,6 +272,9 @@ const ProfileYouth = () => {
             <HeaderYouth />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
                 <h1>{youthFormData.firstName} {youthFormData.lastName}</h1>
+            </div>
+            <div className="text-center">
+                <h5>{t('phoneNumber')}: {youthFormData.phoneNumber}</h5>
             </div>
 
             {isEditing ? (
@@ -310,13 +346,46 @@ const ProfileYouth = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <h3>{t('language')}</h3>
-                                {languageList.map((language, index) => (
+                                <h3>{t('experience')}</h3>
+                                {experienceList.map((experienceList , index) => (
                                     <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
                                         <input
                                             className='form-control'
                                             type="text"
-                                            value={language}
+                                            value={experienceList}
+                                            onChange={(e) => handleExperienceChange(index, e.target.value)}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemoveExperience(index)}
+                                            className="btn btn-outline-secondary"
+                                            style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(255, 0, 0, 0.5)' }}
+                                        >
+                                            -
+                                        </button>
+                                    </div>
+                                ))}
+                                <div className='text-center'>
+                                    <button
+                                        type="button"
+                                        onClick={handleAddExperience}
+                                        className="btn btn-outline-secondary"
+                                        style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(0, 255, 0, 0.5)' }}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row mb-3">
+                            <div className="col">
+                                <h3>{t('language')}</h3>
+                                {languageList.map((languageList , index) => (
+                                    <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
+                                        <input
+                                            className='form-control'
+                                            type="text"
+                                            value={languageList}
                                             onChange={(e) => handleLanguageChange(index, e.target.value)}
                                         />
                                         <button
@@ -402,20 +471,12 @@ const ProfileYouth = () => {
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{youthFormData.points}</p>
                                 </div>
                                 <div className="col">
-                                    <h3>{hideProfile ? t('showhide') : t('showhide')}</h3>
-                                    {/* switch toggle button to hide profile */}
-                                    <div className="form-check form-switch">
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            id="flexSwitchCheckDefault"
-                                            checked={hideProfile}
-                                            onChange={handleToggle}
-                                        />
-                                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
-                                            {hideProfile ? t('hide') : t('show')}
-                                        </label>
-                                    </div>
+                                    <h3>{t('experience')}</h3>
+                                    {experienceList.map((experienceList, index) => (
+                                        <div className="col" key={index}>
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{experienceList}</p>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -431,9 +492,9 @@ const ProfileYouth = () => {
                                 </div>
                                 <div className="col">
                                     <h3>{t('language')}</h3>
-                                    {languageList.map((language, index) => (
+                                    {languageList.map((languageList, index) => (
                                         <div className="col" key={index}>
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{language}</p>
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{languageList}</p>
                                         </div>
                                     ))}
                                 </div>

@@ -4,13 +4,15 @@ import 'firebase/compat/database';
 import 'firebase/compat/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDQKcZCvHteJEttXaQ8fTncuK_x83nCuDQ",
-  authDomain: "project-kode48.firebaseapp.com",
-  projectId: "project-kode48",
-  storageBucket: "project-kode48.appspot.com",
-  messagingSenderId: "391756532090",
-  appId: "1:391756532090:web:db057bc90a7b3dc1a7aec3"
-};
+    apiKey: "AIzaSyCuBAIQ0gGIO4ts4ucaTMmneCoObhhH1s4",
+    authDomain: "kode-48-373e9.firebaseapp.com",
+    databaseURL: "https://kode-48-373e9-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "kode-48-373e9",
+    storageBucket: "kode-48-373e9.appspot.com",
+    messagingSenderId: "180923264231",
+    appId: "1:180923264231:web:3c9ab9546d2805441a0642",
+    measurementId: "G-1XXYPWBFHM"
+  };
 
 firebase.initializeApp(firebaseConfig);
 
