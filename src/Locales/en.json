@@ -127,7 +127,7 @@
   "profile": "Profile",
   "age": "Age",
   "education": "Education",
-  "language": "Language",
+  "language": "Language(s)",
   "skills": "Skills development",
   "edit": "Edit profile",
   "totalpoints": "Total points",
@@ -141,5 +141,6 @@
   "creativity": "Creativity",
   "proactivity": "Proactivity",
   "aboutme": "About me",
-  "profilepicture": "Profile picture"
+  "profilepicture": "Profile picture",
+  "experience": "Experiences"
 }
