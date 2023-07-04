@@ -491,7 +491,7 @@ const RegisterCompanyPage = () => {
                     </div>
                 </form>
             </div>
-            <Modal show={showErrorModal} onHide={handleModalClose}>
+            {/* <Modal show={showErrorModal} onHide={handleModalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Error</Modal.Title>
                 </Modal.Header>
@@ -503,7 +503,7 @@ const RegisterCompanyPage = () => {
                         Close
                     </Button>
                 </Modal.Footer>
-            </Modal>
+            </Modal> */}
             <Modal show={showSuccessModal} onHide={handleModalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{t('Congratulations!')}</Modal.Title>
