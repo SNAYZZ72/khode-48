@@ -101,7 +101,7 @@ const RegisterCompanyPage = () => {
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [passwordScore, setPasswordScore] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
-    const [showErrorModal, setShowErrorModal] = useState(false);
+    // const [showErrorModal, setShowErrorModal] = useState(false);
     const [passwordValid, setPasswordValid] = useState(true);
 
     const handleInputChange = (e) => {
@@ -208,7 +208,7 @@ const RegisterCompanyPage = () => {
 
 
     const handleModalClose = () => {
-        setShowErrorModal(false);
+        // setShowErrorModal(false);
         setShowSuccessModal(false); // Close the success modal
     };
 
