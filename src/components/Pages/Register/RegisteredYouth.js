@@ -432,6 +432,19 @@ const RegisterPage = () => {
                     </div>
                 </form>
             </div>
+            <Modal show={showErrorModal} onHide={handleModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Error</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>{t('An error occurred. Please check your input and try again.')}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleModalClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <Modal show={showSuccessModal} onHide={handleModalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{t('Congratulations!')}</Modal.Title>
