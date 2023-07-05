@@ -180,6 +180,9 @@ const RegisterCompanyPage = () => {
             if (result) {
                 setExistEmail(false);
 
+                // Show the success modal
+                setShowSuccessModal(true);
+
                 // Reset form fields after submission if needed
                 setFormData({
                     companyName: '',
