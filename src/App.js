@@ -5,6 +5,7 @@ import i18n from './i18n';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
 import { useContext } from 'react';
+import { firestore } from './components/firebase';
 
 // import logo from './logo.svg';
 import './App.css';
@@ -24,7 +25,7 @@ import RegisterPageI from "./components/Pages/Register/RegisteredIntermediaries"
 //import Home profile
 import HomeYouth from "./components/Pages/YoungPeople/HomeYouth";
 import HomeCompany from "./components/Pages/Company/HomeCompany";
-import HomeIntemediary from "./components/Pages/Intermediary/HomeIntermediary"
+import HomeIntermediary from "./components/Pages/Intermediary/HomeIntermediary"
 
 //import Profile
 import ProfileYouth from "./components/Pages/YoungPeople/ProfileYouth";
@@ -52,6 +53,32 @@ export default function App() {
 
   console.log(currentUser)
 
+// Vérifie si l'utilisateur est dans le document usersyouth
+const isUserInYouthDocument = async (uid) => {
+  console.log("Vérification de l'utilisateur dans usersyouth :", uid);
+  const userDocRef = firestore.collection('users').doc('usersyouth');
+  const userSubcollectionRef = userDocRef.collection(uid);
+  const userSubcollection = await userSubcollectionRef.get();
+  const userExists = !userSubcollection.empty;
+  console.log("Document utilisateur trouvé :", userExists);
+  return userExists;
+};
+
+
+// Vérifie si l'utilisateur est dans le document userscompany
+const isUserInCompanyDocument = async (uid) => {
+  const userDocRef = firestore.collection('users').doc('userscompany').collection(uid);
+  const userDocSnapshot = await userDocRef.get();
+  return !userDocSnapshot.empty;
+};
+
+// Vérifie si l'utilisateur est dans le document usersintermediary
+const isUserInIntermediaryDocument = async (uid) => {
+  const userDocRef = firestore.collection('users').doc('usersintermediary').collection(uid);
+  const userDocSnapshot = await userDocRef.get();
+  return !userDocSnapshot.empty;
+};
+
   return (
     <I18nextProvider i18n={i18n}>
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -68,12 +95,12 @@ export default function App() {
               <Route path="/registerY" element={<RegisterPageY />} />
               <Route path="/registerC" element={<RegisterPageC />} />
               <Route path="/registerI" element={<RegisterPageI />} />
-              <Route path="/homeYouth" element={<RequireAuth><HomeYouth /></RequireAuth>} />
-              <Route path="/homeCompany" element={<RequireAuth><HomeCompany /></RequireAuth>} />
-              <Route path="/homeIntermediary" element={<RequireAuth><HomeIntemediary /></RequireAuth>} />
-              <Route path="/profileYouth" element={<RequireAuth><ProfileYouth /></RequireAuth>} />
-              <Route path="/profileCompany" element={<RequireAuth><ProfileCompany /></RequireAuth>} />
-              <Route path="/profileIntermediary" element={<RequireAuth><ProfileIntermediary /></RequireAuth>} />
+              <Route path="/homeYouth" element={currentUser && isUserInYouthDocument(currentUser.uid) ? <HomeYouth /> : <Home />} />
+              <Route path="/homeCompany" element={currentUser && isUserInCompanyDocument(currentUser.uid) ? <HomeCompany /> : <Home />} />
+              <Route path="/homeIntermediary" element={currentUser && isUserInIntermediaryDocument(currentUser.uid) ? <HomeIntermediary /> : <Home />} />
+              <Route path="/profileYouth" element={currentUser && isUserInYouthDocument(currentUser.uid) ? <ProfileYouth /> : <Home />} />
+              <Route path="/profileCompany" element={currentUser && isUserInCompanyDocument(currentUser.uid) ? <ProfileCompany /> : <Home />} />
+              <Route path="/profileIntermediary" element={currentUser && isUserInIntermediaryDocument(currentUser.uid) ? <ProfileIntermediary /> : <Home />} />
             </Routes>
           </div>
           <Footer />
