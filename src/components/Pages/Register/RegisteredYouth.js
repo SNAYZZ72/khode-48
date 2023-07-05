@@ -32,6 +32,7 @@ const getPasswordStrengthText = (score) => {
 
 const RegisterPage = () => {
     const { t } = useTranslation();
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const [error, setError] = useState('');
     const [existEmail, setExistEmail] = useState(false);
@@ -94,6 +95,7 @@ const RegisterPage = () => {
     const [passwordScore, setPasswordScore] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const [passwordValid, setPasswordValid] = useState(true);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -103,11 +105,13 @@ const RegisterPage = () => {
         }));
     };
 
+
     const handlePasswordChange = (e) => {
         const { value } = e.target;
         const score = zxcvbn(value).score;
         setPasswordScore(score);
         handleInputChange(e);
+        setPasswordValid(validatePassword(value) || value.length === 0);
     };
 
     const toggleShowPassword = () => {
@@ -121,6 +125,20 @@ const RegisterPage = () => {
             return false;
         }
     }
+
+
+
+    const validatePassword = (password) => {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+        if (regex.test(password)) {
+            setError("PPassword must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.");
+            console.log('Invalid');
+            return true;
+        } else {
+            console.log('Valid')
+            return false;
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -140,10 +158,16 @@ const RegisterPage = () => {
         if (formData.password === formData.confirmPassword && validatePassword(formData.password)) {
             // Passwords match and meet the requirements
             setPasswordsMatch(true);
-            // Rest of your code...
+            //password validate
+
+
         } else {
             // Passwords don't match or don't meet the requirements, show an error message or take appropriate action
-            setPasswordsMatch(false);
+            if (!doesPasswordMatch() || !validatePassword(formData.password)) {
+                setPasswordsMatch(false);
+                return;
+            }
+
         }
 
         // You can send the form data to a backend server or perform any other actions
@@ -164,6 +188,9 @@ const RegisterPage = () => {
                 */
 
                 setExistEmail(false);
+
+                // Show the success modal
+                setShowSuccessModal(true);
 
                 // Reset form fields after submission if needed
                 setFormData({
@@ -187,13 +214,10 @@ const RegisterPage = () => {
         }
     };
 
-    const validatePassword = (password) => {
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
-        return regex.test(password);
-    };
 
     const handleModalClose = () => {
         setShowErrorModal(false);
+        setShowSuccessModal(false); // Close the success modal
     };
 
     return (
@@ -229,6 +253,8 @@ const RegisterPage = () => {
                                 required
                             />
                         </div>
+                    </div>
+                    <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="gender">{t('gender')}</label>
                             <select
@@ -244,8 +270,6 @@ const RegisterPage = () => {
                                 <option value="male">{t('male')}</option>
                             </select>
                         </div>
-                    </div>
-                    <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="dateOfBirth">{t('dateOfBirth')}</label>
                             <input
@@ -258,6 +282,8 @@ const RegisterPage = () => {
                                 required
                             />
                         </div>
+                    </div>
+                    <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="city">{t('city')}</label>
                             <input
@@ -265,6 +291,18 @@ const RegisterPage = () => {
                                 id="city"
                                 name="city"
                                 value={formData.city}
+                                onChange={handleInputChange}
+                                required
+                            >
+                            </input>
+                        </div>
+                        <div className="col">
+                            <label htmlFor="postalCode">{t('postalCode')}</label>
+                            <input
+                                className="form-control"
+                                id="postalCode"
+                                name="postalCode"
+                                value={formData.postalCode}
                                 onChange={handleInputChange}
                                 required
                             >
@@ -329,7 +367,7 @@ const RegisterPage = () => {
                                     {getPasswordStrengthText(passwordScore)}
                                 </p>
                             )}
-                            {!validatePassword(formData.password) && (
+                            {!passwordValid && !validatePassword(formData.password) && formData.password.length > 0 && (
                                 <p className="text-danger">
                                     {t('Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.')}
                                 </p>
@@ -350,7 +388,7 @@ const RegisterPage = () => {
                         </div>
                     </div>
                     {!passwordsMatch && (
-                        <p className="text-danger">{t('passwordsDoNotMatch')}</p>
+                        <p className="text-danger">{t('Sorry, an error occurred. The passwords do not match or do not meet the required criteria.')}</p>
                     )}
                     <div className="row mb-3">
                         <div className="col">
@@ -404,6 +442,19 @@ const RegisterPage = () => {
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleModalClose}>
                         Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={showSuccessModal} onHide={handleModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{t('Congratulations!')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>{t('Your account has been successfully created.')}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleModalClose}>
+                        {t('Close')}
                     </Button>
                 </Modal.Footer>
             </Modal>
