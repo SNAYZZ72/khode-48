@@ -31,6 +31,7 @@ const Home = () => {
         setShowLoginModal(true);
     };
 
+
     const handleLogin = async () => {
         setIsLoggingIn(true); // Set isLoggingIn to true when login starts
         try {
