@@ -63,13 +63,12 @@ const ProfileYouth = () => {
         listLanguages: languageList,    
         listExperience: experienceList,
         phoneNumber: '',
-        proactivity: 10,
-        creativity: 52,
-        initiative: 37,
-        empathy: 49,
-        leadership: 16,
-        teamwork: 78,
-        points: 242
+        proactivity: 0,
+        creativity: 0,
+        initiative: 0,
+        empathy: 0,
+        leadership: 0,
+        teamwork: 0,
     });
 
     const authStateChangedExecuted = useRef(false);
@@ -99,6 +98,12 @@ const ProfileYouth = () => {
                             listLanguages: userData.listLanguages,
                             listExperience: userData.listExperience,
                             phoneNumber: userData.phoneNumber,
+                            proactivity: userData.proactivity,
+                            creativity: userData.creativity,
+                            initiative: userData.initiative,
+                            empathy: userData.empathy,
+                            leadership: userData.leadership,
+                            teamwork: userData.teamwork,
                         });
                         await setLanguageList(userData.listLanguages);
                         await setExperienceList(userData.listExperience);
@@ -119,13 +124,7 @@ const ProfileYouth = () => {
             auth.onAuthStateChanged(handleAuthStateChanged);
             authStateChangedExecuted.current = true;
         }
-    }, []);
-    
-
-    // Attach the event listener only if it hasn't been executed before
-    
-
-   
+    }, []);    
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -156,8 +155,6 @@ const ProfileYouth = () => {
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
         const userId = getUserUid()
-        console.log(userId);
-
 
         try {
       
@@ -188,7 +185,6 @@ const ProfileYouth = () => {
         }
     };
 
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setYouthFormData((prevYouthFormData) => ({
@@ -197,8 +193,7 @@ const ProfileYouth = () => {
         }));
     };
 
-    //function to handle change in language list
-
+    //functions to handle change in language list
     const handleLanguageChange = (index, value) => {
         setLanguageList((prevList) => {
             const newList = [...prevList];
@@ -219,8 +214,7 @@ const ProfileYouth = () => {
         localStorage.setItem('languageList', JSON.stringify(newLanguageList));
     };
 
-    //function to handle change in experience list
-
+    //functions to handle change in experience list
     const handleExperienceChange = (index, value) => {
         setExperienceList((prevList) => {
             const newList = [...prevList];
