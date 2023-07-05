@@ -1,116 +1,96 @@
-import ReactDOM from "react-dom/client";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
-import { Navigate } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
-import { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { firestore } from './components/firebase';
 
-// import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-//import Pages
+// Import des pages
 import Home from './components/Home/Homepage';
 import About from './components/Pages/Footer/About';
 import Contact from './components/Pages/Footer/Contact';
 import FAQ from './components/Pages/Footer/FAQ';
 import Terms from './components/Pages/Footer/Terms';
 import Career from './components/Pages/Footer/Career';
-//import register
-import RegisterPageY from "./components/Pages/Register/RegisteredYouth";
-import RegisterPageC from "./components/Pages/Register/RegisteredCompanies";
-import RegisterPageI from "./components/Pages/Register/RegisteredIntermediaries";
-//import Home profile
-import HomeYouth from "./components/Pages/YoungPeople/HomeYouth";
-import HomeCompany from "./components/Pages/Company/HomeCompany";
-import HomeIntermediary from "./components/Pages/Intermediary/HomeIntermediary"
-
-//import Profile
-import ProfileYouth from "./components/Pages/YoungPeople/ProfileYouth";
-import ProfileCompany from "./components/Pages/Company/ProfileCompany";
-import ProfileIntermediary from "./components/Pages/Intermediary/ProfileIntermediary";
-
-//import Components
+import RegisterPageY from './components/Pages/Register/RegisteredYouth';
+import RegisterPageC from './components/Pages/Register/RegisteredCompanies';
+import RegisterPageI from './components/Pages/Register/RegisteredIntermediaries';
+import HomeYouth from './components/Pages/YoungPeople/HomeYouth';
+import HomeCompany from './components/Pages/Company/HomeCompany';
+import HomeIntermediary from './components/Pages/Intermediary/HomeIntermediary';
+import ProfileYouth from './components/Pages/YoungPeople/ProfileYouth';
+import ProfileCompany from './components/Pages/Company/ProfileCompany';
+import ProfileIntermediary from './components/Pages/Intermediary/ProfileIntermediary';
 import Footer from './components/common/Footer';
-
-//import CookieConsent
 import CookieConsent from './components/CookieConsent/CookieConsent';
 
+function App() {
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+  const { currentUser, role } = useContext(AuthContext); // Ajout de "role" dans la destructuration
 
+  const isUserInYouthDocument = async (uid) => {
+    const userRef = firestore.collection('users').doc('usersyouth');
+    const userDoc = await userRef.get();
+    const userExists = userDoc.data().hasOwnProperty(uid);
+    return userExists;
+  };
 
-export default function App() {
+  const isUserInCompanyDocument = async (uid) => {
+    const userRef = firestore.collection('users').doc('userscompany');
+    const userDoc = await userRef.get();
+    const userExists = userDoc.data().hasOwnProperty(uid);
+    return userExists;
+  };
 
-  const { currentUser } = useContext(AuthContext);
+  const isUserInIntermediaryDocument = async (uid) => {
+    const userRef = firestore.collection('users').doc('usersintermediary');
+    const userDoc = await userRef.get();
+    const userExists = userDoc.data().hasOwnProperty(uid);
+    return userExists;
+  };
 
-  const RequireAuth = ({ children }) => {
+  const RequireAuth = ({ children, role }) => {
     const { currentUser } = useContext(AuthContext);
+    const [roleChecked, setRoleChecked] = useState(false);
+    const [allowed, setAllowed] = useState(false);
 
-    // Vérifier si l'utilisateur est connecté
-    if (!currentUser) {
-      return <Navigate to="/" />;
-    }
-
-    // Vérifier le rôle de l'utilisateur
     const checkUserRole = async () => {
       const isYouth = await isUserInYouthDocument(currentUser.uid);
       const isCompany = await isUserInCompanyDocument(currentUser.uid);
       const isIntermediary = await isUserInIntermediaryDocument(currentUser.uid);
 
-      // Restriction d'accès aux routes en fonction du rôle de l'utilisateur
-      if (isYouth) {
-        // Rôle : Youth
-        return children;
-      } else if (isCompany) {
-        // Rôle : Company
-        return children;
-      } else if (isIntermediary) {
-        // Rôle : Intermediary
-        return children;
+      if ((isYouth && role === 'youth') || (isCompany && role === 'company') || (isIntermediary && role === 'intermediary')) {
+        setAllowed(true);
       } else {
-        // Rôle non reconnu ou non autorisé
-        return <Navigate to="/" />;
+        console.log("Redirection non autorisée");
       }
+
+      setRoleChecked(true);
     };
 
-    return checkUserRole();
+    useEffect(() => {
+      if (currentUser) {
+        checkUserRole();
+      } else {
+        setRoleChecked(true);
+      }
+    }, [currentUser]);
+
+    if (!roleChecked) {
+      return null;
+    }
+
+    if (!allowed) {
+      return <Navigate to="/" />;
+    }
+
+    return children;
   };
 
-  console.log(currentUser);
-
-  // Vérifie si l'utilisateur est dans le document usersyouth
-  const isUserInYouthDocument = async (uid) => {
-    console.log("Vérification de l'utilisateur dans usersyouth :", uid);
-    const userRef = firestore.collection('users').doc('usersyouth');
-    const userDoc = await userRef.get();
-    const userExists = userDoc.data().hasOwnProperty(uid);
-    console.log("Document utilisateur trouvé :", userExists);
-    return userExists;
-  };
-
-  // Vérifie si l'utilisateur est dans le document userscompany
-  const isUserInCompanyDocument = async (uid) => {
-    console.log("Vérification de l'utilisateur dans userscompany :", uid);
-    const userRef = firestore.collection('users').doc('userscompany');
-    const userDoc = await userRef.get();
-    const userExists = userDoc.data().hasOwnProperty(uid);
-    console.log("Document utilisateur trouvé :", userExists);
-    return userExists;
-  };
-
-  // Vérifie si l'utilisateur est dans le document usersintermediary
-  const isUserInIntermediaryDocument = async (uid) => {
-    console.log("Vérification de l'utilisateur dans usersintermediary :", uid);
-    const userRef = firestore.collection('users').doc('usersintermediary');
-    const userDoc = await userRef.get();
-    const userExists = userDoc.data().hasOwnProperty(uid);
-    console.log("Document utilisateur trouvé :", userExists);
-    return userExists;
-  };
 
   return (
     <I18nextProvider i18n={i18n}>
@@ -128,12 +108,13 @@ export default function App() {
               <Route path="/registerY" element={<RegisterPageY />} />
               <Route path="/registerC" element={<RegisterPageC />} />
               <Route path="/registerI" element={<RegisterPageI />} />
-              <Route path="/homeYouth" element={<RequireAuth><HomeYouth /></RequireAuth>} />
-              <Route path="/homeCompany" element={<RequireAuth><HomeCompany /></RequireAuth>} />
-              <Route path="/homeIntermediary" element={<RequireAuth><HomeIntermediary /></RequireAuth>} />
-              <Route path="/profileYouth" element={<RequireAuth><ProfileYouth /></RequireAuth>} />
-              <Route path="/profileCompany" element={<RequireAuth><ProfileCompany /></RequireAuth>} />
-              <Route path="/profileIntermediary" element={<RequireAuth><ProfileIntermediary /></RequireAuth>} />
+              <Route path="/homeYouth" element={<RequireAuth role="youth"><HomeYouth /></RequireAuth>} />
+              <Route path="/homeCompany" element={<RequireAuth role="company"><HomeCompany /></RequireAuth>} />
+              <Route path="/homeIntermediary" element={<RequireAuth role="intermediary"><HomeIntermediary /></RequireAuth>} />
+              <Route path="/profileYouth" element={<RequireAuth role="youth"><ProfileYouth /></RequireAuth>} />
+              <Route path="/profileCompany" element={<RequireAuth role="company"><ProfileCompany /></RequireAuth>} />
+              <Route path="/profileIntermediary" element={<RequireAuth role="intermediary"><ProfileIntermediary /></RequireAuth>} />
+
             </Routes>
           </div>
           <Footer />
@@ -142,4 +123,7 @@ export default function App() {
     </I18nextProvider>
   );
 }
-root.render(<App />);
+
+ReactDOM.render(<App />, document.getElementById('root'));
+
+export default App;

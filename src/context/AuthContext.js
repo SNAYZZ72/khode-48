@@ -12,6 +12,7 @@ try {
 
 const INITIAL_STATE = {
   currentUser: initialUser,
+  role: null, // Ajout de la propriété "role"
 };
 
 export const AuthContext = createContext(INITIAL_STATE);
@@ -24,7 +25,7 @@ export const AuthContextProvider = ({ children }) => {
   }, [state.currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser: state.currentUser, dispatch }}>
+    <AuthContext.Provider value={{ currentUser: state.currentUser, role: state.role, dispatch }}>
       {children}
     </AuthContext.Provider>
   );
