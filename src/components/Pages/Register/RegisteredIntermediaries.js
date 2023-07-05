@@ -225,7 +225,7 @@ const RegisterIntermediaryPage = () => {
                 <form onSubmit={handleSubmit} style={{ paddingBottom: '15px' }}>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="companyName">{t('Company name')}</label>
+                            <label htmlFor="companyName">{t('Intermediaries Register')}</label>
                             <input
                                 type="text"
                                 className="form-control"
