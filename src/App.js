@@ -48,18 +48,43 @@ export default function App() {
   const { currentUser } = useContext(AuthContext);
 
   const RequireAuth = ({ children }) => {
-    return currentUser ? (children) : <Navigate to="/" />
-  }
+    const { currentUser } = useContext(AuthContext);
+  
+    // Vérifier si l'utilisateur est connecté
+    if (!currentUser) {
+      return <Navigate to="/" />;
+    }
+  
+    // Vérifier le rôle de l'utilisateur
+    const isYouth = isUserInYouthDocument(currentUser.uid);
+    const isCompany = isUserInCompanyDocument(currentUser.uid);
+    const isIntermediary = isUserInIntermediaryDocument(currentUser.uid);
+  
+    // Restriction d'accès aux routes en fonction du rôle de l'utilisateur
+    if (isYouth) {
+      // Rôle : Youth
+      return children;
+    } else if (isCompany) {
+      // Rôle : Company
+      return children;
+    } else if (isIntermediary) {
+      // Rôle : Intermediary
+      return children;
+    } else {
+      // Rôle non reconnu ou non autorisé
+      return <Navigate to="/" />;
+    }
+  };
+  
 
   console.log(currentUser)
 
 // Vérifie si l'utilisateur est dans le document usersyouth
 const isUserInYouthDocument = async (uid) => {
   console.log("Vérification de l'utilisateur dans usersyouth :", uid);
-  const userDocRef = firestore.collection('users').doc('usersyouth');
-  const userSubcollectionRef = userDocRef.collection(uid);
-  const userSubcollection = await userSubcollectionRef.get();
-  const userExists = !userSubcollection.empty;
+  const userRef = firestore.collection('users').doc('usersyouth');
+  const userDoc = await userRef.get();
+  const userExists = userDoc.data().hasOwnProperty(uid);
   console.log("Document utilisateur trouvé :", userExists);
   return userExists;
 };
@@ -67,16 +92,22 @@ const isUserInYouthDocument = async (uid) => {
 
 // Vérifie si l'utilisateur est dans le document userscompany
 const isUserInCompanyDocument = async (uid) => {
-  const userDocRef = firestore.collection('users').doc('userscompany').collection(uid);
-  const userDocSnapshot = await userDocRef.get();
-  return !userDocSnapshot.empty;
+  console.log("Vérification de l'utilisateur dans userscompany :", uid);
+  const userRef = firestore.collection('users').doc('userscompany');
+  const userDoc = await userRef.get();
+  const userExists = userDoc.data().hasOwnProperty(uid);
+  console.log("Document utilisateur trouvé :", userExists);
+  return userExists;
 };
 
 // Vérifie si l'utilisateur est dans le document usersintermediary
 const isUserInIntermediaryDocument = async (uid) => {
-  const userDocRef = firestore.collection('users').doc('usersintermediary').collection(uid);
-  const userDocSnapshot = await userDocRef.get();
-  return !userDocSnapshot.empty;
+  console.log("Vérification de l'utilisateur dans usersintermediary :", uid);
+  const userRef = firestore.collection('users').doc('usersintermediary');
+  const userDoc = await userRef.get();
+  const userExists = userDoc.data().hasOwnProperty(uid);
+  console.log("Document utilisateur trouvé :", userExists);
+  return userExists;
 };
 
   return (
@@ -95,12 +126,12 @@ const isUserInIntermediaryDocument = async (uid) => {
               <Route path="/registerY" element={<RegisterPageY />} />
               <Route path="/registerC" element={<RegisterPageC />} />
               <Route path="/registerI" element={<RegisterPageI />} />
-              <Route path="/homeYouth" element={currentUser && isUserInYouthDocument(currentUser.uid) ? <HomeYouth /> : <Home />} />
-              <Route path="/homeCompany" element={currentUser && isUserInCompanyDocument(currentUser.uid) ? <HomeCompany /> : <Home />} />
-              <Route path="/homeIntermediary" element={currentUser && isUserInIntermediaryDocument(currentUser.uid) ? <HomeIntermediary /> : <Home />} />
-              <Route path="/profileYouth" element={currentUser && isUserInYouthDocument(currentUser.uid) ? <ProfileYouth /> : <Home />} />
-              <Route path="/profileCompany" element={currentUser && isUserInCompanyDocument(currentUser.uid) ? <ProfileCompany /> : <Home />} />
-              <Route path="/profileIntermediary" element={currentUser && isUserInIntermediaryDocument(currentUser.uid) ? <ProfileIntermediary /> : <Home />} />
+              <Route path="/homeYouth" element={<RequireAuth><HomeYouth /></RequireAuth>} />
+              <Route path="/homeCompany" element={<RequireAuth><HomeCompany /></RequireAuth>} />
+              <Route path="/homeIntermediary" element={<RequireAuth><HomeIntermediary /></RequireAuth>} />
+              <Route path="/profileYouth" element={<RequireAuth><ProfileYouth /></RequireAuth>} />
+              <Route path="/profileCompany" element={<RequireAuth><ProfileCompany /></RequireAuth>} />
+              <Route path="/profileIntermediary" element={<RequireAuth><ProfileIntermediary /></RequireAuth>} />
             </Routes>
           </div>
           <Footer />
