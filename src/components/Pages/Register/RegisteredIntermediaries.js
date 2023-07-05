@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../../common/Header/Header';
 import zxcvbn from 'zxcvbn';
 import { Modal, Button } from 'react-bootstrap';
-import { auth } from '../../firebase'; 
+import { auth } from '../../firebase';
 import { database } from '../../firebase'; // Import the database instance from your firebase.js file
 import { firestore } from '../../firebase'; // Import the firestore instance from your firebase.js file
 
@@ -31,17 +31,18 @@ const getPasswordStrengthText = (score) => {
 
 const RegisterIntermediaryPage = () => {
     const { t } = useTranslation();
+
     const userRef = database.ref('users'); // Reference the 'users' node in the database
     const [error, setError] = useState('');
     const [existEmail, setExistEmail] = useState(false);
 
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
     const [formData, setFormData] = useState({
         companyName: '',
         commercialName: '',
-        addressLine1: '',
         city: '',
         postalCode: '',
-        country: '',
         industry: '',
         maturity: '',
         primarySector: '',
@@ -53,7 +54,7 @@ const RegisterIntermediaryPage = () => {
         phoneNumber: '',
         email: '',
         password: '',
-        confirmPass: ''
+        confirmPass: '',
     });
 
     const handleRegister = async () => {
@@ -67,10 +68,8 @@ const RegisterIntermediaryPage = () => {
             const sentData = {
                 companyName: formData.companyName,
                 commercialName: formData.commercialName,
-                addressLine1: formData.addressLine1,
                 city: formData.city,
                 postalCode: formData.postalCode,
-                country: formData.country,
                 industry: formData.industry,
                 maturity: formData.maturity,
                 primarySector: formData.primarySector,
@@ -80,20 +79,20 @@ const RegisterIntermediaryPage = () => {
                 contactFirstName: formData.contactFirstName,
                 contactLastName: formData.contactLastName,
                 phoneNumber: formData.phoneNumber,
-                email: formData.email,                
+                email: formData.email,
             };
             // Get the user ID of the newly created user
             const userId = auth.currentUser.uid;
 
             // Get a reference to the parent document
-            const parentDocRef = firestore.collection('users').doc('usersintermediary');
+            const parentDocRef = firestore.collection('users').doc('userscompany');
 
             // Set the user data directly under the parent document
             await parentDocRef.set({ [userId]: sentData }, { merge: true });
             return true;
         } catch (error) {
-            setError(error.message);   
-            alert(error.message);    
+            setError(error.message);
+            alert(error.message);
             setExistEmail(true);
             return false;
         }
@@ -102,7 +101,8 @@ const RegisterIntermediaryPage = () => {
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [passwordScore, setPasswordScore] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
-    const [showErrorModal, setShowErrorModal] = useState(false);
+    // const [showErrorModal, setShowErrorModal] = useState(false);
+    const [passwordValid, setPasswordValid] = useState(true);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -117,6 +117,7 @@ const RegisterIntermediaryPage = () => {
         const score = zxcvbn(value).score;
         setPasswordScore(score);
         handleInputChange(e);
+        setPasswordValid(validatePassword(value) || value.length === 0);
     };
 
     const toggleShowPassword = () => {
@@ -124,54 +125,70 @@ const RegisterIntermediaryPage = () => {
     };
 
     const doesPasswordMatch = () => {
-        if(formData.password === formData.confirmPassword){
+        if (formData.password === formData.confirmPassword) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
+    const validatePassword = (password) => {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+        if (regex.test(password)) {
+            setError("PPassword must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.");
+            console.log('Invalid');
+            return true;
+        } else {
+            console.log('Valid')
+            return false;
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Perform form submission logic here
-        const currentDate = new Date();
-        const selectedDate = new Date(formData.dateOfBirth);
-        const minimumAge = 8; // Minimum age in years
+        // const currentDate = new Date();
+        // const selectedDate = new Date(formData.dateOfBirth);
+        // const minimumAge = 8; // Minimum age in years
 
-        selectedDate.setFullYear(selectedDate.getFullYear() + minimumAge);
+        // selectedDate.setFullYear(selectedDate.getFullYear() + minimumAge);
 
-        if (selectedDate >= currentDate) {
-            // Date of birth does not meet the minimum age requirement, show an error message or take appropriate action
-            setShowErrorModal(true);
-            return;
-        }
+        // if (selectedDate >= currentDate) {
+        //     // Date of birth does not meet the minimum age requirement, show an error message or take appropriate action
+        //     setShowErrorModal(true);
+        //     return;
+        // }
 
         if (formData.password === formData.confirmPassword && validatePassword(formData.password)) {
             // Passwords match and meet the requirements
             setPasswordsMatch(true);
-            // Rest of your code...
+            //password validate
         } else {
             // Passwords don't match or don't meet the requirements, show an error message or take appropriate action
-            setPasswordsMatch(false);
+            if (!doesPasswordMatch() || !validatePassword(formData.password)) {
+                setPasswordsMatch(false);
+                return;
+            }
         }
 
         // You can send the form data to a backend server or perform any other actions
         // if handleREgister return no error then result is true and the following code can execute
-        
-        if(doesPasswordMatch() && validatePassword(formData.password)) {
+
+        if (doesPasswordMatch() && validatePassword(formData.password)) {
             const result = await handleRegister();
 
-            if(result) {                         
+            if (result) {
                 setExistEmail(false);
+
+                // Show the success modal
+                setShowSuccessModal(true);
 
                 // Reset form fields after submission if needed
                 setFormData({
                     companyName: '',
                     commercialName: '',
-                    addressLine1: '',
                     city: '',
                     postalCode: '',
-                    country: '',
                     industry: '',
                     maturity: '',
                     primarySector: '',
@@ -183,6 +200,7 @@ const RegisterIntermediaryPage = () => {
                     phoneNumber: '',
                     email: '',
                     password: '',
+                    confirmPass: '',
                 });
                 return true;
             } else {
@@ -191,20 +209,17 @@ const RegisterIntermediaryPage = () => {
         }
     };
 
-    const validatePassword = (password) => {
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
-        return regex.test(password);
-    };
 
     const handleModalClose = () => {
-        setShowErrorModal(false);
+        // setShowErrorModal(false);
+        setShowSuccessModal(false); // Close the success modal
     };
 
     return (
         <div>
             <Header />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{t('IntermediariesRegister')}</h1>
+                <h1>{t('CompanyRegister')}</h1>
             </div>
             <div className="container">
                 <form onSubmit={handleSubmit} style={{ paddingBottom: '15px' }}>
@@ -414,7 +429,7 @@ const RegisterIntermediaryPage = () => {
                                     {getPasswordStrengthText(passwordScore)}
                                 </p>
                             )}
-                            {!validatePassword(formData.password) && (
+                            {!passwordValid && !validatePassword(formData.password) && formData.password.length > 0 && (
                                 <p className="text-danger">
                                     {t('Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.')}
                                 </p>
@@ -435,7 +450,7 @@ const RegisterIntermediaryPage = () => {
                         </div>
                     </div>
                     {!passwordsMatch && (
-                        <p className="text-danger">{t('passwordsDoNotMatch')}</p>
+                        <p className="text-danger">{t('Sorry, an error occurred. The passwords do not match or do not meet the required criteria.')}</p>
                     )}
                     <div className="row mb-3">
                         <div className="col">
@@ -479,7 +494,7 @@ const RegisterIntermediaryPage = () => {
                     </div>
                 </form>
             </div>
-            <Modal show={showErrorModal} onHide={handleModalClose}>
+            {/* <Modal show={showErrorModal} onHide={handleModalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Error</Modal.Title>
                 </Modal.Header>
@@ -491,10 +506,23 @@ const RegisterIntermediaryPage = () => {
                         Close
                     </Button>
                 </Modal.Footer>
+            </Modal> */}
+            <Modal show={showSuccessModal} onHide={handleModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{t('Congratulations!')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>{t('Your account has been successfully created.')}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleModalClose}>
+                        {t('Close')}
+                    </Button>
+                </Modal.Footer>
             </Modal>
         </div>
     );
 };
 
-
 export default RegisterIntermediaryPage;
+
