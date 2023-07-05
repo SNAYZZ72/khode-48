@@ -42,7 +42,7 @@ const Home = () => {
             .then((userCredential) => {
                 const user = userCredential.user;
                 dispatch({ type: 'LOGIN', payload: user })
-                navigate('/HomeYouth')
+                navigate('/homeYouth')
                 //login successful
             })
             .catch((error) => {
