@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Nav, Navbar, Button, Container, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Header from '../common/Header/Header';
+import { AuthContext } from '../../context/AuthContext';
+import { useContext } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
@@ -18,6 +21,7 @@ const Home = () => {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [isLoggingIn, setIsLoggingIn] = useState(false); // New state to track login process
 
+    const { dispatch } = useContext(AuthContext)
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -31,16 +35,20 @@ const Home = () => {
         setShowLoginModal(true);
     };
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
         setIsLoggingIn(true); // Set isLoggingIn to true when login starts
-        try {
-            await auth.signInWithEmailAndPassword(email, password);
-            navigate('/HomeYouth')
-            //login successful
-        } catch (error) {
-            alert('Wrong email or password');
-            //login failed
-        }
+        await signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                dispatch({ type: 'LOGIN', payload: user })
+                navigate('/HomeYouth')
+                //login successful
+            })
+            .catch((error) => {
+                alert('Wrong email or password');
+                //login failed
+            });
         setIsLoggingIn(false); // Set isLoggingIn to false when login finishes
         handleCloseModal(); // Close the modal
     };
