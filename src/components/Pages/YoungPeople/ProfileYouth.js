@@ -536,8 +536,6 @@ const ProfileYouth = () => {
                                             </PieChart>
                                         </ResponsiveContainer>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
