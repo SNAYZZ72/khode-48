@@ -64,7 +64,7 @@ const HeaderYouth = () => {
           <Nav.Link
             href="/"
             className={location.pathname === '/' ? 'active-link' : ''}
-            style={{ color: location.pathname === '/' ? '#F24726' : 'black', textDecoration: location.pathname === '/' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
+            style={{ color: location.pathname === '/' ? '#F24726' : 'black', textDecoration: location.pathname === '/' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '50px' }}
             onClick={handleLogout}
           >
             Logout
