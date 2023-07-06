@@ -24,7 +24,7 @@ const HeaderCompany = () => {
     }, []);
 
     return (
-        <Navbar sticky="top" expand="lg" style={{ paddingLeft: '20px', paddingRight: '20px', backgroundColor: showHeader ? 'white' : 'rgba(255, 255, 255, 0.95)', boxShadow: showHeader ? 'none' : '0px 1px 0px rgba(0, 0, 0, 0.2)' }}>
+        <Navbar sticky="top" expand="sm" style={{ paddingLeft: '20px', paddingRight: '20px', backgroundColor: showHeader ? 'white' : 'rgba(255, 255, 255, 0.95)', boxShadow: showHeader ? 'none' : '0px 1px 0px rgba(0, 0, 0, 0.2)' }}>
             <Navbar.Brand>
                 <a href="/" style={{ textDecoration: 'none' }}>
                     <img src={logo} alt="Logo" style={{ width: '120px' }} />
@@ -38,21 +38,21 @@ const HeaderCompany = () => {
                         className={location.pathname === '/profileCompany' ? 'active-link' : ''}
                         style={{ color: location.pathname === '/profileCompany' ? '#F24726' : 'black', textDecoration: location.pathname === '/profileCompany' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
                     >
-                        PROFILE
+                        Profile
                     </Nav.Link>
                     <Nav.Link
                         href="/homeCompany"
                         className={location.pathname === '/homeCompany' ? 'active-link' : ''}
                         style={{ color: location.pathname === '/homeCompany' ? '#F24726' : 'black', textDecoration: location.pathname === '/homeCompany' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
                     >
-                        HOME
+                        Home
                     </Nav.Link>
                     <Nav.Link
                         href="/"
                         className={location.pathname === '/' ? 'active-link' : ''}
                         style={{ color: location.pathname === '/' ? '#F24726' : 'black', textDecoration: location.pathname === '/' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
                     >
-                        LOGOUT
+                        Logout
                     </Nav.Link>
                     <LanguageSelector />
                 </Nav>

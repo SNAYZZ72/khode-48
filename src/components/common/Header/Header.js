@@ -24,7 +24,7 @@ const Header = () => {
   }, []);
 
   return (
-    <Navbar sticky="top" expand="lg" style={{ paddingLeft: '20px', paddingRight: '20px', backgroundColor: showHeader ? 'white' : 'rgba(255, 255, 255, 0.95)', boxShadow: showHeader ? 'none' : '0px 1px 0px rgba(0, 0, 0, 0.2)' }}>
+    <Navbar sticky="top" expand="sm" style={{ paddingLeft: '20px', paddingRight: '20px', backgroundColor: showHeader ? 'white' : 'rgba(255, 255, 255, 0.95)', boxShadow: showHeader ? 'none' : '0px 1px 0px rgba(0, 0, 0, 0.2)' }}>
         <Navbar.Brand>
           <a href="/" style={{ textDecoration: 'none' }}>
             <img src={logo} alt="Logo" style={{ width: '120px' }} />
@@ -38,21 +38,21 @@ const Header = () => {
               className={location.pathname === '/' ? 'active-link' : ''}
               style={{ color: location.pathname === '/' ? '#F24726' : 'black', textDecoration: location.pathname === '/' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
             >
-              HOME
+              Home
             </Nav.Link>
             <Nav.Link
               href="/contact"
               className={location.pathname === '/contact' ? 'active-link' : ''}
               style={{ color: location.pathname === '/contact' ? '#F24726' : 'black', textDecoration: location.pathname === '/contact' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
             >
-              CONTACT
+              Contact
             </Nav.Link>
             <Nav.Link
               href="/about"
               className={location.pathname === '/about' ? 'active-link' : ''}
               style={{ color: location.pathname === '/about' ? '#F24726' : 'black', textDecoration: location.pathname === '/about' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
             >
-              ABOUT US
+              About us
             </Nav.Link>
             <LanguageSelector />
           </Nav>
