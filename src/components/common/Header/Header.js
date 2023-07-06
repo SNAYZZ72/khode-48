@@ -50,11 +50,13 @@ const Header = () => {
             <Nav.Link
               href="/about"
               className={location.pathname === '/about' ? 'active-link' : ''}
-              style={{ color: location.pathname === '/about' ? '#F24726' : 'black', textDecoration: location.pathname === '/about' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '10px' }}
+              style={{ color: location.pathname === '/about' ? '#F24726' : 'black', textDecoration: location.pathname === '/about' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '50px' }}
             >
               About us
             </Nav.Link>
-            <LanguageSelector />
+            <div style={{ marginLeft: '10px' }}>
+              <LanguageSelector />
+            </div>
           </Nav>
         </Navbar.Collapse>
     </Navbar>

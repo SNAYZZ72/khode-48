@@ -54,7 +54,9 @@ const HeaderCompany = () => {
                     >
                         Logout
                     </Nav.Link>
-                    <LanguageSelector />
+                    <div style={{ marginLeft: '10px' }}>
+                        <LanguageSelector />
+                    </div>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
