@@ -44,7 +44,6 @@ const RegisterIntermediaryPage = () => {
         country: '',
         industry: '',
         maturity: '',
-        primarySector: '',
         linkedinPage: '',
         twitterPage: '',
         facebookPage: '',
@@ -73,7 +72,6 @@ const RegisterIntermediaryPage = () => {
                 country: formData.country,
                 industry: formData.industry,
                 maturity: formData.maturity,
-                primarySector: formData.primarySector,
                 linkedinPage: formData.linkedinPage,
                 twitterPage: formData.twitterPage,
                 facebookPage: formData.facebookPage,
@@ -174,7 +172,6 @@ const RegisterIntermediaryPage = () => {
                     country: '',
                     industry: '',
                     maturity: '',
-                    primarySector: '',
                     linkedinPage: '',
                     twitterPage: '',
                     facebookPage: '',
@@ -407,7 +404,7 @@ const RegisterIntermediaryPage = () => {
                     )}
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="linkedinPage">{t('Companys Linkedin Page')}</label>
+                            <label>{t('Companys Linkedin Page')} {t('(optional)')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -418,7 +415,7 @@ const RegisterIntermediaryPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="twitterPage">{t('Companys Twitter Page')}</label>
+                            <label>{t('Companys Twitter Page')} {t('(optional)')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -429,7 +426,7 @@ const RegisterIntermediaryPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="facebookPage">{t('Companys Facebook Page')}</label>
+                            <label>{t('Companys Facebook Page')} {t('(optional)')}</label>
                             <input
                                 type="text"
                                 className="form-control"

@@ -454,7 +454,7 @@ const RegisterCompanyPage = () => {
                     )}
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="linkedinPage">{t('Companys Linkedin Page')}</label>
+                            <label htmlFor="linkedinPage">{t('Companys Linkedin Page')} {t('(optional)')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -465,7 +465,7 @@ const RegisterCompanyPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="twitterPage">{t('Companys Twitter Page')}</label>
+                            <label htmlFor="twitterPage">{t('Companys Twitter Page')} {t('(optional)')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -476,7 +476,7 @@ const RegisterCompanyPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="facebookPage">{t('Companys Facebook Page')}</label>
+                            <label htmlFor="facebookPage">{t('Companys Facebook Page')} {t('(optional)')}</label>
                             <input
                                 type="text"
                                 className="form-control"
