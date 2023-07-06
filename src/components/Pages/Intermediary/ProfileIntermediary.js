@@ -5,6 +5,8 @@ import HeaderIntermediary from '../../common/Header/HeaderIntermediary';
 import { Navbar, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { firestore } from '../../firebase';
+
 
 const ProfileIntermediary = () => {
     const { t } = useTranslation();
@@ -18,6 +20,91 @@ const ProfileIntermediary = () => {
         aboutme: false,
         program: false,
     });
+
+    // This function allow to search a user based on his email
+
+    const [email, setEmail] = useState(''); // Email of the user to search
+    const [name, setName] = useState(''); // Name of the user to change as a test
+    const [proactivity, setProactivity] = useState(0);
+    const [creativity, setCreativity] = useState(0);
+    const [initiative, setInitiative] = useState(0);
+    const [empathy, setEmpathy] = useState(0);
+    const [leadership, setLeadership] = useState(0);
+    const [teamwork, setTeamwork] = useState(0);
+
+
+    const searchUserByEmail = async (userEmail, proactivity, creativity, initiative, empathy, leadership, teamwork) => {
+        try {
+            console.log('Searching for user with email:', userEmail);
+            const usersRef = firestore.collection('users').doc('usersyouth');
+            const userDoc = await usersRef.get();
+
+            if (userDoc.exists) {
+                const userData = userDoc.data();
+
+                // Iterate over each mapping in the document
+                for (const key in userData) {
+                    if (userData.hasOwnProperty(key)) {
+                        const mapping = userData[key];
+
+                        // Check if the email matches
+                        if (mapping.email === userEmail) {
+                            // User found, retrieve the UID
+                            const uid = key;
+                            console.log('User UID:', uid);
+                            console.log('email:', mapping.email);
+
+                            const updateObject = {};
+
+                            const updateAttribute = (attributeName, attributeValue) => {
+                                if (attributeValue) {
+                                    const updatedAttribute = parseInt(mapping[attributeName] || 0) + parseInt(attributeValue);
+                                    updateObject[`${uid}.${attributeName}`] = updatedAttribute;
+                                }
+                            };
+
+                            // Update the number of points for each attribute
+                            updateAttribute('proactivity', proactivity);
+                            updateAttribute('creativity', creativity);
+                            updateAttribute('initiative', initiative);
+                            updateAttribute('empathy', empathy);
+                            updateAttribute('leadership', leadership);
+                            updateAttribute('teamwork', teamwork);
+
+                            if (Object.keys(updateObject).length > 0) {
+                                await usersRef
+                                    .update(updateObject)
+                                    .then(() => console.log('User attributes updated successfully.'))
+                                    .catch((error) => console.log('Error updating user attributes:', error));
+                            } else {
+                                console.log('No attributes to update.');
+                            }
+
+                            return;
+                        }
+                    }
+                }
+
+                // User not found
+                console.log('User not found.');
+            } else {
+                // Document does not exist
+                console.log('Document does not exist.');
+            }
+        } catch (error) {
+            console.log('Error searching for user:', error);
+        }
+    };
+
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await searchUserByEmail(email, proactivity, creativity, initiative, empathy, leadership, teamwork);
+        //window.location.reload();
+
+    };
+
 
     const [selectedIntermediaryImage, setSelectedIntermediaryImage] = useState(null);
 
@@ -266,6 +353,75 @@ const ProfileIntermediary = () => {
                         </div>
                         <div className="col-md-5">
                             <div className="row">
+                                <div>
+                                    <h2>Email Search Form</h2>
+                                    <form onSubmit={handleSubmit}>
+                                        <div>
+                                            <label htmlFor="emailInput">Email:</label>
+                                            <input
+                                                type="email"
+                                                id="emailInput"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="proactivityInput">Proactivity:</label>
+                                            <input
+                                                type="text"
+                                                id="proactivityInput"
+                                                value={proactivity}
+                                                onChange={(e) => setProactivity(e.target.value)}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="creativityInput">Creativity:</label>
+                                            <input
+                                                type="text"
+                                                id="creativityInput"
+                                                value={creativity}
+                                                onChange={(e) => setCreativity(e.target.value)}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="initiativeInput">Initiative:</label>
+                                            <input
+                                                type="text"
+                                                id="initiativeInput"
+                                                value={initiative}
+                                                onChange={(e) => setInitiative(e.target.value)}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="empathyInput">Empathy:</label>
+                                            <input
+                                                type="text"
+                                                id="empathyInput"
+                                                value={empathy}
+                                                onChange={(e) => setEmpathy(e.target.value)}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="leadershipInput">Leadership:</label>
+                                            <input
+                                                type="text"
+                                                id="leadershipInput"
+                                                value={leadership}
+                                                onChange={(e) => setLeadership(e.target.value)}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="teamworkInput">Teamwork:</label>
+                                            <input
+                                                type="text"
+                                                id="teamworkInput"
+                                                value={teamwork}
+                                                onChange={(e) => setTeamwork(e.target.value)}
+                                            />
+                                        </div>
+                                        <button type="submit">Search</button>
+                                    </form>
+                                </div>
                                 <div className="col">
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
                                         {t('city')}: {intermediaryFormData.city}

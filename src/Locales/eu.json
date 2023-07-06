@@ -119,6 +119,21 @@
     "education": "Hezkuntza",
     "language": "Hizkuntza",
     "skills": "Garapen konpetentziala",
+    "edit": "Editatu profila",
+    "totalpoints": "Puntu guztira",
+    "showhide": "Erakutsi/Ezkutatu profila",
+    "hide": "Ezkutatu",
+    "show": "Erakutsi",
+    "initiative": "Ekimena",
+    "empathy": "Enpatia",
+    "leadership": "Lidergoa",
+    "teamwork": "Talde-lana",
+    "creativity": "Sormena",
+    "proactivity": "Proaktibitatea",
+    "aboutme": "Niri buruz",
+    "profilepicture": "Profileko argazkia",
+    "experience": "Esperientzia"
+
     "other": "Bestela",
     "edit": "Editatu profila"
 }

@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import { Nav, Navbar, Button, Container, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Header from '../common/Header/Header';
+import { AuthContext } from '../../context/AuthContext';
+import { useContext } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase'; 
+import { auth } from '../firebase';
+import { firestore } from '../firebase';
+import { doc, getDoc } from "firebase/firestore";
+
 
 const Home = () => {
     const { t } = useTranslation();
@@ -15,6 +21,7 @@ const Home = () => {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [isLoggingIn, setIsLoggingIn] = useState(false); // New state to track login process
 
+    const { dispatch } = useContext(AuthContext)
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -28,25 +35,50 @@ const Home = () => {
         setShowLoginModal(true);
     };
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
         setIsLoggingIn(true); // Set isLoggingIn to true when login starts
-        try {
-          await auth.signInWithEmailAndPassword(email, password);
-          navigate('/HomeYouth')
-          //login successful
-        } catch (error) {
-          alert ('Wrong email or password');   
-          //login failed
-        }
+        await signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                dispatch({ type: 'LOGIN', payload: user })
+                if (profileType === 'young') {
+                    navigate('/homeYouth');
+                }
+                if (profileType === 'company') {
+                    navigate('/homeCompany');
+                }
+                if (profileType === 'intermediary') {
+                    navigate('/homeIntermediary');
+                }
+                //login successful
+            })
+            .catch((error) => {
+                alert('Wrong email or password');
+                //login failed
+            });
         setIsLoggingIn(false); // Set isLoggingIn to false when login finishes
         handleCloseModal(); // Close the modal
-      };
+    };
 
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged(async (user) => {
         if (user) {
-            console.log('user is signed in: ', user);
+            const userId = user.uid;
+
+            try {
+                const userDocRef = firestore.collection('users').doc('usersyouth');
+                const userDoc = await userDocRef.get();
+
+                if (userDoc.exists) {
+                    const userData = userDoc.data()[userId];
+                } else {
+                    console.log('User document not found');
+                }
+            } catch (error) {
+                console.log('Error retrieving user data:', error);
+            }
         } else {
-            console.log('user is not signed in');
+            console.log('User is not signed in');
         }
     });
 
@@ -173,60 +205,64 @@ const Home = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <div>
-                        <div className="form-group">
-                            <label htmlFor="email">{t('email')}</label>
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />                       
+                        <div className="col" style={{ paddingLeft: "20px", paddingRight: "20px" }}>
+                            <div className="row mb-3">
+                                <h4>{t('email')}</h4>
+                                <input
+                                    style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}
+                                    type="email"
+                                    placeholder="Email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
+                            <div className="row mb-3">
+                                <h4>{t('password')}</h4>
+                                <input
+                                    style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}
+                                    type="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
                         </div>
-                        <br />
-                        <div className="form-group">
-                            <label htmlFor="password">{t('password')}</label>
-                            <input
-                                type="password"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />                        
-                        </div>
-                        <br />
-                        <Button
-                            variant="primary"
-                            type="submit"
-                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                            onClick={handleLogin}
-                        >
-                        {t('login')}
-                        </Button>
-                    </div>
+                        <div className="text-center">
+                            <Button
+                                variant="primary"
+                                type="submit"
+                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                onClick={handleLogin}
+                            >
+                                {t('login')}
+                            </Button>
 
-                    {profileType === 'young' && (
-                        <p>
-                            {t('dontHaveYoungAccount')}{' '}
-                            <a href="/registery" style={{ color: '#F24726' }}>
-                                {t('createYoungAccount')}
-                            </a>
-                        </p>
-                    )}
-                    {profileType === 'company' && (
-                        <p>
-                            {t('dontHaveCompanyAccount')}{' '}
-                            <a href="/registerC" style={{ color: '#F24726' }}>
-                                {t('createCompanyAccount')}
-                            </a>
-                        </p>
-                    )}
-                    {profileType === 'intermediary' && (
-                        <p>
-                            {t('dontHaveIntermediaryAccount')}{' '}
-                            <a href="/registerI" style={{ color: '#F24726' }}>
-                                {t('createIntermediaryAccount')}
-                            </a>
-                        </p>
-                    )}
+                            {profileType === 'young' && (
+                                <p>
+                                    {t('dontHaveYoungAccount')}{' '}
+                                    <a href="/registery" style={{ color: '#F24726' }}>
+                                        {t('createYoungAccount')}
+                                    </a>
+                                </p>
+                            )}
+                            {profileType === 'company' && (
+                                <p>
+                                    {t('dontHaveCompanyAccount')}{' '}
+                                    <a href="/registerC" style={{ color: '#F24726' }}>
+                                        {t('createCompanyAccount')}
+                                    </a>
+                                </p>
+                            )}
+                            {profileType === 'intermediary' && (
+                                <p>
+                                    {t('dontHaveIntermediaryAccount')}{' '}
+                                    <a href="/registerI" style={{ color: '#F24726' }}>
+                                        {t('createIntermediaryAccount')}
+                                    </a>
+                                </p>
+                            )}
+                        </div>
+                    </div>
                 </Modal.Body>
             </Modal>
         </div>

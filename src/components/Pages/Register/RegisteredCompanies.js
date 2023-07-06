@@ -1,29 +1,218 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../../common/Header/Header';
+import zxcvbn from 'zxcvbn';
+import { Modal, Button } from 'react-bootstrap';
+import { auth } from '../../firebase';
+import { database } from '../../firebase'; // Import the database instance from your firebase.js file
+import { firestore } from '../../firebase'; // Import the firestore instance from your firebase.js file
+
+// Define the function to determine the color based on password strength score
+const getPasswordStrengthColor = (score) => {
+    if (score < 3) {
+        return 'danger';
+    } else if (score < 4) {
+        return 'warning';
+    } else {
+        return 'success';
+    }
+}
+
+// Define the function to get the password strength text based on score
+const getPasswordStrengthText = (score) => {
+    if (score < 3) {
+        return 'Weak';
+    } else if (score < 4) {
+        return 'Moderate';
+    } else {
+        return 'Strong';
+    }
+}
 
 const RegisterCompanyPage = () => {
     const { t } = useTranslation();
-    const [companyName, setCompanyName] = useState('');
-    const [commercialName, setCommercialName] = useState('');
-    const [city, setCity] = useState('');
-    const [postalCode, setPostalCode] = useState('');
-    const [industry, setIndustry] = useState('');
-    const [maturity, setMaturity] = useState('');
-    const [primarySector, setPrimarySector] = useState('');
-    const [linkedinPage, setLinkedinPage] = useState('');
-    const [twitterPage, setTwitterPage] = useState('');
-    const [facebookPage, setFacebookPage] = useState('');
-    const [contactFirstName, setContactFirstName] = useState('');
-    const [contactLastName, setContactLastName] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPass, setConfirmPass] = useState('');
 
-    const handleSubmit = (e) => {
+    const userRef = database.ref('users'); // Reference the 'users' node in the database
+    const [error, setError] = useState('');
+    const [existEmail, setExistEmail] = useState(false);
+
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    const [formData, setFormData] = useState({
+        companyName: '',
+        commercialName: '',
+        city: '',
+        postalCode: '',
+        industry: '',
+        maturity: '',
+        primarySector: '',
+        linkedinPage: '',
+        twitterPage: '',
+        facebookPage: '',
+        contactFirstName: '',
+        contactLastName: '',
+        phoneNumber: '',
+        email: '',
+        password: '',
+        confirmPass: '',
+    });
+
+    const handleRegister = async () => {
+        try {
+            await auth.createUserWithEmailAndPassword(formData.email, formData.password);
+            setExistEmail(false);
+            // Wait for the user to be authenticated and logged in
+            await auth.signInWithEmailAndPassword(formData.email, formData.password);
+
+            // Set the user data
+            const sentData = {
+                companyName: formData.companyName,
+                commercialName: formData.commercialName,
+                city: formData.city,
+                postalCode: formData.postalCode,
+                industry: formData.industry,
+                maturity: formData.maturity,
+                primarySector: formData.primarySector,
+                linkedinPage: formData.linkedinPage,
+                twitterPage: formData.twitterPage,
+                facebookPage: formData.facebookPage,
+                contactFirstName: formData.contactFirstName,
+                contactLastName: formData.contactLastName,
+                phoneNumber: formData.phoneNumber,
+                email: formData.email,
+            };
+            // Get the user ID of the newly created user
+            const userId = auth.currentUser.uid;
+
+            // Get a reference to the parent document
+            const parentDocRef = firestore.collection('users').doc('userscompany');
+
+            // Set the user data directly under the parent document
+            await parentDocRef.set({ [userId]: sentData }, { merge: true });
+            return true;
+        } catch (error) {
+            setError(error.message);
+            alert(error.message);
+            setExistEmail(true);
+            return false;
+        }
+    };
+
+    const [passwordsMatch, setPasswordsMatch] = useState(true);
+    const [passwordScore, setPasswordScore] = useState(0);
+    const [showPassword, setShowPassword] = useState(false);
+    // const [showErrorModal, setShowErrorModal] = useState(false);
+    const [passwordValid, setPasswordValid] = useState(true);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+    };
+
+    const handlePasswordChange = (e) => {
+        const { value } = e.target;
+        const score = zxcvbn(value).score;
+        setPasswordScore(score);
+        handleInputChange(e);
+        setPasswordValid(validatePassword(value) || value.length === 0);
+    };
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const doesPasswordMatch = () => {
+        if (formData.password === formData.confirmPassword) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    const validatePassword = (password) => {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+        if (regex.test(password)) {
+            setError("PPassword must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.");
+            console.log('Invalid');
+            return true;
+        } else {
+            console.log('Valid')
+            return false;
+        }
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Perform form submission or data processing here
+        // Perform form submission logic here
+        // const currentDate = new Date();
+        // const selectedDate = new Date(formData.dateOfBirth);
+        // const minimumAge = 8; // Minimum age in years
+
+        // selectedDate.setFullYear(selectedDate.getFullYear() + minimumAge);
+
+        // if (selectedDate >= currentDate) {
+        //     // Date of birth does not meet the minimum age requirement, show an error message or take appropriate action
+        //     setShowErrorModal(true);
+        //     return;
+        // }
+
+        if (formData.password === formData.confirmPassword && validatePassword(formData.password)) {
+            // Passwords match and meet the requirements
+            setPasswordsMatch(true);
+            //password validate
+        } else {
+            // Passwords don't match or don't meet the requirements, show an error message or take appropriate action
+            if (!doesPasswordMatch() || !validatePassword(formData.password)) {
+                setPasswordsMatch(false);
+                return;
+            }
+        }
+
+        // You can send the form data to a backend server or perform any other actions
+        // if handleREgister return no error then result is true and the following code can execute
+
+        if (doesPasswordMatch() && validatePassword(formData.password)) {
+            const result = await handleRegister();
+
+            if (result) {
+                setExistEmail(false);
+
+                // Show the success modal
+                setShowSuccessModal(true);
+
+                // Reset form fields after submission if needed
+                setFormData({
+                    companyName: '',
+                    commercialName: '',
+                    city: '',
+                    postalCode: '',
+                    industry: '',
+                    maturity: '',
+                    primarySector: '',
+                    linkedinPage: '',
+                    twitterPage: '',
+                    facebookPage: '',
+                    contactFirstName: '',
+                    contactLastName: '',
+                    phoneNumber: '',
+                    email: '',
+                    password: '',
+                    confirmPass: '',
+                });
+                return true;
+            } else {
+                return false;
+            }
+        }
+    };
+
+
+    const handleModalClose = () => {
+        // setShowErrorModal(false);
+        setShowSuccessModal(false); // Close the success modal
     };
 
     return (
@@ -41,8 +230,9 @@ const RegisterCompanyPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="companyName"
-                                value={companyName}
-                                onChange={(e) => setCompanyName(e.target.value)}
+                                name="companyName"
+                                value={formData.companyName}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -52,8 +242,9 @@ const RegisterCompanyPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="commercialName"
-                                value={commercialName}
-                                onChange={(e) => setCommercialName(e.target.value)}
+                                name="commercialName"
+                                value={formData.commercialName}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -66,8 +257,9 @@ const RegisterCompanyPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="city"
-                                value={city}
-                                onChange={(e) => setCity(e.target.value)}
+                                name="city"
+                                value={formData.city}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -77,8 +269,9 @@ const RegisterCompanyPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="postalCode"
-                                value={postalCode}
-                                onChange={(e) => setPostalCode(e.target.value)}
+                                name="postalCode"
+                                value={formData.postalCode}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -89,8 +282,9 @@ const RegisterCompanyPage = () => {
                             <select
                                 className="form-control"
                                 id="industry"
-                                value={industry}
-                                onChange={(e) => setIndustry(e.target.value)}
+                                name="industry"
+                                value={formData.industry}
+                                onChange={handleInputChange}
                                 required
                             >
                                 <option value="">{t('Select')}</option>
@@ -105,8 +299,9 @@ const RegisterCompanyPage = () => {
                             <select
                                 className="form-control"
                                 id="maturity"
-                                value={maturity}
-                                onChange={(e) => setMaturity(e.target.value)}
+                                name="maturity"
+                                value={formData.maturity}
+                                onChange={handleInputChange}
                                 required
                             >
                                 <option value="">{t('Select')}</option>
@@ -122,8 +317,9 @@ const RegisterCompanyPage = () => {
                             <select
                                 className="form-control"
                                 id="primarySector"
-                                value={primarySector}
-                                onChange={(e) => setPrimarySector(e.target.value)}
+                                name="primarySector"
+                                value={formData.primarySector}
+                                onChange={handleInputChange}
                                 required
                             >
                                 <option value="">{t('Select')}</option>
@@ -156,8 +352,9 @@ const RegisterCompanyPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="contactFirstName"
-                                value={contactFirstName}
-                                onChange={(e) => setContactFirstName(e.target.value)}
+                                name="contactFirstName"
+                                value={formData.contactFirstName}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -167,8 +364,9 @@ const RegisterCompanyPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="contactLastName"
-                                value={contactLastName}
-                                onChange={(e) => setContactLastName(e.target.value)}
+                                name="contactLastName"
+                                value={formData.contactLastName}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -180,8 +378,9 @@ const RegisterCompanyPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="phoneNumber"
-                                value={phoneNumber}
-                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                name="phoneNumber"
+                                value={formData.phoneNumber}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -191,36 +390,68 @@ const RegisterCompanyPage = () => {
                                 type="email"
                                 className="form-control"
                                 id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
+                        {existEmail && (
+                            <p className="text-danger">
+                                {t('emailAlreadyExists')}
+                            </p>
+                        )}
                     </div>
                     <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="password">{t('password')}</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
+                            <div className="input-group">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    className="form-control"
+                                    id="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handlePasswordChange}
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-secondary"
+                                    onClick={toggleShowPassword}
+                                    style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: showPassword ? 'rgba(0, 0, 0, 0.125)' : 'white' }}
+                                >
+                                    {showPassword ? 'Hide' : 'Show'}
+                                </button>
+                            </div>
+                            {passwordScore > 0 && (
+                                <p className={`text-${getPasswordStrengthColor(passwordScore)}`}>
+                                    {getPasswordStrengthText(passwordScore)}
+                                </p>
+                            )}
+                            {!passwordValid && !validatePassword(formData.password) && formData.password.length > 0 && (
+                                <p className="text-danger">
+                                    {t('Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.')}
+                                </p>
+                            )}
                         </div>
                         <div className="col">
                             <label htmlFor="confirmPassword">{t('confirmPassword')}</label>
                             <input
-                                type="password"
+
+                                type={showPassword ? 'text' : 'password'}
                                 className="form-control"
                                 id="confirmPassword"
-                                value={confirmPass}
-                                onChange={(e) => setConfirmPass(e.target.value)}
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                onChange={handleInputChange}
                                 required
                             />
                         </div>
                     </div>
+                    {!passwordsMatch && (
+                        <p className="text-danger">{t('Sorry, an error occurred. The passwords do not match or do not meet the required criteria.')}</p>
+                    )}
                     <div className="row mb-3">
                         <div className="col">
                             <label htmlFor="linkedinPage">{t('Companys Linkedin Page')}</label>
@@ -228,8 +459,9 @@ const RegisterCompanyPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="linkedinPage"
-                                value={linkedinPage}
-                                onChange={(e) => setLinkedinPage(e.target.value)}
+                                name="linkedinPage"
+                                value={formData.linkedinPage}
+                                onChange={handleInputChange}
                             />
                         </div>
                         <div className="col">
@@ -238,8 +470,9 @@ const RegisterCompanyPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="twitterPage"
-                                value={twitterPage}
-                                onChange={(e) => setTwitterPage(e.target.value)}
+                                name="twitterPage"
+                                value={formData.twitterPage}
+                                onChange={handleInputChange}
                             />
                         </div>
                         <div className="col">
@@ -248,8 +481,9 @@ const RegisterCompanyPage = () => {
                                 type="text"
                                 className="form-control"
                                 id="facebookPage"
-                                value={facebookPage}
-                                onChange={(e) => setFacebookPage(e.target.value)}
+                                name="facebookPage"
+                                value={formData.facebookPage}
+                                onChange={handleInputChange}
                             />
                         </div>
                     </div>
@@ -260,8 +494,35 @@ const RegisterCompanyPage = () => {
                     </div>
                 </form>
             </div>
+            {/* <Modal show={showErrorModal} onHide={handleModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Error</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>{t('An error occurred. Please check your input and try again.')}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleModalClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal> */}
+            <Modal show={showSuccessModal} onHide={handleModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{t('Congratulations!')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>{t('Your account has been successfully created.')}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleModalClose}>
+                        {t('Close')}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };
 
 export default RegisterCompanyPage;
+
