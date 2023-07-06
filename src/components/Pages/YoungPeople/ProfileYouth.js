@@ -20,6 +20,7 @@ const ProfileYouth = () => {
     const [youthFormErrors, setYouthFormErrors] = useState({
         age: false,
         city: false,
+        postalCode: false,
         information: false,
         education: false,
         language: false
@@ -58,9 +59,10 @@ const ProfileYouth = () => {
         lastName: '',
         age: '',
         city: '',
+        postalCode: '',
         education: '',
         information: '',
-        listLanguages: languageList,    
+        listLanguages: languageList,
         listExperience: experienceList,
         phoneNumber: '',
         proactivity: 0,
@@ -92,6 +94,7 @@ const ProfileYouth = () => {
                             firstName: userData.firstName,
                             lastName: userData.lastName,
                             city: userData.city,
+                            postalCode: userData.postalCode,
                             education: userData.educationalLevel,
                             information: userData.information,
                             age: calculateAge(userData.dateOfBirth),
@@ -108,6 +111,7 @@ const ProfileYouth = () => {
                         await setLanguageList(userData.listLanguages);
                         await setExperienceList(userData.listExperience);
                         console.log('User data retrieved');
+                        console.log(userData.teamwork);
                     } else {
                         console.log('User document not found');
                     }
@@ -124,7 +128,7 @@ const ProfileYouth = () => {
             auth.onAuthStateChanged(handleAuthStateChanged);
             authStateChangedExecuted.current = true;
         }
-    }, []);    
+    }, []);
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -157,31 +161,32 @@ const ProfileYouth = () => {
         const userId = getUserUid()
 
         try {
-      
-          // Update the user's information in Firestore
-          const userDocRef = firestore.collection('users').doc('usersyouth');
-          const userDoc = await userDocRef.get();
-          const userData = userDoc.data()[userId];
-          await userDocRef.update({
-            
-            [userId]: {
-                firstName: userData.firstName,
-                lastName: userData.lastName,
-                city: youthFormData.city,
-                educationalLevel: youthFormData.education,
-                information: youthFormData.information,
-                dateOfBirth: userData.dateOfBirth,
-                gender: userData.gender,
-                phoneNumber: userData.phoneNumber,
-                email: userData.email,
-                listLanguages: languageList,
-                listExperience: experienceList,
-                // Add any other fields you want to update
-            }
-          });
+
+            // Update the user's information in Firestore
+            const userDocRef = firestore.collection('users').doc('usersyouth');
+            const userDoc = await userDocRef.get();
+            const userData = userDoc.data()[userId];
+            await userDocRef.update({
+
+                [userId]: {
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                    city: youthFormData.city,
+                    postalCode: youthFormData.postalCode,
+                    educationalLevel: youthFormData.education,
+                    information: youthFormData.information,
+                    dateOfBirth: userData.dateOfBirth,
+                    gender: userData.gender,
+                    phoneNumber: userData.phoneNumber,
+                    email: userData.email,
+                    listLanguages: languageList,
+                    listExperience: experienceList,
+                    // Add any other fields you want to update
+                }
+            });
             console.log('User data updated');
         } catch (error) {
-          console.log('Error updating user data:', error);
+            console.log('Error updating user data:', error);
         }
     };
 
@@ -225,7 +230,7 @@ const ProfileYouth = () => {
 
     const handleAddExperience = () => {
         const newExperienceList = [...experienceList, ''];
-        setExperienceList(newExperienceList);   
+        setExperienceList(newExperienceList);
         localStorage.setItem('experienceList', JSON.stringify(newExperienceList));
     };
 
@@ -249,7 +254,7 @@ const ProfileYouth = () => {
     };
 
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-        const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
+        const radius = innerRadius + (outerRadius - innerRadius) * 1.5;
         const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
         const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));
         const percentage = (percent * 100).toFixed(1);
@@ -341,7 +346,7 @@ const ProfileYouth = () => {
                         <div className="row mb-3">
                             <div className="col">
                                 <h3>{t('experience')}</h3>
-                                {experienceList.map((experienceList , index) => (
+                                {experienceList.map((experienceList, index) => (
                                     <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
                                         <input
                                             className='form-control'
@@ -374,7 +379,7 @@ const ProfileYouth = () => {
                         <div className="row mb-3">
                             <div className="col">
                                 <h3>{t('language')}</h3>
-                                {languageList.map((languageList , index) => (
+                                {languageList.map((languageList, index) => (
                                     <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
                                         <input
                                             className='form-control'
@@ -429,14 +434,14 @@ const ProfileYouth = () => {
                         </div>
                         <div className="col-md-5">
                             <div className="row">
-                                <div className="col">
+                                <div className="col-md-3">
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
                                         <b>{t('age')}:</b> {youthFormData.age}
                                     </p>
                                 </div>
                                 <div className="col">
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        <b>{t('city')}:</b> {youthFormData.city}
+                                        <b>{t('city')} / {t('postalCode')}:</b> {youthFormData.city} / {youthFormData.postalCode}
                                     </p>
                                 </div>
                             </div>
@@ -465,12 +470,10 @@ const ProfileYouth = () => {
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{youthFormData.points}</p>
                                 </div>
                                 <div className="col">
-                                    <h3>{t('experience')}</h3>
-                                    {experienceList.map((experienceList, index) => (
-                                        <div className="col" key={index}>
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{experienceList}</p>
-                                        </div>
-                                    ))}
+                                    <h3>{t('education')}</h3>
+                                    <div className="col">
+                                        <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{youthFormData.education}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -479,16 +482,18 @@ const ProfileYouth = () => {
                         <div className="col-md-7">
                             <div className="row">
                                 <div className="col">
-                                    <h3>{t('education')}</h3>
-                                    <div className="col">
-                                        <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{youthFormData.education}</p>
-                                    </div>
-                                </div>
-                                <div className="col">
                                     <h3>{t('language')}</h3>
                                     {languageList.map((languageList, index) => (
                                         <div className="col" key={index}>
                                             <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{languageList}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="col">
+                                    <h3>{t('experience')}</h3>
+                                    {experienceList.map((experienceList, index) => (
+                                        <div className="col" key={index}>
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{experienceList}</p>
                                         </div>
                                     ))}
                                 </div>

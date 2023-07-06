@@ -43,13 +43,12 @@ const RegisterPage = () => {
         gender: '',
         dateOfBirth: '',
         city: '',
+        postalCode: '',
         email: '',
         password: '',
         confirmPassword: '',
         phoneNumber: '',
         educationalLevel: '',
-        cities: '', // Store the list of cities
-        postalCodes: '', // Store the list of postal codes
         information: '',
     });
 
@@ -67,6 +66,7 @@ const RegisterPage = () => {
                 gender: formData.gender || '',
                 dateOfBirth: formData.dateOfBirth || '',
                 city: formData.city || '',
+                postalCode: formData.postalCode || '',
                 email: formData.email || '',
                 phoneNumber: formData.phoneNumber || '',
                 educationalLevel: formData.educationalLevel || '',
@@ -205,6 +205,7 @@ const RegisterPage = () => {
                     gender: '',
                     dateOfBirth: '',
                     city: '',
+                    postalCode: '',
                     email: '',
                     password: '',
                     confirmPassword: '',
