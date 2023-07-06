@@ -12,7 +12,6 @@ const RegisterIntermediaryPage = () => {
     const [country, setCountry] = useState('');
     const [industry, setIndustry] = useState('');
     const [maturity, setMaturity] = useState('');
-    const [primarySector, setPrimarySector] = useState('');
     const [linkedinPage, setLinkedinPage] = useState('');
     const [twitterPage, setTwitterPage] = useState('');
     const [facebookPage, setFacebookPage] = useState('');
@@ -117,37 +116,6 @@ const RegisterIntermediaryPage = () => {
                                 <option value="First Customer / First Users">{t('First Customer / First Users')}</option>
                                 <option value="Commercialization">{t('Commercialization')}</option>
                                 <option value="International">{t('International')}</option>
-                            </select>
-                        </div>
-                        <div className="col">
-                            <label htmlFor="primarySector">{t('Select your primary sector')}</label>
-                            <select
-                                className="form-control"
-                                id="primarySector"
-                                value={primarySector}
-                                onChange={(e) => setPrimarySector(e.target.value)}
-                                required
-                            >
-                                <option value="">{t('Select')}</option>
-                                <option value="Banking / Insurance">{t('Banking / Insurance')}</option>
-                                <option value="Construction">{t('Construction')}</option>
-                                <option value="Chemical">{t('Chemical')}</option>
-                                <option value="Medical Devices">{t('Medical Devices')}</option>
-                                <option value="Biotechnology">{t('Biotechnology')}</option>
-                                <option value="Commerce / Distribution">{t('Commerce / Distribution')}</option>
-                                <option value="Event / Communication">{t('Event / Communication')}</option>
-                                <option value="Pharmaceutical Industry">{t('Pharmaceutical Industry')}</option>
-                                <option value="IT / Telecommunications">{t('IT / Telecommunications')}</option>
-                                <option value="Textile / Clothing">{t('Textile / Clothing')}</option>
-                                <option value="Transportation / Logistics">{t('Transportation / Logistics')}</option>
-                                <option value="Sports and Leisure">{t('Sports and Leisure')}</option>
-                                <option value="Tourism / Catering">{t('Tourism / Catering')}</option>
-                                <option value="e-Health and Well-being">{t('e-Health and Well-being')}</option>
-                                <option value="Education / Training">{t('Education / Training')}</option>
-                                <option value="Energy">{t('Energy')}</option>
-                                <option value="Legal">{t('Legal')}</option>
-                                <option value="Digital Industry">{t('Digital Industry')}</option>
-                                <option value="Business Services">{t('Business Services')}</option>
                             </select>
                         </div>
                     </div>
