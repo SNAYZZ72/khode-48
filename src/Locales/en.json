@@ -76,6 +76,8 @@
   "uploadCV": "Upload CV",
   "registerButton": "Register",
   "information": "For further information",
+  "other": "Other",
+  "optional": "Optional",
 
   "selectCountry": "Select a country",
 
@@ -142,5 +144,16 @@
   "proactivity": "Proactivity",
   "aboutme": "About me",
   "profilepicture": "Profile picture",
-  "experience": "Experiences"
+  "experience": "Experiences",
+
+  "CreateNewProgram": "Create New Program",
+  "programName": "Program Name",
+  "programDescription": "Program Description",
+  "programSkillsDeveloped": "Program Skills Developed",
+  "ProgramBeginDate": "Program Begin Date",
+  "ProgramEndDate": "Program End Date",
+  "programNumberOfPlaces": "Number Of Places",
+  "programCreate": "Create Program"
+
+
 }

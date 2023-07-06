@@ -132,6 +132,18 @@
     "proactivity": "Proaktibitatea",
     "aboutme": "Niri buruz",
     "profilepicture": "Profileko argazkia",
-    "experience": "Esperientzia"
+    "experience": "Esperientzia",
+
+    "other": "Bestela",
+    "optional": "aukerakoa",
+
+    "CreateNewProgram": "Create New Program",
+    "programName": "Program Name",
+    "programDescription": "Program Description",
+    "programSkillsDeveloped": "Program Skills Developed",
+    "ProgramBeginDate": "Program Begin Date",
+    "ProgramEndDate": "Program End Date",
+    "programNumberOfPlaces": "Number Of Places",
+    "programCreate": "Create Program"
 
 }

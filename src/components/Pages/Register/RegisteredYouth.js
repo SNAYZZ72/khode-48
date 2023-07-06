@@ -412,6 +412,7 @@ const RegisterPage = () => {
                                 <option value="bachelorsDegree">{t('bachelorsDegree')}</option>
                                 <option value="mastersDegree">{t('mastersDegree')}</option>
                                 <option value="doctoralDegree">{t('doctoralDegree')}</option>
+                                <option value="other">{t('other')}</option>
                             </select>
                         </div>
                     </div>

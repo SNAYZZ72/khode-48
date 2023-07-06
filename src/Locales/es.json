@@ -76,6 +76,9 @@
   "uploadCV": "Cargar CV",
   "registerButton": "Registrar",
   "information": "Para más información",
+  "other": "Otros",
+  "optional": "Opcional",
+
 
   "CompanyRegister": "Registro de empresa",
   "Company name": "Nombre de la empresa",
@@ -140,6 +143,14 @@
   "proactivity": "Proactividad",
   "aboutme": "Acerca de mí",
   "profilepicture": "Foto de perfil",
-  "experience": "Experiencia"
+  "experience": "Experiencia",
 
+  "CreateNewProgram": "Create New Program",
+  "programName": "Program Name",
+  "programDescription": "Program Description",
+  "programSkillsDeveloped": "Program Skills Developed",
+  "ProgramBeginDate": "Program Begin Date",
+  "ProgramEndDate": "Program End Date",
+  "programNumberOfPlaces": "Number Of Places",
+  "programCreate": "Create Program"
 }

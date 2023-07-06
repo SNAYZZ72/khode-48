@@ -44,7 +44,6 @@ const RegisterIntermediaryPage = () => {
         country: '',
         industry: '',
         maturity: '',
-        primarySector: '',
         linkedinPage: '',
         twitterPage: '',
         facebookPage: '',
@@ -73,7 +72,6 @@ const RegisterIntermediaryPage = () => {
                 country: formData.country,
                 industry: formData.industry,
                 maturity: formData.maturity,
-                primarySector: formData.primarySector,
                 linkedinPage: formData.linkedinPage,
                 twitterPage: formData.twitterPage,
                 facebookPage: formData.facebookPage,
@@ -174,7 +172,6 @@ const RegisterIntermediaryPage = () => {
                     country: '',
                     industry: '',
                     maturity: '',
-                    primarySector: '',
                     linkedinPage: '',
                     twitterPage: '',
                     facebookPage: '',
@@ -297,38 +294,6 @@ const RegisterIntermediaryPage = () => {
                                 <option value="International">{t('International')}</option>
                             </select>
                         </div>
-                        <div className="col">
-                            <label htmlFor="primarySector">{t('Select your primary sector')}</label>
-                            <select
-                                className="form-control"
-                                id="primarySector"
-                                name="primarySector"
-                                value={formData.primarySector}
-                                onChange={handleInputChange}
-                                required
-                            >
-                                <option value="">{t('Select')}</option>
-                                <option value="Banking / Insurance">{t('Banking / Insurance')}</option>
-                                <option value="Construction">{t('Construction')}</option>
-                                <option value="Chemical">{t('Chemical')}</option>
-                                <option value="Medical Devices">{t('Medical Devices')}</option>
-                                <option value="Biotechnology">{t('Biotechnology')}</option>
-                                <option value="Commerce / Distribution">{t('Commerce / Distribution')}</option>
-                                <option value="Event / Communication">{t('Event / Communication')}</option>
-                                <option value="Pharmaceutical Industry">{t('Pharmaceutical Industry')}</option>
-                                <option value="IT / Telecommunications">{t('IT / Telecommunications')}</option>
-                                <option value="Textile / Clothing">{t('Textile / Clothing')}</option>
-                                <option value="Transportation / Logistics">{t('Transportation / Logistics')}</option>
-                                <option value="Sports and Leisure">{t('Sports and Leisure')}</option>
-                                <option value="Tourism / Catering">{t('Tourism / Catering')}</option>
-                                <option value="e-Health and Well-being">{t('e-Health and Well-being')}</option>
-                                <option value="Education / Training">{t('Education / Training')}</option>
-                                <option value="Energy">{t('Energy')}</option>
-                                <option value="Legal">{t('Legal')}</option>
-                                <option value="Digital Industry">{t('Digital Industry')}</option>
-                                <option value="Business Services">{t('Business Services')}</option>
-                            </select>
-                        </div>
                     </div>
                     <div className="row mb-3">
                         <div className="col">
@@ -439,7 +404,7 @@ const RegisterIntermediaryPage = () => {
                     )}
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="linkedinPage">{t('Companys Linkedin Page')}</label>
+                            <label>{t('Companys Linkedin Page')} {t('(optional)')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -450,7 +415,7 @@ const RegisterIntermediaryPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="twitterPage">{t('Companys Twitter Page')}</label>
+                            <label>{t('Companys Twitter Page')} {t('(optional)')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -461,7 +426,7 @@ const RegisterIntermediaryPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="facebookPage">{t('Companys Facebook Page')}</label>
+                            <label>{t('Companys Facebook Page')} {t('(optional)')}</label>
                             <input
                                 type="text"
                                 className="form-control"
