@@ -85,6 +85,11 @@ const HomeIntermediary = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        if (selectedSkills.length === 0) {
+            alert('Please select at least one skill.');
+            return;
+        }
+
         const currentDate = new Date();
         const startDate = new Date(createProgram.startDate);
         const endDate = new Date(createProgram.endDate);
@@ -125,6 +130,10 @@ const HomeIntermediary = () => {
         //Add a new program to the programs collection
         await parentDocRef.set({ [mapName]: sentProgram }, { merge: true });
 
+        //refresh the page
+        window.location.reload();
+
+        alert('Program created successfully!');
     };
 
     return (
@@ -145,6 +154,7 @@ const HomeIntermediary = () => {
                             name="programName"
                             value={createProgram.programName}
                             onChange={handleInputChange}
+                            required
                         />
                     </div>
                     <div className="mb-3">
@@ -157,6 +167,7 @@ const HomeIntermediary = () => {
                             name="programDescription"
                             value={createProgram.programDescription}
                             onChange={handleInputChange}
+                            required
                         ></textarea>
                     </div>
                     <div className="mb-3">
@@ -179,6 +190,7 @@ const HomeIntermediary = () => {
                             name="startDate"
                             value={createProgram.startDate}
                             onChange={handleInputChange}
+                            required
                         />
                     </div>
                     <div className="mb-3">
@@ -192,6 +204,7 @@ const HomeIntermediary = () => {
                             name="endDate"
                             value={createProgram.endDate}
                             onChange={handleInputChange}
+                            required
                         />
                     </div>
                     <div className="mb-3">
