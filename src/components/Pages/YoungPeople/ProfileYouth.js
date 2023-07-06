@@ -57,6 +57,7 @@ const ProfileYouth = () => {
     const [youthFormData, setYouthFormData] = useState({
         firstName: '',
         lastName: '',
+        email: '',
         age: '',
         city: '',
         postalCode: '',
@@ -93,6 +94,7 @@ const ProfileYouth = () => {
                         setYouthFormData({
                             firstName: userData.firstName,
                             lastName: userData.lastName,
+                            email: userData.email,
                             city: userData.city,
                             postalCode: userData.postalCode,
                             education: userData.educationalLevel,
@@ -181,6 +183,13 @@ const ProfileYouth = () => {
                     email: userData.email,
                     listLanguages: languageList,
                     listExperience: experienceList,
+                    proactivity: userData.proactivity,
+                    creativity: userData.creativity,
+                    initiative: userData.initiative,
+                    empathy: userData.empathy,
+                    leadership: userData.leadership,
+                    teamwork: userData.teamwork,
+
                     // Add any other fields you want to update
                 }
             });
@@ -271,9 +280,6 @@ const ProfileYouth = () => {
             <HeaderYouth />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
                 <h1>{youthFormData.firstName} {youthFormData.lastName}</h1>
-            </div>
-            <div className="text-center">
-                <h5>{t('phoneNumber')}: {youthFormData.phoneNumber}</h5>
             </div>
 
             {isEditing ? (
@@ -425,52 +431,57 @@ const ProfileYouth = () => {
 
                 <div className="container">
                     <div className="row mb-3 justify-content-center">
-                        <div className="col-md-2 text-center">
+                        <div className="col-md-3 text-center">
                             <img
                                 src={selectedYouthImage || youthImage || '../intermediary-profile-image.png'}
                                 alt="Profile picture"
-                                style={{ width: '90%', height: 'auto', marginBottom: '15px' }}
+                                style={{ width: '15vw', height: 'auto' }}
                             />
                         </div>
                         <div className="col-md-5">
                             <div className="row">
                                 <div className="col-md-3">
+                                    <h4>{t('age')}</h4>
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        <b>{t('age')}:</b> {youthFormData.age}
+                                        {youthFormData.age}
                                     </p>
                                 </div>
                                 <div className="col">
+                                    <h4>{t('city')} / {t('postalCode')}</h4>
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        <b>{t('city')} / {t('postalCode')}:</b> {youthFormData.city} / {youthFormData.postalCode}
+                                        {youthFormData.city} / {youthFormData.postalCode}
                                     </p>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col">
+                                    <h4>{t('aboutme')}</h4>
                                     <p
                                         style={{
                                             border: "3px solid #F24726",
                                             padding: '5px',
                                             borderRadius: '10px',
-                                            height: '140px',
+                                            height: '100px',
                                             overflowY: 'auto'
                                         }}
                                     >
-                                        <b>{t('aboutme')}:</b> {youthFormData.information}
+                                        {youthFormData.information}
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="row justify-content-center">
-                        <div className="col-md-7">
+                        <div className="col-md-8">
                             <div className="row">
                                 <div className="col">
-                                    <h3>{t('totalpoints')}</h3>
-                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{youthFormData.points}</p>
+                                    <h4>{t('Contact')}</h4>
+                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
+                                        {youthFormData.phoneNumber} / {youthFormData.email}
+                                    </p>
                                 </div>
                                 <div className="col">
-                                    <h3>{t('education')}</h3>
+                                    <h4>{t('education')}</h4>
                                     <div className="col">
                                         <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{youthFormData.education}</p>
                                     </div>
@@ -479,10 +490,10 @@ const ProfileYouth = () => {
                         </div>
                     </div>
                     <div className="row justify-content-center">
-                        <div className="col-md-7">
+                        <div className="col-md-8">
                             <div className="row">
                                 <div className="col">
-                                    <h3>{t('language')}</h3>
+                                    <h4>{t('language')}</h4>
                                     {languageList.map((languageList, index) => (
                                         <div className="col" key={index}>
                                             <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{languageList}</p>
@@ -490,7 +501,7 @@ const ProfileYouth = () => {
                                     ))}
                                 </div>
                                 <div className="col">
-                                    <h3>{t('experience')}</h3>
+                                    <h4>{t('experience')}</h4>
                                     {experienceList.map((experienceList, index) => (
                                         <div className="col" key={index}>
                                             <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{experienceList}</p>
@@ -501,10 +512,10 @@ const ProfileYouth = () => {
                         </div>
                     </div>
                     <div className="row justify-content-center">
-                        <div className="col-md-7">
+                        <div className="col-md-8">
                             <div className="row">
                                 <div className="col">
-                                    <h3>{t('skills')}</h3>
+                                    <h4>{t('skills')}</h4>
                                     <div>
                                         <ResponsiveContainer height={300} width="100%">
                                             <PieChart>
