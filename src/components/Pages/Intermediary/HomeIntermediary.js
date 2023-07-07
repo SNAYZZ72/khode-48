@@ -256,7 +256,7 @@ const HomeIntermediary = () => {
 
     const renderProgramView = () => {
         return (
-            <Container>
+            <div>
                 <div style={{ paddingTop: '15px' }}>
                     <div className="row mb-3">
                         <div className="col-md-2 text-center" style={{ paddingBottom: '10px' }}>
@@ -376,9 +376,9 @@ const HomeIntermediary = () => {
                                 <div style={{ paddingTop: '10px' }}>
                                     Selected Skills:
                                 </div>
-                                <ul className="selected-skills">
+                                <ul className="list-group">
                                     {selectedSkills.map((skill, index) => (
-                                        <li key={index}>{skill}</li>
+                                        <li key={index} className="list-group-item">{skill}</li>
                                     ))}
                                 </ul>
                             </div>
@@ -428,7 +428,7 @@ const HomeIntermediary = () => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-            </Container >
+            </div >
         );
     };
 

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import HeaderCompany from '../../common/Header/HeaderCompany';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Container } from 'react-bootstrap';
 import { v4 as uuidv4 } from 'uuid';
 import { auth, firestore } from '../../firebase';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 
 const existingSkills = [
     'Proactivity',
@@ -51,6 +52,28 @@ const HomeCompany = () => {
         Positions: '',
     });
 
+    const chartData = [
+        { name: 'Proactivity', value: selectedProfile?.proactivity ?? 0, color: '#FF0000' },
+        { name: 'Creativity', value: selectedProfile?.creativity ?? 0, color: '#00FF00' },
+        { name: 'Initiative', value: selectedProfile?.initiative ?? 0, color: '#0000FF' },
+        { name: 'Empathy', value: selectedProfile?.empathy ?? 0, color: '#FFFF00' },
+        { name: 'Leadership', value: selectedProfile?.leadership ?? 0, color: '#00FFFF' },
+        { name: 'Teamwork', value: selectedProfile?.teamwork ?? 0, color: '#FF00FF' },
+    ];
+
+    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+        const radius = innerRadius + (outerRadius - innerRadius) * 1.65;
+        const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
+        const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));
+        const percentage = (percent * 100).toFixed(1);
+
+        return (
+            <text x={x} y={y} fill="black" textAnchor="middle" dominantBaseline="central">
+                {`${chartData[index].name}: ${percentage}%`}
+            </text>
+        );
+    };
+
     const handleSkillChange = (skillId, checked) => {
         setSkillsList((prevSkillsList) =>
             prevSkillsList.map((skill) =>
@@ -85,9 +108,6 @@ const HomeCompany = () => {
         }
     };
 
-
-
-
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
     };
@@ -112,7 +132,6 @@ const HomeCompany = () => {
             setYouthProfiles(youthProfiles);
         }
     };
-
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -235,28 +254,67 @@ const HomeCompany = () => {
                     <Modal.Title>{t('Profile')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>{t('fullName')}: {selectedProfile.firstName} {selectedProfile.lastName}</p>
-                    <p>{t('email')}: {selectedProfile.email}</p>
-                    <p>{t('phoneNumber')}: {selectedProfile.phoneNumber}</p>
-                    <p>{t('description')}: {selectedProfile.information}</p>
-                    <p>
-                        {t('listExperience')}:
-                        {selectedProfile.listExperience.map((experience, index) => (
-                            <p key={index}>{experience}</p>
-                        ))}
-                    </p>
-                    <p>
-                        {t('listLanguages')}:
-                        {selectedProfile.listLanguages.map((language, index) => (
-                            <p key={index}>{language}</p>
-                        ))}
-                    </p>
-                    <p>{t('educationalLevel')}: {selectedProfile.educationalLevel}</p>
-                    <p>{t('city')}: {selectedProfile.city}</p>
+                    <ul className="list-group list-group-flush">
+                        <li className="list-group-item">
+                            <p><b>{t('fullName')}:</b> {selectedProfile.firstName} {selectedProfile.lastName}</p>
+                        </li>
+                        <li className="list-group-item">
+                            <p><b>{t('email')}:</b> {selectedProfile.email}</p>
+                        </li>
+                        <li className="list-group-item">
+                            <p><b>{t('phoneNumber')}:</b> {selectedProfile.phoneNumber}</p>
+                        </li>
+                        <li className="list-group-item">
+                            <p><b>{t('description')}:</b> {selectedProfile.information}</p>
+                        </li>
+                        <li className="list-group-item">
+                            <p><b>{t('listExperience')}:</b></p>
+                            {selectedProfile.listExperience.map((experience, index) => (
+                                <ul className="list-group">
+                                    <li className="list-group-item">
+                                        <p key={index}>{experience}</p>
+                                    </li>
+                                </ul>
+                            ))}
+                        </li>
+                        <li className="list-group-item">
+                            <p><b>{t('listLanguages')}:</b></p>
+                            {selectedProfile.listLanguages.map((language, index) => (
+                                <ul className="list-group">
+                                    <li className="list-group-item">
+                                        <p key={index}>{language}</p>
+                                    </li>
+                                </ul>
+                            ))}
+                        </li>
+                        <li className="list-group-item">
+                            <p><b>{t('educationalLevel')}:</b> {selectedProfile.educationalLevel}</p>
+                        </li>
+                        <li className="list-group-item">
+                            <p><b>{t('city')}:</b> {selectedProfile.city}</p>
+                        </li>
+                        <li className="list-group-item">
 
-                    {existingSkills.map((skill) => (
-                        <p key={skill}>{t(skill)}: {selectedProfile[skill.toLowerCase()] || 0}</p>
-                    ))}
+                            <ResponsiveContainer height={250} width="100%">
+                                <PieChart>
+                                    <Pie
+                                        dataKey="value"
+                                        isAnimationActive={false}
+                                        data={chartData}
+                                        cx="50%"
+                                        cy="50%"
+                                        outerRadius={60}
+                                        label={renderCustomizedLabel}
+                                    >
+                                        {chartData.map((entry, index) => (
+                                            <Cell key={index} fill={entry.color} />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        </li>
+                    </ul>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowProfileModal(false)}>
@@ -272,24 +330,83 @@ const HomeCompany = () => {
     const renderYouthProfiles = () => {
         return (
             <div>
-                <h3>{t('Youth Profiles')}</h3>
-                {youthProfiles.length > 0 ? (
-                    <ul>
-                        {youthProfiles.map((profile) => (
-                            <li key={profile.id} onClick={() => handleSeeMoreAbout(profile)}>
-                                <p>{t('fullName')}: {profile.firstName} {profile.lastName}</p>
-                                <p>{t('proactivity')}: {profile.proactivity || 0}</p>
-                                <p>{t('creativity')}: {profile.creativity || 0}</p>
-                                <p>{t('initiative')}: {profile.Initiative || 0}</p>
-                                <p>{t('empathy')}: {profile.empathy || 0}</p>
-                                <p>{t('leadership')}: {profile.leadership || 0}</p>
-                                <p>{t('teamwork')}: {profile.teamwork || 0}</p>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>{t('No youth profiles found')}</p>
-                )}
+                <div style={{ paddingTop: '15px' }}>
+                    <div className="row mb-3">
+                        <div className="col-md-9">
+                            <div className="input-group">
+                                <span className="input-group-text">{t('Search')}:</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value=""
+                                    onChange=""
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <div className="input-group">
+                                <span className="input-group-text">
+                                    {t('Filter')}:
+                                </span>
+                                <select
+                                    className="form-select"
+                                    value=""
+                                    onChange=""
+                                >
+                                    <option value="">{t('All')}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    {youthProfiles.length > 0 ? (
+                        <li className="list-group">
+                            {youthProfiles.map((profile) => (
+                                <li key={profile.id} className="list-group-item profile-item">
+                                    <div className="row mb-3">
+                                        <div className="col-md-10">
+                                            <div className="row">
+                                                <h3>{t('fullName')}: {profile.firstName} {profile.lastName}</h3>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col">
+                                                    <p><b>{t('proactivity')}:</b> {profile.proactivity || 0}</p>
+                                                </div>
+                                                <div className="col">
+                                                    <p><b>{t('creativity')}:</b> {profile.creativity || 0}</p>
+                                                </div>
+                                                <div className="col">
+                                                    <p><b>{t('initiative')}:</b> {profile.initiative || 0}</p>
+                                                </div>
+                                                <div className="col">
+                                                    <p><b>{t('empathy')}:</b> {profile.empathy || 0}</p>
+                                                </div>
+                                                <div className="col">
+                                                    <p><b>{t('leadership')}:</b> {profile.leadership || 0}</p>
+                                                </div>
+                                                <div className="col">
+                                                    <p><b>{t('teamwork')}:</b> {profile.teamwork || 0}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                            <div className="text-center" style={{ paddingTop: '30px' }}>
+                                                <button
+                                                    className="btn btn-primary"
+                                                    onClick={() => handleSeeMoreAbout(profile)}
+                                                    style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                                >
+                                                    {t('View profile')}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </li>
+                    ) : (
+                        <p>{t('No youth profiles found')}</p>
+                    )}
+                </div>
             </div>
         )
 
@@ -326,40 +443,105 @@ const HomeCompany = () => {
 
         return (
             <div>
-                <button onClick={handleShowModal}>
-                    <h5>{t('CreateNewJob')}</h5>
-                </button>
-                {jobs.length > 0 ? (
-                    <ul>
-                        {jobs.map((job) => (
-                            <li key={job.id}>
-                                <p>{t('jobName')}: {job.jobName}</p>
-                                <p>{t('jobDescription')}: {job.jobDescription}</p>
-                                <p>{t('jobSkills')}:</p>
-                                <ul>
-                                    {job.jobSkills.map((points, index) => (
-                                        <li key={index}>
-                                            {existingSkills[index]}: {points}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <p>{t('jobLocation')}: {job.jobLocation}</p>
-                                <p>{t('jobBeginDate')}: {job.jobBeginDate}</p>
-                                <p>{t('jobEndDate')}: {job.jobEndDate}</p>
-                                <p>{t('jobPositions')}: {job.jobPositions}</p>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>{t('No jobs found')}</p>
-                )}
+                <div style={{ paddingTop: '15px' }}>
+                    <div className="row mb-3">
+                        <div className="col-md-2 text-center" style={{ paddingBottom: '10px' }}>
+                            <button className="btn btn-primary" onClick={handleShowModal} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                {t('CreateNewJob')}
+                            </button>
+                        </div>
+                        <div className="col-md-8">
+                            <div className="input-group">
+                                <span className="input-group-text">{t('Search')}:</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value=""
+                                    onChange=""
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-2">
+                            <div className="input-group">
+                                <span className="input-group-text">
+                                    {t('Filter')}:
+                                </span>
+                                <select
+                                    className="form-select"
+                                    value=""
+                                    onChange=""
+                                >
+                                    <option value="">{t('All')}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    {jobs.length > 0 ? (
+                        <li className="list-group">
+                            {jobs.map((job) => (
+                                <li key={job.id} className="list-group-item profile-item">
+                                    <div className="row mb-3">
+                                        <div className="col-md-7">
+                                            <div className="row"></div>
+                                            <h3>{t('jobName')}: {job.jobName}</h3>
+                                            <ul className="list-group" style={{ paddingBottom: '10px' }}>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('jobDescription')}:</b> {job.jobDescription}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('jobLocation')}:</b> {job.jobLocation}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('jobBeginDate')}:</b> {job.jobBeginDate}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('jobEndDate')}:</b> {job.jobEndDate}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('jobPositions')}:</b> {job.jobPositions}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="col-md-5" style={{ paddingTop: '42px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('jobSkills')}:</b> </p> {job.jobSkills.map((points, index) => (
+                                                            <p key={index}>
+                                                                {existingSkills[index]}: {points}
+                                                            </p>
+                                                        ))}
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </li>
+                    ) : (
+                        <p>{t('No jobs found')}</p>
+                    )}
+                </div>
 
                 <Modal show={showModal} onHide={() => setShowModal(false)} >
                     <Modal.Header closeButton>
                         <Modal.Title>{t('CreateNewJob')}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <form onSubmit={handleSubmit}>
+                        <form>
                             <div className="mb-3">
                                 <label className='form-label'>{t('jobName')}</label>
                                 <input
@@ -374,8 +556,7 @@ const HomeCompany = () => {
                             </div>
                             <div className="mb-3">
                                 <label className='form-label'>{t('jobDescription')}</label>
-                                <input
-                                    type="text"
+                                <textarea
                                     className="form-control"
                                     id='jobDescription'
                                     name='Description'
@@ -436,10 +617,12 @@ const HomeCompany = () => {
                                     required
                                 />
                             </div>
-                            <button type="submit" className="btn btn-primary">{t('createJob')}</button>
                         </form>
                     </Modal.Body>
                     <Modal.Footer>
+                        <Button variant="primary" onClick={handleSubmit} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('createJob')}
+                        </Button>
                         <Button variant="secondary" onClick={() => setShowModal(false)} >
                             {t('close')}
                         </Button>
@@ -453,16 +636,30 @@ const HomeCompany = () => {
     return (
         <div>
             <HeaderCompany />
-            <div className="view-selector">
-                <button onClick={() => handleViewSelect('youthProfiles')}>
-                    {t('showYouthProfiles')}
-                </button>
-                <button onClick={() => handleViewSelect('Job')}>
-                    {t('showJobs')}
-                </button>
-            </div>
-            {renderView()}
-            {renderProfileModal()}
+            <Container>
+                <div className="row mb-3">
+                    <div className="col">
+                        <button
+                            onClick={() => handleViewSelect('youthProfiles')}
+                            className="form-control"
+                            style={{ border: selectedView === 'youthProfiles' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'youthProfiles' ? '#F24726' : '#6C757D', color: 'white' }}
+                        >
+                            {t('showYouthProfiles')}
+                        </button>
+                    </div>
+                    <div className="col">
+                        <button
+                            onClick={() => handleViewSelect('Job')}
+                            className="form-control"
+                            style={{ border: selectedView === 'Job' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'Job' ? '#F24726' : '#6C757D', color: 'white' }}
+                        >
+                            {t('showJobs')}
+                        </button>
+                    </div>
+                </div>
+                {renderView()}
+                {renderProfileModal()}
+            </Container>
         </div>
     );
 };
