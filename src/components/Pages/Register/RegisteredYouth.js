@@ -215,7 +215,9 @@ const RegisterPage = () => {
                     educationalLevel: '',
                     information: '',
                 });
-                navigate('/');
+                setTimeout(() => {
+                    navigate('/');
+                }, 3000);
                 return true;
             } else {
                 return false;

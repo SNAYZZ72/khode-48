@@ -183,7 +183,9 @@ const RegisterIntermediaryPage = () => {
                     email: '',
                     password: '',
                 });
-                navigate('/');
+                setTimeout(() => {
+                    navigate('/');
+                }, 3000);
                 return true;
             } else {
                 return false;

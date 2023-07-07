@@ -204,7 +204,9 @@ const RegisterCompanyPage = () => {
                     password: '',
                     confirmPass: '',
                 });
-                navigate('/');
+                setTimeout(() => {
+                    navigate('/');
+                }, 3000);
                 return true;
             } else {
                 return false;
