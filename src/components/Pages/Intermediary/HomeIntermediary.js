@@ -424,7 +424,7 @@ const HomeIntermediary = () => {
                             {t('programCreate')}
                         </Button>
                         <Button variant="secondary" onClick={() => setShowModal(false)}>
-                            Close
+                            {t('close')}
                         </Button>
                     </Modal.Footer>
                 </Modal>
