@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import { firestore } from '../firebase';
 import { doc, getDoc } from "firebase/firestore";
-
+import { MapContainer, TileLayer } from 'react-leaflet';
 
 const Home = () => {
     const { t } = useTranslation();
@@ -88,12 +88,27 @@ const Home = () => {
         }
     };
 
+    const customTileLayer = (
+        <TileLayer
+            url="https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png"
+        />
+    );
+
     return (
         <div className="Home">
             <Header />
-
+            <div style={{ height: '250px' }}>
+                <MapContainer
+                    center={[43.25, -2.93]}
+                    zoom={10}
+                    style={{ height: '100%', width: '100%' }}
+                >
+                    {customTileLayer}
+                    {/* Ajoutez d'autres composants Leaflet pour afficher des marqueurs, des formes géométriques, etc. */}
+                </MapContainer>
+            </div>
             <Container>
-                <div className="text-center" style={{ paddingBottom: '15px' }}>
+                <div className="text-center" style={{ paddingBottom: '15px', paddingTop: '15px' }}>
                     <div className="d-flex flex-wrap justify-content-center align-items-center">
                         <div className="mb-4">
                             <h1 style={{ fontWeight: 'bold' }}>{studentCount}</h1>
@@ -228,14 +243,6 @@ const Home = () => {
                             </div>
                         </div>
                         <div className="text-center">
-                            <Button
-                                variant="primary"
-                                type="submit"
-                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                                onClick={handleLogin}
-                            >
-                                {t('login')}
-                            </Button>
 
                             {profileType === 'young' && (
                                 <p>
@@ -264,6 +271,19 @@ const Home = () => {
                         </div>
                     </div>
                 </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                        onClick={handleLogin}
+                    >
+                        {t('login')}
+                    </Button>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Close
+                    </Button>
+                </Modal.Footer>
             </Modal>
         </div>
     );

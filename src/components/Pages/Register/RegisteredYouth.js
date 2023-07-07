@@ -45,13 +45,12 @@ const RegisterPage = () => {
         gender: '',
         dateOfBirth: '',
         city: '',
+        postalCode: '',
         email: '',
         password: '',
         confirmPassword: '',
         phoneNumber: '',
         educationalLevel: '',
-        cities: '', // Store the list of cities
-        postalCodes: '', // Store the list of postal codes
         information: '',
     });
 
@@ -69,6 +68,7 @@ const RegisterPage = () => {
                 gender: formData.gender || '',
                 dateOfBirth: formData.dateOfBirth || '',
                 city: formData.city || '',
+                postalCode: formData.postalCode || '',
                 email: formData.email || '',
                 phoneNumber: formData.phoneNumber || '',
                 educationalLevel: formData.educationalLevel || '',
@@ -207,6 +207,7 @@ const RegisterPage = () => {
                     gender: '',
                     dateOfBirth: '',
                     city: '',
+                    postalCode: '',
                     email: '',
                     password: '',
                     confirmPassword: '',
@@ -238,7 +239,7 @@ const RegisterPage = () => {
                 <form onSubmit={handleSubmit} style={{ paddingBottom: '15px' }}>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="firstName">{t('firstName')}</label>
+                            <label>{t('firstName')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -250,7 +251,7 @@ const RegisterPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="lastName">{t('lastName')}</label>
+                            <label>{t('lastName')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -264,7 +265,7 @@ const RegisterPage = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="gender">{t('gender')}</label>
+                            <label>{t('gender')}</label>
                             <select
                                 className="form-control"
                                 id="gender"
@@ -279,7 +280,7 @@ const RegisterPage = () => {
                             </select>
                         </div>
                         <div className="col">
-                            <label htmlFor="dateOfBirth">{t('dateOfBirth')}</label>
+                            <label>{t('dateOfBirth')}</label>
                             <input
                                 type="date"
                                 className="form-control"
@@ -293,7 +294,7 @@ const RegisterPage = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="city">{t('city')}</label>
+                            <label>{t('city')}</label>
                             <input
                                 className="form-control"
                                 id="city"
@@ -305,7 +306,7 @@ const RegisterPage = () => {
                             </input>
                         </div>
                         <div className="col">
-                            <label htmlFor="postalCode">{t('postalCode')}</label>
+                            <label>{t('postalCode')}</label>
                             <input
                                 className="form-control"
                                 id="postalCode"
@@ -319,7 +320,7 @@ const RegisterPage = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="email">{t('email')}</label>
+                            <label>{t('email')}</label>
                             <input
                                 type="email"
                                 className="form-control"
@@ -336,7 +337,7 @@ const RegisterPage = () => {
                             </p>
                         )}
                         <div className="col">
-                            <label htmlFor="phoneNumber">{t('phoneNumber')}</label>
+                            <label>{t('phoneNumber')}</label>
                             <input
                                 type="tel"
                                 className="form-control"
@@ -350,7 +351,7 @@ const RegisterPage = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="password">{t('password')}</label>
+                            <label>{t('password')}</label>
                             <div className="input-group">
                                 <input
                                     type={showPassword ? 'text' : 'password'}
@@ -414,6 +415,7 @@ const RegisterPage = () => {
                                 <option value="bachelorsDegree">{t('bachelorsDegree')}</option>
                                 <option value="mastersDegree">{t('mastersDegree')}</option>
                                 <option value="doctoralDegree">{t('doctoralDegree')}</option>
+                                <option value="other">{t('other')}</option>
                             </select>
                         </div>
                     </div>

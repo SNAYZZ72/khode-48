@@ -1,84 +1,89 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import enFlag from './flags/en.png';
-import esFlag from './flags/es.png';
-import euFlag from './flags/eu.png';
 
 const LanguageSelector = () => {
-    const { i18n } = useTranslation();
-    const [showFlags, setShowFlags] = useState(false);
+  const { i18n } = useTranslation();
+  const [showLanguages, setShowLanguages] = useState(false);
 
-    const changeLanguage = (lng) => {
-        i18n.changeLanguage(lng);
-        localStorage.setItem('selectedLanguage', lng);
-        setShowFlags(false); // Masquer les drapeaux après avoir changé la langue
-    };
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    localStorage.setItem('selectedLanguage', lng);
+    setShowLanguages(false); // Masquer les langues après avoir changé la langue
+  };
 
-    useEffect(() => {
-        const selectedLanguage = localStorage.getItem('selectedLanguage');
-        if (selectedLanguage) {
-          i18n.changeLanguage(selectedLanguage);
-        }
-      }, [i18n]);
+  useEffect(() => {
+    const selectedLanguage = localStorage.getItem('selectedLanguage');
+    if (selectedLanguage) {
+      i18n.changeLanguage(selectedLanguage);
+    }
+  }, [i18n]);
 
-    const currentLanguage = i18n.language; // Obtenir la langue actuellement sélectionnée
+  const currentLanguage = i18n.language; // Obtenir la langue actuellement sélectionnée
 
-    const toggleFlags = () => {
-        setShowFlags(!showFlags);
-    };
+  const toggleLanguages = () => {
+    setShowLanguages(!showLanguages);
+  };
 
-    return (
-        <div style={{ paddingTop: '5px' }}>
-            <button
-                className={`btn btn-link p-0 m-0 ${currentLanguage === 'en' ? 'active' : ''}`}
-                onClick={() => changeLanguage('en')}
+  const languageStyle = {
+    cursor: 'pointer',
+    color: 'black',
+    fontWeight: 'bold',
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '25px',
+    textDecoration: 'none',
+  };
+
+  const columnStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'absolute',
+    top: '100%',
+    left: '0',
+    zIndex: '999',
+  };
+
+  const activeLanguageStyle = {
+    ...languageStyle,
+    color: '#F24726',
+    textDecoration: 'underline',
+  };
+
+  const availableLanguages = [
+    { language: 'en', text: 'EN' },
+    { language: 'es', text: 'ES' },
+    { language: 'eu', text: 'EU' },
+  ];
+
+  const filteredLanguages = availableLanguages.filter((lang) => lang.language !== currentLanguage);
+
+  return (
+    <div style={{ position: 'relative' }}>
+      {showLanguages && (
+        <div style={columnStyle}>
+          {filteredLanguages.map((lang) => (
+            <div
+              key={lang.language}
+              className="btn btn-link p-0 m-0"
+              style={languageStyle}
+              onClick={() => changeLanguage(lang.language)}
             >
-                {showFlags && (
-                    <img
-                        src={enFlag}
-                        alt="English"
-                        style={{ width: '40px', height: '30px', borderRadius: '5px' }}
-                    />
-                )}
-            </button>
-            <button
-                className={`btn btn-link p-0 m-0 ${currentLanguage === 'es' ? 'active' : ''}`}
-                onClick={() => changeLanguage('es')}
-            >
-                {showFlags && (
-                    <img
-                        src={esFlag}
-                        alt="Spanish"
-                        style={{ width: '40px', height: '30px', borderRadius: '5px' }}
-                    />
-                )}
-            </button>
-            <button
-                className={`btn btn-link p-0 m-0 ${currentLanguage === 'eu' ? 'active' : ''}`}
-                onClick={() => changeLanguage('eu')}
-            >
-                {showFlags && (
-                    <img
-                        src={euFlag}
-                        alt="Basque"
-                        style={{ width: '40px', height: '30px', borderRadius: '5px' }}
-                    />
-                )}
-            </button>
-            {!showFlags && (
-                <button
-                    className="btn btn-link p-0 m-0"
-                    onClick={toggleFlags}
-                >
-                    <img
-                        src={currentLanguage === 'en' ? enFlag : (currentLanguage === 'es' ? esFlag : euFlag)}
-                        alt={currentLanguage === 'en' ? 'English' : (currentLanguage === 'es' ? 'Spanish' : 'Basque')}
-                        style={{ width: '40px', height: '30px', borderRadius: '5px' }}
-                    />
-                </button>
-            )}
+              {lang.text}
+            </div>
+          ))}
         </div>
-    );
+      )}
+      <div
+        className="btn btn-link p-0 m-0"
+        style={activeLanguageStyle}
+        onClick={toggleLanguages}
+      >
+        <span style={{ display: 'inline-block' }}>
+          {currentLanguage === 'en' ? 'EN' : currentLanguage === 'es' ? 'ES' : 'EU'}
+        </span>
+      </div>
+    </div>
+  );
 };
 
 export default LanguageSelector;
