@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Header from '../../common/Header/Header';
 import zxcvbn from 'zxcvbn';
@@ -34,7 +34,6 @@ const getPasswordStrengthText = (score) => {
 const RegisterPage = () => {
     const { t } = useTranslation();
     const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [redirect, setRedirect] = useState(false);
 
     const [error, setError] = useState('');
     const [existEmail, setExistEmail] = useState(false);
@@ -104,6 +103,7 @@ const RegisterPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [passwordValid, setPasswordValid] = useState(true);
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -215,7 +215,7 @@ const RegisterPage = () => {
                     educationalLevel: '',
                     information: '',
                 });
-                setRedirect(true); // Set the redirect state to true
+                navigate('/homeYouth');
                 return true;
             } else {
                 return false;
