@@ -259,7 +259,7 @@ const HomeIntermediary = () => {
             <Container>
                 <div style={{ paddingTop: '15px' }}>
                     <div className="row mb-3">
-                        <div className="col-md-2 text-center" style={{ paddingBottom:'10px' }}>
+                        <div className="col-md-2 text-center" style={{ paddingBottom: '10px' }}>
                             <button className="btn btn-primary" onClick={handleShowModal} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
                                 {t('CreateNewProgram')}
                             </button>
@@ -435,72 +435,87 @@ const HomeIntermediary = () => {
     const renderAddPoints = () => {
         return (
             <div style={{ paddingTop: '15px' }}>
-                <h2>{t('addPointsToAUserThroughHisEmail')}</h2>
+                <div className="text-center">
+                    <h1>{t('addPointsToAUserThroughHisEmail')}</h1>
+                </div>
                 <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>{t('email')}:</label>
-                        <input
-                            type="email"
-                            id="emailInput"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label>{t('email')}</label>
+                            <input
+                                type="email"
+                                className="form-control"
+                                id="emailInput"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <label>{t('proactivity')}:</label>
-                        <input
-                            type="text"
-                            id="proactivityInput"
-                            value={proactivity}
-                            onChange={(e) => setProactivity(e.target.value)}
-                        />
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label>{t('proactivity')}:</label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                id="proactivityInput"
+                                value={proactivity}
+                                onChange={(e) => setProactivity(e.target.value)}
+                            />
+                        </div>
+                        <div className="col">
+                            <label>{t('creativity')}:</label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                id="creativityInput"
+                                value={creativity}
+                                onChange={(e) => setCreativity(e.target.value)}
+                            />
+                        </div>
+                        <div className="col">
+                            <label>{t('initiative')}:</label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                id="initiativeInput"
+                                value={initiative}
+                                onChange={(e) => setInitiative(e.target.value)}
+                            />
+                        </div>
+                        <div className="col">
+                            <label>{t('empathy')}:</label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                id="empathyInput"
+                                value={empathy}
+                                onChange={(e) => setEmpathy(e.target.value)}
+                            />
+                        </div>
+                        <div className="col">
+                            <label>{t('leadership')}:</label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                id="leadershipInput"
+                                value={leadership}
+                                onChange={(e) => setLeadership(e.target.value)}
+                            />
+                        </div>
+                        <div className="col">
+                            <label>{t('teamwork')}:</label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                id="teamworkInput"
+                                value={teamwork}
+                                onChange={(e) => setTeamwork(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <label>{t('creativity')}:</label>
-                        <input
-                            type="text"
-                            id="creativityInput"
-                            value={creativity}
-                            onChange={(e) => setCreativity(e.target.value)}
-                        />
+                    <div className="text-center">
+                        <button className="btn btn-primary" type="submit" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>Add points</button>
                     </div>
-                    <div>
-                        <label>{t('initiative')}:</label>
-                        <input
-                            type="text"
-                            id="initiativeInput"
-                            value={initiative}
-                            onChange={(e) => setInitiative(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <label>{t('empathy')}:</label>
-                        <input
-                            type="text"
-                            id="empathyInput"
-                            value={empathy}
-                            onChange={(e) => setEmpathy(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <label>{t('leadership')}:</label>
-                        <input
-                            type="text"
-                            id="leadershipInput"
-                            value={leadership}
-                            onChange={(e) => setLeadership(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <label>{t('teamwork')}:</label>
-                        <input
-                            type="text"
-                            id="teamworkInput"
-                            value={teamwork}
-                            onChange={(e) => setTeamwork(e.target.value)}
-                        />
-                    </div>
-                    <button type="submit">Search</button>
                 </form>
             </div>
         );
