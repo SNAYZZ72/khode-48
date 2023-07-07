@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import HeaderIntermediary from '../../common/Header/HeaderIntermediary';
 import { auth, firestore } from '../../firebase';
 import { v4 as uuidv4 } from 'uuid';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Container } from 'react-bootstrap';
 
 const availableSkills = [
     'Proactivity',
@@ -68,6 +68,10 @@ const HomeIntermediary = () => {
                 <input
                     type="checkbox"
                     value={skill}
+                    //design for checkbox with className from bootstrap
+                    className="form-check-input"
+                    //style for checkbox padding or margin on each checkbox
+                    style={{ marginRight: '5px', marginLeft: '20px' }}
                     checked={selectedSkills.includes(skill)}
                     onChange={handleSkillChange}
                 />
@@ -243,45 +247,106 @@ const HomeIntermediary = () => {
         const programsRef = firestore.collection('programs').doc(userId);
         const doc = await programsRef.get();
         if (doc.exists) {
-          const userData = doc.data();
-          const programs = Object.values(userData);
-          setUserPrograms(programs);
+            const userData = doc.data();
+            const programs = Object.values(userData);
+            setUserPrograms(programs);
         }
     };
 
 
     const renderProgramView = () => {
         return (
-            <div>
-                <button onClick={handleShowModal}><h5>{t('CreateNewProgram')}</h5></button>
-                {userPrograms.length > 0 ? (
-                            <ul>
-                                {userPrograms.map((program) => (
-                                    <li key={program.programId}>
-                                        <p>Name: {program.programName}</p>
-                                        <p>Description: {program.programDescription}</p>
-                                        <p>Start Date: {program.startDate}</p>
-                                        <p>End Date: {program.endDate}</p>
-                                        <p>Number of Places: {program.numberOfPlaces}</p>
-                                        <p>Skills Developed: {program.skillsDeveloped.join(', ')}</p>
-                                        {/* Render other program details */}
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>No programs found.</p>
-                        )}
-
-
+            <Container>
+                <div style={{ paddingTop: '15px' }}>
+                    <div className="row mb-3">
+                        <div className="col-md-2 text-center" style={{ paddingBottom:'10px' }}>
+                            <button className="btn btn-primary" onClick={handleShowModal} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                {t('CreateNewProgram')}
+                            </button>
+                        </div>
+                        <div className="col-md-8">
+                            <div className="input-group">
+                                <span className="input-group-text">{t('Search')}:</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value=""
+                                    onChange=""
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-2">
+                            <div className="input-group">
+                                <span className="input-group-text">
+                                    {t('Filter')}:
+                                </span>
+                                <select
+                                    className="form-select"
+                                    value=""
+                                    onChange=""
+                                >
+                                    <option value="">{t('All')}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    {userPrograms.length > 0 ? (
+                        <li className="list-group">
+                            {userPrograms.map((program) => (
+                                <li key={program.programId} className="list-group-item profile-item">
+                                    <div className="row mb-3">
+                                        <div className="col-md-7">
+                                            <div className="row">
+                                                <h3>Name: {program.programName}</h3>
+                                            </div>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>Description:</b> {program.programDescription}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="col-md-5" style={{ paddingTop: '16px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>Start Date:</b> {program.startDate}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>End Date:</b> {program.endDate}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>Number of Places:</b> {program.numberOfPlaces}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>Skills Developed:</b> {program.skillsDeveloped.join(', ')}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    {/* Render other program details */}
+                                </li>
+                            ))}
+                        </li>
+                    ) : (
+                        <p>No programs found.</p>
+                    )}
+                </div>
 
                 <Modal show={showModal} onHide={() => setShowModal(false)}>
                     <Modal.Header closeButton>
                         <Modal.Title>{t('CreateNewProgram')}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <h4>Displaying Programs</h4>
-                        
-                        <form onSubmit={handleSubmit}>
+                        <form>
                             <div className="mb-3">
                                 <label className="form-label">{t('programName')}</label>
                                 <input
@@ -308,9 +373,14 @@ const HomeIntermediary = () => {
                             <div className="mb-3">
                                 <label className="form-label">{t('programSkillsDeveloped')}</label>
                                 <div>{renderSkillOptions()}</div>
-                                <div className="selected-skills">
-                                    Selected Skills: {selectedSkills.join(', ')}
+                                <div style={{ paddingTop: '10px' }}>
+                                    Selected Skills:
                                 </div>
+                                <ul className="selected-skills">
+                                    {selectedSkills.map((skill, index) => (
+                                        <li key={index}>{skill}</li>
+                                    ))}
+                                </ul>
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">{t('ProgramBeginDate')}</label>
@@ -347,24 +417,24 @@ const HomeIntermediary = () => {
                                     onChange={handleInputChange}
                                 />
                             </div>
-                            <button type="submit" className="btn btn-primary">
-                                {t('programCreate')}
-                            </button>
                         </form>
                     </Modal.Body>
                     <Modal.Footer>
+                        <Button variant="primary" onClick={handleSubmit} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('programCreate')}
+                        </Button>
                         <Button variant="secondary" onClick={() => setShowModal(false)}>
                             Close
                         </Button>
                     </Modal.Footer>
                 </Modal>
-            </div>
+            </Container >
         );
     };
 
     const renderAddPoints = () => {
         return (
-            <div>
+            <div style={{ paddingTop: '15px' }}>
                 <h2>{t('addPointsToAUserThroughHisEmail')}</h2>
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -439,18 +509,31 @@ const HomeIntermediary = () => {
     return (
         <div>
             <HeaderIntermediary />
-            <div className="view-selector">
-                <button onClick={() => handleViewSelect('programView')}>
-                    {t('programView')}
-                </button>
-                <button onClick={() => handleViewSelect('addPoints')}>
-                    {t('addPoints')}
-                </button>
-            </div>
-            {renderView()}
-
-
-
+            <Container>
+                <div className="row mb-3">
+                    <div className="col">
+                        {/* borderColor: '#F24726' si la vue programView est actif sinon borderColor: 'none' */}
+                        <button
+                            onClick={() => handleViewSelect('programView')}
+                            className="form-control"
+                            style={{ border: selectedView === 'programView' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'programView' ? '#F24726' : '#6C757D', color: 'white' }}
+                        >
+                            {t('programView')}
+                        </button>
+                    </div>
+                    <div className="col">
+                        {/* borderColor: '#F24726' si la vue addPoints est actif sinon borderColor: 'none' */}
+                        <button
+                            onClick={() => handleViewSelect('addPoints')}
+                            className="form-control"
+                            style={{ border: selectedView === 'addPoints' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'addPoints' ? '#F24726' : '#6C757D', color: 'white' }}
+                        >
+                            {t('addPoints')}
+                        </button>
+                    </div>
+                </div>
+                {renderView()}
+            </Container>
         </div>
     );
 };

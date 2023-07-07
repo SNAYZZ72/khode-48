@@ -243,14 +243,6 @@ const Home = () => {
                             </div>
                         </div>
                         <div className="text-center">
-                            <Button
-                                variant="primary"
-                                type="submit"
-                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                                onClick={handleLogin}
-                            >
-                                {t('login')}
-                            </Button>
 
                             {profileType === 'young' && (
                                 <p>
@@ -279,6 +271,19 @@ const Home = () => {
                         </div>
                     </div>
                 </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                        onClick={handleLogin}
+                    >
+                        {t('login')}
+                    </Button>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Close
+                    </Button>
+                </Modal.Footer>
             </Modal>
         </div>
     );
