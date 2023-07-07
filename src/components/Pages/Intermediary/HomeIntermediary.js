@@ -258,12 +258,12 @@ const HomeIntermediary = () => {
                             <ul>
                                 {userPrograms.map((program) => (
                                     <li key={program.programId}>
-                                        <p>Name: {program.programName}</p>
-                                        <p>Description: {program.programDescription}</p>
-                                        <p>Start Date: {program.startDate}</p>
-                                        <p>End Date: {program.endDate}</p>
-                                        <p>Number of Places: {program.numberOfPlaces}</p>
-                                        <p>Skills Developed: {program.skillsDeveloped.join(', ')}</p>
+                                        <p>{t('programName')}: {program.programName}</p>
+                                        <p>{t('programDescription')}: {program.programDescription}</p>
+                                        <p>{t('startData')}: {program.startDate}</p>
+                                        <p>{t('endDate')}: {program.endDate}</p>
+                                        <p>{t('numberOfPlace')}: {program.numberOfPlaces}</p>
+                                        <p>{t('skillsDeveloped')}: {program.skillsDeveloped.join(', ')}</p>
                                         {/* Render other program details */}
                                     </li>
                                 ))}
@@ -279,8 +279,6 @@ const HomeIntermediary = () => {
                         <Modal.Title>{t('CreateNewProgram')}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <h4>Displaying Programs</h4>
-                        
                         <form onSubmit={handleSubmit}>
                             <div className="mb-3">
                                 <label className="form-label">{t('programName')}</label>
@@ -354,7 +352,7 @@ const HomeIntermediary = () => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => setShowModal(false)}>
-                            Close
+                            {t('close')}
                         </Button>
                     </Modal.Footer>
                 </Modal>
@@ -448,9 +446,6 @@ const HomeIntermediary = () => {
                 </button>
             </div>
             {renderView()}
-
-
-
         </div>
     );
 };
