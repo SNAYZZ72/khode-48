@@ -482,6 +482,8 @@ const HomeIntermediary = () => {
                                 onChange={(e) => setInitiative(e.target.value)}
                             />
                         </div>
+                    </div>
+                    <div className="row mb-3">
                         <div className="col">
                             <label>{t('empathy')}:</label>
                             <input
