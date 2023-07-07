@@ -215,7 +215,7 @@ const RegisterPage = () => {
                     educationalLevel: '',
                     information: '',
                 });
-                navigate('/home');
+                navigate('/');
                 return true;
             } else {
                 return false;

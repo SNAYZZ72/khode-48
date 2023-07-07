@@ -204,7 +204,7 @@ const RegisterCompanyPage = () => {
                     password: '',
                     confirmPass: '',
                 });
-                navigate('/Home');
+                navigate('/');
                 return true;
             } else {
                 return false;

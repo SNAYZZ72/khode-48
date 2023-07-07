@@ -91,8 +91,8 @@ const RegisterIntermediaryPage = () => {
             await parentDocRef.set({ [userId]: sentData }, { merge: true });
             return true;
         } catch (error) {
-            setError(error.message);   
-            alert(error.message);    
+            setError(error.message);
+            alert(error.message);
             setExistEmail(true);
             return false;
         }
@@ -183,7 +183,7 @@ const RegisterIntermediaryPage = () => {
                     email: '',
                     password: '',
                 });
-                navigate('/Home');
+                navigate('/');
                 return true;
             } else {
                 return false;
