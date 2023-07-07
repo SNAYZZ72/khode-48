@@ -52,6 +52,7 @@ const RegisterCompanyPage = () => {
         facebookPage: '',
         contactFirstName: '',
         contactLastName: '',
+        contactRole: '',
         phoneNumber: '',
         email: '',
         password: '',
@@ -77,6 +78,7 @@ const RegisterCompanyPage = () => {
                 linkedinPage: formData.linkedinPage,
                 twitterPage: formData.twitterPage,
                 facebookPage: formData.facebookPage,
+                contactRole: formData.contactRole,
                 contactFirstName: formData.contactFirstName,
                 contactLastName: formData.contactLastName,
                 phoneNumber: formData.phoneNumber,
@@ -148,18 +150,6 @@ const RegisterCompanyPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Perform form submission logic here
-        // const currentDate = new Date();
-        // const selectedDate = new Date(formData.dateOfBirth);
-        // const minimumAge = 8; // Minimum age in years
-
-        // selectedDate.setFullYear(selectedDate.getFullYear() + minimumAge);
-
-        // if (selectedDate >= currentDate) {
-        //     // Date of birth does not meet the minimum age requirement, show an error message or take appropriate action
-        //     setShowErrorModal(true);
-        //     return;
-        // }
 
         if (formData.password === formData.confirmPassword && validatePassword(formData.password)) {
             // Passwords match and meet the requirements
@@ -199,6 +189,7 @@ const RegisterCompanyPage = () => {
                     facebookPage: '',
                     contactFirstName: '',
                     contactLastName: '',
+                    contactRole: '',
                     phoneNumber: '',
                     email: '',
                     password: '',
@@ -213,7 +204,6 @@ const RegisterCompanyPage = () => {
             }
         }
     };
-
 
     const handleModalClose = () => {
         // setShowErrorModal(false);
@@ -237,18 +227,6 @@ const RegisterCompanyPage = () => {
                                 id="companyName"
                                 name="companyName"
                                 value={formData.companyName}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="col">
-                            <label htmlFor="commercialName">{t('Commercials name')}</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="commercialName"
-                                name="commercialName"
-                                value={formData.commercialName}
                                 onChange={handleInputChange}
                                 required
                             />
@@ -371,6 +349,18 @@ const RegisterCompanyPage = () => {
                                 id="contactLastName"
                                 name="contactLastName"
                                 value={formData.contactLastName}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <div className="col">
+                            <label htmlFor="contactRole">{t('ContactRole')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="contactRole"
+                                name="contactRole"
+                                value={formData.contactRole}
                                 onChange={handleInputChange}
                                 required
                             />
@@ -530,4 +520,3 @@ const RegisterCompanyPage = () => {
 };
 
 export default RegisterCompanyPage;
-
