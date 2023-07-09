@@ -18,7 +18,7 @@ const HomeIntermediary = () => {
     const { t } = useTranslation();
     const [profileType, setProfileType] = useState('');
     const [showModal, setShowModal] = useState(false);
-    const [selectedView, setSelectedView] = useState('');
+    const [selectedView, setSelectedView] = useState('programView');
     const [userPrograms, setUserPrograms] = useState([]);
 
     const [createProgram, setCreateProgram] = useState({
@@ -264,7 +264,7 @@ const HomeIntermediary = () => {
                                 {t('CreateNewProgram')}
                             </button>
                         </div>
-                        <div className="col-md-8">
+                        <div className="col-md-8" style={{ paddingBottom: '10px' }}>
                             <div className="input-group">
                                 <span className="input-group-text">{t('Search')}:</span>
                                 <input

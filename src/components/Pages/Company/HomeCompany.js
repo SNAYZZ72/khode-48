@@ -21,7 +21,7 @@ const HomeCompany = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filterQuery, setFilterQuery] = useState('');
     const [selectedProfile, setSelectedProfile] = useState(null);
-    const [selectedView, setSelectedView] = useState('');
+    const [selectedView, setSelectedView] = useState('youthProfiles');
     const [youthProfiles, setYouthProfiles] = useState([]);
     const [jobs, setJobs] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -332,7 +332,7 @@ const HomeCompany = () => {
             <div>
                 <div style={{ paddingTop: '15px' }}>
                     <div className="row mb-3">
-                        <div className="col-md-9">
+                        <div className="col-md-9" style={{ paddingBottom: '10px' }}>
                             <div className="input-group">
                                 <span className="input-group-text">{t('Search')}:</span>
                                 <input
@@ -450,7 +450,7 @@ const HomeCompany = () => {
                                 {t('CreateNewJob')}
                             </button>
                         </div>
-                        <div className="col-md-8">
+                        <div className="col-md-8" style={{ paddingBottom: '10px' }}>
                             <div className="input-group">
                                 <span className="input-group-text">{t('Search')}:</span>
                                 <input
@@ -481,7 +481,7 @@ const HomeCompany = () => {
                             {jobs.map((job) => (
                                 <li key={job.id} className="list-group-item profile-item">
                                     <div className="row mb-3">
-                                        <div className="col-md-7">
+                                        <div className="col-md-6">
                                             <div className="row"></div>
                                             <h3>{t('jobName')}: {job.jobName}</h3>
                                             <ul className="list-group" style={{ paddingBottom: '10px' }}>
@@ -491,6 +491,8 @@ const HomeCompany = () => {
                                                     </div>
                                                 </li>
                                             </ul>
+                                        </div>
+                                        <div className="col-md-3" style={{ paddingTop: '42px' }}>
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
@@ -514,7 +516,7 @@ const HomeCompany = () => {
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div className="col-md-5" style={{ paddingTop: '42px' }}>
+                                        <div className="col-md-3" style={{ paddingTop: '42px' }}>
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
