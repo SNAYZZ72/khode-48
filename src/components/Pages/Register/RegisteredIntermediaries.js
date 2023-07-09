@@ -35,6 +35,7 @@ const RegisterIntermediaryPage = () => {
     const userRef = database.ref('users'); // Reference the 'users' node in the database
     const [error, setError] = useState('');
     const [existEmail, setExistEmail] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const [formData, setFormData] = useState({
         companyName: '',
@@ -118,27 +119,15 @@ const RegisterIntermediaryPage = () => {
     };
 
     const doesPasswordMatch = () => {
-        if(formData.password === formData.confirmPassword){
+        if (formData.password === formData.confirmPassword) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Perform form submission logic here
-        const currentDate = new Date();
-        const selectedDate = new Date(formData.dateOfBirth);
-        const minimumAge = 8; // Minimum age in years
-
-        selectedDate.setFullYear(selectedDate.getFullYear() + minimumAge);
-
-        if (selectedDate >= currentDate) {
-            // Date of birth does not meet the minimum age requirement, show an error message or take appropriate action
-            setShowErrorModal(true);
-            return;
-        }
 
         if (formData.password === formData.confirmPassword && validatePassword(formData.password)) {
             // Passwords match and meet the requirements
@@ -152,14 +141,14 @@ const RegisterIntermediaryPage = () => {
         // You can send the form data to a backend server or perform any other actions
         // if handleREgister return no error then result is true and the following code can execute
 
-        if(doesPasswordMatch() && validatePassword(formData.password)) {
+        if (doesPasswordMatch() && validatePassword(formData.password)) {
             const result = await handleRegister();
 
-            if(result) {
+            if (result) {
                 setExistEmail(false);
 
                 setShowSuccessModal(true);
-                
+
                 // Reset form fields after submission if needed
                 setFormData({
                     companyName: '',
@@ -186,13 +175,14 @@ const RegisterIntermediaryPage = () => {
         }
     };
 
+    const handleModalClose = () => {
+        // setShowErrorModal(false);
+        setShowSuccessModal(false); // Close the success modal
+    };
+
     const validatePassword = (password) => {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
         return regex.test(password);
-    };
-
-    const handleModalClose = () => {
-        setShowErrorModal(false);
     };
 
     return (
@@ -430,16 +420,16 @@ const RegisterIntermediaryPage = () => {
                     </div>
                 </form>
             </div>
-            <Modal show={showErrorModal} onHide={handleModalClose}>
+            <Modal show={showSuccessModal} onHide={handleModalClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Error</Modal.Title>
+                    <Modal.Title>{t('Congratulations!')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>{t('An error occurred. Please check your input and try again.')}</p>
+                    <p>{t('Your account has been successfully created.')}</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleModalClose}>
-                        Close
+                        {t('Close')}
                     </Button>
                 </Modal.Footer>
             </Modal>
