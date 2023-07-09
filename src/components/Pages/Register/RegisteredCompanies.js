@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../../common/Header/Header';
+import { useNavigate } from 'react-router-dom';
 import zxcvbn from 'zxcvbn';
 import { Modal, Button } from 'react-bootstrap';
 import { auth } from '../../firebase';
@@ -105,6 +106,7 @@ const RegisterCompanyPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     // const [showErrorModal, setShowErrorModal] = useState(false);
     const [passwordValid, setPasswordValid] = useState(true);
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -193,6 +195,9 @@ const RegisterCompanyPage = () => {
                     password: '',
                     confirmPass: '',
                 });
+                setTimeout(() => {
+                    navigate('/');
+                }, 3000);
                 return true;
             } else {
                 return false;

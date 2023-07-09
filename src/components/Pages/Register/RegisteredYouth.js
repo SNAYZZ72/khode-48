@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Header from '../../common/Header/Header';
 import zxcvbn from 'zxcvbn';
@@ -102,6 +103,7 @@ const RegisterPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [passwordValid, setPasswordValid] = useState(true);
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -213,6 +215,9 @@ const RegisterPage = () => {
                     educationalLevel: '',
                     information: '',
                 });
+                setTimeout(() => {
+                    navigate('/');
+                }, 3000);
                 return true;
             } else {
                 return false;

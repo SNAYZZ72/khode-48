@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../../common/Header/Header';
+import { useNavigate } from 'react-router-dom';
 import zxcvbn from 'zxcvbn';
 import { Modal, Button } from 'react-bootstrap';
-import { auth } from '../../firebase'; 
+import { auth } from '../../firebase';
 import { database } from '../../firebase'; // Import the database instance from your firebase.js file
 import { firestore } from '../../firebase'; // Import the firestore instance from your firebase.js file
 
@@ -78,7 +79,7 @@ const RegisterIntermediaryPage = () => {
                 contactFirstName: formData.contactFirstName,
                 contactLastName: formData.contactLastName,
                 phoneNumber: formData.phoneNumber,
-                email: formData.email,                
+                email: formData.email,
             };
             // Get the user ID of the newly created user
             const userId = auth.currentUser.uid;
@@ -90,8 +91,8 @@ const RegisterIntermediaryPage = () => {
             await parentDocRef.set({ [userId]: sentData }, { merge: true });
             return true;
         } catch (error) {
-            setError(error.message);   
-            alert(error.message);    
+            setError(error.message);
+            alert(error.message);
             setExistEmail(true);
             return false;
         }
@@ -101,6 +102,7 @@ const RegisterIntermediaryPage = () => {
     const [passwordScore, setPasswordScore] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -155,11 +157,11 @@ const RegisterIntermediaryPage = () => {
 
         // You can send the form data to a backend server or perform any other actions
         // if handleREgister return no error then result is true and the following code can execute
-        
+
         if(doesPasswordMatch() && validatePassword(formData.password)) {
             const result = await handleRegister();
 
-            if(result) {                         
+            if(result) {
                 setExistEmail(false);
 
                 // Reset form fields after submission if needed
@@ -181,6 +183,9 @@ const RegisterIntermediaryPage = () => {
                     email: '',
                     password: '',
                 });
+                setTimeout(() => {
+                    navigate('/');
+                }, 3000);
                 return true;
             } else {
                 return false;
