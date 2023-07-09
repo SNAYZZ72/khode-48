@@ -41,7 +41,6 @@ const RegisterCompanyPage = () => {
 
     const [formData, setFormData] = useState({
         companyName: '',
-        commercialName: '',
         city: '',
         postalCode: '',
         industry: '',
@@ -69,7 +68,6 @@ const RegisterCompanyPage = () => {
             // Set the user data
             const sentData = {
                 companyName: formData.companyName,
-                commercialName: formData.commercialName,
                 city: formData.city,
                 postalCode: formData.postalCode,
                 industry: formData.industry,
@@ -178,7 +176,6 @@ const RegisterCompanyPage = () => {
                 // Reset form fields after submission if needed
                 setFormData({
                     companyName: '',
-                    commercialName: '',
                     city: '',
                     postalCode: '',
                     industry: '',

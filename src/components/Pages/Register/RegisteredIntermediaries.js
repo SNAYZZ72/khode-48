@@ -38,11 +38,8 @@ const RegisterIntermediaryPage = () => {
 
     const [formData, setFormData] = useState({
         companyName: '',
-        commercialName: '',
-        addressLine1: '',
         city: '',
         postalCode: '',
-        country: '',
         industry: '',
         maturity: '',
         linkedinPage: '',
@@ -66,11 +63,8 @@ const RegisterIntermediaryPage = () => {
             // Set the user data
             const sentData = {
                 companyName: formData.companyName,
-                commercialName: formData.commercialName,
-                addressLine1: formData.addressLine1,
                 city: formData.city,
                 postalCode: formData.postalCode,
-                country: formData.country,
                 industry: formData.industry,
                 maturity: formData.maturity,
                 linkedinPage: formData.linkedinPage,
@@ -164,14 +158,13 @@ const RegisterIntermediaryPage = () => {
             if(result) {
                 setExistEmail(false);
 
+                setShowSuccessModal(true);
+                
                 // Reset form fields after submission if needed
                 setFormData({
                     companyName: '',
-                    commercialName: '',
-                    addressLine1: '',
                     city: '',
                     postalCode: '',
-                    country: '',
                     industry: '',
                     maturity: '',
                     linkedinPage: '',
@@ -219,18 +212,6 @@ const RegisterIntermediaryPage = () => {
                                 id="companyName"
                                 name="companyName"
                                 value={formData.companyName}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="col">
-                            <label htmlFor="commercialName">{t('Commercials name')}</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="commercialName"
-                                name="commercialName"
-                                value={formData.commercialName}
                                 onChange={handleInputChange}
                                 required
                             />
