@@ -217,7 +217,7 @@ const RegisterPage = () => {
                 });
                 setTimeout(() => {
                     navigate('/');
-                }, 3000);
+                }, 2500);
                 return true;
             } else {
                 return false;
