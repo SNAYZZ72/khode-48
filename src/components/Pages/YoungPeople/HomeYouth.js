@@ -2,41 +2,74 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import HeaderYouth from '../../common/Header/HeaderYouth';
 import { Modal, Button } from 'react-bootstrap';
+import { auth, firestore } from '../../firebase';
+
+const existingSkills = [
+    'Proactivity',
+    'Creativity',
+    'Initiative',
+    'Empathy',
+    'Leadership',
+    'Teamwork',
+];
 
 const HomeYouth = () => {
     const { t } = useTranslation();
 
-    const projectsData = [
-        {
-            id: 1,
-            title: 'Project 1',
-            description: 'Description of Project 1',
-            company: 'Company A',
-        },
-        {
-            id: 2,
-            title: 'Project 2',
-            description: 'Description of Project 2',
-            company: 'Company B',
-        },
-        {
-            id: 3,
-            title: 'Project 3',
-            description: 'Description of Project 3',
-            company: 'Company C',
-        },
-        // Add more projects as needed
-    ];
-
     const [projects, setProjects] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [filterQuery, setFilterQuery] = useState('');
+    const [userPrograms, setUserPrograms] = useState([]);
+    const [userJobs, setUserJobs] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedView, setSelectedView] = useState('programView');
+    const [visibleJobs, setVisibleJobs] = useState(10); // Number of jobs to display
+    const [visiblePrograms, setVisiblePrograms] = useState(10); // Number of jobs to display
+
+
+
+    // Fetch all programs from the database
+    const fetchAllPrograms = async () => {
+        const programsRef = firestore.collection('programs');
+        const snapshot = await programsRef.get();
+        const programs = [];
+
+        snapshot.forEach((doc) => {
+            if (doc.exists) {
+                const userData = doc.data();
+                const intermediaryPrograms = Object.values(userData);
+                programs.push(...intermediaryPrograms);
+            }
+            else {
+                console.log('No such document!');
+            }
+        });
+
+        setUserPrograms(programs);
+    };
+
+    // Fetch all jobs from the database
+    const fetchAllJobs = async () => {
+        const jobsRef = firestore.collection('jobs');
+        const snapshot = await jobsRef.get();
+        const jobs = [];
+
+        snapshot.forEach((doc) => {
+            if (doc.exists) {
+                const userData = doc.data();
+                const companyJobs = Object.values(userData);
+                jobs.push(...companyJobs);
+            }
+            else {
+                console.log('No such document!');
+            }
+        });
+        setUserJobs(jobs);
+    };
 
     useEffect(() => {
-        // Simulating API call to fetch projects data
-        setTimeout(() => {
-            setProjects(projectsData);
-        }, 1000);
+        fetchAllPrograms();
+        fetchAllJobs();
     }, []);
 
     const handleSearchChange = (event) => {
@@ -52,10 +85,99 @@ const HomeYouth = () => {
         (filterQuery === '' || project.company === filterQuery)
     );
 
-    const handleSeeMore = (project) => {
-        // Implement your logic here to handle "See More" button click
-        console.log('See More clicked:', project);
+    const handleViewSelect = (view) => {
+        setSelectedView(view);
     };
+
+    //load more jobs 
+    const handleLoadMoreJobs = () => {
+        // Increase the number of visible jobs when the "Load More" button is clicked *useful so the website doesn't crash when loading too many jobs*
+        setVisibleJobs((prevVisibleJobs) => prevVisibleJobs + 10);
+    };
+
+    //load more programs
+    const handleLoadMorePrograms = () => {
+        // Increase the number of visible programs when the "Load More" button is clicked *useful so the website doesn't crash when loading too many jobs*
+        setVisiblePrograms((prevVisiblePrograms) => prevVisiblePrograms + 10);
+    };
+
+    const renderView = () => {
+        if (selectedView === 'programView') {
+            return renderProgramView();
+        } else if (selectedView === 'jobView') {
+            return renderJobView();
+        }
+    };
+
+    const renderProgramView = () => {
+        const visibleProgramsData = userPrograms.slice(0, visiblePrograms);
+
+        return (
+            <div>
+                {visibleProgramsData.length > 0 ? (
+                    <ul>
+                        {visibleProgramsData.map((program) => (
+                            <li key={program.id}>
+                                <h3>{t('companyName')}: {program.companyName}</h3>
+                                <p>{t('programName')}: {program.programName}</p>
+                                <p>{t('programDescription')}: {program.programDescription}</p>
+                                <p>{t('startData')}: {program.startDate}</p>
+                                <p>{t('endDate')}: {program.endDate}</p>
+                                <p>{t('numberOfPlace')}: {program.numberOfPlaces}</p>
+                                <p>{t('skillsDeveloped')}: {program.skillsDeveloped.join(', ')}</p>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>{t('No programs found.')}</p>
+                )}
+
+                {/* Show the "Load More" button if there are more programs to load */}
+                {visiblePrograms < userPrograms.length && (
+                    <button onClick={handleLoadMorePrograms}>{t('loadMore')}</button>
+                )}
+            </div>
+        );
+    };
+
+    const renderJobView = () => {
+        const visibleJobsData = userJobs.slice(0, visibleJobs);
+
+        return (
+            <div>
+                {visibleJobsData.length > 0 ? (
+                    <ul>
+                        {visibleJobsData.map((job) => (
+                            <li key={job.id}>
+                                <h3>{t('companyName')}: {job.companyName}</h3>
+                                <p>{t('jobName')}: {job.jobName}</p>
+                                <p>{t('jobDescription')}: {job.jobDescription}</p>
+                                <p>{t('startData')}: {job.jobBeginDate}</p>
+                                <p>{t('endDate')}: {job.jobEndDate}</p>
+                                <p>{t('location')}: {job.jobLocation}</p>
+                                <p>{t('positionSought')}: {job.jobPosition}</p>
+                                <p>{t('skillsNeeded')}: </p>
+                                {job.jobSkills.map((points, index) => (
+                                    <p key={existingSkills[index]}>
+                                        {t(existingSkills[index])}: {points}
+                                    </p>
+                                ))}
+
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>{t('No jobs found.')}</p>
+                )}
+
+                {/* Show the "Load More" button if there are more jobs to load */}
+                {visibleJobs < userJobs.length && (
+                    <button onClick={handleLoadMoreJobs}>{t('loadMore')}</button>
+                )}
+            </div>
+        );
+    };
+
 
     return (
         <>
@@ -84,34 +206,23 @@ const HomeYouth = () => {
                                 onChange={handleFilterChange}
                             >
                                 <option value="">{t('All')}</option>
-                                <option value="Company A">Company A</option>
-                                <option value="Company B">Company B</option>
-                                <option value="Company C">Company C</option>
+
                             </select>
                         </div>
                     </div>
                 </div>
 
-                {filteredProjects.length === 0 ? (
-                    <p>{t('No projects found.')}</p>
-                ) : (
-                    <ul className="list-group">
-                        {filteredProjects.map((project) => (
-                            <li key={project.id} className="list-group-item">
-                                <h3>{project.title}</h3>
-                                <p>{t('Description')}: {project.description}</p>
-                                <p>{t('Company')}: {project.company}</p>
-                                <button
-                                    className="btn btn-primary"
-                                    onClick={() => handleSeeMore(project)}
-                                    style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                                >
-                                    {t('See More')}
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                )}
+                <div>
+                    <div className="view-selector">
+                        <button onClick={() => handleViewSelect('programView')}>
+                            {t('programView')}
+                        </button>
+                        <button onClick={() => handleViewSelect('jobView')}>
+                            {t('jobView')}
+                        </button>
+                    </div>
+                    {renderView()}
+                </div>
             </div>
         </>
     );
