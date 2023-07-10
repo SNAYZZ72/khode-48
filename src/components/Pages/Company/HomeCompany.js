@@ -116,6 +116,30 @@ const HomeCompany = () => {
         setFilterQuery(event.target.value);
     };
 
+    //fonction qui permet de filtrer les profils en fonction des skills, donc filtrer par le nombre de points qu'il y a dans ce skill pour chaque profile    
+    const filterProfiles = () => {
+        if (filterQuery === '') {
+            return youthProfiles;
+        }
+
+        const selectedSkill = filterQuery.toLowerCase();
+
+        return youthProfiles
+            .filter((profile) => profile[selectedSkill] !== undefined)
+            .sort((a, b) => {
+                const aPoints = a[selectedSkill] || 0;
+                const bPoints = b[selectedSkill] || 0;
+                return bPoints - aPoints;
+            });
+    };
+
+
+    const searchedProfiles = filterProfiles().filter((profile) =>
+        profile.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        profile.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        `${profile.firstName} ${profile.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     const handleSeeMore = (profile) => {
         setSelectedProfile(profile);
     };
@@ -328,6 +352,7 @@ const HomeCompany = () => {
 
     //View of youth profiles
     const renderYouthProfiles = () => {
+
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
@@ -338,8 +363,8 @@ const HomeCompany = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    value=""
-                                    onChange=""
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
                                 />
                             </div>
                         </div>
@@ -350,17 +375,22 @@ const HomeCompany = () => {
                                 </span>
                                 <select
                                     className="form-select"
-                                    value=""
-                                    onChange=""
+                                    value={filterQuery}
+                                    onChange={handleFilterChange}
                                 >
                                     <option value="">{t('All')}</option>
+                                    {existingSkills.map((skill) => (
+                                        <option key={skill} value={skill}>
+                                            {skill}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
                     </div>
-                    {youthProfiles.length > 0 ? (
+                    {searchedProfiles.length > 0 ? (
                         <li className="list-group">
-                            {youthProfiles.map((profile) => (
+                            {searchedProfiles.map((profile) => (
                                 <li key={profile.id} className="list-group-item profile-item">
                                     <div className="row mb-3">
                                         <div className="col-md-10">
