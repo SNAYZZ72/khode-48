@@ -2,25 +2,64 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import HeaderYouth from '../../common/Header/HeaderYouth';
 import { Modal, Button } from 'react-bootstrap';
-import { firestore } from '../../firebase';
 
 const HomeYouth = () => {
     const { t } = useTranslation();
 
-    const [showPrograms, setShowPrograms] = useState(false);
-    const [showJobs, setShowJobs] = useState(false);
-    const [programs, setPrograms] = useState([]);
-    const [jobs, setJobs] = useState([]);
-    const [selectedProgram, setSelectedProgram] = useState(null);
-    const [selectedJob, setSelectedJob] = useState(null);
-    const [showProgramModal, setShowProgramModal] = useState(false);
-    const [showJobModal, setShowJobModal] = useState(false);
+    const [projects, setProjects] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [filterQuery, setFilterQuery] = useState('');
+    const [userPrograms, setUserPrograms] = useState([]);
+    const [userJobs, setUserJobs] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedView, setSelectedView] = useState('programView');
+    const [visibleJobs, setVisibleJobs] = useState(10); // Number of jobs to display
+    const [visiblePrograms, setVisiblePrograms] = useState(10); // Number of jobs to display
+
+
+
+    // Fetch all programs from the database
+    const fetchAllPrograms = async () => {
+        const programsRef = firestore.collection('programs');
+        const snapshot = await programsRef.get();
+        const programs = [];
+
+        snapshot.forEach((doc) => {
+            if (doc.exists) {
+                const userData = doc.data();
+                const intermediaryPrograms = Object.values(userData);
+                programs.push(...intermediaryPrograms);
+            }
+            else {
+                console.log('No such document!');
+            }
+        });
+
+        setUserPrograms(programs);
+    };
+
+    // Fetch all jobs from the database
+    const fetchAllJobs = async () => {
+        const jobsRef = firestore.collection('jobs');
+        const snapshot = await jobsRef.get();
+        const jobs = [];
+
+        snapshot.forEach((doc) => {
+            if (doc.exists) {
+                const userData = doc.data();
+                const companyJobs = Object.values(userData);
+                jobs.push(...companyJobs);
+            }
+            else {
+                console.log('No such document!');
+            }
+        });
+        setUserJobs(jobs);
+    };
 
     useEffect(() => {
-        fetchPrograms();
-        fetchJobs();
+        fetchAllPrograms();
+        fetchAllJobs();
     }, []);
 
     const fetchPrograms = async () => {
@@ -80,15 +119,15 @@ const HomeYouth = () => {
         setFilterQuery(event.target.value);
     };
 
-    const filteredPrograms = programs.filter((program) => {
-        const title = program.title ?? '';
-        const company = program.company ?? '';
+    const filteredProjects = projects.filter((project) =>
+        project.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        (filterQuery === '' || project.company === filterQuery)
+    );
 
-        return (
-            title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-            (filterQuery === '' || company === filterQuery)
-        );
-    }).filter(program => program.title || program.company); // Exclude empty programs
+    const handleSeeMore = (project) => {
+        // Implement your logic here to handle "See More" button click
+        console.log('See More clicked:', project);
+    };
 
     return (
         <>
@@ -97,137 +136,43 @@ const HomeYouth = () => {
                 <h2>{t('Home youth')}</h2>
 
                 <div className="row mb-3">
-                    <div className="col-md-6">
-                        <button
-                            className="form-control"
-                            style={{ backgroundColor: showPrograms ? '#F24726' : '#6C757D', color: 'white' }}
-                            onClick={() => setShowPrograms(!showPrograms)}
-                        >
-                            {t('Show Programs')}
-                        </button>
+                    <div className="col-md-9">
+                        <div className="input-group">
+                            <span className="input-group-text">{t('Search')}:</span>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                            />
+                        </div>
                     </div>
-                    <div className="col-md-6">
-                        <button
-                            className="form-control"
-                            style={{ backgroundColor: showJobs ? '#F24726' : '#6C757D', color: 'white' }}
-                            onClick={() => setShowJobs(!showJobs)}
-                        >
-                            {t('Show Jobs')}
-                        </button>
+                    <div className="col-md-3">
+                        <div className="input-group">
+                            <span className="input-group-text">{t('Filter')}:</span>
+                            <select
+                                className="form-select"
+                                value={filterQuery}
+                                onChange={handleFilterChange}
+                            >
+                                <option value="">{t('All')}</option>
+
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                {showPrograms && (
-                    <>
-                        <div className="row mb-3">
-                            <div className="col-md-9">
-                                <div className="input-group">
-                                    <span className="input-group-text">{t('Search')}:</span>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        value={searchQuery}
-                                        onChange={handleSearchChange}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-md-3">
-                                <div className="input-group">
-                                    <span className="input-group-text">{t('Filter')}:</span>
-                                    <select
-                                        className="form-select"
-                                        value={filterQuery}
-                                        onChange={handleFilterChange}
-                                    >
-                                        <option value="">{t('All')}</option>
-                                        <option value="Programme A">ProgrammeA</option>
-                                        <option value="Programme B">Programme B</option>
-                                        <option value="Programme C">Programme C</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <h3>{t('Programs')}</h3>
-                        {filteredPrograms.length > 0 ? (
-                            <ul className="list-group">
-                                {filteredPrograms.map((program) => (
-                                    <li key={program.id} className="list-group-item">
-                                        <h3>{program.title}</h3>
-                                        <p>{t('Description')}: {program.description}</p>
-                                        <p>{t('Company')}: {program.company}</p>
-                                        {/* Add more program details as needed */}
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={() => handleSeeMoreProgram(program)}
-                                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                                        >
-                                            {t('See More')}
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>{t('No programs found.')}</p>
-                        )}
-                    </>
-                )}
-
-                {showJobs && (
-                    <>
-                        <div className="row mb-3">
-                            <div className="col-md-9">
-                                <div className="input-group">
-                                    <span className="input-group-text">{t('Search')}:</span>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        value={searchQuery}
-                                        onChange={handleSearchChange}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-md-3">
-                                <div className="input-group">
-                                    <span className="input-group-text">{t('Filter')}:</span>
-                                    <select
-                                        className="form-select"
-                                        value={filterQuery}
-                                        onChange={handleFilterChange}
-                                    >
-                                        <option value="">{t('All')}</option>
-                                        <option value="Company A">Company A</option>
-                                        <option value="Company B">Company B</option>
-                                        <option value="Company C">Company C</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <h3>{t('Jobs')}</h3>
-                        {jobs.length > 0 ? (
-                            <ul className="list-group">
-                                {jobs.map((job) => (
-                                    <li key={job.id} className="list-group-item">
-                                        <h3>{job.jobName}</h3>
-                                        <p>{t('Description')}: {job.jobDescription}</p>
-                                        <p>{t('Location')}: {job.jobLocation}</p>
-                                        {/* Add more job details as needed */}
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={() => handleSeeMoreJob(job)}
-                                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                                        >
-                                            {t('See More')}
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>{t('No jobs found.')}</p>
-                        )}
-                    </>
-                )}
+                <div>
+                    <div className="view-selector">
+                        <button onClick={() => handleViewSelect('programView')}>
+                            {t('programView')}
+                        </button>
+                        <button onClick={() => handleViewSelect('jobView')}>
+                            {t('jobView')}
+                        </button>
+                    </div>
+                    {renderView()}
+                </div>
             </div>
 
             {/* Program Modal */}

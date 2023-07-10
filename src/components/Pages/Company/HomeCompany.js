@@ -49,7 +49,7 @@ const HomeCompany = () => {
         Location: '',
         BeginDate: '',
         EndDate: '',
-        Positions: '',
+        Position: '',
     });
 
     const chartData = [
@@ -198,7 +198,7 @@ const HomeCompany = () => {
 
         //if we are on the job view
         if (selectedView === 'Job') {
-            if (createdJobs.Name === '' || createdJobs.Description === '' || createdJobs.Skills === '' || createdJobs.Location === '' || createdJobs.BeginDate === '' || createdJobs.EndDate === '' || createdJobs.Positions === '') {
+            if (createdJobs.Name === '' || createdJobs.Description === '' || createdJobs.Skills === '' || createdJobs.Location === '' || createdJobs.BeginDate === '' || createdJobs.EndDate === '' || createdJobs.Position === '') {
                 alert('Please fill out all the fields');
                 return;
             }
@@ -213,6 +213,15 @@ const HomeCompany = () => {
 
             // Filter the selected skills with their minimum points
             const selectedSkills = skillsList.map((skill) => skill.minPoints);
+
+            //get uid of the current user
+            const userId = auth.currentUser.uid;
+
+            //get the name of the current company
+            const companyRef = firestore.collection('users').doc('userscompany');
+            const userDoc = await companyRef.get();
+            const userData = userDoc.data()[userId];
+
             //Here we are creating the job in the database
             const sentJob = {
                 jobName: createdJobs.Name,
@@ -221,14 +230,10 @@ const HomeCompany = () => {
                 jobLocation: createdJobs.Location,
                 jobBeginDate: createdJobs.BeginDate,
                 jobEndDate: createdJobs.EndDate,
-                jobPositions: createdJobs.Positions,
+                jobPosition: createdJobs.Position,
+                companyName: userData.companyName,
             };
 
-            console.log('sentdata: ', sentJob);
-            console.log('jobSkills: ', sentJob.jobSkills);
-            console.log('');
-
-            const userId = auth.currentUser.uid;
             const parentDocRef = firestore.collection('jobs').doc(userId);
 
             //Generate a random map name
@@ -246,7 +251,7 @@ const HomeCompany = () => {
                 Location: '',
                 BeginDate: '',
                 EndDate: '',
-                Positions: '',
+                Position: '',
             });
 
             //reload the page
@@ -666,13 +671,13 @@ const HomeCompany = () => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className='form-label'>{t('jobPositions')}</label>
+                                <label className='form-label'>{t('jobPosition')}</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    id='jobPositions'
-                                    name='Positions'
-                                    value={createdJobs.Positions}
+                                    id='jobPosition'
+                                    name='Position'
+                                    value={createdJobs.Position}
                                     onChange={handleInputChange}
                                     required
                                 />

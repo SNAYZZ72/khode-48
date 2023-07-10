@@ -139,7 +139,7 @@ const RegisterPage = () => {
     const validatePassword = (password) => {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
         if (regex.test(password)) {
-            setError("PPassword must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.");
+            setError("Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.");
             console.log('Invalid');
             return true;
         } else {

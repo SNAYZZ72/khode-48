@@ -110,8 +110,6 @@ const HomeIntermediary = () => {
                         if (mapping.email === userEmail) {
                             // User found, retrieve the UID
                             const uid = key;
-                            console.log('User UID:', uid);
-                            console.log('email:', mapping.email);
 
                             const updateObject = {};
 
@@ -139,13 +137,14 @@ const HomeIntermediary = () => {
                                 console.log('No attributes to update.');
                             }
 
+                            //reload the page
+                            alert('Points added successfully.');
+                            window.location.reload();
                             return;
-                        }
+                        } 
                     }
                 }
-
-                // User not found
-                console.log('User not found.');
+                alert('User not found.');
             } else {
                 // Document does not exist
                 console.log('Document does not exist.');
@@ -161,9 +160,6 @@ const HomeIntermediary = () => {
         //if add points is clicked
         if (selectedView === 'addPoints') {
             await searchUserByEmail(email, proactivity, creativity, initiative, empathy, leadership, teamwork);
-            //reload the page
-            alert('Points added successfully.');
-            window.location.reload();
             return;
         }
 
@@ -199,6 +195,20 @@ const HomeIntermediary = () => {
             // Generate a random map name
             const mapName = uuidv4();
 
+
+            //get the right path
+            const userId = auth.currentUser.uid;
+            const parentDocRef = firestore.collection('programs').doc(userId);
+            const programId = parentDocRef.id;
+
+
+            //get the name of the current company
+            const companyRef = firestore.collection('users').doc('usersintermediary');
+            const userDoc = await companyRef.get();
+            const userData = userDoc.data()[userId];
+
+
+
             // Create a new program inFirebase
             const sentProgram = {
                 programName: createProgram.programName,
@@ -207,14 +217,21 @@ const HomeIntermediary = () => {
                 startDate: createProgram.startDate,
                 endDate: createProgram.endDate,
                 numberOfPlaces: createProgram.numberOfPlaces,
+                companyName: userData.companyName,
             };
-
-            const userId = auth.currentUser.uid;
-            const parentDocRef = firestore.collection('programs').doc(userId);
-            const programId = parentDocRef.id;
 
             // Add a new program to the programs collection
             await parentDocRef.set({ [mapName]: sentProgram }, { merge: true });
+
+            //here we are resetting the form
+            setCreateProgram({
+                programName: '',
+                programDescription: '',
+                skillsDeveloped: [],
+                startDate: '',
+                endDate: '',
+                numberOfPlaces: '',
+            });
 
             alert('Program created successfully!');
             window.location.reload();
@@ -247,6 +264,9 @@ const HomeIntermediary = () => {
         const programsRef = firestore.collection('programs').doc(userId);
         const doc = await programsRef.get();
         if (doc.exists) {
+            const userData = doc.data();
+            const programs = Object.values(userData);
+            setUserPrograms(programs);
             const userData = doc.data();
             const programs = Object.values(userData);
             setUserPrograms(programs);
