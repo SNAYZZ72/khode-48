@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import HeaderYouth from '../../common/Header/HeaderYouth';
 import { Modal, Button } from 'react-bootstrap';
+import { auth, firestore } from '../../firebase';
+
+const existingSkills = [
+    'Proactivity',
+    'Creativity',
+    'Initiative',
+    'Empathy',
+    'Leadership',
+    'Teamwork',
+];
 
 const HomeYouth = () => {
     const { t } = useTranslation();
@@ -62,55 +72,6 @@ const HomeYouth = () => {
         fetchAllJobs();
     }, []);
 
-    const fetchPrograms = async () => {
-        try {
-            const programsRef = firestore.collection('programs');
-            const snapshot = await programsRef.get();
-            const programList = [];
-            snapshot.forEach((doc) => {
-                const programData = doc.data();
-                programList.push(programData);
-            });
-            setPrograms(programList);
-        } catch (error) {
-            console.error('Error fetching programs:', error);
-        }
-    };
-
-    const fetchJobs = async () => {
-        try {
-            const jobsRef = firestore.collection('jobs').doc('yourUserId'); // Replace 'yourUserId' with the appropriate user ID
-            const doc = await jobsRef.get();
-            if (doc.exists) {
-                const userData = doc.data();
-                const jobData = Object.values(userData);
-                setJobs(jobData);
-            }
-        } catch (error) {
-            console.error('Error fetching jobs:', error);
-        }
-    };
-
-    const handleSeeMoreProgram = (program) => {
-        setSelectedProgram(program);
-        setShowProgramModal(true);
-    };
-
-    const handleSeeMoreJob = (job) => {
-        setSelectedJob(job);
-        setShowJobModal(true);
-    };
-
-    const closeProgramModal = () => {
-        setSelectedProgram(null);
-        setShowProgramModal(false);
-    };
-
-    const closeJobModal = () => {
-        setSelectedJob(null);
-        setShowJobModal(false);
-    };
-
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
     };
@@ -124,16 +85,105 @@ const HomeYouth = () => {
         (filterQuery === '' || project.company === filterQuery)
     );
 
-    const handleSeeMore = (project) => {
-        // Implement your logic here to handle "See More" button click
-        console.log('See More clicked:', project);
+    const handleViewSelect = (view) => {
+        setSelectedView(view);
     };
+
+    //load more jobs 
+    const handleLoadMoreJobs = () => {
+        // Increase the number of visible jobs when the "Load More" button is clicked *useful so the website doesn't crash when loading too many jobs*
+        setVisibleJobs((prevVisibleJobs) => prevVisibleJobs + 10);
+    };
+
+    //load more programs
+    const handleLoadMorePrograms = () => {
+        // Increase the number of visible programs when the "Load More" button is clicked *useful so the website doesn't crash when loading too many jobs*
+        setVisiblePrograms((prevVisiblePrograms) => prevVisiblePrograms + 10);
+    };
+
+    const renderView = () => {
+        if (selectedView === 'programView') {
+            return renderProgramView();
+        } else if (selectedView === 'jobView') {
+            return renderJobView();
+        }
+    };
+
+    const renderProgramView = () => {
+        const visibleProgramsData = userPrograms.slice(0, visiblePrograms);
+
+        return (
+            <div>
+                {visibleProgramsData.length > 0 ? (
+                    <ul>
+                        {visibleProgramsData.map((program) => (
+                            <li key={program.id}>
+                                <h3>{t('companyName')}: {program.companyName}</h3>
+                                <p>{t('programName')}: {program.programName}</p>
+                                <p>{t('programDescription')}: {program.programDescription}</p>
+                                <p>{t('startData')}: {program.startDate}</p>
+                                <p>{t('endDate')}: {program.endDate}</p>
+                                <p>{t('numberOfPlace')}: {program.numberOfPlaces}</p>
+                                <p>{t('skillsDeveloped')}: {program.skillsDeveloped.join(', ')}</p>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>{t('No programs found.')}</p>
+                )}
+
+                {/* Show the "Load More" button if there are more programs to load */}
+                {visiblePrograms < userPrograms.length && (
+                    <button onClick={handleLoadMorePrograms}>{t('loadMore')}</button>
+                )}
+            </div>
+        );
+    };
+
+    const renderJobView = () => {
+        const visibleJobsData = userJobs.slice(0, visibleJobs);
+
+        return (
+            <div>
+                {visibleJobsData.length > 0 ? (
+                    <ul>
+                        {visibleJobsData.map((job) => (
+                            <li key={job.id}>
+                                <h3>{t('companyName')}: {job.companyName}</h3>
+                                <p>{t('jobName')}: {job.jobName}</p>
+                                <p>{t('jobDescription')}: {job.jobDescription}</p>
+                                <p>{t('startData')}: {job.jobBeginDate}</p>
+                                <p>{t('endDate')}: {job.jobEndDate}</p>
+                                <p>{t('location')}: {job.jobLocation}</p>
+                                <p>{t('positionSought')}: {job.jobPosition}</p>
+                                <p>{t('skillsNeeded')}: </p>
+                                {job.jobSkills.map((points, index) => (
+                                    <p key={existingSkills[index]}>
+                                        {t(existingSkills[index])}: {points}
+                                    </p>
+                                ))}
+
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>{t('No jobs found.')}</p>
+                )}
+
+                {/* Show the "Load More" button if there are more jobs to load */}
+                {visibleJobs < userJobs.length && (
+                    <button onClick={handleLoadMoreJobs}>{t('loadMore')}</button>
+                )}
+            </div>
+        );
+    };
+
 
     return (
         <>
             <HeaderYouth />
             <div className="container">
-                <h2>{t('Home youth')}</h2>
+                <h2>{t('Projects')}</h2>
 
                 <div className="row mb-3">
                     <div className="col-md-9">
@@ -174,40 +224,6 @@ const HomeYouth = () => {
                     {renderView()}
                 </div>
             </div>
-
-            {/* Program Modal */}
-            <Modal show={showProgramModal} onHide={closeProgramModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{selectedProgram?.title}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>{t('Description')}: {selectedProgram?.description}</p>
-                    <p>{t('Company')}: {selectedProgram?.company}</p>
-                    {/* Add more program details as needed */}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={closeProgramModal}>
-                        {t('Close')}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
-            {/* Job Modal */}
-            <Modal show={showJobModal} onHide={closeJobModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{selectedJob?.jobName}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>{t('Description')}: {selectedJob?.jobDescription}</p>
-                    <p>{t('Location')}: {selectedJob?.jobLocation}</p>
-                    {/* Add more job details as needed */}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={closeJobModal}>
-                        {t('Close')}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
         </>
     );
 };

@@ -267,9 +267,6 @@ const HomeIntermediary = () => {
             const userData = doc.data();
             const programs = Object.values(userData);
             setUserPrograms(programs);
-            const userData = doc.data();
-            const programs = Object.values(userData);
-            setUserPrograms(programs);
         }
     };
 

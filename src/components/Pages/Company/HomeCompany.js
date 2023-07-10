@@ -161,8 +161,6 @@ const HomeCompany = () => {
             });
     };
 
-
-
     const searchedJobs = filterJobs().filter((job) =>
         job.jobName.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -386,7 +384,7 @@ const HomeCompany = () => {
     const renderYouthProfiles = () => {
 
         return (
-            <div>
+          
                 <div style={{ paddingTop: '15px' }}>
                     <div className="row mb-3">
                         <div className="col-md-9" style={{ paddingBottom: '10px' }}>
@@ -469,7 +467,7 @@ const HomeCompany = () => {
                         <p>{t('No youth profiles found')}</p>
                     )}
                 </div>
-            </div>
+            
         )
 
     };
@@ -574,7 +572,7 @@ const HomeCompany = () => {
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>{t('jobPositions')}:</b> {job.jobPositions}</p>
+                                                        <p><b>{t('jobPosition')}:</b> {job.jobPosition}</p>
                                                     </div>
                                                 </li>
                                             </ul>
