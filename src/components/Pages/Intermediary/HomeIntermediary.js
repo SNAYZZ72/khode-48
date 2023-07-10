@@ -310,13 +310,13 @@ const HomeIntermediary = () => {
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
+                <div className="row-md-3 text-center" style={{ paddingBottom: '10px' }}>
+                        <button className="btn btn-primary" onClick={handleShowModal} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('CreateNewProgram')}
+                        </button>
+                    </div>
                     <div className="row mb-3">
-                        <div className="col-md-2 text-center" style={{ paddingBottom: '10px' }}>
-                            <button className="btn btn-primary" onClick={handleShowModal} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                                {t('CreateNewProgram')}
-                            </button>
-                        </div>
-                        <div className="col-md-8" style={{ paddingBottom: '10px' }}>
+                        <div className="col-md-9" style={{ paddingBottom: '10px' }}>
                             <div className="input-group">
                                 <span className="input-group-text">{t('Search')}:</span>
                                 <input
@@ -327,7 +327,7 @@ const HomeIntermediary = () => {
                                 />
                             </div>
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md-3">
                             <div className="input-group">
                                 <span className="input-group-text">
                                     {t('Filter')}:
