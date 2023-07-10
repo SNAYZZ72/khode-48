@@ -350,7 +350,7 @@ const HomeIntermediary = () => {
                                     <div className="row">
                                         <h3>Name: {program.programName}</h3>
                                     </div>
-                                    <div className="row mb-3">
+                                    <div className="row">
                                         <div className="col-md-7" style={{ paddingBottom: '20px' }}>
                                             <ul className="list-group">
                                                 <li className="list-group-item">
@@ -360,7 +360,7 @@ const HomeIntermediary = () => {
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div className="col-md-5" style={{ paddingBottom: '20px' }}>
+                                        <div className="col-md-5">
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
