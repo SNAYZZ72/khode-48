@@ -320,7 +320,7 @@ const HomeIntermediary = () => {
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
-                <div className="row-md-3 text-center" style={{ paddingBottom: '10px' }}>
+                    <div className="row-md-3 text-center" style={{ paddingBottom: '10px' }}>
                         <button className="btn btn-primary" onClick={handleShowModal} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
                             {t('CreateNewProgram')}
                         </button>
@@ -491,11 +491,13 @@ const HomeIntermediary = () => {
                     </Modal.Footer>
                 </Modal>
                 {visiblePrograms < userPrograms.length && (
-                    <button className="btn btn-primary" onClick={handleLoadMorePrograms} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                        {t('LoadMore')}
-                    </button>
+                    <div className="text-center" style={{ paddingTop: '15px' }}>
+                        <button className="btn btn-primary" onClick={handleLoadMorePrograms} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('LoadMore')}
+                        </button>
+                    </div>
                 )}
-            </div>
+            </div>  
         );
     };
 

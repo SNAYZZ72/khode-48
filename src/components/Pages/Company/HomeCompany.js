@@ -739,15 +739,19 @@ const HomeCompany = () => {
                 {renderView()}
                 {renderProfileModal()}
                 {selectedView === 'youthProfiles' && visibleProfiles < searchedProfiles.length && (
-                    <button className="btn btn-primary" onClick={handleLoadMoreYouth} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                        {t('LoadMoreYouthProfiles')}
-                    </button>
+                    <div className="text-center" style={{ paddingTop: '15px' }}>
+                        <button className="btn btn-primary" onClick={handleLoadMoreYouth} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('LoadMoreYouthProfiles')}
+                        </button>
+                    </div>
                 )}
 
                 {selectedView === 'Job' && visibleJobs < searchedJobs.length && (
-                    <button className="btn btn-primary" onClick={handleLoadMoreJobs} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                        {t('LoadMoreJobs')}
-                    </button>
+                    <div className="text-center" style={{ paddingTop: '15px' }}>
+                        <button className="btn btn-primary" onClick={handleLoadMoreJobs} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('LoadMoreJobs')}
+                        </button>
+                    </div>
                 )}
             </Container>
         </div>

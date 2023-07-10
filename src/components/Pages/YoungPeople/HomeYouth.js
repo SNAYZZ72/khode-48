@@ -257,7 +257,15 @@ const HomeYouth = () => {
 
                     {/* Show the "Load More" button if there are more programs to load */}
                     {visiblePrograms < userPrograms.length && (
-                        <button onClick={handleLoadMorePrograms}>{t('loadMore')}</button>
+                        <div className="text-center" style={{ paddingTop: '15px' }}>
+                            <button
+                                onClick={handleLoadMorePrograms}
+                                className="btn btn-primary"
+                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                            >
+                                {t('loadMore')}
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>
@@ -377,7 +385,15 @@ const HomeYouth = () => {
 
                     {/* Show the "Load More" button if there are more jobs to load */}
                     {visibleJobs < userJobs.length && (
-                        <button onClick={handleLoadMoreJobs}>{t('loadMore')}</button>
+                        <div className="text-center" style={{ paddingTop: '15px' }}>
+                        <button
+                            onClick={handleLoadMoreJobs}
+                            className="btn btn-primary"
+                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                        >
+                            {t('loadMore')}
+                        </button>
+                    </div>
                     )}
                 </div>
             </div>
