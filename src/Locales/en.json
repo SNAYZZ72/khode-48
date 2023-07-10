@@ -9,7 +9,7 @@
   "intermediary": "Intermediary",
   "titleprofile": "Which profile are you ?",
   "youthProfile": "Youth Profile",
-  "youthProfileDescription": "Welcome to the youth profile page. Here, you can find resources, events, and opportunities for young individuals.",
+  "youthProfileDescription": "Welcome to the youth profile page. Here, you can find resources, events, and opportunities",
   "companyProfile": "Company Profile",
   "companyProfileDescription": "Welcome to the company profile page. Explore our network of young people, ... .",
   "intermediaryProfile": "Intermediary Profile",
@@ -53,9 +53,9 @@
 
   "Young People Register": "Young People Register",
   "fullName": "Full Name",
-  "firstName": "First Name",
+  "firstName": "Name",
   "middleName": "Middle Name",
-  "lastName": "Last Name",
+  "lastName": "Surname",
   "selectGender": "Select gender",
   "gender": "Gender",
   "female": "Female",
@@ -76,6 +76,8 @@
   "uploadCV": "Upload CV",
   "registerButton": "Register",
   "information": "For further information",
+  "other": "Other",
+  "optional": "Optional",
 
   "selectCountry": "Select a country",
 
@@ -127,7 +129,31 @@
   "profile": "Profile",
   "age": "Age",
   "education": "Education",
-  "language": "Language",
+  "language": "Language(s)",
   "skills": "Skills development",
-  "edit": "Edit profile"
+  "edit": "Edit profile",
+  "totalpoints": "Total points",
+  "showhide": "Show/Hide profile",
+  "hide": "Hide",
+  "show": "Show",
+  "initiative": "Initiative",
+  "empathy": "Empathy",
+  "leadership": "Leadership",
+  "teamwork": "Teamwork",
+  "creativity": "Creativity",
+  "proactivity": "Proactivity",
+  "aboutme": "About me",
+  "profilepicture": "Profile picture",
+  "experience": "Experiences",
+
+  "CreateNewProgram": "Create New Program",
+  "programName": "Program Name",
+  "programDescription": "Program Description",
+  "programSkillsDeveloped": "Program Skills Developed",
+  "ProgramBeginDate": "Program Begin Date",
+  "ProgramEndDate": "Program End Date",
+  "programNumberOfPlaces": "Number Of Places",
+  "programCreate": "Create Program"
+
+
 }

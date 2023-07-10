@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Header from '../../common/Header/Header';
 import zxcvbn from 'zxcvbn';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { Modal, Button } from 'react-bootstrap';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { auth } from '../../firebase'; 
-import { database } from '../../firebase'; // Import the database instance from your firebase.js file
+import { auth } from '../../firebase';
+import { firestore } from '../../firebase'; // Import the firestore instance from your firebase.js file
+
 
 
 // Define the function to determine the color based on password strength score
@@ -34,9 +33,8 @@ const getPasswordStrengthText = (score) => {
 
 const RegisterPage = () => {
     const { t } = useTranslation();
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-    const userRef = database.ref('users'); // Reference the 'users' node in the database
-    const newUserRef = userRef.push(); // Generate a new unique ID for the user
     const [error, setError] = useState('');
     const [existEmail, setExistEmail] = useState(false);
 
@@ -52,83 +50,60 @@ const RegisterPage = () => {
         confirmPassword: '',
         phoneNumber: '',
         educationalLevel: '',
-        cities: '', // Store the list of cities
-        postalCodes: '', // Store the list of postal codes
+        information: '',
     });
 
-/*
-    useEffect(() => {
-        fetchCountries();
-        fetchCities();
-        fetchPostalCodes();
-    }, []);
-*/
     const handleRegister = async () => {
         try {
             await auth.createUserWithEmailAndPassword(formData.email, formData.password);
             setExistEmail(false);
+            // Wait for the user to be authenticated and logged in
+            await auth.signInWithEmailAndPassword(formData.email, formData.password);
+
+            // Set the user data
+            const sentData = {
+                firstName: formData.firstName || '',
+                lastName: formData.lastName || '',
+                gender: formData.gender || '',
+                dateOfBirth: formData.dateOfBirth || '',
+                city: formData.city || '',
+                postalCode: formData.postalCode || '',
+                email: formData.email || '',
+                phoneNumber: formData.phoneNumber || '',
+                educationalLevel: formData.educationalLevel || '',
+                information: formData.information || '',
+                listExperience: [],
+                listLanguages: [],
+                proactivity: 0,
+                creativity: 0,
+                initiative: 0,
+                empathy: 0,
+                leadership: 0,
+                teamwork: 0,
+            };
+            // Get the user ID of the newly created user
+            const userId = auth.currentUser.uid;
+
+            // Get a reference to the parent document
+            const parentDocRef = firestore.collection('users').doc('usersyouth');
+
+            // Set the user data directly under the parent document
+            await parentDocRef.set({ [userId]: sentData }, { merge: true });
             return true;
         } catch (error) {
-            setError(error.message);       
+            setError(error.message);
+            alert(error.message);
             setExistEmail(true);
             return false;
         }
     };
-/*
-    const fetchCountries = async () => {
-        try {
-            const response = await axios.get('https://restcountries.com/v3.1/all');
-            const countries = response.data.map((country) => ({
-                name: country.name.common,
-                code: country.cca2,
-            }));
-            countries.sort((a, b) => a.name.localeCompare(b.name));
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                countries,
-            }));
-        } catch (error) {
-            console.error('Error fetching countries:', error);
-        }
-    };
 
-    const fetchCities = async () => {
-        try {
-            const response = await axios.get('<API_ENDPOINT_FOR_CITIES>');
-            const cities = response.data.map((city) => ({
-                name: city.name,
-            }));
-            cities.sort((a, b) => a.name.localeCompare(b.name)); // Sort cities alphabetically
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                cities,
-            }));
-        } catch (error) {
-            console.error('Error fetching cities:', error);
-        }
-    };
-
-    const fetchPostalCodes = async () => {
-        try {
-            const response = await axios.get('<API_ENDPOINT_FOR_POSTAL_CODES>');
-            const postalCodes = response.data.map((postalCode) => ({
-                code: postalCode.code,
-            }));
-            postalCodes.sort((a, b) => a.code.localeCompare(b.code)); // Sort postal codes alphabetically
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                postalCodes,
-            }));
-        } catch (error) {
-            console.error('Error fetching postal codes:', error);
-        }
-    };
-*/
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [passwordScore, setPasswordScore] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
-    const [test, setTest] = useState(false);
+    const [passwordValid, setPasswordValid] = useState(true);
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -138,11 +113,13 @@ const RegisterPage = () => {
         }));
     };
 
+
     const handlePasswordChange = (e) => {
         const { value } = e.target;
         const score = zxcvbn(value).score;
         setPasswordScore(score);
         handleInputChange(e);
+        setPasswordValid(validatePassword(value) || value.length === 0);
     };
 
     const toggleShowPassword = () => {
@@ -150,12 +127,26 @@ const RegisterPage = () => {
     };
 
     const doesPasswordMatch = () => {
-        if(formData.password === formData.confirmPassword){
+        if (formData.password === formData.confirmPassword) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
+
+
+
+    const validatePassword = (password) => {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+        if (regex.test(password)) {
+            setError("Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.");
+            console.log('Invalid');
+            return true;
+        } else {
+            console.log('Valid')
+            return false;
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -175,37 +166,25 @@ const RegisterPage = () => {
         if (formData.password === formData.confirmPassword && validatePassword(formData.password)) {
             // Passwords match and meet the requirements
             setPasswordsMatch(true);
-            // Rest of your code...
+            //password validate
+
+
         } else {
             // Passwords don't match or don't meet the requirements, show an error message or take appropriate action
-            setPasswordsMatch(false);
+            if (!doesPasswordMatch() || !validatePassword(formData.password)) {
+                setPasswordsMatch(false);
+                return;
+            }
+
         }
 
         // You can send the form data to a backend server or perform any other actions
         // if handleREgister return no error then result is true and the following code can execute
-        
-        if(doesPasswordMatch() && validatePassword(formData.password)) {
+
+        if (doesPasswordMatch() && validatePassword(formData.password)) {
             const result = await handleRegister();
 
-            if(result) {
-                // Set the user data
-                const sentData = {
-                    firstName: formData.firstName || '',
-                    lastName: formData.lastName || '',
-                    gender: formData.gender || '',
-                    dateOfBirth: formData.dateOfBirth || '',
-                    city: formData.city || '',
-                    postalCode: formData.postalCode || '',
-                    email: formData.email || '',
-                    phoneNumber: formData.phoneNumber || '',
-                    educationalLevel: formData.educationalLevel || '',
-                };
-
-                console.log(formData.firstName);
-                console.log(sentData);
-
-                // Set the user data under the new unique ID
-                newUserRef.set(sentData)
+            if (result) {
                 /*
                 debbuging
                 .then(() => {
@@ -215,8 +194,11 @@ const RegisterPage = () => {
                     console.log('Error saving user data:', error.message);
                 });
                 */
-            
+
                 setExistEmail(false);
+
+                // Show the success modal
+                setShowSuccessModal(true);
 
                 // Reset form fields after submission if needed
                 setFormData({
@@ -231,7 +213,11 @@ const RegisterPage = () => {
                     confirmPassword: '',
                     phoneNumber: '',
                     educationalLevel: '',
+                    information: '',
                 });
+                setTimeout(() => {
+                    navigate('/');
+                }, 2500);
                 return true;
             } else {
                 return false;
@@ -239,28 +225,11 @@ const RegisterPage = () => {
         }
     };
 
-    const validatePassword = (password) => {
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
-        return regex.test(password);
-    };
 
     const handleModalClose = () => {
         setShowErrorModal(false);
+        setShowSuccessModal(false); // Close the success modal
     };
-/*
-    const handleCaptchaChange = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_CAPTCHA_SITE_KEY
-        : '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
-    console.log("captcha site key", handleCaptchaChange);
-    const [captchaToken, setCaptchaToken] = useState(null);
-    useEffect(() => {
-        console.log("captcha token", captchaToken);
-    }
-        , [captchaToken])
-    const onCaptchaChange = (token) => {
-        setCaptchaToken(token);
-    };
-
-*/
 
     return (
         <div>
@@ -272,7 +241,7 @@ const RegisterPage = () => {
                 <form onSubmit={handleSubmit} style={{ paddingBottom: '15px' }}>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="firstName">{t('firstName')}</label>
+                            <label>{t('firstName')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -284,7 +253,7 @@ const RegisterPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="lastName">{t('lastName')}</label>
+                            <label>{t('lastName')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -298,7 +267,7 @@ const RegisterPage = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="gender">{t('gender')}</label>
+                            <label>{t('gender')}</label>
                             <select
                                 className="form-control"
                                 id="gender"
@@ -313,7 +282,7 @@ const RegisterPage = () => {
                             </select>
                         </div>
                         <div className="col">
-                            <label htmlFor="dateOfBirth">{t('dateOfBirth')}</label>
+                            <label>{t('dateOfBirth')}</label>
                             <input
                                 type="date"
                                 className="form-control"
@@ -325,9 +294,9 @@ const RegisterPage = () => {
                             />
                         </div>
                     </div>
-                    <div className="row mb-3">    
+                    <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="city">{t('city')}</label>
+                            <label>{t('city')}</label>
                             <input
                                 className="form-control"
                                 id="city"
@@ -339,7 +308,7 @@ const RegisterPage = () => {
                             </input>
                         </div>
                         <div className="col">
-                            <label htmlFor="postalCode">{t('postalCode')}</label>
+                            <label>{t('postalCode')}</label>
                             <input
                                 className="form-control"
                                 id="postalCode"
@@ -347,13 +316,13 @@ const RegisterPage = () => {
                                 value={formData.postalCode}
                                 onChange={handleInputChange}
                                 required
-                            >        
+                            >
                             </input>
                         </div>
                     </div>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="email">{t('email')}</label>
+                            <label>{t('email')}</label>
                             <input
                                 type="email"
                                 className="form-control"
@@ -370,7 +339,7 @@ const RegisterPage = () => {
                             </p>
                         )}
                         <div className="col">
-                            <label htmlFor="phoneNumber">{t('phoneNumber')}</label>
+                            <label>{t('phoneNumber')}</label>
                             <input
                                 type="tel"
                                 className="form-control"
@@ -384,7 +353,7 @@ const RegisterPage = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="password">{t('password')}</label>
+                            <label>{t('password')}</label>
                             <div className="input-group">
                                 <input
                                     type={showPassword ? 'text' : 'password'}
@@ -409,7 +378,7 @@ const RegisterPage = () => {
                                     {getPasswordStrengthText(passwordScore)}
                                 </p>
                             )}
-                            {!validatePassword(formData.password) && (
+                            {!passwordValid && !validatePassword(formData.password) && formData.password.length > 0 && (
                                 <p className="text-danger">
                                     {t('Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.')}
                                 </p>
@@ -430,7 +399,7 @@ const RegisterPage = () => {
                         </div>
                     </div>
                     {!passwordsMatch && (
-                        <p className="text-danger">{t('passwordsDoNotMatch')}</p>
+                        <p className="text-danger">{t('Sorry, an error occurred. The passwords do not match or do not meet the required criteria.')}</p>
                     )}
                     <div className="row mb-3">
                         <div className="col">
@@ -448,6 +417,7 @@ const RegisterPage = () => {
                                 <option value="bachelorsDegree">{t('bachelorsDegree')}</option>
                                 <option value="mastersDegree">{t('mastersDegree')}</option>
                                 <option value="doctoralDegree">{t('doctoralDegree')}</option>
+                                <option value="other">{t('other')}</option>
                             </select>
                         </div>
                     </div>
@@ -464,11 +434,11 @@ const RegisterPage = () => {
                         </div>
                     </div>
                     <div className="container text-center">
-                        <button 
-                            type="submit" 
-                            className="btn btn-primary" 
+                        <button
+                            type="submit"
+                            className="btn btn-primary"
                             style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                            >
+                        >
                             {t('registerButton')}
                         </button>
                     </div>
@@ -487,8 +457,22 @@ const RegisterPage = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            <Modal show={showSuccessModal} onHide={handleModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{t('Congratulations!')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>{t('Your account has been successfully created.')}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleModalClose}>
+                        {t('Close')}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };
 
 export default RegisterPage;
+

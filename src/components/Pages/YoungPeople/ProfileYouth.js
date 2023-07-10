@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import HeaderYouth from '../../common/Header/HeaderYouth';
+import { auth } from '../../firebase';
+import { firestore } from '../../firebase';
+import { use } from 'i18next';
+
+//let authStateChangedExecuted = false;
+
+
 
 const ProfileYouth = () => {
     const { t } = useTranslation();
@@ -13,38 +20,117 @@ const ProfileYouth = () => {
     const [youthFormErrors, setYouthFormErrors] = useState({
         age: false,
         city: false,
-        aboutme: false,
+        postalCode: false,
+        information: false,
         education: false,
         language: false
     });
 
+    //funciton to calculate age of the user based on the date of birth with format : yyyy-mm-dd
+    const calculateAge = (dateOfBirth) => {
+        const today = new Date();
+        const birthDate = new Date(dateOfBirth);
+        let age = today.getFullYear() - birthDate.getFullYear();
+
+        // Check if the user hasn't had their birthday this year yet
+        // If the current month and day are before the birth month and day,
+        // subtract 1 from the age
+
+        const month = today.getMonth() - birthDate.getMonth();
+        if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    };
+
+
+
+
     const [selectedYouthImage, setSelectedYouthImage] = useState(null);
 
+    const [languageList, setLanguageList] = useState([
+    ]);
+
+    const [experienceList, setExperienceList] = useState([
+    ]);
+
     const [youthFormData, setYouthFormData] = useState({
-        firstName: 'John',
-        lastName: 'Doe',
-        age: 18,
-        city: 'Villejeune',
-        aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j\'ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J\'ai un permis de conduire et une voiture.',
-        proactivity: 10,
-        creativity: 52,
-        initiative: 37,
-        empathy: 49,
-        leadership: 16,
-        teamwork: 78,
-        points: 242
+        firstName: '',
+        lastName: '',
+        email: '',
+        age: '',
+        city: '',
+        postalCode: '',
+        education: '',
+        information: '',
+        listLanguages: languageList,
+        listExperience: experienceList,
+        phoneNumber: '',
+        proactivity: 0,
+        creativity: 0,
+        initiative: 0,
+        empathy: 0,
+        leadership: 0,
+        teamwork: 0,
     });
 
-    const [educationList, setEducationList] = useState([
-        "Basic Education",
-        "Engineering"
-    ]);
+    const authStateChangedExecuted = useRef(false);
 
-    const [languageList, setLanguageList] = useState([
-        "English",
-        "Spanish",
-        "Basque"
-    ]);
+
+
+    //get data from firestore according to the person logged in
+    useEffect(() => {
+        const handleAuthStateChanged = async (user) => {
+            if (user) {
+                const userId = user.uid;
+
+                try {
+                    const userDocRef = firestore.collection('users').doc('usersyouth');
+                    const userDoc = await userDocRef.get();
+
+                    if (userDoc.exists) {
+                        const userData = userDoc.data()[userId];
+                        //setYouthFormData firstname, lastname, city
+                        setYouthFormData({
+                            firstName: userData.firstName,
+                            lastName: userData.lastName,
+                            email: userData.email,
+                            city: userData.city,
+                            postalCode: userData.postalCode,
+                            education: userData.educationalLevel,
+                            information: userData.information,
+                            age: calculateAge(userData.dateOfBirth),
+                            listLanguages: userData.listLanguages,
+                            listExperience: userData.listExperience,
+                            phoneNumber: userData.phoneNumber,
+                            proactivity: userData.proactivity,
+                            creativity: userData.creativity,
+                            initiative: userData.initiative,
+                            empathy: userData.empathy,
+                            leadership: userData.leadership,
+                            teamwork: userData.teamwork,
+                        });
+                        await setLanguageList(userData.listLanguages);
+                        await setExperienceList(userData.listExperience);
+                        console.log('User data retrieved');
+                        console.log(userData.teamwork);
+                    } else {
+                        console.log('User document not found');
+                    }
+                } catch (error) {
+                    console.log('Error retrieving user data:', error);
+                }
+            } else {
+                console.log('User is not signed in');
+            }
+        };
+
+        // Attach the event listener only if it hasn't been executed before
+        if (!authStateChangedExecuted.current) {
+            auth.onAuthStateChanged(handleAuthStateChanged);
+            authStateChangedExecuted.current = true;
+        }
+    }, []);
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -61,32 +147,57 @@ const ProfileYouth = () => {
         setIsEditing(true);
     };
 
-    const handleSaveProfile = () => {
-        // Vérifier si les champs requis sont remplis
-        if (!youthFormData.age || !youthFormData.city || !youthFormData.aboutme || !educationList.length || !languageList.length) {
-            alert('Please fill in all the required fields to enable your profile.');
-            return;
+    //function to get user uid
+    const getUserUid = () => {
+        const user = auth.currentUser;
+        if (user) {
+            return user.uid;
+        } else {
+            return null;
         }
-
-        // Réinitialiser les erreurs de formulaire
-        setYouthFormErrors({
-            age: false,
-            youthCity: false,
-            youthAboutme: false,
-            education: false,
-            language: false
-        });
-
-        // Effectuer la logique de sauvegarde du profil
-        setIsEditing(false);
-
-        // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
-        localStorage.setItem('youthFormData', JSON.stringify(youthFormData));
-        localStorage.setItem('educationList', JSON.stringify(educationList));
-        localStorage.setItem('languageList', JSON.stringify(languageList));
-        localStorage.setItem('youthImage', JSON.stringify(selectedYouthImage));
     };
 
+    const handleSaveProfile = async (user) => {
+        // Effectuer la logique de sauvegarde du profil
+        setIsEditing(false);
+        const userId = getUserUid()
+
+        try {
+
+            // Update the user's information in Firestore
+            const userDocRef = firestore.collection('users').doc('usersyouth');
+            const userDoc = await userDocRef.get();
+            const userData = userDoc.data()[userId];
+            await userDocRef.update({
+
+                [userId]: {
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                    city: youthFormData.city,
+                    postalCode: youthFormData.postalCode,
+                    educationalLevel: youthFormData.education,
+                    information: youthFormData.information,
+                    dateOfBirth: userData.dateOfBirth,
+                    gender: userData.gender,
+                    phoneNumber: userData.phoneNumber,
+                    email: userData.email,
+                    listLanguages: languageList,
+                    listExperience: experienceList,
+                    proactivity: userData.proactivity,
+                    creativity: userData.creativity,
+                    initiative: userData.initiative,
+                    empathy: userData.empathy,
+                    leadership: userData.leadership,
+                    teamwork: userData.teamwork,
+
+                    // Add any other fields you want to update
+                }
+            });
+            console.log('User data updated');
+        } catch (error) {
+            console.log('Error updating user data:', error);
+        }
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -96,33 +207,13 @@ const ProfileYouth = () => {
         }));
     };
 
-
-    const handleEducationChange = (index, value) => {
-        setEducationList((prevList) => {
-            const newList = [...prevList];
-            newList[index] = value;
-            return newList;
-        });
-    };
-
+    //functions to handle change in language list
     const handleLanguageChange = (index, value) => {
         setLanguageList((prevList) => {
             const newList = [...prevList];
             newList[index] = value;
             return newList;
         });
-    };
-
-    const handleAddEducation = () => {
-        const newEducationList = [...educationList, ''];
-        setEducationList(newEducationList);
-        localStorage.setItem('educationList', JSON.stringify(newEducationList));
-    };
-
-    const handleRemoveEducation = (index) => {
-        const newEducationList = educationList.filter((_, i) => i !== index);
-        setEducationList(newEducationList);
-        localStorage.setItem('educationList', JSON.stringify(newEducationList));
     };
 
     const handleAddLanguage = () => {
@@ -135,6 +226,27 @@ const ProfileYouth = () => {
         const newLanguageList = languageList.filter((_, i) => i !== index);
         setLanguageList(newLanguageList);
         localStorage.setItem('languageList', JSON.stringify(newLanguageList));
+    };
+
+    //functions to handle change in experience list
+    const handleExperienceChange = (index, value) => {
+        setExperienceList((prevList) => {
+            const newList = [...prevList];
+            newList[index] = value;
+            return newList;
+        });
+    };
+
+    const handleAddExperience = () => {
+        const newExperienceList = [...experienceList, ''];
+        setExperienceList(newExperienceList);
+        localStorage.setItem('experienceList', JSON.stringify(newExperienceList));
+    };
+
+    const handleRemoveExperience = (index) => {
+        const newExperienceList = experienceList.filter((_, i) => i !== index);
+        setExperienceList(newExperienceList);
+        localStorage.setItem('experienceList', JSON.stringify(newExperienceList));
     };
 
     const chartData = [
@@ -150,31 +262,8 @@ const ProfileYouth = () => {
         setHideProfile(!hideProfile);
     };
 
-    useEffect(() => {
-        const storedYouthFormData = localStorage.getItem('youthFormData');
-        if (storedYouthFormData) {
-            setYouthFormData(JSON.parse(storedYouthFormData));
-        }
-
-        const storedEducationList = localStorage.getItem('educationList');
-        if (storedEducationList) {
-            setEducationList(JSON.parse(storedEducationList));
-        }
-
-        const storedLanguageList = localStorage.getItem('languageList');
-        if (storedLanguageList) {
-            setLanguageList(JSON.parse(storedLanguageList));
-        }
-        
-        const storedYouthImage = localStorage.getItem('youthImage');
-        if (storedYouthImage) {
-            setSelectedYouthImage(JSON.parse(storedYouthImage));
-        }
-
-    }, []);
-
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-        const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
+        const radius = innerRadius + (outerRadius - innerRadius) * 1.5;
         const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
         const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));
         const percentage = (percent * 100).toFixed(1);
@@ -190,31 +279,13 @@ const ProfileYouth = () => {
         <div>
             <HeaderYouth />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{youthFormData.firstName} {youthFormData.lastName} {t('profile')}</h1>
+                <h1>{youthFormData.firstName} {youthFormData.lastName}</h1>
             </div>
 
             {isEditing ? (
                 <div className="container">
                     <h2>{t('edit')}</h2>
-                    <form>
-                        <div className="row mb-3">
-                            <div className="col">
-                                <label htmlFor="age">{t('age')}</label>
-                                <input
-                                    type="number"
-                                    id="age"
-                                    name="age"
-                                    value={youthFormData.age}
-                                    onChange={handleInputChange}
-                                    // Add error class based on formErrors.age
-                                    className={youthFormErrors.age ? 'form-control is-invalid' : 'form-control'}
-                                />
-                                {youthFormErrors.age && (
-                                    <div className="invalid-feedback">Age field is required</div>
-                                )}
-
-                            </div>
-                        </div>
+                    <form onSubmit={handleSaveProfile}>
                         <div className="row mb-3">
                             <div className="col">
                                 <label htmlFor="city">{t('city')}</label>
@@ -229,28 +300,26 @@ const ProfileYouth = () => {
                                 {youthFormErrors.city && (
                                     <div className="invalid-feedback">City field is required</div>
                                 )}
-
                             </div>
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="aboutme">About me</label>
+                                <label htmlFor="information">{t('aboutme')}</label>
                                 <textarea
                                     className="form-control"
-                                    id="aboutme"
-                                    name="aboutme"
-                                    value={youthFormData.aboutme}
+                                    id="information"
+                                    name="information"
+                                    value={youthFormData.information}
                                     onChange={handleInputChange}
                                 />
-                                {youthFormErrors.aboutme && (
+                                {youthFormErrors.information && (
                                     <div className="invalid-feedback">About me field is required</div>
                                 )}
-
                             </div>
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="image">Profile picture</label>
+                                <label htmlFor="image">{t('profilepicture')}</label>
                                 <input
                                     className="form-control"
                                     type="file"
@@ -266,18 +335,34 @@ const ProfileYouth = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <h3>{t('education')}</h3>
-                                {educationList.map((education, index) => (
+                                <label htmlFor="education">{t('education')}</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    id="education"
+                                    name="education"
+                                    value={youthFormData.education}
+                                    onChange={handleInputChange}
+                                />
+                                {youthFormErrors.education && (
+                                    <div className="invalid-feedback">City field is required</div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="row mb-3">
+                            <div className="col">
+                                <h3>{t('experience')}</h3>
+                                {experienceList.map((experienceList, index) => (
                                     <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
                                         <input
                                             className='form-control'
                                             type="text"
-                                            value={education}
-                                            onChange={(e) => handleEducationChange(index, e.target.value)}
+                                            value={experienceList}
+                                            onChange={(e) => handleExperienceChange(index, e.target.value)}
                                         />
                                         <button
                                             type="button"
-                                            onClick={() => handleRemoveEducation(index)}
+                                            onClick={() => handleRemoveExperience(index)}
                                             className="btn btn-outline-secondary"
                                             style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(255, 0, 0, 0.5)' }}
                                         >
@@ -288,7 +373,7 @@ const ProfileYouth = () => {
                                 <div className='text-center'>
                                     <button
                                         type="button"
-                                        onClick={handleAddEducation}
+                                        onClick={handleAddExperience}
                                         className="btn btn-outline-secondary"
                                         style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(0, 255, 0, 0.5)' }}
                                     >
@@ -300,12 +385,12 @@ const ProfileYouth = () => {
                         <div className="row mb-3">
                             <div className="col">
                                 <h3>{t('language')}</h3>
-                                {languageList.map((language, index) => (
+                                {languageList.map((languageList, index) => (
                                     <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
                                         <input
                                             className='form-control'
                                             type="text"
-                                            value={language}
+                                            value={languageList}
                                             onChange={(e) => handleLanguageChange(index, e.target.value)}
                                         />
                                         <button
@@ -332,7 +417,7 @@ const ProfileYouth = () => {
                         </div>
                         <div className="text-center">
                             <button
-                                onClick={handleSaveProfile}
+                                type="submit"
                                 className="btn btn-primary"
                                 style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
                             >
@@ -346,85 +431,80 @@ const ProfileYouth = () => {
 
                 <div className="container">
                     <div className="row mb-3 justify-content-center">
-                        <div className="col-md-2 text-center">
+                        <div className="col-md-3 text-center">
                             <img
                                 src={selectedYouthImage || youthImage || '../intermediary-profile-image.png'}
                                 alt="Profile picture"
-                                style={{ width: '90%', height: 'auto', marginBottom: '15px' }}
+                                style={{ width: '15vw', height: 'auto' }}
                             />
                         </div>
                         <div className="col-md-5">
                             <div className="row">
-                                <div className="col">
+                                <div className="col-md-3">
+                                    <h4>{t('age')}</h4>
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        {t('age')}: {youthFormData.age}
+                                        {youthFormData.age}
                                     </p>
                                 </div>
                                 <div className="col">
+                                    <h4>{t('city')} / {t('postalCode')}</h4>
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        {t('city')}: {youthFormData.city}
+                                        {youthFormData.city} / {youthFormData.postalCode}
                                     </p>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col">
+                                    <h4>{t('aboutme')}</h4>
                                     <p
                                         style={{
                                             border: "3px solid #F24726",
                                             padding: '5px',
                                             borderRadius: '10px',
-                                            height: '140px',
+                                            height: '100px',
                                             overflowY: 'auto'
                                         }}
                                     >
-                                        {youthFormData.aboutme}
+                                        {youthFormData.information}
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="row justify-content-center">
-                        <div className="col-md-7">
+                        <div className="col-md-8">
                             <div className="row">
                                 <div className="col">
-                                    <h3>Total points</h3>
-                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{youthFormData.points}</p>
+                                    <h4>{t('Contact')}</h4>
+                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
+                                        {youthFormData.phoneNumber} / {youthFormData.email}
+                                    </p>
                                 </div>
                                 <div className="col">
-                                    <h3>{hideProfile ? t('hideProfile') : t('showProfile')}</h3>
-                                    {/* switch toggle button to hide profile */}
-                                    <div className="form-check form-switch">
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            id="flexSwitchCheckDefault"
-                                            checked={hideProfile}
-                                            onChange={handleToggle}
-                                        />
-                                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
-                                            {hideProfile ? t('hide') : t('show')}
-                                        </label>
+                                    <h4>{t('education')}</h4>
+                                    <div className="col">
+                                        <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{youthFormData.education}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="row justify-content-center">
-                        <div className="col-md-7">
+                        <div className="col-md-8">
                             <div className="row">
                                 <div className="col">
-                                    <h3>{t('education')}</h3>
-                                    {educationList.map((education, index) => (
+                                    <h4>{t('language')}</h4>
+                                    {languageList.map((languageList, index) => (
                                         <div className="col" key={index}>
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{education}</p>
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{languageList}</p>
                                         </div>
                                     ))}
                                 </div>
                                 <div className="col">
-                                    <h3>{t('language')}</h3>
-                                    {languageList.map((language, index) => (
+                                    <h4>{t('experience')}</h4>
+                                    {experienceList.map((experienceList, index) => (
                                         <div className="col" key={index}>
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{language}</p>
+                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{experienceList}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -432,10 +512,10 @@ const ProfileYouth = () => {
                         </div>
                     </div>
                     <div className="row justify-content-center">
-                        <div className="col-md-7">
+                        <div className="col-md-8">
                             <div className="row">
                                 <div className="col">
-                                    <h3>{t('skills')}</h3>
+                                    <h4>{t('skills')}</h4>
                                     <div>
                                         <ResponsiveContainer height={300} width="100%">
                                             <PieChart>
@@ -456,8 +536,6 @@ const ProfileYouth = () => {
                                             </PieChart>
                                         </ResponsiveContainer>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
