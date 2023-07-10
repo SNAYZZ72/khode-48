@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../common/Header/Header';
 
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase'; 
+import { auth } from '../firebase';
 
 const Home = () => {
     const { t } = useTranslation();
@@ -31,16 +31,16 @@ const Home = () => {
     const handleLogin = async () => {
         setIsLoggingIn(true); // Set isLoggingIn to true when login starts
         try {
-          await auth.signInWithEmailAndPassword(email, password);
-          navigate('/HomeYouth')
-          //login successful
+            await auth.signInWithEmailAndPassword(email, password);
+            navigate('/HomeYouth')
+            //login successful
         } catch (error) {
-          alert ('Wrong email or password');   
-          //login failed
+            alert('Wrong email or password');
+            //login failed
         }
         setIsLoggingIn(false); // Set isLoggingIn to false when login finishes
         handleCloseModal(); // Close the modal
-      };
+    };
 
     auth.onAuthStateChanged((user) => {
         if (user) {
@@ -180,7 +180,7 @@ const Home = () => {
                                 placeholder="Email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                            />                       
+                            />
                         </div>
                         <br />
                         <div className="form-group">
@@ -190,7 +190,7 @@ const Home = () => {
                                 placeholder="Password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                            />                        
+                            />
                         </div>
                         <br />
                         <Button
@@ -199,7 +199,7 @@ const Home = () => {
                             style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
                             onClick={handleLogin}
                         >
-                        {t('login')}
+                            {t('login')}
                         </Button>
                     </div>
 
