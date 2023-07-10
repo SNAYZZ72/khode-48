@@ -425,7 +425,7 @@ const HomeCompany = () => {
                                     <h3>{t('fullName')}: {profile.firstName} {profile.lastName}</h3>
                                 </div>
                                 <div className="row mb-3">
-                                    <div className="col-md-10" style={{ paddingBottom: '20px' }}>
+                                    <div className="col-md-9" style={{ paddingBottom: '20px' }}>
                                         <div className="row">
                                             <div className="col">
                                                 <p><b>{t('proactivity')}:</b> {profile.proactivity || 0}</p>
@@ -436,14 +436,16 @@ const HomeCompany = () => {
                                             <div className="col">
                                                 <p><b>{t('initiative')}:</b> {profile.initiative || 0}</p>
                                             </div>
-                                            <div className="col">
-                                                <p><b>{t('empathy')}:</b> {profile.empathy || 0}</p>
-                                            </div>
-                                            <div className="col">
-                                                <p><b>{t('leadership')}:</b> {profile.leadership || 0}</p>
-                                            </div>
-                                            <div className="col">
-                                                <p><b>{t('teamwork')}:</b> {profile.teamwork || 0}</p>
+                                            <div className="row">
+                                                <div className="col">
+                                                    <p><b>{t('empathy')}:</b> {profile.empathy || 0}</p>
+                                                </div>
+                                                <div className="col">
+                                                    <p><b>{t('leadership')}:</b> {profile.leadership || 0}</p>
+                                                </div>
+                                                <div className="col">
+                                                    <p><b>{t('teamwork')}:</b> {profile.teamwork || 0}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
