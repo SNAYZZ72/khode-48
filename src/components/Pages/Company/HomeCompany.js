@@ -433,11 +433,11 @@ const HomeCompany = () => {
                     <li className="list-group">
                         {visibleProfilesData.map((profile) => (
                             <li key={profile.id} className="list-group-item profile-item">
-                                <div className="row mb-3">
-                                    <div className="col-md-10">
-                                        <div className="row">
-                                            <h3>{t('fullName')}: {profile.firstName} {profile.lastName}</h3>
-                                        </div>
+                                <div className="row">
+                                    <h3>{t('fullName')}: {profile.firstName} {profile.lastName}</h3>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
                                         <div className="row">
                                             <div className="col">
                                                 <p><b>{t('proactivity')}:</b> {profile.proactivity || 0}</p>
@@ -448,27 +448,29 @@ const HomeCompany = () => {
                                             <div className="col">
                                                 <p><b>{t('initiative')}:</b> {profile.initiative || 0}</p>
                                             </div>
-                                            <div className="col">
-                                                <p><b>{t('empathy')}:</b> {profile.empathy || 0}</p>
-                                            </div>
-                                            <div className="col">
-                                                <p><b>{t('leadership')}:</b> {profile.leadership || 0}</p>
-                                            </div>
-                                            <div className="col">
-                                                <p><b>{t('teamwork')}:</b> {profile.teamwork || 0}</p>
+                                            <div className="row">
+                                                <div className="col">
+                                                    <p><b>{t('empathy')}:</b> {profile.empathy || 0}</p>
+                                                </div>
+                                                <div className="col">
+                                                    <p><b>{t('leadership')}:</b> {profile.leadership || 0}</p>
+                                                </div>
+                                                <div className="col">
+                                                    <p><b>{t('teamwork')}:</b> {profile.teamwork || 0}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col">
-                                        <div className="text-center" style={{ paddingTop: '30px' }}>
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() => handleSeeMoreAbout(profile)}
-                                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                                            >
-                                                {t('View profile')}
-                                            </button>
-                                        </div>
+                                </div>
+                                <div className="row">
+                                    <div className="text-end">
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => handleSeeMoreAbout(profile)}
+                                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                        >
+                                            {t('View profile')}
+                                        </button>
                                     </div>
                                 </div>
                             </li>
