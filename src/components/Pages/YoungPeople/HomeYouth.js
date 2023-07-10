@@ -198,7 +198,7 @@ const HomeYouth = () => {
                                     <div className="row">
                                         <h3>Name: {program.programName}</h3>
                                     </div>
-                                    <div className="row mb-3">
+                                    <div className="row mb-2">
                                         <div className="col-md-6" style={{ paddingBottom: '20px' }}>
                                             <ul className="list-group">
                                                 <li className="list-group-item">
@@ -208,7 +208,7 @@ const HomeYouth = () => {
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div className="col-md-5" style={{ paddingBottom: '20px' }}>
+                                        <div className="col-md-6">
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
@@ -237,16 +237,15 @@ const HomeYouth = () => {
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div className="col">
-                                            <div className="text-center">
-                                                <button
-                                                    className="btn btn-primary"
-                                                    onClick={() => handleSeeMoreAbout(profile)}
-                                                    style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                                                >
-                                                    {t('Apply')}
-                                                </button>
-                                            </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="text-end">
+                                            <button
+                                                className="btn btn-primary"
+                                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                            >
+                                                {t('Apply')}
+                                            </button>
                                         </div>
                                     </div>
                                 </li>
@@ -307,7 +306,7 @@ const HomeYouth = () => {
                                         <h3>{t('jobName')}: {job.jobName}</h3>
                                     </div>
                                     <div className="row mb-3">
-                                        <div className="col-md-4" style={{ paddingBottom: '20px' }}>
+                                        <div className="col-md-5" style={{ paddingBottom: '20px' }}>
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
@@ -358,16 +357,15 @@ const HomeYouth = () => {
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div className="col">
-                                            <div className="text-center">
-                                                <button
-                                                    className="btn btn-primary"
-                                                    onClick={() => handleSeeMoreAbout(profile)}
-                                                    style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                                                >
-                                                    {t('Apply')}
-                                                </button>
-                                            </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="text-end">
+                                            <button
+                                                className="btn btn-primary"
+                                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                            >
+                                                {t('Apply')}
+                                            </button>
                                         </div>
                                     </div>
                                 </li>

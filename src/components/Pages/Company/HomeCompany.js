@@ -424,8 +424,8 @@ const HomeCompany = () => {
                                 <div className="row">
                                     <h3>{t('fullName')}: {profile.firstName} {profile.lastName}</h3>
                                 </div>
-                                <div className="row mb-3">
-                                    <div className="col-md-9" style={{ paddingBottom: '20px' }}>
+                                <div className="row">
+                                    <div className="col">
                                         <div className="row">
                                             <div className="col">
                                                 <p><b>{t('proactivity')}:</b> {profile.proactivity || 0}</p>
@@ -449,16 +449,16 @@ const HomeCompany = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col" style={{ paddingBottom: '20px' }}>
-                                        <div className="text-center">
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() => handleSeeMoreAbout(profile)}
-                                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                                            >
-                                                {t('View profile')}
-                                            </button>
-                                        </div>
+                                </div>
+                                <div className="row">
+                                    <div className="text-end">
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => handleSeeMoreAbout(profile)}
+                                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                        >
+                                            {t('View profile')}
+                                        </button>
                                     </div>
                                 </div>
                             </li>
@@ -579,7 +579,7 @@ const HomeCompany = () => {
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div className="col-md-3" style={{ paddingBottom: '20px' }}>
+                                        <div className="col-md-3">
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
