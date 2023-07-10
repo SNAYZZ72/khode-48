@@ -383,90 +383,90 @@ const HomeCompany = () => {
     const renderYouthProfiles = () => {
 
         return (
-          
-                <div style={{ paddingTop: '15px' }}>
-                    <div className="row mb-3">
-                        <div className="col-md-9" style={{ paddingBottom: '10px' }}>
-                            <div className="input-group">
-                                <span className="input-group-text">{t('Search')}:</span>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
-                                />
-                            </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="input-group">
-                                <span className="input-group-text">
-                                    {t('Filter')}:
-                                </span>
-                                <select
-                                    className="form-select"
-                                    value={filterQuery}
-                                    onChange={handleFilterChange}
-                                >
-                                    <option value="">{t('All')}</option>
-                                    {existingSkills.map((skill) => (
-                                        <option key={skill} value={skill}>
-                                            {skill}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
+
+            <div style={{ paddingTop: '15px' }}>
+                <div className="row mb-3">
+                    <div className="col-md-9" style={{ paddingBottom: '10px' }}>
+                        <div className="input-group">
+                            <span className="input-group-text">{t('Search')}:</span>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                            />
                         </div>
                     </div>
-                    {searchedProfiles.length > 0 ? (
-                        <li className="list-group">
-                            {searchedProfiles.map((profile) => (
-                                <li key={profile.id} className="list-group-item profile-item">
-                                    <div className="row mb-3">
-                                        <div className="col-md-10">
-                                            <div className="row">
-                                                <h3>{t('fullName')}: {profile.firstName} {profile.lastName}</h3>
+                    <div className="col-md-3">
+                        <div className="input-group">
+                            <span className="input-group-text">
+                                {t('Filter')}:
+                            </span>
+                            <select
+                                className="form-select"
+                                value={filterQuery}
+                                onChange={handleFilterChange}
+                            >
+                                <option value="">{t('All')}</option>
+                                {existingSkills.map((skill) => (
+                                    <option key={skill} value={skill}>
+                                        {skill}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {searchedProfiles.length > 0 ? (
+                    <li className="list-group">
+                        {searchedProfiles.map((profile) => (
+                            <li key={profile.id} className="list-group-item profile-item">
+                                <div className="row">
+                                    <h3>{t('fullName')}: {profile.firstName} {profile.lastName}</h3>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-md-10" style={{ paddingBottom: '20px' }}>
+                                        <div className="row">
+                                            <div className="col">
+                                                <p><b>{t('proactivity')}:</b> {profile.proactivity || 0}</p>
                                             </div>
-                                            <div className="row">
-                                                <div className="col">
-                                                    <p><b>{t('proactivity')}:</b> {profile.proactivity || 0}</p>
-                                                </div>
-                                                <div className="col">
-                                                    <p><b>{t('creativity')}:</b> {profile.creativity || 0}</p>
-                                                </div>
-                                                <div className="col">
-                                                    <p><b>{t('initiative')}:</b> {profile.initiative || 0}</p>
-                                                </div>
-                                                <div className="col">
-                                                    <p><b>{t('empathy')}:</b> {profile.empathy || 0}</p>
-                                                </div>
-                                                <div className="col">
-                                                    <p><b>{t('leadership')}:</b> {profile.leadership || 0}</p>
-                                                </div>
-                                                <div className="col">
-                                                    <p><b>{t('teamwork')}:</b> {profile.teamwork || 0}</p>
-                                                </div>
+                                            <div className="col">
+                                                <p><b>{t('creativity')}:</b> {profile.creativity || 0}</p>
                                             </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="text-center" style={{ paddingTop: '30px' }}>
-                                                <button
-                                                    className="btn btn-primary"
-                                                    onClick={() => handleSeeMoreAbout(profile)}
-                                                    style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                                                >
-                                                    {t('View profile')}
-                                                </button>
+                                            <div className="col">
+                                                <p><b>{t('initiative')}:</b> {profile.initiative || 0}</p>
+                                            </div>
+                                            <div className="col">
+                                                <p><b>{t('empathy')}:</b> {profile.empathy || 0}</p>
+                                            </div>
+                                            <div className="col">
+                                                <p><b>{t('leadership')}:</b> {profile.leadership || 0}</p>
+                                            </div>
+                                            <div className="col">
+                                                <p><b>{t('teamwork')}:</b> {profile.teamwork || 0}</p>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                            ))}
-                        </li>
-                    ) : (
-                        <p>{t('No youth profiles found')}</p>
-                    )}
-                </div>
-            
+                                    <div className="col" style={{ paddingBottom: '20px' }}>
+                                        <div className="text-center">
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() => handleSeeMoreAbout(profile)}
+                                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                            >
+                                                {t('View profile')}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        ))}
+                    </li>
+                ) : (
+                    <p>{t('No youth profiles found')}</p>
+                )}
+            </div>
+
         )
 
     };
@@ -540,11 +540,12 @@ const HomeCompany = () => {
                         <li className="list-group">
                             {searchedJobs.map((job) => (
                                 <li key={job.id} className="list-group-item profile-item">
+                                    <div className="row">
+                                        <h3>{t('jobName')}: {job.jobName}</h3>
+                                    </div>
                                     <div className="row mb-3">
-                                        <div className="col-md-6">
-                                            <div className="row"></div>
-                                            <h3>{t('jobName')}: {job.jobName}</h3>
-                                            <ul className="list-group" style={{ paddingBottom: '10px' }}>
+                                        <div className="col-md-5" style={{ paddingBottom: '20px' }}>
+                                            <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
                                                         <p><b>{t('jobDescription')}:</b> {job.jobDescription}</p>
@@ -552,7 +553,7 @@ const HomeCompany = () => {
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div className="col-md-3" style={{ paddingTop: '42px' }}>
+                                        <div className="col-md-4" style={{ paddingBottom: '20px' }}>
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
@@ -576,7 +577,7 @@ const HomeCompany = () => {
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div className="col-md-3" style={{ paddingTop: '42px' }}>
+                                        <div className="col-md-3" style={{ paddingBottom: '20px' }}>
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">

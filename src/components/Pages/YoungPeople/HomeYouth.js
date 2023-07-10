@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import HeaderYouth from '../../common/Header/HeaderYouth';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Container } from 'react-bootstrap';
 import { auth, firestore } from '../../firebase';
 
 const existingSkills = [
@@ -80,14 +80,62 @@ const HomeYouth = () => {
         setFilterQuery(event.target.value);
     };
 
-    const filteredProjects = projects.filter((project) =>
-        project.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        (filterQuery === '' || project.company === filterQuery)
-    );
-
     const handleViewSelect = (view) => {
         setSelectedView(view);
     };
+
+    const filterJobs = () => {
+        if (filterQuery === '') {
+            return userJobs;
+        }
+
+        const selectedDate = filterQuery;
+
+        return userJobs
+            .filter((job) => job[selectedDate] !== undefined)
+            .sort((a, b) => {
+                const aDate = new Date(a[selectedDate]);
+                const bDate = new Date(b[selectedDate]);
+
+                if (selectedDate === 'jobBeginDate') {
+                    return aDate - bDate; // Tri de la plus proche à la plus lointaine
+                } else {
+                    return 0; // Pour le cas de la clé 'jobEndDate', aucun tri n'est effectué
+                }
+            });
+    };
+
+    const searchedJobs = filterJobs().filter((job) =>
+        job.jobName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        job.companyName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+
+    const filterPrograms = () => {
+        if (filterQuery === '') {
+            return userPrograms;
+        }
+
+        const selectedDate = filterQuery;
+
+        return userPrograms
+            .filter((program) => program[selectedDate] !== undefined)
+            .sort((a, b) => {
+                const aDate = new Date(a[selectedDate]);
+                const bDate = new Date(b[selectedDate]);
+
+                if (selectedDate === 'startDate') {
+                    return aDate - bDate; // Tri de la plus proche à la plus lointaine
+                } else {
+                    return 0; // Pour le cas de la clé 'programEndDate', aucun tri n'est effectué
+                }
+            });
+    };
+
+    const searchedPrograms = filterPrograms().filter((program) =>
+        program.programName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        program.companyName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     //load more jobs 
     const handleLoadMoreJobs = () => {
@@ -110,121 +158,262 @@ const HomeYouth = () => {
     };
 
     const renderProgramView = () => {
-        const visibleProgramsData = userPrograms.slice(0, visiblePrograms);
+        const visibleProgramsData = searchedPrograms.slice(0, visiblePrograms);
 
         return (
             <div>
-                {visibleProgramsData.length > 0 ? (
-                    <ul>
-                        {visibleProgramsData.map((program) => (
-                            <li key={program.id}>
-                                <h3>{t('companyName')}: {program.companyName}</h3>
-                                <p>{t('programName')}: {program.programName}</p>
-                                <p>{t('programDescription')}: {program.programDescription}</p>
-                                <p>{t('startData')}: {program.startDate}</p>
-                                <p>{t('endDate')}: {program.endDate}</p>
-                                <p>{t('numberOfPlace')}: {program.numberOfPlaces}</p>
-                                <p>{t('skillsDeveloped')}: {program.skillsDeveloped.join(', ')}</p>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>{t('No programs found.')}</p>
-                )}
+                <div style={{ paddingTop: '15px' }}>
+                    <div className="row mb-3">
+                        <div className="col-md-9" style={{ paddingBottom: '10px' }}>
+                            <div className="input-group">
+                                <span className="input-group-text">{t('Search')}:</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <div className="input-group">
+                                <span className="input-group-text">
+                                    {t('Filter')}:
+                                </span>
+                                <select
+                                    className="form-select"
+                                    value={filterQuery}
+                                    onChange={handleFilterChange}
+                                >
+                                    <option value="">{t('All')}</option>
+                                    <option value="startDate">{t('Begin Date')}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    {visibleProgramsData.length > 0 ? (
+                        <li className="list-group">
+                            {visibleProgramsData.map((program) => (
+                                <li key={program.id} className="list-group-item profile-item">
+                                    <div className="row">
+                                        <h3>Name: {program.programName}</h3>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col-md-6" style={{ paddingBottom: '20px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>Description:</b> {program.programDescription}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="col-md-5" style={{ paddingBottom: '20px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>Company Name:</b> {program.companyName}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>Start Date:</b> {program.startDate}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>End Date:</b> {program.endDate}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>Number of Places:</b> {program.numberOfPlaces}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>Skills Developed:</b> {program.skillsDeveloped.join(', ')}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="col">
+                                            <div className="text-center">
+                                                <button
+                                                    className="btn btn-primary"
+                                                    onClick={() => handleSeeMoreAbout(profile)}
+                                                    style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                                >
+                                                    {t('Apply')}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </li>
+                    ) : (
+                        <p>{t('No programs found.')}</p>
+                    )}
 
-                {/* Show the "Load More" button if there are more programs to load */}
-                {visiblePrograms < userPrograms.length && (
-                    <button onClick={handleLoadMorePrograms}>{t('loadMore')}</button>
-                )}
+                    {/* Show the "Load More" button if there are more programs to load */}
+                    {visiblePrograms < userPrograms.length && (
+                        <button onClick={handleLoadMorePrograms}>{t('loadMore')}</button>
+                    )}
+                </div>
             </div>
         );
     };
 
     const renderJobView = () => {
-        const visibleJobsData = userJobs.slice(0, visibleJobs);
+        const visibleJobsData = searchedJobs.slice(0, visibleJobs);
 
         return (
             <div>
-                {visibleJobsData.length > 0 ? (
-                    <ul>
-                        {visibleJobsData.map((job) => (
-                            <li key={job.id}>
-                                <h3>{t('companyName')}: {job.companyName}</h3>
-                                <p>{t('jobName')}: {job.jobName}</p>
-                                <p>{t('jobDescription')}: {job.jobDescription}</p>
-                                <p>{t('startData')}: {job.jobBeginDate}</p>
-                                <p>{t('endDate')}: {job.jobEndDate}</p>
-                                <p>{t('location')}: {job.jobLocation}</p>
-                                <p>{t('positionSought')}: {job.jobPosition}</p>
-                                <p>{t('skillsNeeded')}: </p>
-                                {job.jobSkills.map((points, index) => (
-                                    <p key={existingSkills[index]}>
-                                        {t(existingSkills[index])}: {points}
-                                    </p>
-                                ))}
+                <div style={{ paddingTop: '15px' }}>
+                    <div className="row mb-3">
+                        <div className="col-md-9" style={{ paddingBottom: '10px' }}>
+                            <div className="input-group">
+                                <span className="input-group-text">{t('Search')}:</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <div className="input-group">
+                                <span className="input-group-text">
+                                    {t('Filter')}:
+                                </span>
+                                <select
+                                    className="form-select"
+                                    value={filterQuery}
+                                    onChange={handleFilterChange}
+                                >
+                                    <option value="">{t('All')}</option>
+                                    <option value="jobBeginDate">{t('beginDate')}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    {visibleJobsData.length > 0 ? (
+                        <li className="list-group">
+                            {visibleJobsData.map((job) => (
+                                <li key={job.id} className="list-group-item profile-item">
+                                    <div className="row">
+                                        <h3>{t('jobName')}: {job.jobName}</h3>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col-md-4" style={{ paddingBottom: '20px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('jobDescription')}:</b> {job.jobDescription}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="col-md-4" style={{ paddingBottom: '20px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('jobCompanyName')}:</b> {job.companyName}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('jobLocation')}:</b> {job.jobLocation}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('beginDate')}:</b> {job.jobBeginDate}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('endDate')}:</b> {job.jobEndDate}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('jobPosition')}:</b> {job.jobPosition}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="col-md-3">
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('jobSkills')}:</b> </p> {job.jobSkills.map((points, index) => (
+                                                            <p key={index}>
+                                                                {existingSkills[index]}: {points}
+                                                            </p>
+                                                        ))}
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="col">
+                                            <div className="text-center">
+                                                <button
+                                                    className="btn btn-primary"
+                                                    onClick={() => handleSeeMoreAbout(profile)}
+                                                    style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                                >
+                                                    {t('Apply')}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </li>
+                    ) : (
+                        <p>{t('No jobs found.')}</p>
+                    )}
 
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>{t('No jobs found.')}</p>
-                )}
-
-                {/* Show the "Load More" button if there are more jobs to load */}
-                {visibleJobs < userJobs.length && (
-                    <button onClick={handleLoadMoreJobs}>{t('loadMore')}</button>
-                )}
+                    {/* Show the "Load More" button if there are more jobs to load */}
+                    {visibleJobs < userJobs.length && (
+                        <button onClick={handleLoadMoreJobs}>{t('loadMore')}</button>
+                    )}
+                </div>
             </div>
         );
     };
 
 
     return (
-        <>
+        <div>
             <HeaderYouth />
-            <div className="container">
-                <h2>{t('Projects')}</h2>
-
+            <Container>
                 <div className="row mb-3">
-                    <div className="col-md-9">
-                        <div className="input-group">
-                            <span className="input-group-text">{t('Search')}:</span>
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={searchQuery}
-                                onChange={handleSearchChange}
-                            />
-                        </div>
-                    </div>
-                    <div className="col-md-3">
-                        <div className="input-group">
-                            <span className="input-group-text">{t('Filter')}:</span>
-                            <select
-                                className="form-select"
-                                value={filterQuery}
-                                onChange={handleFilterChange}
-                            >
-                                <option value="">{t('All')}</option>
-
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <div className="view-selector">
-                        <button onClick={() => handleViewSelect('programView')}>
+                    <div className="col">
+                        <button
+                            onClick={() => handleViewSelect('programView')}
+                            className="form-control"
+                            style={{ border: selectedView === 'programView' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'programView' ? '#F24726' : '#6C757D', color: 'white' }}
+                        >
                             {t('programView')}
                         </button>
-                        <button onClick={() => handleViewSelect('jobView')}>
+                    </div>
+                    <div className="col">
+                        <button
+                            onClick={() => handleViewSelect('jobView')}
+                            className="form-control"
+                            style={{ border: selectedView === 'jobView' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'jobView' ? '#F24726' : '#6C757D', color: 'white' }}
+                        >
                             {t('jobView')}
                         </button>
                     </div>
-                    {renderView()}
                 </div>
-            </div>
-        </>
+                {renderView()}
+            </Container >
+        </div >
     );
 };
 

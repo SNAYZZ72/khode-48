@@ -176,7 +176,7 @@ const HomeIntermediary = () => {
                             alert('Points added successfully.');
                             window.location.reload();
                             return;
-                        } 
+                        }
                     }
                 }
                 alert('User not found.');
@@ -347,11 +347,11 @@ const HomeIntermediary = () => {
                         <li className="list-group">
                             {searchedPrograms.map((program) => (
                                 <li key={program.programId} className="list-group-item profile-item">
+                                    <div className="row">
+                                        <h3>Name: {program.programName}</h3>
+                                    </div>
                                     <div className="row mb-3">
-                                        <div className="col-md-7">
-                                            <div className="row">
-                                                <h3>Name: {program.programName}</h3>
-                                            </div>
+                                        <div className="col-md-7" style={{ paddingBottom: '20px' }}>
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
@@ -360,7 +360,7 @@ const HomeIntermediary = () => {
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div className="col-md-5" style={{ paddingTop: '16px' }}>
+                                        <div className="col-md-5" style={{ paddingBottom: '20px' }}>
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
@@ -385,7 +385,6 @@ const HomeIntermediary = () => {
                                             </ul>
                                         </div>
                                     </div>
-                                    {/* Render other program details */}
                                 </li>
                             ))}
                         </li>
