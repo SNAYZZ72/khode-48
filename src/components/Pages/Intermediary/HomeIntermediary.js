@@ -17,6 +17,8 @@ const availableSkills = [
 const HomeIntermediary = () => {
     const { t } = useTranslation();
     const [profileType, setProfileType] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filterQuery, setFilterQuery] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [selectedView, setSelectedView] = useState('programView');
     const [userPrograms, setUserPrograms] = useState([]);
@@ -29,6 +31,39 @@ const HomeIntermediary = () => {
         endDate: '',
         numberOfPlaces: '',
     });
+
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+    const handleFilterChange = (event) => {
+        setFilterQuery(event.target.value);
+    };
+
+    const filterPrograms = () => {
+        if (filterQuery === '') {
+            return userPrograms;
+        }
+
+        const selectedDate = filterQuery;
+
+        return userPrograms
+            .filter((program) => program[selectedDate] !== undefined)
+            .sort((a, b) => {
+                const aDate = new Date(a[selectedDate]);
+                const bDate = new Date(b[selectedDate]);
+
+                if (selectedDate === 'startDate') {
+                    return aDate - bDate; // Tri de la plus proche à la plus lointaine
+                } else {
+                    return 0; // Pour le cas de la clé 'jobEndDate', aucun tri n'est effectué
+                }
+            });
+    };
+
+    const searchedPrograms = filterPrograms().filter((program) =>
+        program.programName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     const handleProfileSelect = (type) => {
         setProfileType(type);
@@ -287,8 +322,8 @@ const HomeIntermediary = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    value=""
-                                    onChange=""
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
                                 />
                             </div>
                         </div>
@@ -299,17 +334,18 @@ const HomeIntermediary = () => {
                                 </span>
                                 <select
                                     className="form-select"
-                                    value=""
-                                    onChange=""
+                                    value={filterQuery}
+                                    onChange={handleFilterChange}
                                 >
                                     <option value="">{t('All')}</option>
+                                    <option value="startDate">{t('Begin Date')}</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    {userPrograms.length > 0 ? (
+                    {searchedPrograms.length > 0 ? (
                         <li className="list-group">
-                            {userPrograms.map((program) => (
+                            {searchedPrograms.map((program) => (
                                 <li key={program.programId} className="list-group-item profile-item">
                                     <div className="row mb-3">
                                         <div className="col-md-7">

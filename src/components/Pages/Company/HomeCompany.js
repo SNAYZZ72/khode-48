@@ -32,7 +32,6 @@ const HomeCompany = () => {
         setShowProfileModal(true);
     };
 
-
     const [skillsList, setSkillsList] = useState([
         { id: 1, name: 'Proactivity', minPoints: 0, checked: false },
         { id: 2, name: 'Creativity', minPoints: 0, checked: false },
