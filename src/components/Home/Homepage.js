@@ -108,19 +108,19 @@ const Home = () => {
                 </MapContainer>
             </div>
             <Container>
-                <div className="text-center" style={{ paddingBottom: '15px', paddingTop: '15px' }}>
-                    <div className="d-flex flex-wrap justify-content-center align-items-center">
-                        <div className="mb-4">
+                <div className="text-center" style={{ paddingTop: '15px' }}>
+                    <div className="row mb-3 text-center">
+                        <div className="col-md-4" style={{ paddingBottom: '15px' }}>
                             <h1 style={{ fontWeight: 'bold' }}>{studentCount}</h1>
                             <h3>{t('youngPeople')}</h3>
                             <p style={{ maxWidth: '80%', textAlign: 'center', margin: 'auto' }}>{t('loremIpsum')}</p>
                         </div>
-                        <div className="mb-4">
+                        <div className="col-md-4" style={{ paddingBottom: '15px' }}>
                             <h1 style={{ fontWeight: 'bold' }}>{companyCount}</h1>
                             <h3>{t('companies')}</h3>
                             <p style={{ maxWidth: '80%', textAlign: 'center', margin: 'auto' }}>{t('loremIpsum')}</p>
                         </div>
-                        <div className="mb-4">
+                        <div className="col-md-4" style={{ paddingBottom: '15px' }}>
                             <h1 style={{ fontWeight: 'bold' }}>{intermediaryCount}</h1>
                             <h3>{t('intermediaries')}</h3>
                             <p style={{ maxWidth: '80%', textAlign: 'center', margin: 'auto' }}>{t('loremIpsum')}</p>
