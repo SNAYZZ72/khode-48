@@ -26,6 +26,8 @@ const HomeCompany = () => {
     const [jobs, setJobs] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [showProfileModal, setShowProfileModal] = useState(false);
+    const [visibleProfiles, setVisibleProfiles] = useState(10);
+    const [visibleJobs, setVisibleJobs] = useState(10);
 
     const handleSeeMoreAbout = (profile) => {
         setSelectedProfile(profile);
@@ -113,6 +115,14 @@ const HomeCompany = () => {
 
     const handleFilterChange = (event) => {
         setFilterQuery(event.target.value);
+    };
+
+    const handleLoadMoreYouth = () => {
+        setVisibleProfiles((prevVisibleProfiles) => prevVisibleProfiles + 10);
+    };
+
+    const handleLoadMoreJobs = () => {
+        setVisibleJobs((prevVisibleJobs) => prevVisibleJobs + 10);
     };
 
     //fonction qui permet de filtrer les profils en fonction des skills, donc filtrer par le nombre de points qu'il y a dans ce skill pour chaque profile    
@@ -381,98 +391,102 @@ const HomeCompany = () => {
 
     //View of youth profiles
     const renderYouthProfiles = () => {
+        const visibleProfilesData = searchedProfiles.slice(0, visibleProfiles);
+
 
         return (
-          
-                <div style={{ paddingTop: '15px' }}>
-                    <div className="row mb-3">
-                        <div className="col-md-9" style={{ paddingBottom: '10px' }}>
-                            <div className="input-group">
-                                <span className="input-group-text">{t('Search')}:</span>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
-                                />
-                            </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="input-group">
-                                <span className="input-group-text">
-                                    {t('Filter')}:
-                                </span>
-                                <select
-                                    className="form-select"
-                                    value={filterQuery}
-                                    onChange={handleFilterChange}
-                                >
-                                    <option value="">{t('All')}</option>
-                                    {existingSkills.map((skill) => (
-                                        <option key={skill} value={skill}>
-                                            {skill}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
+
+            <div style={{ paddingTop: '15px' }}>
+                <div className="row mb-3">
+                    <div className="col-md-9" style={{ paddingBottom: '10px' }}>
+                        <div className="input-group">
+                            <span className="input-group-text">{t('Search')}:</span>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                            />
                         </div>
                     </div>
-                    {searchedProfiles.length > 0 ? (
-                        <li className="list-group">
-                            {searchedProfiles.map((profile) => (
-                                <li key={profile.id} className="list-group-item profile-item">
-                                    <div className="row mb-3">
-                                        <div className="col-md-10">
-                                            <div className="row">
-                                                <h3>{t('fullName')}: {profile.firstName} {profile.lastName}</h3>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col">
-                                                    <p><b>{t('proactivity')}:</b> {profile.proactivity || 0}</p>
-                                                </div>
-                                                <div className="col">
-                                                    <p><b>{t('creativity')}:</b> {profile.creativity || 0}</p>
-                                                </div>
-                                                <div className="col">
-                                                    <p><b>{t('initiative')}:</b> {profile.initiative || 0}</p>
-                                                </div>
-                                                <div className="col">
-                                                    <p><b>{t('empathy')}:</b> {profile.empathy || 0}</p>
-                                                </div>
-                                                <div className="col">
-                                                    <p><b>{t('leadership')}:</b> {profile.leadership || 0}</p>
-                                                </div>
-                                                <div className="col">
-                                                    <p><b>{t('teamwork')}:</b> {profile.teamwork || 0}</p>
-                                                </div>
-                                            </div>
+                    <div className="col-md-3">
+                        <div className="input-group">
+                            <span className="input-group-text">
+                                {t('Filter')}:
+                            </span>
+                            <select
+                                className="form-select"
+                                value={filterQuery}
+                                onChange={handleFilterChange}
+                            >
+                                <option value="">{t('All')}</option>
+                                {existingSkills.map((skill) => (
+                                    <option key={skill} value={skill}>
+                                        {skill}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {visibleProfilesData.length > 0 ? (
+                    <li className="list-group">
+                        {visibleProfilesData.map((profile) => (
+                            <li key={profile.id} className="list-group-item profile-item">
+                                <div className="row mb-3">
+                                    <div className="col-md-10">
+                                        <div className="row">
+                                            <h3>{t('fullName')}: {profile.firstName} {profile.lastName}</h3>
                                         </div>
-                                        <div className="col">
-                                            <div className="text-center" style={{ paddingTop: '30px' }}>
-                                                <button
-                                                    className="btn btn-primary"
-                                                    onClick={() => handleSeeMoreAbout(profile)}
-                                                    style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                                                >
-                                                    {t('View profile')}
-                                                </button>
+                                        <div className="row">
+                                            <div className="col">
+                                                <p><b>{t('proactivity')}:</b> {profile.proactivity || 0}</p>
+                                            </div>
+                                            <div className="col">
+                                                <p><b>{t('creativity')}:</b> {profile.creativity || 0}</p>
+                                            </div>
+                                            <div className="col">
+                                                <p><b>{t('initiative')}:</b> {profile.initiative || 0}</p>
+                                            </div>
+                                            <div className="col">
+                                                <p><b>{t('empathy')}:</b> {profile.empathy || 0}</p>
+                                            </div>
+                                            <div className="col">
+                                                <p><b>{t('leadership')}:</b> {profile.leadership || 0}</p>
+                                            </div>
+                                            <div className="col">
+                                                <p><b>{t('teamwork')}:</b> {profile.teamwork || 0}</p>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                            ))}
-                        </li>
-                    ) : (
-                        <p>{t('No youth profiles found')}</p>
-                    )}
-                </div>
-            
+                                    <div className="col">
+                                        <div className="text-center" style={{ paddingTop: '30px' }}>
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() => handleSeeMoreAbout(profile)}
+                                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                            >
+                                                {t('View profile')}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        ))}
+                    </li>
+                ) : (
+                    <p>{t('No youth profiles found')}</p>
+                )}
+            </div>
+
         )
 
     };
 
     //View of job
     const renderJob = () => {
+        const visibleJobsData = searchedJobs.slice(0, visibleJobs);
+
         const renderSkillsList = () => {
             return skillsList.map((skill) => (
                 <div key={skill.id} className="form-check">
@@ -536,9 +550,9 @@ const HomeCompany = () => {
                             </div>
                         </div>
                     </div>
-                    {searchedJobs.length > 0 ? (
+                    {visibleJobsData.length > 0 ? (
                         <li className="list-group">
-                            {searchedJobs.map((job) => (
+                            {visibleJobsData.map((job) => (
                                 <li key={job.id} className="list-group-item profile-item">
                                     <div className="row mb-3">
                                         <div className="col-md-6">
@@ -721,6 +735,17 @@ const HomeCompany = () => {
                 </div>
                 {renderView()}
                 {renderProfileModal()}
+                {selectedView === 'youthProfiles' && visibleProfiles < searchedProfiles.length && (
+                    <button className="btn btn-primary" onClick={handleLoadMoreYouth} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                        {t('LoadMoreYouthProfiles')}
+                    </button>
+                )}
+
+                {selectedView === 'Job' && visibleJobs < searchedJobs.length && (
+                    <button className="btn btn-primary" onClick={handleLoadMoreJobs} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                        {t('LoadMoreJobs')}
+                    </button>
+                )}
             </Container>
         </div>
     );
