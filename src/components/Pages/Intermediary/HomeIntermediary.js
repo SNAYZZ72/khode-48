@@ -22,6 +22,8 @@ const HomeIntermediary = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedView, setSelectedView] = useState('programView');
     const [userPrograms, setUserPrograms] = useState([]);
+    const [visiblePrograms, setVisiblePrograms] = useState(10); // Number of jobs to display
+
 
     const [createProgram, setCreateProgram] = useState({
         programName: '',
@@ -68,6 +70,12 @@ const HomeIntermediary = () => {
     const handleProfileSelect = (type) => {
         setProfileType(type);
         setShowModal(true);
+    };
+
+    //load more programs
+    const handleLoadMorePrograms = () => {
+        // Increase the number of visible programs when the "Load More" button is clicked *useful so the website doesn't crash when loading too many jobs*
+        setVisiblePrograms((prevVisiblePrograms) => prevVisiblePrograms + 10);
     };
 
     useEffect(() => {
@@ -307,6 +315,8 @@ const HomeIntermediary = () => {
 
 
     const renderProgramView = () => {
+        const visibleProgramsData = userPrograms.slice(0, visiblePrograms);
+
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
@@ -343,9 +353,9 @@ const HomeIntermediary = () => {
                             </div>
                         </div>
                     </div>
-                    {searchedPrograms.length > 0 ? (
-                        <li className="list-group">
-                            {searchedPrograms.map((program) => (
+                    {visibleProgramsData.length > 0 ? (
+                        <ul className="list-group">
+                            {visibleProgramsData.map((program) => (
                                 <li key={program.programId} className="list-group-item profile-item">
                                     <div className="row">
                                         <h3>Name: {program.programName}</h3>
@@ -387,7 +397,7 @@ const HomeIntermediary = () => {
                                     </div>
                                 </li>
                             ))}
-                        </li>
+                        </ul>
                     ) : (
                         <p>No programs found.</p>
                     )}
@@ -480,7 +490,12 @@ const HomeIntermediary = () => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-            </div >
+                {visiblePrograms < userPrograms.length && (
+                    <button className="btn btn-primary" onClick={handleLoadMorePrograms} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                        {t('LoadMore')}
+                    </button>
+                )}
+            </div>
         );
     };
 

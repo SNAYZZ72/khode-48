@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Nav, Navbar, Button, Container, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Header from '../common/Header/Header';
@@ -15,9 +15,9 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 const Home = () => {
     const { t } = useTranslation();
     const [profileType, setProfileType] = useState('');
-    const [studentCount, setStudentCount] = useState(345);
-    const [companyCount, setCompanyCount] = useState(15);
-    const [intermediaryCount, setIntermediaryCount] = useState(200);
+    const [studentCount, setStudentCount] = useState(0);
+    const [companyCount, setCompanyCount] = useState(0);
+    const [intermediaryCount, setIntermediaryCount] = useState(0);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [isLoggingIn, setIsLoggingIn] = useState(false); // New state to track login process
 
@@ -34,6 +34,35 @@ const Home = () => {
     const handleLoginDisplay = () => {
         setShowLoginModal(true);
     };
+
+    // Fetch user counts from the database
+    const fetchUserCounts = async () => {
+        const usersCompanyRef = firestore.collection('users').doc('userscompany');
+        const usersIntermediaryRef = firestore.collection('users').doc('usersintermediary');
+        const usersYouthRef = firestore.collection('users').doc('usersyouth');
+
+        const usersCompanySnapshot = await usersCompanyRef.get();
+        const usersIntermediarySnapshot = await usersIntermediaryRef.get();
+        const usersYouthSnapshot = await usersYouthRef.get();
+
+        const usersCompanyData = usersCompanySnapshot.data();
+        const usersIntermediaryData = usersIntermediarySnapshot.data();
+        const usersYouthData = usersYouthSnapshot.data();
+
+        const studentCount = usersYouthData ? Object.keys(usersYouthData).length : 0;
+        const companyCount = usersCompanyData ? Object.keys(usersCompanyData).length : 0;
+        const intermediaryCount = usersIntermediaryData ? Object.keys(usersIntermediaryData).length : 0;
+
+        setStudentCount(studentCount);
+        setCompanyCount(companyCount);
+        setIntermediaryCount(intermediaryCount);
+    };
+
+
+
+    useEffect(() => {
+        fetchUserCounts();
+    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();
