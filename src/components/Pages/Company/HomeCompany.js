@@ -140,6 +140,33 @@ const HomeCompany = () => {
         `${profile.firstName} ${profile.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const filterJobs = () => {
+        if (filterQuery === '') {
+            return jobs;
+        }
+
+        const selectedDate = filterQuery;
+
+        return jobs
+            .filter((job) => job[selectedDate] !== undefined)
+            .sort((a, b) => {
+                const aDate = new Date(a[selectedDate]);
+                const bDate = new Date(b[selectedDate]);
+
+                if (selectedDate === 'jobBeginDate') {
+                    return aDate - bDate; // Tri de la plus proche à la plus lointaine
+                } else {
+                    return 0; // Pour le cas de la clé 'jobEndDate', aucun tri n'est effectué
+                }
+            });
+    };
+
+
+
+    const searchedJobs = filterJobs().filter((job) =>
+        job.jobName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     const handleSeeMore = (profile) => {
         setSelectedProfile(profile);
     };
@@ -486,8 +513,8 @@ const HomeCompany = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    value=""
-                                    onChange=""
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
                                 />
                             </div>
                         </div>
@@ -498,17 +525,18 @@ const HomeCompany = () => {
                                 </span>
                                 <select
                                     className="form-select"
-                                    value=""
-                                    onChange=""
+                                    value={filterQuery}
+                                    onChange={handleFilterChange}
                                 >
                                     <option value="">{t('All')}</option>
+                                    <option value="jobBeginDate">{t('Begin Date')}</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    {jobs.length > 0 ? (
+                    {searchedJobs.length > 0 ? (
                         <li className="list-group">
-                            {jobs.map((job) => (
+                            {searchedJobs.map((job) => (
                                 <li key={job.id} className="list-group-item profile-item">
                                     <div className="row mb-3">
                                         <div className="col-md-6">
