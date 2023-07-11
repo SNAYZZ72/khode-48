@@ -48,6 +48,7 @@ const RegisterIntermediaryPage = () => {
         facebookPage: '',
         contactFirstName: '',
         contactLastName: '',
+        contactRole: '',
         phoneNumber: '',
         email: '',
         password: '',
@@ -71,6 +72,7 @@ const RegisterIntermediaryPage = () => {
                 linkedinPage: formData.linkedinPage,
                 twitterPage: formData.twitterPage,
                 facebookPage: formData.facebookPage,
+                contactRole: formData.contactRole,
                 contactFirstName: formData.contactFirstName,
                 contactLastName: formData.contactLastName,
                 phoneNumber: formData.phoneNumber,
@@ -161,6 +163,7 @@ const RegisterIntermediaryPage = () => {
                     facebookPage: '',
                     contactFirstName: '',
                     contactLastName: '',
+                    contactRole: '',
                     phoneNumber: '',
                     email: '',
                     password: '',
@@ -292,6 +295,18 @@ const RegisterIntermediaryPage = () => {
                                 id="contactLastName"
                                 name="contactLastName"
                                 value={formData.contactLastName}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <div className="col">
+                            <label>{t('contactPosition')}</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="contactRole"
+                                name="contactRole"
+                                value={formData.contactRole}
                                 onChange={handleInputChange}
                                 required
                             />
