@@ -26,7 +26,6 @@
   "createCompanyAccount": "Create Company Account",
   "dontHaveIntermediaryAccount": "Don't have an intermediary account?",
   "createIntermediaryAccount": "Create Intermediary Account",
-
   "Contact": "Contact",
   "Your Name": "Your Name",
   "Lastname": "Last Name",
@@ -35,7 +34,6 @@
   "Subject": "Subject",
   "Message": "Message",
   "Submit": "Submit",
-
   "aboutTitle": "About Us",
   "aboutDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer convallis metus non volutpat cursus. Sed semper aliquet magna, a pretium sem dapibus nec.",
   "mission": "Our Mission",
@@ -46,11 +44,8 @@
   "value1": "Value 1",
   "value2": "Value 2",
   "value3": "Value 3",
-
   "termsTitle": "Terms & Conditions",
-
   "careerTitle": "Career",
-
   "Young People Register": "Young People Register",
   "fullName": "Full Name",
   "firstName": "Name",
@@ -78,9 +73,7 @@
   "information": "For further information",
   "other": "Other",
   "optional": "Optional",
-
   "selectCountry": "Select a country",
-
   "CompanyRegister": "Company Register",
   "Company name": "Company name",
   "Commercials name": "Commercials name",
@@ -118,14 +111,12 @@
   "Legal": "Legal",
   "Digital Industry": "Digital Industry",
   "Business Services": "Business Services",
-  "ContactFirstName" : "Contact First Name",
-  "ContactLastName" : "Contact Last Name",
+  "ContactFirstName": "Contact First Name",
+  "ContactLastName": "Contact Last Name",
   "Companys Linkedin Page": "Company's Linkedin Page",
   "Companys Twitter Page": "Company's Twitter Page",
   "Companys Facebook Page": "Company's Facebook Page",
-
   "IntermediariesRegister": "Intermediaries Register",
-
   "profile": "Profile",
   "age": "Age",
   "education": "Education",
@@ -145,7 +136,6 @@
   "aboutme": "About me",
   "profilepicture": "Profile picture",
   "experience": "Experiences",
-
   "CreateNewProgram": "Create New Program",
   "programName": "Program Name",
   "programDescription": "Program Description",
@@ -160,7 +150,7 @@
   "intermediaryDescription": "More than 10 associations accrediting the skills of young people in Bizkaia. If you also want to value the young people around you, write to bitartekariak48@districtkode.com",
   "aboutDescription1": "The young people of Bizkaia represent 14% of the total population and only 30% of the 18-34 years old live emancipated. The difficulties of emancipation make this age increasingly later.",
   "aboutDescription2": "We are going to change this reality. Companies are looking for YOUR talent. Do you want to accredit your skills? Have you completed non-regulated programs that have helped you to grow and want to highlight them? Write to us at info48@districtkode.com and join the District.",
-
+  
   "h3cookie": "Política de cookies",
   "h5cookie1": "¿Qué son las cookies?",
   "pcookie1": "Las cookies son pequeños archivos de datos que se reciben en el terminal desde el sitio Web visitado y se usan para registrar ciertas interacciones de la navegación en un sitio Web almacenando datos que podrán ser actualizados y recuperados. Estos archivos se almacenan en el ordenador del usuario y contiene datos anónimos que no son perjudiciales para su equipo. Se utilizan para recordar las preferencias del usuario, como el idioma seleccionado, datos de acceso o personalización de la página.",
@@ -203,7 +193,6 @@
   "pcookie22": "Además, usted puede configurar su navegador para establecer que sólo los sitios Web de confianza o las páginas por las que está navegando en este momento puedan gestionar cookies lo que le permite seleccionar sus preferencias.",
   "pcookie23": "Proporcionando esta política, Districtkode.com, KODE 48 demuestra el compromiso adquirido con la legislación vigente sobre el uso de cookies, proporcionándole información para que usted pueda comprender qué tipo de cookies utilizamos y por qué lo hacemos. Con esto, pretendemos proporcionarle transparencia en cuanto a los datos tratados acerca de la navegación realizada desde su equipo en nuestra Web.",
   "pcookie24": "Esta política se revisa periódicamente para asegurar su vigencia, por lo que puede ser modificada. Le recomendamos que visite la página con regularidad, donde le informaremos de cualquier actualización al respecto.",
-
   "h3privacidad": "Política de privacidad",
   "h5privacidad1": "Quiénes somos",
   "pprivacidad1": "La dirección de nuestra web es: districtkode.com",
@@ -238,7 +227,6 @@
   "h5privacidad17": "De qué terceros recibimos datos",
   "h5privacidad18": "Qué tipo de toma de decisiones automatizada y/o perfilado hacemos con los datos del usuario",
   "h5privacidad19": "Requerimientos regulatorios de revelación de información del sector",
-
   "h3calidad": "Política de calidad",
   "h5calidad1": "Política del sistema integrado de gestión",
   "pcalidad1": "La Dirección de Districtkode.com asume la máxima responsabilidad en la planificación, implantación y desarrollo del Sistema Integrado de Gestión de la empresa.",
@@ -250,7 +238,6 @@
   "pcalidad7": "Garantizar la participación, colaboración y formación de todos los trabajadores en el desarrollo e implantación del Sistema, haciéndoles conscientes de que la responsabilidad en la gestión incumbe a todo el conjunto de C2B de cualquier tipo de contaminación, en función de sus posibilidades reales.",
   "pcalidad8": "Para ello, la Dirección exige que todas las áreas, así como la totalidad de trabajadores realicen sus actividades de manera que se minimicen los impactos ambientales asociados a sus procesos, instalaciones, productos y servicios mediante la utilización racional de los recursos y la minimización de los residuos, prestando especial atención a la protección de los trabajadores, del entorno y del público en general.",
   "pcalidad9": "Para finalizar, declarar que la Política está sujeta a revisión periódica, con objeto de intentar mejorarla y adaptarla a las circunstancias cronológicas y coyunturales de cada momento.",
-
   "h3aviso": "Aviso legal",
   "h5aviso1": "Aviso legal",
   "paviso1": "Responsable (Prestador del Servicio):",
@@ -343,9 +330,4 @@
   "paviso74": "Este sitio web ha sido revisado y probado para que funcione correctamente. En principio, puede garantizarse el correcto funcionamiento los 365 días del año, 24 horas al día. No obstante, el prestador no descarta la posibilidad de que existan ciertos errores de programación, o que acontezcan causas de fuerza mayor, catástrofes naturales, huelgas, o circunstancias semejantes que hagan imposible el acceso a la página web.",
   "h5aviso16": "Ley aplicable y jurisdicción",
   "paviso75": "Para la resolución de todas las controversias o cuestiones relacionadas con el presente sitio web o de las actividades en él desarrolladas, será de aplicación la legislación española, a la que se someten expresamente las partes, siendo competentes para la resolución de todos los conflictos derivados o relacionados con su uso los Juzgados y Tribunales de Vizcaya."
-  
-
-  
-
-
 }
