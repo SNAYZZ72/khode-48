@@ -289,7 +289,7 @@ const HomeIntermediary = () => {
         setShowModal(false);
     };
 
-    const handleViewSelect = (view) => {
+    const   handleViewSelect = (view) => {
         setSelectedView(view);
     };
 
@@ -328,7 +328,7 @@ const HomeIntermediary = () => {
                     <div className="row mb-3">
                         <div className="col-md-9" style={{ paddingBottom: '10px' }}>
                             <div className="input-group">
-                                <span className="input-group-text">{t('Search')}:</span>
+                                <span className="input-group-text">{t('search')}:</span>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -340,15 +340,15 @@ const HomeIntermediary = () => {
                         <div className="col-md-3">
                             <div className="input-group">
                                 <span className="input-group-text">
-                                    {t('Filter')}:
+                                    {t('filter')}:
                                 </span>
                                 <select
                                     className="form-select"
                                     value={filterQuery}
                                     onChange={handleFilterChange}
                                 >
-                                    <option value="">{t('All')}</option>
-                                    <option value="startDate">{t('Begin Date')}</option>
+                                    <option value="">{t('all')}</option>
+                                    <option value="startDate">{t('beginDate')}</option>
                                 </select>
                             </div>
                         </div>
@@ -358,14 +358,14 @@ const HomeIntermediary = () => {
                             {visibleProgramsData.map((program) => (
                                 <li key={program.programId} className="list-group-item profile-item">
                                     <div className="row">
-                                        <h3>Name: {program.programName}</h3>
+                                        <h3>{t('programName')}: {program.programName}</h3>
                                     </div>
                                     <div className="row">
                                         <div className="col-md-7" style={{ paddingBottom: '20px' }}>
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>Description:</b> {program.programDescription}</p>
+                                                        <p><b>{t('description')}:</b> {program.programDescription}</p>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -374,22 +374,22 @@ const HomeIntermediary = () => {
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>Start Date:</b> {program.startDate}</p>
+                                                        <p><b>{t('beginDate')}:</b> {program.startDate}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>End Date:</b> {program.endDate}</p>
+                                                        <p><b>{t('endDate')}:</b> {program.endDate}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>Number of Places:</b> {program.numberOfPlaces}</p>
+                                                        <p><b>{t('numberOfPlaces')}:</b> {program.numberOfPlaces}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>Skills Developed:</b> {program.skillsDeveloped.join(', ')}</p>
+                                                        <p><b>{t('skillsDeveloped')}:</b> {program.skillsDeveloped.join(', ')}</p>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -422,7 +422,7 @@ const HomeIntermediary = () => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">{t('programDescription')}</label>
+                                <label className="form-label">{t('description')}</label>
                                 <textarea
                                     className="form-control"
                                     id="programDescription"
@@ -433,10 +433,10 @@ const HomeIntermediary = () => {
                                 ></textarea>
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">{t('programSkillsDeveloped')}</label>
+                                <label className="form-label">{t('skillsDeveloped')}</label>
                                 <div>{renderSkillOptions()}</div>
                                 <div style={{ paddingTop: '10px' }}>
-                                    Selected Skills:
+                                    {t('selectedSkills')}:
                                 </div>
                                 <ul className="list-group">
                                     {selectedSkills.map((skill, index) => (
@@ -445,7 +445,7 @@ const HomeIntermediary = () => {
                                 </ul>
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">{t('ProgramBeginDate')}</label>
+                                <label className="form-label">{t('beginDate')}</label>
                                 <input
                                     type="date"
                                     className="form-control"
@@ -457,7 +457,7 @@ const HomeIntermediary = () => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">{t('ProgramEndDate')}</label>
+                                <label className="form-label">{t('endDate')}</label>
                                 <input
                                     type="date"
                                     className="form-control"
@@ -469,7 +469,7 @@ const HomeIntermediary = () => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">{t('programNumberOfPlaces')}</label>
+                                <label className="form-label">{t('numberOfPlaces')}</label>
                                 <input
                                     type="number"
                                     className="form-control"
@@ -504,9 +504,6 @@ const HomeIntermediary = () => {
     const renderAddPoints = () => {
         return (
             <div style={{ paddingTop: '15px' }}>
-                <div className="text-center">
-                    <h1>{t('addPointsToAUserThroughHisEmail')}</h1>
-                </div>
                 <form onSubmit={handleSubmit}>
                     <div className="row mb-3">
                         <div className="col">
@@ -585,7 +582,7 @@ const HomeIntermediary = () => {
                         </div>
                     </div>
                     <div className="text-center">
-                        <button className="btn btn-primary" type="submit" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>Add points</button>
+                        <button className="btn btn-primary" type="submit" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>{t('addPoints')}</button>
                     </div>
                 </form>
             </div>
