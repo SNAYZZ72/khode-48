@@ -21,7 +21,7 @@ const ProfileIntermediary = () => {
         city: false,
         industry: false,
         maturity: false,
-        primarySector: false,
+        // primarySector: false,
         linkedinPage: false,
         twitterPage: false,
         facebookPage: false,
@@ -48,7 +48,7 @@ const ProfileIntermediary = () => {
         phoneNumber: '',
         industry: '',
         maturity: '',
-        primarySector: '',
+        // primarySector: '',
         linkedinPage: '',
         twitterPage: '',
         facebookPage: '',
@@ -72,7 +72,7 @@ const ProfileIntermediary = () => {
                             email: userData.email,
                             companyName: userData.companyName,
                             contactFirstName: userData.contactFirstName,
-                            contactLastName: userData.contactLasttName,
+                            contactLastName: userData.contactLastName,
                             contactRole: userData.contactRole,
                             information: userData.information,
                             city: userData.city,
@@ -80,14 +80,13 @@ const ProfileIntermediary = () => {
                             phoneNumber: userData.phoneNumber,
                             industry: userData.industry,
                             maturity: userData.maturity,
-                            primarySector: userData.primarySector,
+                            // primarySector: userData.primarySector,
                             linkedinPage: userData.linkedinPage,
                             twitterPage: userData.twitterPage,
                             facebookPage: userData.facebookPage,
                         });
                         console.log('User data retrieved');
                         console.log(userData.contactLastName);
-                        
                     } else {
                         console.log('User document not found');
                     }
@@ -156,7 +155,7 @@ const ProfileIntermediary = () => {
                     phoneNumber: userData.phoneNumber,
                     industry: userData.industry,
                     maturity: userData.maturity,
-                    primarySector: userData.primarySector,
+                    // primarySector: userData.primarySector,
                     linkedinPage: userData.linkedinPage,
                     twitterPage: userData.twitterPage,
                     facebookPage: userData.facebookPage,
