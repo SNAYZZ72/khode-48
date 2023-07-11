@@ -166,7 +166,7 @@ const HomeYouth = () => {
                     <div className="row mb-3">
                         <div className="col-md-9" style={{ paddingBottom: '10px' }}>
                             <div className="input-group">
-                                <span className="input-group-text">{t('Search')}:</span>
+                                <span className="input-group-text">{t('search')}:</span>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -178,15 +178,15 @@ const HomeYouth = () => {
                         <div className="col-md-3">
                             <div className="input-group">
                                 <span className="input-group-text">
-                                    {t('Filter')}:
+                                    {t('filter')}:
                                 </span>
                                 <select
                                     className="form-select"
                                     value={filterQuery}
                                     onChange={handleFilterChange}
                                 >
-                                    <option value="">{t('All')}</option>
-                                    <option value="startDate">{t('Begin Date')}</option>
+                                    <option value="">{t('all')}</option>
+                                    <option value="startDate">{t('beginDate')}</option>
                                 </select>
                             </div>
                         </div>
@@ -196,14 +196,14 @@ const HomeYouth = () => {
                             {visibleProgramsData.map((program) => (
                                 <li key={program.id} className="list-group-item profile-item">
                                     <div className="row">
-                                        <h3>Name: {program.programName}</h3>
+                                        <h3>{t('programName')}: {program.programName}</h3>
                                     </div>
                                     <div className="row mb-2">
                                         <div className="col-md-6" style={{ paddingBottom: '20px' }}>
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>Description:</b> {program.programDescription}</p>
+                                                        <p><b>{t('description')}:</b> {program.programDescription}</p>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -212,27 +212,27 @@ const HomeYouth = () => {
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>Company Name:</b> {program.companyName}</p>
+                                                        <p><b>{t('Company name')}:</b> {program.companyName}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>Start Date:</b> {program.startDate}</p>
+                                                        <p><b>{t('beginDate')}:</b> {program.startDate}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>End Date:</b> {program.endDate}</p>
+                                                        <p><b>{t('endDate')}:</b> {program.endDate}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>Number of Places:</b> {program.numberOfPlaces}</p>
+                                                        <p><b>{t('numberOfPlaces')}:</b> {program.numberOfPlaces}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>Skills Developed:</b> {program.skillsDeveloped.join(', ')}</p>
+                                                        <p><b>{t('skillsDeveloped')}:</b> {program.skillsDeveloped.join(', ')}</p>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -244,7 +244,7 @@ const HomeYouth = () => {
                                                 className="btn btn-primary"
                                                 style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
                                             >
-                                                {t('Apply')}
+                                                {t('apply')}
                                             </button>
                                         </div>
                                     </div>
@@ -281,7 +281,7 @@ const HomeYouth = () => {
                     <div className="row mb-3">
                         <div className="col-md-9" style={{ paddingBottom: '10px' }}>
                             <div className="input-group">
-                                <span className="input-group-text">{t('Search')}:</span>
+                                <span className="input-group-text">{t('search')}:</span>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -293,14 +293,14 @@ const HomeYouth = () => {
                         <div className="col-md-3">
                             <div className="input-group">
                                 <span className="input-group-text">
-                                    {t('Filter')}:
+                                    {t('filter')}:
                                 </span>
                                 <select
                                     className="form-select"
                                     value={filterQuery}
                                     onChange={handleFilterChange}
                                 >
-                                    <option value="">{t('All')}</option>
+                                    <option value="">{t('all')}</option>
                                     <option value="jobBeginDate">{t('beginDate')}</option>
                                 </select>
                             </div>
@@ -318,7 +318,7 @@ const HomeYouth = () => {
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>{t('jobDescription')}:</b> {job.jobDescription}</p>
+                                                        <p><b>{t('description')}:</b> {job.jobDescription}</p>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -327,12 +327,12 @@ const HomeYouth = () => {
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>{t('jobCompanyName')}:</b> {job.companyName}</p>
+                                                        <p><b>{t('Company name')}:</b> {job.companyName}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>{t('jobLocation')}:</b> {job.jobLocation}</p>
+                                                        <p><b>{t('location')}:</b> {job.jobLocation}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
@@ -347,7 +347,7 @@ const HomeYouth = () => {
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>{t('jobPosition')}:</b> {job.jobPosition}</p>
+                                                        <p><b>{t('position')}:</b> {job.jobPosition}</p>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -372,7 +372,7 @@ const HomeYouth = () => {
                                                 className="btn btn-primary"
                                                 style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
                                             >
-                                                {t('Apply')}
+                                                {t('apply')}
                                             </button>
                                         </div>
                                     </div>
@@ -421,7 +421,7 @@ const HomeYouth = () => {
                             className="form-control"
                             style={{ border: selectedView === 'jobView' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'jobView' ? '#F24726' : '#6C757D', color: 'white' }}
                         >
-                            {t('jobView')}
+                            {t('showJobs')}
                         </button>
                     </div>
                 </div>
