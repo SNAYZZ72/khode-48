@@ -131,6 +131,7 @@ const Home = () => {
                     center={[43.25, -2.93]}
                     zoom={10}
                     style={{ height: '100%', width: '100%' }}
+                    attributionControl={false}
                 >
                     {customTileLayer}
                     {/* Ajoutez d'autres composants Leaflet pour afficher des marqueurs, des formes géométriques, etc. */}
