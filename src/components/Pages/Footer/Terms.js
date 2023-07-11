@@ -153,18 +153,47 @@ const Terms = () => {
                                 <li className="list-group-item">
                                     <div className="row mb-3">
                                         <div className="col">
-                                            <h3>{t('intermediary')}</h3>
-                                            <p>{t('intermediaryDescription')}</p>
+                                            <h3>{t('h3calidad')}</h3>
+                                            <h5>{t('h5calidad1')}</h5>
+                                            <p>{t('pcalidad1')}</p>
+                                            <p>{t('pcalidad2')}</p>
+                                            <p>{t('pcalidad3')}</p>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <p>{t('pcalidad4')}</p>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <p>{t('pcalidad5')}</p>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <p>{t('pcalidad6')}</p>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <p>{t('pcalidad7')}</p>
+                                                </li>
+                                            </ul>
+                                            <p>{t('pcalidad8')}</p>
+                                            <p>{t('pcalidad9')}</p>
                                         </div>
                                     </div>
                                 </li>
                             </ul>
-                            <ul className="list-group">
+                            <ul className="list-group" style={{ paddingBottom: '20px' }}>
                                 <li className="list-group-item">
                                     <div className="row mb-3">
                                         <div className="col">
-                                            <p>{t('aboutDescription1')}</p>
-                                            <p>{t('aboutDescription2')}</p>
+                                            <h3>{t('h3calidad')}</h3>
+                                            <h5>{t('h5calidad1')}</h5>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul className="list-group" style={{ paddingBottom: '20px' }}>
+                                <li className="list-group-item">
+                                    <div className="row mb-3">
+                                        <div className="col">
+                                            <h3>{t('h3calidad')}</h3>
+                                            <h5>{t('h5calidad1')}</h5>
                                         </div>
                                     </div>
                                 </li>
