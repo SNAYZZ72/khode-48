@@ -119,7 +119,6 @@ const RegisterCompanyPage = () => {
         const score = zxcvbn(value).score;
         setPasswordScore(score);
         handleInputChange(e);
-        setPasswordValid(validatePassword(value) || value.length === 0);
     };
 
     const toggleShowPassword = () => {
@@ -136,14 +135,7 @@ const RegisterCompanyPage = () => {
 
     const validatePassword = (password) => {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
-        if (regex.test(password)) {
-            setError("PPassword must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.");
-            console.log('Invalid');
-            return true;
-        } else {
-            console.log('Valid')
-            return false;
-        }
+        return regex.test(password);
     };
 
     const handleSubmit = async (e) => {
@@ -155,365 +147,349 @@ const RegisterCompanyPage = () => {
             //password validate
         } else {
             // Passwords don't match or don't meet the requirements, show an error message or take appropriate action
-            if (!doesPasswordMatch() || !validatePassword(formData.password)) {
-                setPasswordsMatch(false);
-                return;
-            }
+            setPasswordsMatch(false);
         }
 
-        // You can send the form data to a backend server or perform any other actions
-        // if handleREgister return no error then result is true and the following code can execute
+    // You can send the form data to a backend server or perform any other actions
+    // if handleREgister return no error then result is true and the following code can execute
 
-        if (doesPasswordMatch() && validatePassword(formData.password)) {
-            const result = await handleRegister();
+    if (doesPasswordMatch() && validatePassword(formData.password)) {
+        const result = await handleRegister();
 
-            if (result) {
-                setExistEmail(false);
+        if (result) {
+            setExistEmail(false);
 
-                // Show the success modal
-                setShowSuccessModal(true);
+            // Show the success modal
+            setShowSuccessModal(true);
 
-                // Reset form fields after submission if needed
-                setFormData({
-                    companyName: '',
-                    city: '',
-                    postalCode: '',
-                    industry: '',
-                    maturity: '',
-                    primarySector: '',
-                    linkedinPage: '',
-                    twitterPage: '',
-                    facebookPage: '',
-                    contactFirstName: '',
-                    contactLastName: '',
-                    contactRole: '',
-                    phoneNumber: '',
-                    email: '',
-                    password: '',
-                    confirmPass: '',
-                });
-                setTimeout(() => {
-                    navigate('/');
-                }, 2500);
-                return true;
-            } else {
-                return false;
-            }
+            // Reset form fields after submission if needed
+            setFormData({
+                companyName: '',
+                city: '',
+                postalCode: '',
+                industry: '',
+                maturity: '',
+                primarySector: '',
+                linkedinPage: '',
+                twitterPage: '',
+                facebookPage: '',
+                contactFirstName: '',
+                contactLastName: '',
+                contactRole: '',
+                phoneNumber: '',
+                email: '',
+                password: '',
+                confirmPass: '',
+            });
+            setTimeout(() => {
+                navigate('/');
+            }, 2500);
+            return true;
+        } else {
+            return false;
         }
-    };
+    }
+};
 
-    const handleModalClose = () => {
-        // setShowErrorModal(false);
-        setShowSuccessModal(false); // Close the success modal
-    };
+const handleModalClose = () => {
+    // setShowErrorModal(false);
+    setShowSuccessModal(false); // Close the success modal
+};
 
-    return (
-        <div>
-            <Header />
-            <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{t('CompanyRegister')}</h1>
-            </div>
-            <div className="container">
-                <form onSubmit={handleSubmit} style={{ paddingBottom: '15px' }}>
-                    <div className="row mb-3">
-                        <div className="col">
-                            <label>{t('Company name')}</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="companyName"
-                                name="companyName"
-                                value={formData.companyName}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
+return (
+    <div>
+        <Header />
+        <div className="text-center" style={{ paddingBottom: '15px' }}>
+            <h1>{t('CompanyRegister')}</h1>
+        </div>
+        <div className="container">
+            <form onSubmit={handleSubmit} style={{ paddingBottom: '15px' }}>
+                <div className="row mb-3">
+                    <div className="col">
+                        <label>{t('Company name')}</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="companyName"
+                            name="companyName"
+                            value={formData.companyName}
+                            onChange={handleInputChange}
+                            required
+                        />
                     </div>
+                </div>
 
-                    <div className="row mb-3">
-                        <div className="col">
-                            <label>{t('city')}</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="city"
-                                name="city"
-                                value={formData.city}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="col">
-                            <label>{t('postalCode')}</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="postalCode"
-                                name="postalCode"
-                                value={formData.postalCode}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
+                <div className="row mb-3">
+                    <div className="col">
+                        <label>{t('city')}</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="city"
+                            name="city"
+                            value={formData.city}
+                            onChange={handleInputChange}
+                            required
+                        />
                     </div>
-                    <div className="row mb-3">
-                        <div className="col">
-                            <label>{t('Select your main sector')}</label>
-                            <select
-                                className="form-control"
-                                id="industry"
-                                name="industry"
-                                value={formData.industry}
-                                onChange={handleInputChange}
-                                required
-                            >
-                                <option value="">{t('Select')}</option>
-                                <option value="Digital">{t('Digital')}</option>
-                                <option value="Industry">{t('Industry')}</option>
-                                <option value="Social and Solidarity Economy">{t('Social and Solidarity Economy')}</option>
-                                <option value="Cultural and Creative Industry">{t('Cultural and Creative Industry')}</option>
-                            </select>
-                        </div>
-                        <div className="col">
-                            <label>{t('What is the maturity of your project?')}</label>
-                            <select
-                                className="form-control"
-                                id="maturity"
-                                name="maturity"
-                                value={formData.maturity}
-                                onChange={handleInputChange}
-                                required
-                            >
-                                <option value="">{t('Select')}</option>
-                                <option value="Ideation">{t('Ideation')}</option>
-                                <option value="Minimum Viable Product">{t('Minimum Viable Product')}</option>
-                                <option value="First Customer / First Users">{t('First Customer / First Users')}</option>
-                                <option value="Commercialization">{t('Commercialization')}</option>
-                                <option value="International">{t('International')}</option>
-                            </select>
-                        </div>
-                        <div className="col">
-                            <label>{t('Select your primary sector')}</label>
-                            <select
-                                className="form-control"
-                                id="primarySector"
-                                name="primarySector"
-                                value={formData.primarySector}
-                                onChange={handleInputChange}
-                                required
-                            >
-                                <option value="">{t('Select')}</option>
-                                <option value="Banking / Insurance">{t('Banking / Insurance')}</option>
-                                <option value="Construction">{t('Construction')}</option>
-                                <option value="Chemical">{t('Chemical')}</option>
-                                <option value="Medical Devices">{t('Medical Devices')}</option>
-                                <option value="Biotechnology">{t('Biotechnology')}</option>
-                                <option value="Commerce / Distribution">{t('Commerce / Distribution')}</option>
-                                <option value="Event / Communication">{t('Event / Communication')}</option>
-                                <option value="Pharmaceutical Industry">{t('Pharmaceutical Industry')}</option>
-                                <option value="IT / Telecommunications">{t('IT / Telecommunications')}</option>
-                                <option value="Textile / Clothing">{t('Textile / Clothing')}</option>
-                                <option value="Transportation / Logistics">{t('Transportation / Logistics')}</option>
-                                <option value="Sports and Leisure">{t('Sports and Leisure')}</option>
-                                <option value="Tourism / Catering">{t('Tourism / Catering')}</option>
-                                <option value="e-Health and Well-being">{t('e-Health and Well-being')}</option>
-                                <option value="Education / Training">{t('Education / Training')}</option>
-                                <option value="Energy">{t('Energy')}</option>
-                                <option value="Legal">{t('Legal')}</option>
-                                <option value="Digital Industry">{t('Digital Industry')}</option>
-                                <option value="Business Services">{t('Business Services')}</option>
-                            </select>
-                        </div>
+                    <div className="col">
+                        <label>{t('postalCode')}</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="postalCode"
+                            name="postalCode"
+                            value={formData.postalCode}
+                            onChange={handleInputChange}
+                            required
+                        />
                     </div>
-                    <div className="row mb-3">
-                        <div className="col">
-                            <label>{t('ContactFirstName')}</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="contactFirstName"
-                                name="contactFirstName"
-                                value={formData.contactFirstName}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="col">
-                            <label>{t('ContactLastName')}</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="contactLastName"
-                                name="contactLastName"
-                                value={formData.contactLastName}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="col">
-                            <label>{t('contactPosition')}</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="contactRole"
-                                name="contactRole"
-                                value={formData.contactRole}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
+                </div>
+                <div className="row mb-3">
+                    <div className="col">
+                        <label>{t('Select your main sector')}</label>
+                        <select
+                            className="form-control"
+                            id="industry"
+                            name="industry"
+                            value={formData.industry}
+                            onChange={handleInputChange}
+                            required
+                        >
+                            <option value="">{t('Select')}</option>
+                            <option value="Digital">{t('Digital')}</option>
+                            <option value="Industry">{t('Industry')}</option>
+                            <option value="Social and Solidarity Economy">{t('Social and Solidarity Economy')}</option>
+                            <option value="Cultural and Creative Industry">{t('Cultural and Creative Industry')}</option>
+                        </select>
                     </div>
-                    <div className="row mb-3">
-                        <div className="col">
-                            <label>{t('phoneNumber')}</label>
+                    <div className="col">
+                        <label>{t('What is the maturity of your project?')}</label>
+                        <select
+                            className="form-control"
+                            id="maturity"
+                            name="maturity"
+                            value={formData.maturity}
+                            onChange={handleInputChange}
+                            required
+                        >
+                            <option value="">{t('Select')}</option>
+                            <option value="Ideation">{t('Ideation')}</option>
+                            <option value="Minimum Viable Product">{t('Minimum Viable Product')}</option>
+                            <option value="First Customer / First Users">{t('First Customer / First Users')}</option>
+                            <option value="Commercialization">{t('Commercialization')}</option>
+                            <option value="International">{t('International')}</option>
+                        </select>
+                    </div>
+                    <div className="col">
+                        <label>{t('Select your primary sector')}</label>
+                        <select
+                            className="form-control"
+                            id="primarySector"
+                            name="primarySector"
+                            value={formData.primarySector}
+                            onChange={handleInputChange}
+                            required
+                        >
+                            <option value="">{t('Select')}</option>
+                            <option value="Banking / Insurance">{t('Banking / Insurance')}</option>
+                            <option value="Construction">{t('Construction')}</option>
+                            <option value="Chemical">{t('Chemical')}</option>
+                            <option value="Medical Devices">{t('Medical Devices')}</option>
+                            <option value="Biotechnology">{t('Biotechnology')}</option>
+                            <option value="Commerce / Distribution">{t('Commerce / Distribution')}</option>
+                            <option value="Event / Communication">{t('Event / Communication')}</option>
+                            <option value="Pharmaceutical Industry">{t('Pharmaceutical Industry')}</option>
+                            <option value="IT / Telecommunications">{t('IT / Telecommunications')}</option>
+                            <option value="Textile / Clothing">{t('Textile / Clothing')}</option>
+                            <option value="Transportation / Logistics">{t('Transportation / Logistics')}</option>
+                            <option value="Sports and Leisure">{t('Sports and Leisure')}</option>
+                            <option value="Tourism / Catering">{t('Tourism / Catering')}</option>
+                            <option value="e-Health and Well-being">{t('e-Health and Well-being')}</option>
+                            <option value="Education / Training">{t('Education / Training')}</option>
+                            <option value="Energy">{t('Energy')}</option>
+                            <option value="Legal">{t('Legal')}</option>
+                            <option value="Digital Industry">{t('Digital Industry')}</option>
+                            <option value="Business Services">{t('Business Services')}</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="row mb-3">
+                    <div className="col">
+                        <label>{t('ContactFirstName')}</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="contactFirstName"
+                            name="contactFirstName"
+                            value={formData.contactFirstName}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
+                    <div className="col">
+                        <label>{t('ContactLastName')}</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="contactLastName"
+                            name="contactLastName"
+                            value={formData.contactLastName}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
+                    <div className="col">
+                        <label>{t('contactPosition')}</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="contactRole"
+                            name="contactRole"
+                            value={formData.contactRole}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
+                </div>
+                <div className="row mb-3">
+                    <div className="col">
+                        <label>{t('phoneNumber')}</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="phoneNumber"
+                            name="phoneNumber"
+                            value={formData.phoneNumber}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
+                    <div className="col">
+                        <label>{t('email')}</label>
+                        <input
+                            type="email"
+                            className="form-control"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
+                    {existEmail && (
+                        <p className="text-danger">
+                            {t('emailAlreadyExists')}
+                        </p>
+                    )}
+                </div>
+                <div className="row mb-3">
+                    <div className="col">
+                        <label>{t('password')}</label>
+                        <div className="input-group">
                             <input
-                                type="text"
+                                type={showPassword ? 'text' : 'password'}
                                 className="form-control"
-                                id="phoneNumber"
-                                name="phoneNumber"
-                                value={formData.phoneNumber}
-                                onChange={handleInputChange}
+                                id="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handlePasswordChange}
                                 required
                             />
+                            <button
+                                type="button"
+                                className="btn btn-outline-secondary"
+                                onClick={toggleShowPassword}
+                                style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: showPassword ? 'rgba(0, 0, 0, 0.125)' : 'white' }}
+                            >
+                                {showPassword ? 'Hide' : 'Show'}
+                            </button>
                         </div>
-                        <div className="col">
-                            <label>{t('email')}</label>
-                            <input
-                                type="email"
-                                className="form-control"
-                                id="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        {existEmail && (
+                        {passwordScore > 0 && (
+                            <p className={`text-${getPasswordStrengthColor(passwordScore)}`}>
+                                {getPasswordStrengthText(passwordScore)}
+                            </p>
+                        )}
+                        {!validatePassword(formData.password) && (
                             <p className="text-danger">
-                                {t('emailAlreadyExists')}
+                                {t('errorPassword')}
                             </p>
                         )}
                     </div>
-                    <div className="row mb-3">
-                        <div className="col">
-                            <label>{t('password')}</label>
-                            <div className="input-group">
-                                <input
-                                    type={showPassword ? 'text' : 'password'}
-                                    className="form-control"
-                                    id="password"
-                                    name="password"
-                                    value={formData.password}
-                                    onChange={handlePasswordChange}
-                                    required
-                                />
-                                <button
-                                    type="button"
-                                    className="btn btn-outline-secondary"
-                                    onClick={toggleShowPassword}
-                                    style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: showPassword ? 'rgba(0, 0, 0, 0.125)' : 'white' }}
-                                >
-                                    {showPassword ? 'Hide' : 'Show'}
-                                </button>
-                            </div>
-                            {passwordScore > 0 && (
-                                <p className={`text-${getPasswordStrengthColor(passwordScore)}`}>
-                                    {getPasswordStrengthText(passwordScore)}
-                                </p>
-                            )}
-                            {!validatePassword(formData.password) && (
-                                <p className="text-danger">
-                                    {t('errorPassword')}
-                                </p>
-                            )}
-                        </div>
-                        <div className="col">
-                            <label>{t('confirmPassword')}</label>
-                            <input
+                    <div className="col">
+                        <label>{t('confirmPassword')}</label>
+                        <input
 
-                                type={showPassword ? 'text' : 'password'}
-                                className="form-control"
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                value={formData.confirmPassword}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
+                            type={showPassword ? 'text' : 'password'}
+                            className="form-control"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleInputChange}
+                            required
+                        />
                     </div>
-                    {!passwordsMatch && (
-                        <p className="text-danger">{t('Sorry, an error occurred. The passwords do not match or do not meet the required criteria.')}</p>
-                    )}
-                    <div className="row mb-3">
-                        <div className="col">
-                            <label>{t('Companys Linkedin Page')} ({t('optional')})</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="linkedinPage"
-                                name="linkedinPage"
-                                value={formData.linkedinPage}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                        <div className="col">
-                            <label>{t('Companys Twitter Page')} ({t('optional')})</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="twitterPage"
-                                name="twitterPage"
-                                value={formData.twitterPage}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                        <div className="col">
-                            <label>{t('Companys Facebook Page')} ({t('optional')})</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="facebookPage"
-                                name="facebookPage"
-                                value={formData.facebookPage}
-                                onChange={handleInputChange}
-                            />
-                        </div>
+                </div>
+                {!passwordsMatch && (
+                    <p className="text-danger">{t('passwordsDoNotMatch')}</p>
+                )}
+                <div className="row mb-3">
+                    <div className="col">
+                        <label>{t('Companys Linkedin Page')} ({t('optional')})</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="linkedinPage"
+                            name="linkedinPage"
+                            value={formData.linkedinPage}
+                            onChange={handleInputChange}
+                        />
                     </div>
-                    <div className="container text-center">
-                        <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                            {t('registerButton')}
-                        </button>
+                    <div className="col">
+                        <label>{t('Companys Twitter Page')} ({t('optional')})</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="twitterPage"
+                            name="twitterPage"
+                            value={formData.twitterPage}
+                            onChange={handleInputChange}
+                        />
                     </div>
-                </form>
-            </div>
-            {/* <Modal show={showErrorModal} onHide={handleModalClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Error</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>{t('An error occurred. Please check your input and try again.')}</p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleModalClose}>
-                        Close
-                    </Button>
-                </Modal.Footer>
-            </Modal> */}
-            <Modal show={showSuccessModal} onHide={handleModalClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{t('Congratulations!')}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>{t('Your account has been successfully created.')}</p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleModalClose}>
-                        {t('Close')}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                    <div className="col">
+                        <label>{t('Companys Facebook Page')} ({t('optional')})</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="facebookPage"
+                            name="facebookPage"
+                            value={formData.facebookPage}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                </div>
+                <div className="container text-center">
+                    <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                        {t('registerButton')}
+                    </button>
+                </div>
+            </form>
         </div>
-    );
+        <Modal show={showSuccessModal} onHide={handleModalClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>{t('Congratulations!')}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <p>{t('Your account has been successfully created.')}</p>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleModalClose}>
+                    {t('Close')}
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    </div>
+);
 };
 
 export default RegisterCompanyPage;

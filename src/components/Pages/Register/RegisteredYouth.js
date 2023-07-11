@@ -119,7 +119,6 @@ const RegisterPage = () => {
         const score = zxcvbn(value).score;
         setPasswordScore(score);
         handleInputChange(e);
-        setPasswordValid(validatePassword(value) || value.length === 0);
     };
 
     const toggleShowPassword = () => {
@@ -138,14 +137,7 @@ const RegisterPage = () => {
 
     const validatePassword = (password) => {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
-        if (regex.test(password)) {
-            setError("Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.");
-            console.log('Invalid');
-            return true;
-        } else {
-            console.log('Valid')
-            return false;
-        }
+        return regex.test(password);
     };
 
     const handleSubmit = async (e) => {
@@ -166,16 +158,10 @@ const RegisterPage = () => {
         if (formData.password === formData.confirmPassword && validatePassword(formData.password)) {
             // Passwords match and meet the requirements
             setPasswordsMatch(true);
-            //password validate
-
-
+            // Rest of your code...
         } else {
             // Passwords don't match or don't meet the requirements, show an error message or take appropriate action
-            if (!doesPasswordMatch() || !validatePassword(formData.password)) {
-                setPasswordsMatch(false);
-                return;
-            }
-
+            setPasswordsMatch(false);
         }
 
         // You can send the form data to a backend server or perform any other actions
@@ -185,19 +171,8 @@ const RegisterPage = () => {
             const result = await handleRegister();
 
             if (result) {
-                /*
-                debbuging
-                .then(() => {
-                    console.log('User data saved successfully');
-                })
-                .catch((error) => {
-                    console.log('Error saving user data:', error.message);
-                });
-                */
-
                 setExistEmail(false);
 
-                // Show the success modal
                 setShowSuccessModal(true);
 
                 // Reset form fields after submission if needed
