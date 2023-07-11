@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import HeaderCompany from '../../common/Header/HeaderCompany';
 import { Navbar, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { auth } from '../../firebase';
+import { firestore } from '../../firebase';
 
 const ProfileCompany = () => {
     const { t } = useTranslation();
@@ -15,7 +17,19 @@ const ProfileCompany = () => {
 
     //test
     const [companyFormErrors, setCompanyFormErrors] = useState({
+        companyName: false,
         city: false,
+        industry: false,
+        maturity: false,
+        primarySector: false,
+        linkedinPage: false,
+        twitterPage: false,
+        facebookPage: false,
+        contactFirstName: false,
+        contactLastName: false,
+        contactRole: false,
+        phoneNumber: false,
+        email: false,
         aboutme: false,
         project: false,
         challenge: false
@@ -23,22 +37,98 @@ const ProfileCompany = () => {
 
     const [selectedCompanyImage, setSelectedCompanyImage] = useState(null);
 
-    const [companyFormData, setCompanyFormData] = useState({
-        companyName: 'Guuk',
-        city: 'Villejeune',
-        aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j\'ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J\'ai un permis de conduire et une voiture.',
-    });
-
     const [projectList, setProjectList] = useState([
-        "Basic Education",
-        "Engineering"
     ]);
 
     const [challengeList, setChallengeList] = useState([
-        "English",
-        "Spanish",
-        "Basque"
     ]);
+
+    const [companyFormData, setCompanyFormData] = useState({
+        companyName: '',
+        city: '',
+        industry: '',
+        maturity: '',
+        primarySector: '',
+        linkedinPage: '',
+        twitterPage: '',
+        facebookPage: '',
+        contactFirstName: '',
+        contactLastName: '',
+        contactRole: '',
+        phoneNumber: '',
+        email: '',
+    });
+
+    const authStateChangedExecuted = useRef(false);
+
+    useEffect(() => {
+        // const storedCompanyFormData = localStorage.getItem('companyFormData');
+        // if (storedCompanyFormData) {
+        //     setCompanyFormData(JSON.parse(storedCompanyFormData));
+        // }
+
+        // const storedProjectList = localStorage.getItem('projectList');
+        // if (storedProjectList) {
+        //     setProjectList(JSON.parse(storedProjectList));
+        // }
+
+        // const storedChallengeList = localStorage.getItem('challengeList');
+        // if (storedChallengeList) {
+        //     setChallengeList(JSON.parse(storedChallengeList));
+        // }
+
+        // const storedCompanyImage = localStorage.getItem('companyImage');
+        // if (storedCompanyImage) {
+        //     setSelectedCompanyImage(JSON.parse(storedCompanyImage));
+        // }
+        const handleAuthStateChanged = async (user) => {
+            if (user) {
+                const userId = user.uid;
+
+                try {
+                    const userDocRef = firestore.collection('users').doc('userscompany');
+                    const userDoc = await userDocRef.get();
+
+                    if (userDoc.exists) {
+                        const userData = userDoc.data()[userId];
+
+                        setCompanyFormData({
+                            companyName: userData.companyName,
+                            city: userData.city,
+                            email: userData.email,
+                            postalCode: userData.postalCode,
+                            phoneNumber: userData.phoneNumber,
+                            industry: userData.industry,
+                            maturity: userData.maturity,
+                            primarySector: userData.primarySector,
+                            linkedinPage: userData.linkedinPage,
+                            twitterPage: userData.twitterPage,
+                            facebookPage: userData.facebookPage,
+                            contactFirstName: userData.contactFirstName,
+                            contactLastName: userData.contactLasttName,
+                            contactRole: userData.contactRole,
+                        });
+                        console.log('User data retrieved');
+                        console.log(userData.companyName);
+                    } else {
+                        console.log('User document not found');
+                    }
+                } catch (error) {
+                    console.log('Error retrieving user data:', error);
+                }
+            } else {
+                console.log('User is not signed in');
+            }
+        };
+
+        // Attach the event listener only if it hasn't been executed before
+        if (!authStateChangedExecuted.current) {
+            auth.onAuthStateChanged(handleAuthStateChanged);
+            authStateChangedExecuted.current = true;
+        }
+    }, []);
+
+
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -55,29 +145,64 @@ const ProfileCompany = () => {
         setIsEditing(true);
     };
 
-    const handleSaveProfile = () => {
-        // Vérifier si les champs requis sont remplis
-        if (!companyFormData.city || !companyFormData.aboutme || !projectList.length || !challengeList.length) {
-            alert('Please fill in all the required fields to enable your profile.');
-            return;
+    //function to get user uid
+    const getUserUid = () => {
+        const user = auth.currentUser;
+        if (user) {
+            return user.uid;
+        } else {
+            return null;
         }
+    };
 
-        // Réinitialiser les erreurs de formulaire
-        setCompanyFormErrors({
-            city: false,
-            aboutme: false,
-            project: false,
-            challenge: false
-        });
+    const handleSaveProfile = async (user) => {
+        // // Vérifier si les champs requis sont remplis
+        // if (!companyFormData.city || !companyFormData.aboutme || !projectList.length || !challengeList.length) {
+        //     alert('Please fill in all the required fields to enable your profile.');
+        //     return;
+        // }
 
+        // // Réinitialiser les erreurs de formulaire
+        // setCompanyFormErrors({
+        //     city: false,
+        //     aboutme: false,
+        //     project: false,
+        //     challenge: false
+        // });
+
+        // // Effectuer la logique de sauvegarde du profil
+        // setIsEditing(false);
+
+        // // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
+        // localStorage.setItem('companyFormData', JSON.stringify(companyFormData));
+        // localStorage.setItem('projectList', JSON.stringify(projectList));
+        // localStorage.setItem('challengeList', JSON.stringify(challengeList));
+        // localStorage.setItem('companyImage', JSON.stringify(selectedCompanyImage));
         // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
+        const userId = getUserUid()
 
-        // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
-        localStorage.setItem('companyFormData', JSON.stringify(companyFormData));
-        localStorage.setItem('projectList', JSON.stringify(projectList));
-        localStorage.setItem('challengeList', JSON.stringify(challengeList));
-        localStorage.setItem('companyImage', JSON.stringify(selectedCompanyImage));
+        try {
+
+            // Update the user's information in Firestore
+            const userDocRef = firestore.collection('users').doc('userscompany');
+            const userDoc = await userDocRef.get();
+            const userData = userDoc.data()[userId];
+            await userDocRef.update({
+
+                [userId]: {
+                    companyName: userData.companyName,
+                    city: companyFormData.city,
+                    postalCode: companyFormData.postalCode,
+                    phoneNumber: userData.phoneNumber,
+                    email: userData.email,
+                    // Add any other fields you want to update
+                }
+            });
+            console.log('User data updated');
+        } catch (error) {
+            console.log('Error updating user data:', error);
+        }
     };
 
 
@@ -134,33 +259,13 @@ const ProfileCompany = () => {
         setHideProfile(!hideProfile);
     };
 
-    useEffect(() => {
-        const storedCompanyFormData = localStorage.getItem('companyFormData');
-        if (storedCompanyFormData) {
-            setCompanyFormData(JSON.parse(storedCompanyFormData));
-        }
 
-        const storedProjectList = localStorage.getItem('projectList');
-        if (storedProjectList) {
-            setProjectList(JSON.parse(storedProjectList));
-        }
-
-        const storedChallengeList = localStorage.getItem('challengeList');
-        if (storedChallengeList) {
-            setChallengeList(JSON.parse(storedChallengeList));
-        }
-
-        const storedCompanyImage = localStorage.getItem('companyImage');
-        if (storedCompanyImage) {
-            setSelectedCompanyImage(JSON.parse(storedCompanyImage));
-        }
-    }, []);
 
     return (
         <div>
             <HeaderCompany />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{companyFormData.companyName} {t('profile')}</h1>
+                <h1>{t('profile')} {companyFormData.companyName}</h1>
             </div>
 
             {isEditing ? (
@@ -297,7 +402,7 @@ const ProfileCompany = () => {
                         <div className="col-md-2 text-center">
                             <img
                                 src={selectedCompanyImage || companyImage || '../intermediary-profile-image.png'}
-                                alt="Profile picture"
+                                alt="Profile"
                                 style={{ width: '90%', height: 'auto', marginBottom: '15px' }}
                             />
                         </div>
