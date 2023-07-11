@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import HeaderCompany from '../../common/Header/HeaderCompany';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { auth } from '../../firebase';
@@ -30,9 +30,7 @@ const ProfileCompany = () => {
         contactRole: false,
         phoneNumber: false,
         email: false,
-        aboutme: false,
-        project: false,
-        challenge: false
+        aboutme: false
     });
 
     const [selectedCompanyImage, setSelectedCompanyImage] = useState(null);
@@ -109,7 +107,7 @@ const ProfileCompany = () => {
                             contactRole: userData.contactRole,
                         });
                         console.log('User data retrieved');
-                        console.log(userData.companyName);
+                        console.log(userData.contactFirstName);
                     } else {
                         console.log('User document not found');
                     }
@@ -196,6 +194,16 @@ const ProfileCompany = () => {
                     postalCode: companyFormData.postalCode,
                     phoneNumber: userData.phoneNumber,
                     email: userData.email,
+                    industry: userData.industry,
+                    maturity: userData.maturity,
+                    primarySector: userData.primarySector,
+                    linkedinPage: userData.linkedinPage,
+                    twitterPage: userData.twitterPage,
+                    facebookPage: userData.facebookPage,
+                    contactFirstName: userData.contactFirstName,
+                    contactLastName: userData.contactLastName,
+                    contactRole: userData.contactRole,
+
                     // Add any other fields you want to update
                 }
             });
