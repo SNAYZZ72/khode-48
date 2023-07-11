@@ -182,8 +182,23 @@ const Terms = () => {
                                 <li className="list-group-item">
                                     <div className="row mb-3">
                                         <div className="col">
-                                            <h3>{t('h3calidad')}</h3>
-                                            <h5>{t('h5calidad1')}</h5>
+                                            <h3>{t('h3aviso')}</h3>
+                                            <h5>{t('h5aviso1')}</h5>
+                                            <p>{t('paviso1')}</p>
+                                            <p>{t('paviso2')}</p>
+                                            <p>{t('paviso3')}</p>
+                                            <h5>{t('h5aviso2')}</h5>
+                                            <p>{t('paviso4')}</p>
+                                            <p>{t('paviso5')}</p>
+                                            <p>{t('paviso6')}</p>
+                                            <h5>{t('h5aviso3')}</h5>
+                                            <p>{t('paviso7')}</p>
+                                            <p>{t('paviso8')}</p>
+                                            <p>{t('paviso9')}</p>
+                                            <p>{t('paviso10')}</p>
+                                            <p>{t('paviso11')}<b>{t('paviso12')}</b></p>
+                                            <h5>{t('h5aviso4')}</h5>
+                                            <p>{t('paviso13')}</p>
                                         </div>
                                     </div>
                                 </li>
