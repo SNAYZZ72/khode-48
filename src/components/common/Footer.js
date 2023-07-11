@@ -1,37 +1,43 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+//import footer.css
+import './footer.css';
 
 const Footer = () => {
   return (
-    <Navbar style={{ backgroundColor: '#F24726' }} className="d-flex justify-content-between align-items-center">
-      <Nav className="flex-column">
-        {/* Contenu de la première colonne */}
-        <Nav.Link href="/contact" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginLeft: '10px' }}>Contact</Nav.Link>
-        <Nav.Link href="/about" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginLeft: '10px' }}>About us</Nav.Link>
-        <Nav.Link href="/terms" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginLeft: '10px' }}>Terms & conditions</Nav.Link>
-      </Nav>
-      {/* <Nav className="align-items-center">
-        <Nav.Link href="https://twitter.com" target="_blank" style={{ color: 'white', fontSize: '40px' }}>
-          <FontAwesomeIcon icon={faTwitter} />
-        </Nav.Link>
-        <Nav.Link href="https://www.facebook.com" target="_blank" style={{ color: 'white', fontSize: '40px' }}>
-          <FontAwesomeIcon icon={faFacebook} />
-        </Nav.Link>
-        <Nav.Link href="https://www.instagram.com" target="_blank" style={{ color: 'white', fontSize: '40px' }}>
-          <FontAwesomeIcon icon={faInstagram} />
-        </Nav.Link>
-      </Nav> */}
-      <Nav className="flex-column text-end">
-        {/* Contenu de la colonne centrale */}
-        <Nav.Link href="/FAQ" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginRight: '10px' }}>Aviso legal</Nav.Link>
-        <Nav.Link href="/careers" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginRight: '10px' }}>Politica de Cookies</Nav.Link>
-        <Nav.Link href="/country" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginRight: '10px' }}>Politica de privacidad</Nav.Link>
-      </Nav>
-    </Navbar>
+    <div>
+      <footer className="footer-59391">
+        <div className="container">
+          <div className="row mb-3">
+            <div className="col-md-6 ">
+              <ul className="nav-links list-unstyled nav-left">
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/about">About us</a></li>
+                <li><a href="/terms">Terms & Conditions</a></li>
+              </ul>
+            </div>
+            <div className="col-md-6 text-md-end">
+              <ul className="list-unstyled social-icons">
+                <li><img href="#" src="/bfa.png" className="fb"/></li>
+                <li><img href="#" src="/kultiva.svg" className="tw"/></li>
+                <li><img href="#" src="/c2b.png" className="in"/></li>
+                <li><img href="#" src="/bigel.png" className="be"/></li>
+              </ul>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col ">
+              <div className="copyright">
+                <p><small><b>Kode48 © 2023.</b> All Rights Reserved.</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
-}
+};
 
 export default Footer;
+
 

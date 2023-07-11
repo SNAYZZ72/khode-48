@@ -109,7 +109,9 @@ const Contact = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>{t('Submit')}</button>
+                    <div className="text-center">
+                        <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>{t('Submit')}</button>
+                    </div>
                 </form>
             </div>
         </div>
