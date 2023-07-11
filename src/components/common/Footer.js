@@ -1,59 +1,43 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
+//import footer.css
+import './footer.css';
 
 const Footer = () => {
   return (
-    <Navbar style={{ backgroundColor: '#F24726' }} className="d-flex justify-content-between align-items-center">
-      <Nav className="flex-column">
-        <Nav.Link href="/contact" className="nav-link" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginLeft: '10px' }}>
-          Contact
-        </Nav.Link>
-        <Nav.Link href="/about" className="nav-link" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginLeft: '10px' }}>
-          About us
-        </Nav.Link>
-        <Nav.Link href="/terms" className="nav-link" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginLeft: '10px' }}>
-          Terms & conditions
-        </Nav.Link>
-      </Nav>
-      <Nav className="align-items-center">
-        <div className="row">
-          <div className="col-md-3 text-center">
-            <Nav.Link href="https://www.bizkaia.eus/es/inicio" target="_blank">
-              <img src="bfa.png" className="footer-icon" style={{ height: '40px', width: 'auto' }} />
-            </Nav.Link>
+    <div>
+      <footer className="footer-59391">
+        <div className="container">
+          <div className="row mb-3">
+            <div className="col-md-6 ">
+              <ul className="nav-links list-unstyled nav-left">
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/about">About us</a></li>
+                <li><a href="/terms">Terms & Conditions</a></li>
+              </ul>
+            </div>
+            <div className="col-md-6 text-md-end">
+              <ul className="list-unstyled social-icons">
+                <li><img href="#" src="/bfa.png" className="fb"/></li>
+                <li><img href="#" src="/kultiva.svg" className="tw"/></li>
+                <li><img href="#" src="/c2b.png" className="in"/></li>
+                <li><img href="#" src="/bigel.png" className="be"/></li>
+              </ul>
+            </div>
           </div>
-          <div className="col-md-3 text-center">
-            <Nav.Link href="https://www.kultiba.net/" target="_blank">
-              <img src="kultiva.svg" className="footer-icon" style={{ height: '50px', width: 'auto' }} />
-            </Nav.Link>
-          </div>
-          <div className="col-md-3 text-center">
-            <Nav.Link href="https://www.campus2b.com/" target="_blank">
-              <img src="c2b.png" className="footer-icon" style={{ height: '40px', width: 'auto' }} />
-            </Nav.Link>
-          </div>
-          <div className="col-md-3 text-center">
-            <Nav.Link href="http://www.staybigel.com/" target="_blank">
-              <img src="bigel.png" className="footer-icon" style={{ height: '40px', width: 'auto' }} />
-            </Nav.Link>
+          <div className="row">
+            <div className="col ">
+              <div className="copyright">
+                <p><small><b>Kode48 © 2023.</b> All Rights Reserved.</small></p>
+              </div>
+            </div>
           </div>
         </div>
-      </Nav>
-      <Nav className="flex-column text-end">
-        <Nav.Link href="/FAQ" className="nav-link" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginRight: '10px' }}>
-          Aviso legal
-        </Nav.Link>
-        <Nav.Link href="/careers" className="nav-link" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginRight: '10px' }}>
-          Politica de Cookies
-        </Nav.Link>
-        <Nav.Link href="/country" className="nav-link" style={{ color: 'white', fontWeight: '500', fontSize: '15px', marginRight: '10px' }}>
-          Politica de privacidad
-        </Nav.Link>
-      </Nav>
-    </Navbar>
+      </footer>
+    </div>
   );
 };
 
-
 export default Footer;
+
 
