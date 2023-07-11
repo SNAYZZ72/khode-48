@@ -98,7 +98,53 @@ const Terms = () => {
                                     <div className="row mb-3">
                                         <div className="col">
                                             <h3>{t('h3privacidad')}</h3>
-                                            <p>{t('youngDescription')}</p>
+                                            <h5>{t('h5privacidad1')}</h5>
+                                            <p>{t('pprivacidad1')}</p>
+                                            <h5>{t('h5privacidad2')}</h5>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <h5>{t('h5privacidad3')}</h5>
+                                                    <p>{t('pprivacidad2')}</p>
+                                                    <p>{t('pprivacidad3')}</p>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <h5>{t('h5privacidad4')}</h5>
+                                                    <p>{t('pprivacidad4')}</p>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <h5>{t('h5privacidad5')}</h5>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <h5>{t('h5privacidad6')}</h5>
+                                                    <p>{t('pprivacidad5')}</p>
+                                                    <p>{t('pprivacidad6')}</p>
+                                                    <p>{t('pprivacidad7')}</p>
+                                                    <p>{t('pprivacidad8')}</p>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <h5>{t('h5privacidad7')}</h5>
+                                                    <p>{t('pprivacidad9')}</p>
+                                                    <p>{t('pprivacidad10')}</p>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <h5>{t('h5privacidad8')}</h5>
+                                                </li>
+                                            </ul>
+                                            <h5>{t('h5privacidad9')}</h5>
+                                            <h5>{t('h5privacidad10')}</h5>
+                                            <p>{t('pprivacidad11')}</p>
+                                            <p>{t('pprivacidad12')}</p>
+                                            <h5>{t('h5privacidad11')}</h5>
+                                            <p>{t('pprivacidad13')}</p>
+                                            <h5>{t('h5privacidad12')}</h5>
+                                            <p>{t('pprivacidad14')}</p>
+                                            <h5>{t('h5privacidad13')}</h5>
+                                            <h5>{t('h5privacidad14')}</h5>
+                                            <h5>{t('h5privacidad15')}</h5>
+                                            <h5>{t('h5privacidad16')}</h5>
+                                            <h5>{t('h5privacidad17')}</h5>
+                                            <h5>{t('h5privacidad18')}</h5>
+                                            <h5>{t('h5privacidad19')}</h5>
                                         </div>
                                     </div>
                                 </li>
