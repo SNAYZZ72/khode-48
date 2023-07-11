@@ -16,7 +16,7 @@ const Terms = () => {
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item profile-item">
                         <div className="row mb-3">
-                            <ul className="list-group" style={{ paddingBottom: '20px' }}>
+                            <ul className="list-group" style={{ paddingBottom: '40px' }}>
                                 <li className="list-group-item">
                                     <div className="col">
                                         <h3>{t('h3cookie')}</h3>
@@ -93,7 +93,7 @@ const Terms = () => {
                                     </div>
                                 </li>
                             </ul>
-                            <ul className="list-group" style={{ paddingBottom: '20px' }}>
+                            <ul className="list-group" style={{ paddingBottom: '40px' }}>
                                 <li className="list-group-item">
                                     <div className="row mb-3">
                                         <div className="col">
@@ -149,7 +149,7 @@ const Terms = () => {
                                     </div>
                                 </li>
                             </ul>
-                            <ul className="list-group" style={{ paddingBottom: '20px' }}>
+                            <ul className="list-group" style={{ paddingBottom: '40px' }}>
                                 <li className="list-group-item">
                                     <div className="row mb-3">
                                         <div className="col">
