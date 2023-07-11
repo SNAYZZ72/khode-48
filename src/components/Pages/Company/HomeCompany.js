@@ -314,7 +314,7 @@ const HomeCompany = () => {
         return (
             <Modal show={showProfileModal} onHide={() => setShowProfileModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{t('Profile')}</Modal.Title>
+                    <Modal.Title>{t('profile')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <ul className="list-group list-group-flush">
@@ -354,7 +354,7 @@ const HomeCompany = () => {
                             <p><b>{t('educationalLevel')}:</b> {selectedProfile.educationalLevel}</p>
                         </li>
                         <li className="list-group-item">
-                            <p><b>{t('city')}:</b> {selectedProfile.city}</p>
+                            <p><b>{t('city')} / {t('postalCode')}:</b> {selectedProfile.city} / {selectedProfile.postalCode}</p>
                         </li>
                         <li className="list-group-item">
 
@@ -400,7 +400,7 @@ const HomeCompany = () => {
                 <div className="row mb-3">
                     <div className="col-md-9" style={{ paddingBottom: '10px' }}>
                         <div className="input-group">
-                            <span className="input-group-text">{t('Search')}:</span>
+                            <span className="input-group-text">{t('search')}:</span>
                             <input
                                 type="text"
                                 className="form-control"
@@ -412,14 +412,14 @@ const HomeCompany = () => {
                     <div className="col-md-3">
                         <div className="input-group">
                             <span className="input-group-text">
-                                {t('Filter')}:
+                                {t('filter')}:
                             </span>
                             <select
                                 className="form-select"
                                 value={filterQuery}
                                 onChange={handleFilterChange}
                             >
-                                <option value="">{t('All')}</option>
+                                <option value="">{t('all')}</option>
                                 {existingSkills.map((skill) => (
                                     <option key={skill} value={skill}>
                                         {skill}
@@ -469,7 +469,7 @@ const HomeCompany = () => {
                                             onClick={() => handleSeeMoreAbout(profile)}
                                             style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
                                         >
-                                            {t('View profile')}
+                                            {t('viewProfile')}
                                         </button>
                                     </div>
                                 </div>
@@ -527,7 +527,7 @@ const HomeCompany = () => {
                     <div className="row mb-3">
                         <div className="col-md-9" style={{ paddingBottom: '10px' }}>
                             <div className="input-group">
-                                <span className="input-group-text">{t('Search')}:</span>
+                                <span className="input-group-text">{t('search')}:</span>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -539,15 +539,15 @@ const HomeCompany = () => {
                         <div className="col-md-3">
                             <div className="input-group">
                                 <span className="input-group-text">
-                                    {t('Filter')}:
+                                    {t('filter')}:
                                 </span>
                                 <select
                                     className="form-select"
                                     value={filterQuery}
                                     onChange={handleFilterChange}
                                 >
-                                    <option value="">{t('All')}</option>
-                                    <option value="jobBeginDate">{t('Begin Date')}</option>
+                                    <option value="">{t('all')}</option>
+                                    <option value="jobBeginDate">{t('beginDate')}</option>
                                 </select>
                             </div>
                         </div>
@@ -564,7 +564,7 @@ const HomeCompany = () => {
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>{t('jobDescription')}:</b> {job.jobDescription}</p>
+                                                        <p><b>{t('description')}:</b> {job.jobDescription}</p>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -573,22 +573,22 @@ const HomeCompany = () => {
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>{t('jobLocation')}:</b> {job.jobLocation}</p>
+                                                        <p><b>{t('location')}:</b> {job.jobLocation}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>{t('jobBeginDate')}:</b> {job.jobBeginDate}</p>
+                                                        <p><b>{t('beginDate')}:</b> {job.jobBeginDate}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>{t('jobEndDate')}:</b> {job.jobEndDate}</p>
+                                                        <p><b>{t('endDate')}:</b> {job.jobEndDate}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>{t('jobPosition')}:</b> {job.jobPosition}</p>
+                                                        <p><b>{t('position')}:</b> {job.jobPosition}</p>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -634,7 +634,7 @@ const HomeCompany = () => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className='form-label'>{t('jobDescription')}</label>
+                                <label className='form-label'>{t('description')}</label>
                                 <textarea
                                     className="form-control"
                                     id='jobDescription'
@@ -649,7 +649,7 @@ const HomeCompany = () => {
                                 {renderSkillsList()}
                             </div>
                             <div className="mb-3">
-                                <label className='form-label'>{t('jobLocation')}</label>
+                                <label className='form-label'>{t('location')}</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -661,7 +661,7 @@ const HomeCompany = () => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className='form-label'>{t('jobBeginDate')}</label>
+                                <label className='form-label'>{t('beginDate')}</label>
                                 <input
                                     type="date"
                                     className="form-control"
@@ -673,7 +673,7 @@ const HomeCompany = () => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className='form-label'>{t('jobEndDate')}</label>
+                                <label className='form-label'>{t('endDate')}</label>
                                 <input
                                     type="date"
                                     className="form-control"
@@ -685,7 +685,7 @@ const HomeCompany = () => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className='form-label'>{t('jobPosition')}</label>
+                                <label className='form-label'>{t('position')}</label>
                                 <input
                                     type="text"
                                     className="form-control"
