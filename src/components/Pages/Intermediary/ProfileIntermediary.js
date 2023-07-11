@@ -12,7 +12,6 @@ import { auth } from '../../firebase';
 const ProfileIntermediary = () => {
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
-    const [hideProfile, setHideProfile] = useState(false);
     const [intermediaryImage, setIntermediaryImage] = useState(null);
 
     //test
@@ -32,36 +31,27 @@ const ProfileIntermediary = () => {
         phoneNumber: false,
         email: false,
         information: false,
-        program: false
     });
 
     const [selectedIntermediaryImage, setSelectedIntermediaryImage] = useState(null);
 
-    const [programList, setProgramList] = useState([
-    ]);
-
     const [intermediaryFormData, setIntermediaryFormData] = useState({
         // intermediaryName: 'Googaz',
+        email: '',
+        companyName: '',
+        contactFirstName: '',
+        contactLastName: '',
+        contactRole: '',
+        information: '',
         city: '',
+        postalCode: '',
+        phoneNumber: '',
         industry: '',
         maturity: '',
         primarySector: '',
         linkedinPage: '',
         twitterPage: '',
         facebookPage: '',
-        contactFirstName: '',
-        contactLastName: '',
-        contactRole: '',
-        phoneNumber: '',
-        email: '',
-        proactivity: '',
-        creativity: '',
-        initiative: '',
-        empathy: '',
-        leadership: '',
-        teamwork: '',
-        points: '',
-        information: '',
     });
 
     const authStateChangedExecuted = useRef(false);
@@ -79,9 +69,13 @@ const ProfileIntermediary = () => {
                         const userData = userDoc.data()[userId];
 
                         setIntermediaryFormData({
-                            companyName: userData.companyName,
-                            city: userData.city,
                             email: userData.email,
+                            companyName: userData.companyName,
+                            contactFirstName: userData.contactFirstName,
+                            contactLastName: userData.contactLasttName,
+                            contactRole: userData.contactRole,
+                            information: userData.information,
+                            city: userData.city,
                             postalCode: userData.postalCode,
                             phoneNumber: userData.phoneNumber,
                             industry: userData.industry,
@@ -90,10 +84,6 @@ const ProfileIntermediary = () => {
                             linkedinPage: userData.linkedinPage,
                             twitterPage: userData.twitterPage,
                             facebookPage: userData.facebookPage,
-                            contactFirstName: userData.contactFirstName,
-                            contactLastName: userData.contactLasttName,
-                            contactRole: userData.contactRole,
-                            information: userData.information,
                         });
                         console.log('User data retrieved');
                     } else {
@@ -153,21 +143,21 @@ const ProfileIntermediary = () => {
             await userDocRef.update({
 
                 [userId]: {
+                    email: userData.email,
                     companyName: userData.companyName,
+                    contactFirstName: userData.contactFirstName,
+                    contactLastName: userData.contactLastName,
+                    contactRole: userData.contactRole,
+                    information: intermediaryFormData.information,
                     city: intermediaryFormData.city,
                     postalCode: intermediaryFormData.postalCode,
-                    information: intermediaryFormData.information,
                     phoneNumber: userData.phoneNumber,
-                    email: userData.email,
                     industry: userData.industry,
                     maturity: userData.maturity,
                     primarySector: userData.primarySector,
                     linkedinPage: userData.linkedinPage,
                     twitterPage: userData.twitterPage,
                     facebookPage: userData.facebookPage,
-                    contactFirstName: userData.contactFirstName,
-                    contactLastName: userData.contactLastName,
-                    contactRole: userData.contactRole,
 
                     // Add any other fields you want to update
                 }
