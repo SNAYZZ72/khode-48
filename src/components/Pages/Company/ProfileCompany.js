@@ -28,7 +28,7 @@ const ProfileCompany = () => {
         contactRole: false,
         phoneNumber: false,
         email: false,
-        aboutme: false
+        information: false,
     });
 
     const [selectedCompanyImage, setSelectedCompanyImage] = useState(null);
@@ -53,6 +53,7 @@ const ProfileCompany = () => {
         contactRole: '',
         phoneNumber: '',
         email: '',
+        information: '',
     });
 
     const authStateChangedExecuted = useRef(false);
@@ -84,6 +85,7 @@ const ProfileCompany = () => {
                             contactFirstName: userData.contactFirstName,
                             contactLastName: userData.contactLasttName,
                             contactRole: userData.contactRole,
+                            information: userData.information,
                         });
                         console.log('User data retrieved');
                     } else {
@@ -147,6 +149,7 @@ const ProfileCompany = () => {
                     companyName: userData.companyName,
                     city: companyFormData.city,
                     postalCode: companyFormData.postalCode,
+                    information: companyFormData.information,
                     phoneNumber: userData.phoneNumber,
                     email: userData.email,
                     industry: userData.industry,
@@ -176,53 +179,6 @@ const ProfileCompany = () => {
             [name]: value,
         }));
     };
-
-
-    const handleProjectChange = (index, value) => {
-        setProjectList((prevList) => {
-            const newList = [...prevList];
-            newList[index] = value;
-            return newList;
-        });
-    };
-
-    const handleChallengeChange = (index, value) => {
-        setChallengeList((prevList) => {
-            const newList = [...prevList];
-            newList[index] = value;
-            return newList;
-        });
-    };
-
-    const handleAddProject = () => {
-        const newProjectList = [...projectList, ''];
-        setProjectList(newProjectList);
-        localStorage.setItem('projectList', JSON.stringify(newProjectList));
-    };
-
-    const handleRemoveProject = (index) => {
-        const newProjectList = projectList.filter((_, i) => i !== index);
-        setProjectList(newProjectList);
-        localStorage.setItem('projectList', JSON.stringify(newProjectList));
-    };
-
-    const handleAddChallenge = () => {
-        const newChallengeList = [...challengeList, ''];
-        setChallengeList(newChallengeList);
-        localStorage.setItem('challengeList', JSON.stringify(newChallengeList));
-    };
-
-    const handleRemoveChallenge = (index) => {
-        const newChallengeList = challengeList.filter((_, i) => i !== index);
-        setChallengeList(newChallengeList);
-        localStorage.setItem('challengeList', JSON.stringify(newChallengeList));
-    };
-
-    const handleToggle = () => {
-        setHideProfile(!hideProfile);
-    };
-
-
 
     return (
         <div>
@@ -257,12 +213,12 @@ const ProfileCompany = () => {
                                 <label htmlFor="aboutme">About me</label>
                                 <textarea
                                     className="form-control"
-                                    id="aboutme"
-                                    name="aboutme"
-                                    value={companyFormData.aboutme}
+                                    id="information"
+                                    name="information"
+                                    value={companyFormData.information}
                                     onChange={handleInputChange}
                                 />
-                                {companyFormErrors.aboutme && (
+                                {companyFormErrors.information && (
                                     <div className="invalid-feedback">About me field is required</div>
                                 )}
                             </div>
@@ -322,7 +278,7 @@ const ProfileCompany = () => {
                                             overflowY: 'auto'
                                         }}
                                     >
-                                        {companyFormData.aboutme}
+                                        {companyFormData.information}
                                     </p>
                                 </div>
                             </div>
