@@ -457,59 +457,6 @@ const ProfileCompany = () => {
                                         </Nav.Link>
                                     </Nav>
                                 </div>
-                                <div className="col">
-                                    <h3>{hideProfile ? t('hideProfile') : t('showProfile')}</h3>
-                                    {/* switch toggle button to hide profile */}
-                                    <div className="form-check form-switch">
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            id="flexSwitchCheckDefault"
-                                            checked={hideProfile}
-                                            onChange={handleToggle}
-                                            style={{ padding: '10px' }}
-                                        />
-                                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
-                                            {hideProfile ? t('hide') : t('show')}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row justify-content-center">
-                        <div className="col-md-7">
-                            <div className="row">
-                                <div className="col">
-                                    <h3>{t('project')}</h3>
-                                    {projectList.map((project, index) => (
-                                        <div className="col" key={index}>
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{project}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="col">
-                                    <h3>{t('challenge')}</h3>
-                                    {challengeList.map((challenge, index) => (
-                                        <div className="col" key={index}>
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{challenge}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row justify-content-center" style={{ paddingBottom: "15px" }}>
-                        <div className="col-md-7">
-                            <div className="row">
-                                <div className="col text-center">
-                                    <h1 style={{ fontWeight: 'bold' }}>{studentCount}</h1>
-                                    <h4>{t('youngPeople')} recruits</h4>
-                                </div>
-                                <div className="col text-center">
-                                    <h1 style={{ fontWeight: 'bold' }}>{challengeCount}</h1>
-                                    <h4 style={{ maxWidth: '100%', textAlign: 'center', margin: 'auto' }}>{t('challenge')} accepted</h4>
-                                </div>
                             </div>
                         </div>
                     </div>
