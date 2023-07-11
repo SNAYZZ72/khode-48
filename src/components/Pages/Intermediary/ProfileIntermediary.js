@@ -31,7 +31,7 @@ const ProfileIntermediary = () => {
         contactRole: false,
         phoneNumber: false,
         email: false,
-        aboutme: false,
+        information: false,
         program: false
     });
 
@@ -61,26 +61,12 @@ const ProfileIntermediary = () => {
         leadership: '',
         teamwork: '',
         points: '',
+        information: '',
     });
 
     const authStateChangedExecuted = useRef(false);
 
     useEffect(() => {
-        // const storedIntermediaryFormData = localStorage.getItem('intermediaryFormData');
-        // if (storedIntermediaryFormData) {
-        //     setIntermediaryFormData(JSON.parse(storedIntermediaryFormData));
-        // }
-
-        // const storedProgramList = localStorage.getItem('programList');
-        // if (storedProgramList) {
-        //     setProgramList(JSON.parse(storedProgramList));
-        // }
-
-        // const storedIntermediaryImage = localStorage.getItem('intermediaryImage');
-        // if (storedIntermediaryImage) {
-        //     setIntermediaryImage(JSON.parse(storedIntermediaryImage));
-        // }
-
         const handleAuthStateChanged = async (user) => {
             if (user) {
                 const userId = user.uid;
@@ -107,9 +93,9 @@ const ProfileIntermediary = () => {
                             contactFirstName: userData.contactFirstName,
                             contactLastName: userData.contactLasttName,
                             contactRole: userData.contactRole,
+                            information: userData.information,
                         });
                         console.log('User data retrieved');
-                        console.log(userData.password);
                     } else {
                         console.log('User document not found');
                     }
@@ -155,27 +141,6 @@ const ProfileIntermediary = () => {
     };
 
     const handleSaveProfile = async (user) => {
-        // // Vérifier si les champs requis sont remplis
-        // if (!intermediaryFormData.city || !intermediaryFormData.aboutme || !programList.length) {
-        //     alert('Please fill in all the required fields to enable your profile.');
-        //     return;
-        // }
-
-        // // Réinitialiser les erreurs de formulaire
-        // setIntermediaryFormErrors({
-        //     city: false,
-        //     aboutme: false,
-        //     program: false
-        // });
-
-        // // Effectuer la logique de sauvegarde du profil
-        // setIsEditing(false);
-
-        // // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
-        // localStorage.setItem('intermediaryFormData', JSON.stringify(intermediaryFormData));
-        // localStorage.setItem('programList', JSON.stringify(programList));
-        // localStorage.setItem('intermediaryImage', JSON.stringify(selectedIntermediaryImage));
-
         setIsEditing(false);
         const userId = getUserUid()
 
@@ -191,6 +156,7 @@ const ProfileIntermediary = () => {
                     companyName: userData.companyName,
                     city: intermediaryFormData.city,
                     postalCode: intermediaryFormData.postalCode,
+                    information: intermediaryFormData.information,
                     phoneNumber: userData.phoneNumber,
                     email: userData.email,
                     industry: userData.industry,
@@ -219,54 +185,6 @@ const ProfileIntermediary = () => {
             ...prevIntermediaryFormData,
             [name]: value,
         }));
-    };
-
-
-    const handleProgramChange = (index, value) => {
-        setProgramList((prevList) => {
-            const newList = [...prevList];
-            newList[index] = value;
-            return newList;
-        });
-    };
-
-    const handleAddProgram = () => {
-        const newProgramList = [...programList, ''];
-        setProgramList(newProgramList);
-        localStorage.setItem('programList', JSON.stringify(newProgramList));
-    };
-
-    const handleRemoveProgram = (index) => {
-        const newProgramList = programList.filter((_, i) => i !== index);
-        setProgramList(newProgramList);
-        localStorage.setItem('programList', JSON.stringify(newProgramList));
-    };
-
-    const chartData = [
-        { name: 'Proactivity', value: intermediaryFormData.proactivity, color: '#FF0000' },
-        { name: 'Creativity', value: intermediaryFormData.creativity, color: '#00FF00' },
-        { name: 'Initiative', value: intermediaryFormData.initiative, color: '#0000FF' },
-        { name: 'Empathy', value: intermediaryFormData.empathy, color: '#FFFF00' },
-        { name: 'Leadership', value: intermediaryFormData.leadership, color: '#00FFFF' },
-        { name: 'Teamwork', value: intermediaryFormData.teamwork, color: '#FF00FF' }
-    ];
-
-    const handleToggle = () => {
-        setHideProfile(!hideProfile);
-    };
-
-
-    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-        const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
-        const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
-        const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));
-        const percentage = (percent * 100).toFixed(1);
-
-        return (
-            <text x={x} y={y} fill="black" textAnchor="middle" dominantBaseline="central">
-                {`${chartData[index].name}: ${percentage}%`}
-            </text>
-        );
     };
 
     return (
@@ -302,12 +220,12 @@ const ProfileIntermediary = () => {
                                 <label htmlFor="aboutme">About me</label>
                                 <textarea
                                     className="form-control"
-                                    id="aboutme"
-                                    name="aboutme"
-                                    value={intermediaryFormData.aboutme}
+                                    id="information"
+                                    name="information"
+                                    value={intermediaryFormData.information}
                                     onChange={handleInputChange}
                                 />
-                                {intermediaryFormErrors.aboutme && (
+                                {intermediaryFormErrors.information && (
                                     <div className="invalid-feedback">About me field is required</div>
                                 )}
 
@@ -324,39 +242,6 @@ const ProfileIntermediary = () => {
                                     accept="intermediaryImage/*"
                                     onChange={handleImageUpload}
                                 />
-                            </div>
-                        </div>
-                        <div className="row mb-3">
-                            <div className="col">
-                                <h3>{t('program')}</h3>
-                                {programList.map((program, index) => (
-                                    <div key={index} className="input-group" style={{ paddingBottom: "10px" }}>
-                                        <input
-                                            className='form-control'
-                                            type="text"
-                                            value={program}
-                                            onChange={(e) => handleProgramChange(index, e.target.value)}
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => handleRemoveProgram(index)}
-                                            className="btn btn-outline-secondary"
-                                            style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(255, 0, 0, 0.5)' }}
-                                        >
-                                            -
-                                        </button>
-                                    </div>
-                                ))}
-                                <div className='text-center'>
-                                    <button
-                                        type="button"
-                                        onClick={handleAddProgram}
-                                        className="btn btn-outline-secondary"
-                                        style={{ borderColor: 'rgba(0, 0, 0, 0.125)', backgroundColor: 'rgba(0, 255, 0, 0.5)' }}
-                                    >
-                                        +
-                                    </button>
-                                </div>
                             </div>
                         </div>
                         <div className="text-center">
@@ -401,7 +286,7 @@ const ProfileIntermediary = () => {
                                             overflowY: 'auto'
                                         }}
                                     >
-                                        {intermediaryFormData.aboutme}
+                                        {intermediaryFormData.information}
                                     </p>
                                 </div>
                             </div>
