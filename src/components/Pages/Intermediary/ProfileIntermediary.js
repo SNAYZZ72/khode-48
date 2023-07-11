@@ -86,6 +86,8 @@ const ProfileIntermediary = () => {
                             facebookPage: userData.facebookPage,
                         });
                         console.log('User data retrieved');
+                        console.log(userData.contactLastName);
+                        
                     } else {
                         console.log('User document not found');
                     }
