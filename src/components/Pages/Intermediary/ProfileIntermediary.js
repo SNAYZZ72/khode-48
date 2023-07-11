@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import HeaderIntermediary from '../../common/Header/HeaderIntermediary';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { firestore } from '../../firebase';
+import { auth } from '../../firebase';
 
 
 const ProfileIntermediary = () => {
@@ -16,30 +17,117 @@ const ProfileIntermediary = () => {
 
     //test
     const [intermediaryFormErrors, setIntermediaryFormErrors] = useState({
+        //intermediaryName risk
+        companyName: false,
         city: false,
+        industry: false,
+        maturity: false,
+        primarySector: false,
+        linkedinPage: false,
+        twitterPage: false,
+        facebookPage: false,
+        contactFirstName: false,
+        contactLastName: false,
+        contactRole: false,
+        phoneNumber: false,
+        email: false,
         aboutme: false,
-        program: false,
+        program: false
     });
 
     const [selectedIntermediaryImage, setSelectedIntermediaryImage] = useState(null);
 
+    const [programList, setProgramList] = useState([
+    ]);
+
     const [intermediaryFormData, setIntermediaryFormData] = useState({
-        intermediaryName: 'Googaz',
-        city: 'Villejeune',
-        aboutme: 'Je suis un jeune de 18 ans qui cherche un emploi dans le domaine de la restauration. Je suis motivé et j\'ai déjà travaillé dans un restaurant. Je suis disponible immédiatement. Je suis prêt à travailler le soir et le week-end. Je suis prêt à travailler dans un rayon de 10 km autour de Villejeune. J\'ai un permis de conduire et une voiture.',
-        proactivity: 10,
-        creativity: 52,
-        initiative: 37,
-        empathy: 49,
-        leadership: 16,
-        teamwork: 78,
-        points: 242
+        // intermediaryName: 'Googaz',
+        city: '',
+        industry: '',
+        maturity: '',
+        primarySector: '',
+        linkedinPage: '',
+        twitterPage: '',
+        facebookPage: '',
+        contactFirstName: '',
+        contactLastName: '',
+        contactRole: '',
+        phoneNumber: '',
+        email: '',
+        proactivity: '',
+        creativity: '',
+        initiative: '',
+        empathy: '',
+        leadership: '',
+        teamwork: '',
+        points: '',
     });
 
-    const [programList, setProgramList] = useState([
-        "Basic Education",
-        "Engineering"
-    ]);
+    const authStateChangedExecuted = useRef(false);
+
+    useEffect(() => {
+        // const storedIntermediaryFormData = localStorage.getItem('intermediaryFormData');
+        // if (storedIntermediaryFormData) {
+        //     setIntermediaryFormData(JSON.parse(storedIntermediaryFormData));
+        // }
+
+        // const storedProgramList = localStorage.getItem('programList');
+        // if (storedProgramList) {
+        //     setProgramList(JSON.parse(storedProgramList));
+        // }
+
+        // const storedIntermediaryImage = localStorage.getItem('intermediaryImage');
+        // if (storedIntermediaryImage) {
+        //     setIntermediaryImage(JSON.parse(storedIntermediaryImage));
+        // }
+
+        const handleAuthStateChanged = async (user) => {
+            if (user) {
+                const userId = user.uid;
+
+                try {
+                    const userDocRef = firestore.collection('users').doc('usersintermediary');
+                    const userDoc = await userDocRef.get();
+
+                    if (userDoc.exists) {
+                        const userData = userDoc.data()[userId];
+
+                        setIntermediaryFormData({
+                            companyName: userData.companyName,
+                            city: userData.city,
+                            email: userData.email,
+                            postalCode: userData.postalCode,
+                            phoneNumber: userData.phoneNumber,
+                            industry: userData.industry,
+                            maturity: userData.maturity,
+                            primarySector: userData.primarySector,
+                            linkedinPage: userData.linkedinPage,
+                            twitterPage: userData.twitterPage,
+                            facebookPage: userData.facebookPage,
+                            contactFirstName: userData.contactFirstName,
+                            contactLastName: userData.contactLasttName,
+                            contactRole: userData.contactRole,
+                        });
+                        console.log('User data retrieved');
+                        console.log(userData.password);
+                    } else {
+                        console.log('User document not found');
+                    }
+                } catch (error) {
+                    console.log('Error retrieving user data:', error);
+                }
+            } else {
+                console.log('User is not signed in');
+            }
+        };
+
+        // Attach the event listener only if it hasn't been executed before
+        if (!authStateChangedExecuted.current) {
+            auth.onAuthStateChanged(handleAuthStateChanged);
+            authStateChangedExecuted.current = true;
+        }
+
+    }, []);
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -56,27 +144,72 @@ const ProfileIntermediary = () => {
         setIsEditing(true);
     };
 
-    const handleSaveProfile = () => {
-        // Vérifier si les champs requis sont remplis
-        if (!intermediaryFormData.city || !intermediaryFormData.aboutme || !programList.length) {
-            alert('Please fill in all the required fields to enable your profile.');
-            return;
+    //function to get user uid
+    const getUserUid = () => {
+        const user = auth.currentUser;
+        if (user) {
+            return user.uid;
+        } else {
+            return null;
         }
+    };
 
-        // Réinitialiser les erreurs de formulaire
-        setIntermediaryFormErrors({
-            city: false,
-            aboutme: false,
-            program: false
-        });
+    const handleSaveProfile = async (user) => {
+        // // Vérifier si les champs requis sont remplis
+        // if (!intermediaryFormData.city || !intermediaryFormData.aboutme || !programList.length) {
+        //     alert('Please fill in all the required fields to enable your profile.');
+        //     return;
+        // }
 
-        // Effectuer la logique de sauvegarde du profil
+        // // Réinitialiser les erreurs de formulaire
+        // setIntermediaryFormErrors({
+        //     city: false,
+        //     aboutme: false,
+        //     program: false
+        // });
+
+        // // Effectuer la logique de sauvegarde du profil
+        // setIsEditing(false);
+
+        // // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
+        // localStorage.setItem('intermediaryFormData', JSON.stringify(intermediaryFormData));
+        // localStorage.setItem('programList', JSON.stringify(programList));
+        // localStorage.setItem('intermediaryImage', JSON.stringify(selectedIntermediaryImage));
+
         setIsEditing(false);
+        const userId = getUserUid()
 
-        // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
-        localStorage.setItem('intermediaryFormData', JSON.stringify(intermediaryFormData));
-        localStorage.setItem('programList', JSON.stringify(programList));
-        localStorage.setItem('intermediaryImage', JSON.stringify(selectedIntermediaryImage));
+        try {
+
+            // Update the user's information in Firestore
+            const userDocRef = firestore.collection('users').doc('usersintermediary');
+            const userDoc = await userDocRef.get();
+            const userData = userDoc.data()[userId];
+            await userDocRef.update({
+
+                [userId]: {
+                    companyName: userData.companyName,
+                    city: intermediaryFormData.city,
+                    postalCode: intermediaryFormData.postalCode,
+                    phoneNumber: userData.phoneNumber,
+                    email: userData.email,
+                    industry: userData.industry,
+                    maturity: userData.maturity,
+                    primarySector: userData.primarySector,
+                    linkedinPage: userData.linkedinPage,
+                    twitterPage: userData.twitterPage,
+                    facebookPage: userData.facebookPage,
+                    contactFirstName: userData.contactFirstName,
+                    contactLastName: userData.contactLastName,
+                    contactRole: userData.contactRole,
+
+                    // Add any other fields you want to update
+                }
+            });
+            console.log('User data updated');
+        } catch (error) {
+            console.log('Error updating user data:', error);
+        }
     };
 
 
@@ -122,23 +255,6 @@ const ProfileIntermediary = () => {
         setHideProfile(!hideProfile);
     };
 
-    useEffect(() => {
-        const storedIntermediaryFormData = localStorage.getItem('intermediaryFormData');
-        if (storedIntermediaryFormData) {
-            setIntermediaryFormData(JSON.parse(storedIntermediaryFormData));
-        }
-
-        const storedProgramList = localStorage.getItem('programList');
-        if (storedProgramList) {
-            setProgramList(JSON.parse(storedProgramList));
-        }
-
-        const storedIntermediaryImage = localStorage.getItem('intermediaryImage');
-        if (storedIntermediaryImage) {
-            setIntermediaryImage(JSON.parse(storedIntermediaryImage));
-        }
-
-    }, []);
 
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
         const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
@@ -157,7 +273,7 @@ const ProfileIntermediary = () => {
         <div>
             <HeaderIntermediary />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{intermediaryFormData.intermediaryName} {t('profile')}</h1>
+                <h1>{t('profile')} {intermediaryFormData.companyName}</h1>
             </div>
 
             {isEditing ? (
@@ -262,7 +378,7 @@ const ProfileIntermediary = () => {
                         <div className="col-md-2 text-center">
                             <img
                                 src={selectedIntermediaryImage || intermediaryImage || '../intermediary-profile-image.png'}
-                                alt="Profile picture"
+                                alt="Profile"
                                 style={{ width: '90%', height: 'auto', marginBottom: '15px' }}
                             />
                         </div>
