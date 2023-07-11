@@ -315,7 +315,7 @@ const HomeIntermediary = () => {
 
 
     const renderProgramView = () => {
-        const visibleProgramsData = userPrograms.slice(0, visiblePrograms);
+        const visibleProgramsData = searchedPrograms.slice(0, visiblePrograms);
 
         return (
             <div>
