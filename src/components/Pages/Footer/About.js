@@ -19,7 +19,7 @@ const About = () => {
                             <ul className="list-group" style={{ paddingBottom: '20px' }}>
                                 <li className="list-group-item">
                                     <div className="col">
-                                        <h3>{t('company')}</h3>
+                                        <h3>{t('companies')}</h3>
                                         <p>{t('companyDescription')}</p>
                                     </div>
                                 </li>
@@ -28,7 +28,7 @@ const About = () => {
                                 <li className="list-group-item">
                                     <div className="row mb-3">
                                         <div className="col">
-                                            <h3>{t('young')}</h3>
+                                            <h3>{t('youngPeople')}</h3>
                                             <p>{t('youngDescription')}</p>
                                         </div>
                                     </div>
@@ -38,7 +38,7 @@ const About = () => {
                                 <li className="list-group-item">
                                     <div className="row mb-3">
                                         <div className="col">
-                                            <h3>{t('intermediary')}</h3>
+                                            <h3>{t('intermediaries')}</h3>
                                             <p>{t('intermediaryDescription')}</p>
                                         </div>
                                     </div>
