@@ -12,8 +12,6 @@ const ProfileCompany = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [hideProfile, setHideProfile] = useState(false);
     const [companyImage, setCompanyImage] = useState(null);
-    const [studentCount, setStudentCount] = useState(5);
-    const [challengeCount, setChallengeCount] = useState(7);
 
     //test
     const [companyFormErrors, setCompanyFormErrors] = useState({
@@ -60,25 +58,6 @@ const ProfileCompany = () => {
     const authStateChangedExecuted = useRef(false);
 
     useEffect(() => {
-        // const storedCompanyFormData = localStorage.getItem('companyFormData');
-        // if (storedCompanyFormData) {
-        //     setCompanyFormData(JSON.parse(storedCompanyFormData));
-        // }
-
-        // const storedProjectList = localStorage.getItem('projectList');
-        // if (storedProjectList) {
-        //     setProjectList(JSON.parse(storedProjectList));
-        // }
-
-        // const storedChallengeList = localStorage.getItem('challengeList');
-        // if (storedChallengeList) {
-        //     setChallengeList(JSON.parse(storedChallengeList));
-        // }
-
-        // const storedCompanyImage = localStorage.getItem('companyImage');
-        // if (storedCompanyImage) {
-        //     setSelectedCompanyImage(JSON.parse(storedCompanyImage));
-        // }
         const handleAuthStateChanged = async (user) => {
             if (user) {
                 const userId = user.uid;
@@ -107,7 +86,6 @@ const ProfileCompany = () => {
                             contactRole: userData.contactRole,
                         });
                         console.log('User data retrieved');
-                        console.log(userData.contactFirstName);
                     } else {
                         console.log('User document not found');
                     }
@@ -154,29 +132,6 @@ const ProfileCompany = () => {
     };
 
     const handleSaveProfile = async (user) => {
-        // // Vérifier si les champs requis sont remplis
-        // if (!companyFormData.city || !companyFormData.aboutme || !projectList.length || !challengeList.length) {
-        //     alert('Please fill in all the required fields to enable your profile.');
-        //     return;
-        // }
-
-        // // Réinitialiser les erreurs de formulaire
-        // setCompanyFormErrors({
-        //     city: false,
-        //     aboutme: false,
-        //     project: false,
-        //     challenge: false
-        // });
-
-        // // Effectuer la logique de sauvegarde du profil
-        // setIsEditing(false);
-
-        // // Envoyer les données au serveur ou effectuer d'autres actions nécessaires
-        // localStorage.setItem('companyFormData', JSON.stringify(companyFormData));
-        // localStorage.setItem('projectList', JSON.stringify(projectList));
-        // localStorage.setItem('challengeList', JSON.stringify(challengeList));
-        // localStorage.setItem('companyImage', JSON.stringify(selectedCompanyImage));
-        // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
         const userId = getUserUid()
 

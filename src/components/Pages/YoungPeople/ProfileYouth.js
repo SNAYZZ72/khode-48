@@ -113,7 +113,6 @@ const ProfileYouth = () => {
                         await setLanguageList(userData.listLanguages);
                         await setExperienceList(userData.listExperience);
                         console.log('User data retrieved');
-                        console.log(userData.teamwork);
                     } else {
                         console.log('User document not found');
                     }
