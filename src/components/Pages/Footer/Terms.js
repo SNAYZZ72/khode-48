@@ -178,7 +178,7 @@ const Terms = () => {
                                     </div>
                                 </li>
                             </ul>
-                            <ul className="list-group" style={{ paddingBottom: '20px' }}>
+                            <ul className="list-group">
                                 <li className="list-group-item">
                                     <div className="row mb-3">
                                         <div className="col">
@@ -199,16 +199,110 @@ const Terms = () => {
                                             <p>{t('paviso11')}<b>{t('paviso12')}</b></p>
                                             <h5>{t('h5aviso4')}</h5>
                                             <p>{t('paviso13')}</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <ul className="list-group" style={{ paddingBottom: '20px' }}>
-                                <li className="list-group-item">
-                                    <div className="row mb-3">
-                                        <div className="col">
-                                            <h3>{t('h3calidad')}</h3>
-                                            <h5>{t('h5calidad1')}</h5>
+                                            <h5>{t('h5aviso5')}</h5>
+                                            <p>{t('paviso14')}</p>
+                                            <p>{t('paviso15')}</p>
+                                            <p>{t('paviso16')}</p>
+                                            <p>{t('paviso17')}</p>
+                                            <p>{t('paviso18')}</p>
+                                            <p>{t('paviso19')}</p>
+                                            <h5>{t('h5aviso6')}</h5>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <h5>{t('h5aviso7')}</h5>
+                                                    <p>{t('paviso20')}</p>
+                                                    <p>{t('paviso21')}</p>
+                                                    <ul className="list-group">
+                                                        <li className="list-group-item">
+                                                            <h5>{t('h5aviso8')}</h5>
+                                                            <p>{t('paviso22')}</p>
+                                                        </li>
+                                                        <li className="list-group-item">
+                                                            <h5>{t('h5aviso9')}</h5>
+                                                            <p>{t('paviso23')}</p>
+                                                        </li>
+                                                        <li className="list-group-item">
+                                                            <h5>{t('h5aviso10')}</h5>
+                                                            <p>{t('paviso24')}</p>
+                                                        </li>
+                                                        <li className="list-group-item">
+                                                            <h5>{t('h5aviso11')}</h5>
+                                                            <p>{t('paviso25')}</p>
+                                                        </li>
+                                                        <li className="list-group-item">
+                                                            <h5>{t('h5aviso12')}</h5>
+                                                            <p>{t('paviso26')}</p>
+                                                        </li>
+                                                    </ul>
+                                                    <h5>{t('h5aviso13')}</h5>
+                                                    <p>{t('paviso27')}</p>
+                                                    <ul className="list-group">
+                                                        <li className="list-group-item">
+                                                            <p>{t('paviso28')}<b>{t('paviso29')}</b></p>
+                                                            <ul className="list-group">
+                                                                <li className="list-group-item">
+                                                                    <p>{t('paviso30')}</p>
+                                                                </li>
+                                                                <li className="list-group-item">
+                                                                    <p>{t('paviso31')}<b>{t('paviso32')}</b></p>
+                                                                </li>
+                                                                <li className="list-group-item">
+                                                                    <p>{t('paviso33')}<b>{t('paviso34')}</b></p>
+                                                                </li>
+                                                                <li className="list-group-item">
+                                                                    <p>{t('paviso35')}<b>{t('paviso36')}</b></p>
+                                                                </li>
+                                                                <li className="list-group-item">
+                                                                    <p>{t('paviso37')}</p>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                        <li className="list-group-item">
+                                                            <p>{t('paviso38')}<b>{t('paviso39')}</b></p>
+                                                            <ul className="list-group">
+                                                                <li className="list-group-item">
+                                                                    <p>{t('paviso40')}<b>{t('paviso41')}</b></p>
+                                                                </li>
+                                                                <li className="list-group-item">
+                                                                    <p>{t('paviso42')}<b>{t('paviso43')}</b></p>
+                                                                </li>
+                                                                <li className="list-group-item">
+                                                                    <p>{t('paviso44')}<b>{t('paviso45')}</b></p>
+                                                                </li>
+                                                                <li className="list-group-item">
+                                                                    <p>{t('paviso46')}<b>{t('paviso47')}</b>{t('paviso48')}</p>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                        <li className="list-group-item">
+                                                            <p>{t('paviso49')}<b>{t('paviso50')}</b></p>
+                                                            <ul className="list-group">
+                                                                <li className="list-group-item">
+                                                                    <p>{t('paviso51')}<b>{t('paviso52')}</b></p>
+                                                                </li>
+                                                                <li className="list-group-item">
+                                                                    <p>{t('paviso53')}<b>{t('paviso54')}</b>{t('paviso55')}<b>{t('paviso56')}</b>{t('paviso57')}<b>{t('paviso58')}</b>{t('paviso59')}<b>{t('paviso60')}</b></p>
+                                                                </li>
+                                                                <li className="list-group-item">
+                                                                    <p>{t('paviso61')}<b>{t('paviso62')}</b>{t('paviso63')}<b>{t('paviso64')}</b>{t('paviso65')}<b>{t('paviso66')}</b></p>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                    <p>{t('paviso67')}</p>
+                                                    <p>{t('paviso68')}</p>
+                                                </li>
+                                            </ul>
+                                            <h5>{t('h5aviso14')}</h5>
+                                            <p>{t('paviso69')}</p>
+                                            <h5>{t('h5aviso15')}</h5>
+                                            <p>{t('paviso70')}</p>
+                                            <p>{t('paviso71')}</p>
+                                            <p>{t('paviso72')}</p>
+                                            <b><p>{t('paviso73')}</p></b>
+                                            <p>{t('paviso74')}</p>
+                                            <h5>{t('h5aviso16')}</h5>
+                                            <p>{t('paviso75')}</p>
                                         </div>
                                     </div>
                                 </li>
