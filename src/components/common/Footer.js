@@ -13,23 +13,23 @@ const Footer = () => {
       <Nav className="align-items-center">
         <div className="row">
           <div className="col-md-3 text-center">
-            <Nav.Link href="https://twitter.com" target="_blank">
-              <img src="bfa.png" alt="Twitter" className="footer-icon" style={{ height:'40px', width: 'auto' }} />
+            <Nav.Link href="https://www.bizkaia.eus/es/inicio" target="_blank">
+              <img src="bfa.png" className="footer-icon" style={{ height:'40px', width: 'auto' }} />
             </Nav.Link>
           </div>
           <div className="col-md-3 text-center">
-            <Nav.Link href="https://www.facebook.com" target="_blank">
-              <img src="kultiva.svg" alt="Facebook" className="footer-icon" style={{ height:'50px', width: 'auto' }} />
+            <Nav.Link href="https://www.kultiba.net/" target="_blank">
+              <img src="kultiva.svg" className="footer-icon" style={{ height:'50px', width: 'auto' }} />
             </Nav.Link>
           </div>
           <div className="col-md-3 text-center">
-            <Nav.Link href="https://www.instagram.com" target="_blank">
-              <img src="c2b.png" alt="Instagram" className="footer-icon" style={{ height:'40px', width: 'auto' }} />
+            <Nav.Link href="https://www.campus2b.com/" target="_blank">
+              <img src="c2b.png" className="footer-icon" style={{ height:'40px', width: 'auto' }} />
             </Nav.Link>
           </div>
           <div className="col-md-3 text-center">
-            <Nav.Link href="https://www.instagram.com" target="_blank">
-              <img src="bigel.png" alt="Instagram" className="footer-icon" style={{ height:'40px', width: 'auto' }} />
+            <Nav.Link href="http://www.staybigel.com/" target="_blank">
+              <img src="bigel.png" className="footer-icon" style={{ height:'40px', width: 'auto' }} />
             </Nav.Link>
           </div>
         </div>
