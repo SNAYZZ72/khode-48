@@ -97,7 +97,7 @@ const Terms = () => {
                                 <li className="list-group-item">
                                     <div className="row mb-3">
                                         <div className="col">
-                                            <h3>{t('young')}</h3>
+                                            <h3>{t('h3privacidad')}</h3>
                                             <p>{t('youngDescription')}</p>
                                         </div>
                                     </div>
