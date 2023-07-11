@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Modal, Button } from 'react-bootstrap';
 
 const CookieConsent = () => {
   const [showConsent, setShowConsent] = useState(false);
@@ -20,43 +21,43 @@ const CookieConsent = () => {
     setShowConsent(false);
   };
 
-  if (!showConsent) {
+  const isAnyModalOpen = () => {
+    const openModals = document.getElementsByClassName('modal fade show');
+    return openModals && openModals.length > 0;
+  };
+
+  if (!showConsent || isAnyModalOpen()) {
     return null;
   }
 
   return (
-    <div className="modal-popup modal fade show" tabIndex="-1" style={{ display: 'block' }}>
-      <div className="modal-dialog modal-dialog-centered modal-lg">
-        <div className="modal-content">
-          <div className="modal-header">
-            <img className="float-left mr-2" src="assets/images/kode48-color-only.png" alt="Logo" />
-            <h1 className="float-left ml-1">{t('cookiePolicy')}</h1>
-            <button type="button" className="close" onClick={handleDecline}>
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div className="modal-body">
-            <p>{t('cookieMessage')}</p>
-            <form noValidate>
-              <div className="clearfix mt-4">
-                <div className="float-left mr-3 cookie-type">
-                  <input type="checkbox" className="mr-2"  />
-                  <label style={{ textTransform: 'uppercase' }}>{t('necessaryCookies')}</label>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div className="modal-footer">
-            <button className="btn btn-primary" onClick={handleAccept}>{t('acceptAll')}</button>
-            <button className="btn btn-secondary" onClick={handleAccept}>{t('accept')}</button>
-            <button className="btn btn-link" onClick={handleDecline}>{t('decline')}</button>
-            <div className="text-center mt-2">
-              <a className="btn btn-link" href="#configure">{t('configure')}</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Modal
+      onHide={handleDecline}
+      centered
+      backdrop="static"
+      keyboard={false}
+      show={showConsent}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>{t('cookiePolicy')}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <p>{t('cookieMessage')}</p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          variant="primary"
+          type="submit"
+          style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+          onClick={handleAccept}
+        >
+          {t('accept')}
+        </Button>
+        <Button variant="secondary" onClick={handleDecline}>
+          {t('decline')}
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 
