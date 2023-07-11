@@ -144,12 +144,16 @@
   "programNumberOfPlaces": "Number Of Places",
   "programCreate": "Create Program",
 
+  "close": "Cerrar",
+  "contactPosition": "Puesto de contacto",
+  "errorPassword": "La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un carácter especial.",
+
   "companyDescription": "More than 20 leading companies committed to generating value in Bizkaia are looking for young talents and challenges of social impact. If you also want to be part of KODE48 you can write to enpresak48@districtkode.com",
   "youngDescription": "More than 100 active young people, eager to develop and continue growing. Do you want to join us? We can be reached at gazteak48@districtkode.com",
   "intermediaryDescription": "More than 10 associations accrediting the skills of young people in Bizkaia. If you also want to value the young people around you, write to bitartekariak48@districtkode.com",
   "aboutDescription1": "The young people of Bizkaia represent 14% of the total population and only 30% of the 18-34 years old live emancipated. The difficulties of emancipation make this age increasingly later.",
   "aboutDescription2": "We are going to change this reality. Companies are looking for YOUR talent. Do you want to accredit your skills? Have you completed non-regulated programs that have helped you to grow and want to highlight them? Write to us at info48@districtkode.com and join the District.",
-  
+
   "h3cookie": "Política de cookies",
   "h5cookie1": "¿Qué son las cookies?",
   "pcookie1": "Las cookies son pequeños archivos de datos que se reciben en el terminal desde el sitio Web visitado y se usan para registrar ciertas interacciones de la navegación en un sitio Web almacenando datos que podrán ser actualizados y recuperados. Estos archivos se almacenan en el ordenador del usuario y contiene datos anónimos que no son perjudiciales para su equipo. Se utilizan para recordar las preferencias del usuario, como el idioma seleccionado, datos de acceso o personalización de la página.",

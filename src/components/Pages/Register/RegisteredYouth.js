@@ -378,9 +378,9 @@ const RegisterPage = () => {
                                     {getPasswordStrengthText(passwordScore)}
                                 </p>
                             )}
-                            {!passwordValid && !validatePassword(formData.password) && formData.password.length > 0 && (
+                            {!validatePassword(formData.password) && (
                                 <p className="text-danger">
-                                    {t('Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.')}
+                                    {t('errorPassword')}
                                 </p>
                             )}
                         </div>

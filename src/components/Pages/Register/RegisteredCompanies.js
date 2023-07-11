@@ -217,7 +217,7 @@ const RegisterCompanyPage = () => {
                 <form onSubmit={handleSubmit} style={{ paddingBottom: '15px' }}>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="companyName">{t('Company name')}</label>
+                            <label>{t('Company name')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -232,7 +232,7 @@ const RegisterCompanyPage = () => {
 
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="city">{t('city')}</label>
+                            <label>{t('city')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -244,7 +244,7 @@ const RegisterCompanyPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="postalCode">{t('postalCode')}</label>
+                            <label>{t('postalCode')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -258,7 +258,7 @@ const RegisterCompanyPage = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="industry">{t('Select your main sector')}</label>
+                            <label>{t('Select your main sector')}</label>
                             <select
                                 className="form-control"
                                 id="industry"
@@ -275,7 +275,7 @@ const RegisterCompanyPage = () => {
                             </select>
                         </div>
                         <div className="col">
-                            <label htmlFor="maturity">{t('What is the maturity of your project?')}</label>
+                            <label>{t('What is the maturity of your project?')}</label>
                             <select
                                 className="form-control"
                                 id="maturity"
@@ -293,7 +293,7 @@ const RegisterCompanyPage = () => {
                             </select>
                         </div>
                         <div className="col">
-                            <label htmlFor="primarySector">{t('Select your primary sector')}</label>
+                            <label>{t('Select your primary sector')}</label>
                             <select
                                 className="form-control"
                                 id="primarySector"
@@ -327,7 +327,7 @@ const RegisterCompanyPage = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="contactFirstName">{t('ContactFirstName')}</label>
+                            <label>{t('ContactFirstName')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -339,7 +339,7 @@ const RegisterCompanyPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="contactLastName">{t('ContactLastName')}</label>
+                            <label>{t('ContactLastName')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -351,7 +351,7 @@ const RegisterCompanyPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="contactRole">{t('ContactRole')}</label>
+                            <label>{t('contactPosition')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -365,7 +365,7 @@ const RegisterCompanyPage = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="phoneNumber">{t('phoneNumber')}</label>
+                            <label>{t('phoneNumber')}</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -377,7 +377,7 @@ const RegisterCompanyPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="email">{t('email')}</label>
+                            <label>{t('email')}</label>
                             <input
                                 type="email"
                                 className="form-control"
@@ -396,7 +396,7 @@ const RegisterCompanyPage = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="password">{t('password')}</label>
+                            <label>{t('password')}</label>
                             <div className="input-group">
                                 <input
                                     type={showPassword ? 'text' : 'password'}
@@ -421,14 +421,14 @@ const RegisterCompanyPage = () => {
                                     {getPasswordStrengthText(passwordScore)}
                                 </p>
                             )}
-                            {!passwordValid && !validatePassword(formData.password) && formData.password.length > 0 && (
+                            {!validatePassword(formData.password) && (
                                 <p className="text-danger">
-                                    {t('Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.')}
+                                    {t('errorPassword')}
                                 </p>
                             )}
                         </div>
                         <div className="col">
-                            <label htmlFor="confirmPassword">{t('confirmPassword')}</label>
+                            <label>{t('confirmPassword')}</label>
                             <input
 
                                 type={showPassword ? 'text' : 'password'}
@@ -446,7 +446,7 @@ const RegisterCompanyPage = () => {
                     )}
                     <div className="row mb-3">
                         <div className="col">
-                            <label htmlFor="linkedinPage">{t('Companys Linkedin Page')} {t('(optional)')}</label>
+                            <label>{t('Companys Linkedin Page')} ({t('optional')})</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -457,7 +457,7 @@ const RegisterCompanyPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="twitterPage">{t('Companys Twitter Page')} {t('(optional)')}</label>
+                            <label>{t('Companys Twitter Page')} ({t('optional')})</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -468,7 +468,7 @@ const RegisterCompanyPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="facebookPage">{t('Companys Facebook Page')} {t('(optional)')}</label>
+                            <label>{t('Companys Facebook Page')} ({t('optional')})</label>
                             <input
                                 type="text"
                                 className="form-control"

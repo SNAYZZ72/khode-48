@@ -310,7 +310,7 @@ const Home = () => {
                         {t('login')}
                     </Button>
                     <Button variant="secondary" onClick={handleCloseModal}>
-                        Close
+                        {t('close')}
                     </Button>
                 </Modal.Footer>
             </Modal>

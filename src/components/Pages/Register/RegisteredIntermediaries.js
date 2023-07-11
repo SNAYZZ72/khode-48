@@ -357,7 +357,7 @@ const RegisterIntermediaryPage = () => {
                             )}
                             {!validatePassword(formData.password) && (
                                 <p className="text-danger">
-                                    {t('Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one special character.')}
+                                    {t('errorPassword')}
                                 </p>
                             )}
                         </div>
@@ -380,7 +380,7 @@ const RegisterIntermediaryPage = () => {
                     )}
                     <div className="row mb-3">
                         <div className="col">
-                            <label>{t('Companys Linkedin Page')} {t('(optional)')}</label>
+                            <label>{t('Companys Linkedin Page')} ({t('optional')})</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -391,7 +391,7 @@ const RegisterIntermediaryPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label>{t('Companys Twitter Page')} {t('(optional)')}</label>
+                            <label>{t('Companys Twitter Page')} ({t('optional')})</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -402,7 +402,7 @@ const RegisterIntermediaryPage = () => {
                             />
                         </div>
                         <div className="col">
-                            <label>{t('Companys Facebook Page')} {t('(optional)')}</label>
+                            <label>{t('Companys Facebook Page')} ({t('optional')})</label>
                             <input
                                 type="text"
                                 className="form-control"
