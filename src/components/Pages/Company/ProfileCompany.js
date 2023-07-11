@@ -273,7 +273,7 @@ const ProfileCompany = () => {
         <div>
             <HeaderCompany />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{t('profile')} {companyFormData.companyName}</h1>
+                <h1>{companyFormData.companyName}</h1>
             </div>
 
             {isEditing ? (

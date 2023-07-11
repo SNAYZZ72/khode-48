@@ -273,7 +273,7 @@ const ProfileIntermediary = () => {
         <div>
             <HeaderIntermediary />
             <div className="text-center" style={{ paddingBottom: '15px' }}>
-                <h1>{t('profile')} {intermediaryFormData.companyName}</h1>
+                <h1>{intermediaryFormData.companyName}</h1>
             </div>
 
             {isEditing ? (
@@ -424,67 +424,6 @@ const ProfileIntermediary = () => {
                                             <FontAwesomeIcon icon={faInstagram} />
                                         </Nav.Link>
                                     </Nav>
-                                </div>
-                                <div className="col">
-                                    <h3>{hideProfile ? t('hideProfile') : t('showProfile')}</h3>
-                                    {/* switch toggle button to hide profile */}
-                                    <div className="form-check form-switch">
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            id="flexSwitchCheckDefault"
-                                            checked={hideProfile}
-                                            onChange={handleToggle}
-                                        />
-                                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
-                                            {hideProfile ? t('hide') : t('show')}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row justify-content-center">
-                        <div className="col-md-7">
-                            <div className="row">
-                                <div className="col">
-                                    <h3>{t('program')}</h3>
-                                    {programList.map((program, index) => (
-                                        <div className="col" key={index}>
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{program}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row justify-content-center">
-                        <div className="col-md-7">
-                            <div className="row">
-                                <div className="col">
-                                    <h3>{t('skills')}</h3>
-                                    <div>
-                                        <ResponsiveContainer height={300} width="100%">
-                                            <PieChart>
-                                                <Pie
-                                                    dataKey="value"
-                                                    isAnimationActive={false}
-                                                    data={chartData}
-                                                    cx="50%"
-                                                    cy="50%"
-                                                    outerRadius={80}
-                                                    label={renderCustomizedLabel}
-                                                >
-                                                    {chartData.map((entry, index) => (
-                                                        <Cell key={index} fill={entry.color} />
-                                                    ))}
-                                                </Pie>
-                                                <Tooltip />
-                                            </PieChart>
-                                        </ResponsiveContainer>
-                                    </div>
-
-
                                 </div>
                             </div>
                         </div>
