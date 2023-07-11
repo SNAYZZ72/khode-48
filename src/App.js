@@ -13,9 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './components/Home/Homepage';
 import About from './components/Pages/Footer/About';
 import Contact from './components/Pages/Footer/Contact';
-import FAQ from './components/Pages/Footer/FAQ';
 import Terms from './components/Pages/Footer/Terms';
-import Career from './components/Pages/Footer/Career';
 import RegisterPageY from './components/Pages/Register/RegisteredYouth';
 import RegisterPageC from './components/Pages/Register/RegisteredCompanies';
 import RegisterPageI from './components/Pages/Register/RegisteredIntermediaries';
@@ -102,9 +100,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/FAQ" element={<FAQ />} />
               <Route path="/terms" element={<Terms />} />
-              <Route path="/careers" element={<Career />} />
               <Route path="/registerY" element={<RegisterPageY />} />
               <Route path="/registerC" element={<RegisterPageC />} />
               <Route path="/registerI" element={<RegisterPageI />} />
@@ -114,7 +110,6 @@ function App() {
               <Route path="/profileYouth" element={<RequireAuth role="youth"><ProfileYouth /></RequireAuth>} />
               <Route path="/profileCompany" element={<RequireAuth role="company"><ProfileCompany /></RequireAuth>} />
               <Route path="/profileIntermediary" element={<RequireAuth role="intermediary"><ProfileIntermediary /></RequireAuth>} />
-
             </Routes>
           </div>
           <Footer />
