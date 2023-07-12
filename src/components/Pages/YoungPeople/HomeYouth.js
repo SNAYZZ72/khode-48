@@ -17,8 +17,10 @@ const HomeYouth = () => {
     const { t } = useTranslation();
 
     const [projects, setProjects] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filterQuery, setFilterQuery] = useState('');
+    const [searchProgramQuery, setSearchProgramQuery] = useState('');
+    const [filterProgramQuery, setFilterProgramQuery] = useState('');
+    const [searchJobQuery, setSearchJobQuery] = useState('');
+    const [filterJobQuery, setFilterJobQuery] = useState('');
     const [userPrograms, setUserPrograms] = useState([]);
     const [userJobs, setUserJobs] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -90,12 +92,20 @@ const HomeYouth = () => {
         fetchCurrentUser();
     }, []);
 
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
+    const handleSearchProgramChange = (event) => {
+        setSearchProgramQuery(event.target.value);
     };
 
-    const handleFilterChange = (event) => {
-        setFilterQuery(event.target.value);
+    const handleFilterProgramChange = (event) => {
+        setFilterProgramQuery(event.target.value);
+    };
+
+    const handleSearchJobChange = (event) => {
+        setSearchJobQuery(event.target.value);
+    };
+
+    const handleFilterJobChange = (event) => {
+        setFilterJobQuery(event.target.value);
     };
 
     const handleViewSelect = (view) => {
@@ -103,11 +113,11 @@ const HomeYouth = () => {
     };
 
     const filterJobs = () => {
-        if (filterQuery === '') {
+        if (filterJobQuery === '') {
             return userJobs;
         }
 
-        const selectedDate = filterQuery;
+        const selectedDate = filterJobQuery;
 
         return userJobs
             .filter((job) => job[selectedDate] !== undefined)
@@ -124,17 +134,17 @@ const HomeYouth = () => {
     };
 
     const searchedJobs = filterJobs().filter((job) =>
-        job.jobName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.companyName.toLowerCase().includes(searchQuery.toLowerCase())
+        job.jobName.toLowerCase().includes(searchJobQuery.toLowerCase()) ||
+        job.companyName.toLowerCase().includes(searchJobQuery.toLowerCase())
     );
 
 
     const filterPrograms = () => {
-        if (filterQuery === '') {
+        if (filterProgramQuery === '') {
             return userPrograms;
         }
 
-        const selectedDate = filterQuery;
+        const selectedDate = filterProgramQuery;
 
         return userPrograms
             .filter((program) => program[selectedDate] !== undefined)
@@ -151,8 +161,8 @@ const HomeYouth = () => {
     };
 
     const searchedPrograms = filterPrograms().filter((program) =>
-        program.programName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        program.companyName.toLowerCase().includes(searchQuery.toLowerCase())
+        program.programName.toLowerCase().includes(searchProgramQuery.toLowerCase()) ||
+        program.companyName.toLowerCase().includes(searchProgramQuery.toLowerCase())
     );
 
     //load more jobs 
@@ -377,8 +387,8 @@ const HomeYouth = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
+                                    value={searchProgramQuery}
+                                    onChange={handleSearchProgramChange}
                                 />
                             </div>
                         </div>
@@ -389,8 +399,8 @@ const HomeYouth = () => {
                                 </span>
                                 <select
                                     className="form-select"
-                                    value={filterQuery}
-                                    onChange={handleFilterChange}
+                                    value={filterProgramQuery}
+                                    onChange={handleFilterProgramChange}
                                 >
                                     <option value="">{t('all')}</option>
                                     <option value="startDate">{t('beginDate')}</option>
@@ -529,8 +539,8 @@ const HomeYouth = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
+                                    value={searchJobQuery}
+                                    onChange={handleSearchJobChange}
                                 />
                             </div>
                         </div>
@@ -541,8 +551,8 @@ const HomeYouth = () => {
                                 </span>
                                 <select
                                     className="form-select"
-                                    value={filterQuery}
-                                    onChange={handleFilterChange}
+                                    value={filterJobQuery}
+                                    onChange={handleFilterJobChange}
                                 >
                                     <option value="">{t('all')}</option>
                                     <option value="jobBeginDate">{t('beginDate')}</option>
