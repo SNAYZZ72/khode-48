@@ -262,8 +262,9 @@ const HomeYouth = () => {
         try {
             const programsRef = firestore.collection('programs');
             const snapshot = await programsRef.get();
+            let matchingProgramFound = false;
 
-            snapshot.forEach(async (doc) => {
+            for (const doc of snapshot.docs) {
                 const programData = Object.values(doc.data())[0]; // Retrieve the program information
 
                 // Check if the program information matches the selected program
@@ -276,10 +277,9 @@ const HomeYouth = () => {
                     arraysEqual(programData.skillsDeveloped, selectedProgram.skillsDeveloped) &&
                     programData.startDate === selectedProgram.startDate
                 ) {
-                    const docName = doc.id;
+                    matchingProgramFound = true;
+                    const docName = doc.id; //uid of the intermediary document
                     const mapName = Object.keys(doc.data())[0]; // Retrieve the matching map name
-                    console.log('Match found! Map Name:', mapName);
-                    console.log('Match found! Doc Name:', docName);
 
                     //we fetched the current user data with the function fetchCurrentUser, now we can use the data to create the application
                     console.log('Youth Form Data:', youthFormData);
@@ -301,28 +301,31 @@ const HomeYouth = () => {
 
                     const uid = auth.currentUser.uid;
 
+                    const checkRef = firestore.collection('programsApplication').doc(docName);
+
+                    const checkDoc = await checkRef.get();
+                    if (!checkDoc.exists) {
+                        await checkRef.set({});
+                    }
 
                     // Write the application to the appropriate document and subcollection
-                    //we store the application in a collection called programsApplication then to make sorting easier, we create a doc with same uid than the company and the same map name than the program
-                    const applicationsRef = firestore
-                        .collection('programsApplication')
-                        .doc(docName);
+                    //we store the application in a collection called programsApplication then to make sorting easier
+                    const applicationsRef = firestore.collection('programsApplication').doc(docName);
 
+                    console.log('docName :', docName);
                     // we combine current uid with map name to create a unique id for the application
                     const applicationId = uid + mapName;
                     console.log('Application ID:', applicationId);
 
                     // Check if the user has already applied
                     const userDoc = await applicationsRef.get();
-                    const userData = userDoc.data()[applicationId];
-                    
+                    const userData = await userDoc.data()[applicationId];
+
                     if (userData !== undefined) {
                         // User has already applied, show a message or handle accordingly
                         alert('You have already applied to this program.');
                         return;
                     }
-
-
 
                     // User has not applied, add the application
                     await applicationsRef
@@ -338,17 +341,19 @@ const HomeYouth = () => {
                         });
 
                     return;
-
                 }
-            });
+            }
 
-
+            if (!matchingProgramFound) {
+                // No matching program found, display an error message or handle it accordingly
+                alert('Please try again.');
+                return;
+            }
         } catch (error) {
             console.error('Error handling application:', error);
         }
-
-
     };
+
 
     function arraysEqual(a, b) {
         if (a === b) return true;
@@ -358,9 +363,6 @@ const HomeYouth = () => {
         }
         return true;
     }
-
-
-
 
     const renderProgramView = () => {
         const visibleProgramsData = searchedPrograms.slice(0, visiblePrograms);
