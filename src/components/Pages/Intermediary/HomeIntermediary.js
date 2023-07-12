@@ -99,12 +99,17 @@ const HomeIntermediary = () => {
     //search by programName or by name of youth people
 
     const searchedApplications = userApplications.filter((application) =>
-        application.programName.toLowerCase().includes(searchApplicationQuery.toLowerCase())
-
+        application.programName.toLowerCase().includes(searchApplicationQuery.toLowerCase()) ||
+        application.firstName.toLowerCase().includes(searchApplicationQuery.toLowerCase()) ||
+        application.lastName.toLowerCase().includes(searchApplicationQuery.toLowerCase()) ||
+        `${application.firstName} ${application.lastName}`.toLowerCase().includes(searchApplicationQuery.toLowerCase())
     );
 
     const searchedApprovedApplications = userApprovedApplications.filter((application) =>
-        application.programName.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase())
+        application.programName.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase()) ||
+        application.name.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase()) ||
+        application.lastname.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase()) ||
+        `${application.name} ${application.lastname}`.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase())
     );
 
     const handleProfileSelect = (type) => {
