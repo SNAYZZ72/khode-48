@@ -80,7 +80,7 @@ const HomeIntermediary = () => {
 
     const searchedApplications = userApplications.filter((application) =>
         application.programName.toLowerCase().includes(searchQuery.toLowerCase())
-        
+
     );
 
     const searchedApprovedApplications = userApprovedApplications.filter((application) =>
@@ -407,7 +407,7 @@ const HomeIntermediary = () => {
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
-                <div className="row mb-3">
+                    <div className="row mb-3">
                         <div className="col" style={{ paddingBottom: '10px' }}>
                             <div className="input-group">
                                 <span className="input-group-text">{t('search')}:</span>
@@ -534,7 +534,7 @@ const HomeIntermediary = () => {
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
-                <div className="row mb-3">
+                    <div className="row mb-3">
                         <div className="col" style={{ paddingBottom: '10px' }}>
                             <div className="input-group">
                                 <span className="input-group-text">{t('search')}:</span>
@@ -676,7 +676,7 @@ const HomeIntermediary = () => {
                                     <div className="row">
                                         <h3>{t('programName')}: {program.programName}</h3>
                                     </div>
-                                    <div className="row">
+                                    <div className="row mb-3">
                                         <div className="col-md-7" style={{ paddingBottom: '20px' }}>
                                             <ul className="list-group">
                                                 <li className="list-group-item">
@@ -708,12 +708,14 @@ const HomeIntermediary = () => {
                                                         <p><b>{t('skillsDeveloped')}:</b> {program.skillsDeveloped.join(', ')}</p>
                                                     </div>
                                                 </li>
-                                                <div className="row-md-3 text-center" style={{ paddingBottom: '10px' }}>
-                                                    <button className="btn btn-primary" onClick={() => handleDeleteProgram(program.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                                                        {t('deleteProgram')}
-                                                    </button>
-                                                </div>
                                             </ul>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="text-end">
+                                            <button className="btn btn-primary" onClick={() => handleDeleteProgram(program.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                                {t('deleteProgram')}
+                                            </button>
                                         </div>
                                     </div>
                                 </li>
