@@ -310,11 +310,11 @@ const ProfileIntermediary = () => {
                                 <div className="col">
                                     <h3>{t('contact')}</h3>
                                     <ul>
-                                    <p>{intermediaryFormData.contactFirstName}</p>
-                                    <p>{intermediaryFormData.contactLastName}</p>
-                                    <p>{intermediaryFormData.contactRole}</p>
-                                    <p>{intermediaryFormData.email}</p>
-                                    <p>{intermediaryFormData.phoneNumber}</p>
+                                        <li>{t('firstName')}: {intermediaryFormData.contactFirstName}</li>
+                                        <li>{t('lastName')}: {intermediaryFormData.contactLastName}</li>
+                                        <li>{t('role')}: {intermediaryFormData.contactRole}</li>
+                                        <li>{t('email')}: {intermediaryFormData.email}</li>
+                                        <li>{t('phoneNumber')}: {intermediaryFormData.phoneNumber}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -340,6 +340,7 @@ const ProfileIntermediary = () => {
                             </div>
                         </div>
                     </div>
+
                     <div className="text-center">
                         <button
                             onClick={handleEditProfile}
