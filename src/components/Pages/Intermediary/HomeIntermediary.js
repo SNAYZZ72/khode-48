@@ -328,7 +328,7 @@ const HomeIntermediary = () => {
                 [programId]: firebase.firestore.FieldValue.delete(),
             });
             alert('Program deleted successfully.');
-            fetchUserPrograms(); // Refresh the programs after deletion
+
             window.location.reload();
         } catch (error) {
             console.log('Error deleting program:', error);
