@@ -304,6 +304,42 @@ const ProfileIntermediary = () => {
                             </div>
                         </div>
                     </div>
+                    <div className="row justify-content-center">
+                        <div className="col-md-7">
+                            <div className="row">
+                                <div className="col">
+                                    <h3>{t('contact')}</h3>
+                                    <ul>
+                                    <p>{intermediaryFormData.contactFirstName}</p>
+                                    <p>{intermediaryFormData.contactLastName}</p>
+                                    <p>{intermediaryFormData.contactRole}</p>
+                                    <p>{intermediaryFormData.email}</p>
+                                    <p>{intermediaryFormData.phoneNumber}</p>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row justify-content-center">
+                        <div className="col-md-7">
+                            <div className="row">
+                                <div className="col">
+                                    <h3>{t('maturity')}</h3>
+                                    <p>{intermediaryFormData.maturity}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row justify-content-center">
+                        <div className="col-md-7">
+                            <div className="row">
+                                <div className="col">
+                                    <h3>{t('industry')}</h3>
+                                    <p>{intermediaryFormData.industry}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div className="text-center">
                         <button
                             onClick={handleEditProfile}
