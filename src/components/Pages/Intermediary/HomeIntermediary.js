@@ -40,7 +40,7 @@ const HomeIntermediary = () => {
         skillsDeveloped: [],
         startDate: '',
         endDate: '',
-        numberOfPlaces: '',
+        numberOfPlaces: 0,
     });
 
     const handleSearchChange = (event) => {
@@ -296,7 +296,7 @@ const HomeIntermediary = () => {
                 skillsDeveloped: [],
                 startDate: '',
                 endDate: '',
-                numberOfPlaces: '',
+                numberOfPlaces: 0,
             });
 
             alert('Program created successfully!');
@@ -413,22 +413,39 @@ const HomeIntermediary = () => {
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
-                    <h2>{t('Approved Applications')}</h2>
                     {visibleApprovalData.length > 0 ? (
-                        <ul className="list-group">
+                        <li className="list-group">
                             {visibleApprovalData.map((approved) => (
                                 <li key={approved.id} className="list-group-item profile-item">
                                     <div className="row">
-                                        <h3>{approved.programName}</h3>
-                                        <p>{t('name')}: {approved.name} {approved.lastname}</p>
-                                        <p>{t('email')}: {approved.email}</p>
+                                        <h3>{t('programName')}: {approved.programName}</h3>
                                     </div>
-                                    <button className="btn btn-primary" onClick={() => deleteApprovedApplication(approved.userIdentification, approved.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                                        {t('removeFromApproved')}
-                                    </button>
+                                    <div className="row mb-3">
+                                        <div className="col">
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('firstName')}:</b> {approved.name} {approved.lastname}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('email')}:</b> {approved.email}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="text-end">
+                                            <button className="btn btn-primary" onClick={() => deleteApprovedApplication(approved.userIdentification, approved.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                                {t('removeFromApproved')}
+                                            </button>
+                                        </div>
+                                    </div>
                                 </li>
                             ))}
-                        </ul>
+                        </li>
                     ) : (
                         <p>{t('No approved applications.')}</p>
                     )}
@@ -464,7 +481,26 @@ const HomeIntermediary = () => {
             }
             //here we add the youth to the list of approved youth
             await applicationApproval.set({ [neededId]: addYouth }, { merge: true });
-            alert('Youth accepted successfully.');
+            //alert('Youth accepted successfully.');
+            
+            //we will remove 1 place from the number of places available and if the number of places available is 0, we will delete the program.
+            const programRef = firestore.collection('programs').doc(userId);
+            const userDoc = await programRef.get();
+            const userData = userDoc.data()[mapName];
+            //we remove 1 from variable numberOfPlaces
+            await programRef.update({
+                [mapName]: {
+                    ...userData,
+                    numberOfPlaces: userData.numberOfPlaces - 1,
+                },
+            });
+            //we check if the number of places is 0
+            if (userData.numberOfPlaces === 1) {
+                //we delete the program
+                await programRef.update({
+                    [mapName]: firebase.firestore.FieldValue.delete(),
+                });
+            }
             //here we delete the youth from the list of applications
             handleRefuseYouth(mapName, userIdentification);
             //reload the page
@@ -492,25 +528,55 @@ const HomeIntermediary = () => {
             <div>
                 <div style={{ paddingTop: '15px' }}>
                     {visibleApplicationsData.length > 0 ? (
-                        <ul className="list-group">
+                        <li className="list-group">
                             {visibleApplicationsData.map((application) => (
                                 <li key={application.programId} className="list-group-item profile-item">
                                     <div className="row">
-                                        <h3>Name: {application.programName}</h3>
-                                        <p>Youth full name: {application.firstName} {application.lastName}</p>
-                                        <p>Email: {application.email}</p>
-                                        <p>Description du jeune: {application.information}</p>
-                                        <p>Cover Letter: {application.coverLetter}</p>
+                                        <h3>{t('programName')}: {application.programName}</h3>
                                     </div>
-                                    <button className="btn btn-primary" onClick={() => handleAcceptYouth(application.mapName, application.userIdentification, application.programName, application.firstName, application.lastName, application.email)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                                        {t('accept')}
-                                    </button>
-                                    <button className="btn btn-primary" onClick={() => handleRefuseYouth(application.mapName, application.userIdentification)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                                        {t('refuse')}
-                                    </button>
+                                    <div className="row mb-3">
+                                        <div className="col-md-6" style={{ paddingBottom: '20px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('firstName')}:</b> {application.firstName} {application.lastName}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('email')}:</b> {application.email}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('description')}:</b> {application.information}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="col-md-6" style={{ paddingBottom: '20px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('coverLetter')}:</b> {application.coverLetter}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="text-end">
+                                            <button className="btn btn-primary" onClick={() => handleAcceptYouth(application.mapName, application.userIdentification, application.programName, application.firstName, application.lastName, application.email)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                                {t('accept')}
+                                            </button>
+                                            <button className="btn btn-secondary" onClick={() => handleRefuseYouth(application.mapName, application.userIdentification)} style={{ backgroundColor: '#6C757D', borderColor: '#6C757D', marginLeft: '10px' }}>
+                                                {t('decline')}
+                                            </button>
+                                        </div>
+                                    </div>
                                 </li>
                             ))}
-                        </ul>
+                        </li>
                     ) : (
                         <div className="row-md-3 text-center" style={{ paddingBottom: '10px' }}>
                             <h3>No applications found.</h3>

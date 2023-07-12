@@ -470,7 +470,7 @@ const HomeYouth = () => {
                             {selectedProgram && (
                                 <div>
                                     <h4>{t('Program Name')}: {selectedProgram.programName}</h4>
-                                    <h4>{t('Company Name')}: {selectedProgram.companyName}</h4>
+                                    <p><b>{t('Company Name')}:</b> {selectedProgram.companyName}</p>
 
                                     <div className="form-group">
                                         <label htmlFor="coverLetter">{t('Cover Letter')}</label>
@@ -488,7 +488,7 @@ const HomeYouth = () => {
                         </Modal.Body>
 
                         <Modal.Footer>
-                            <Button variant="primary" onClick={handleSubmitApplication}>
+                            <Button variant="primary" onClick={handleSubmitApplication} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
                                 {t('Apply')}
                             </Button>
                             <Button variant="secondary" onClick={handleCloseProgramModal}>
