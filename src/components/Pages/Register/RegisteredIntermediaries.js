@@ -241,7 +241,7 @@ const RegisterIntermediaryPage = () => {
                         <div className="col">
                             <label>{t('Select your main sector')}</label>
                             <select
-                                className="form-control"
+                                className="form-select"
                                 id="industry"
                                 name="industry"
                                 value={formData.industry}
@@ -258,7 +258,7 @@ const RegisterIntermediaryPage = () => {
                         <div className="col">
                             <label>{t('What is the maturity of your project?')}</label>
                             <select
-                                className="form-control"
+                                className="form-select"
                                 id="maturity"
                                 name="maturity"
                                 value={formData.maturity}

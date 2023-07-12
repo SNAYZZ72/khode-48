@@ -244,7 +244,7 @@ const RegisterPage = () => {
                         <div className="col">
                             <label>{t('gender')}</label>
                             <select
-                                className="form-control"
+                                className="form-select"
                                 id="gender"
                                 name="gender"
                                 value={formData.gender}

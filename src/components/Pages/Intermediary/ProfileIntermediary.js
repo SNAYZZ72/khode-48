@@ -86,7 +86,6 @@ const ProfileIntermediary = () => {
                             facebookPage: userData.facebookPage,
                         });
                         console.log('User data retrieved');
-                        console.log(userData.contactLastName);
                     } else {
                         console.log('User document not found');
                     }
@@ -191,7 +190,7 @@ const ProfileIntermediary = () => {
                     <form>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="city">{t('city')}</label>
+                                <label>{t('city')}</label>
                                 <input
                                     className="form-control"
                                     type="text"
@@ -205,10 +204,25 @@ const ProfileIntermediary = () => {
                                 )}
 
                             </div>
+                            <div className="col">
+                                <label>{t('postalCode')}</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    id="postalCode"
+                                    name="postalCode"
+                                    value={intermediaryFormData.postalCode}
+                                    onChange={handleInputChange}
+                                />
+                                {intermediaryFormErrors.postalCode && (
+                                    <div className="invalid-feedback">City field is required</div>
+                                )}
+
+                            </div>
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label htmlFor="aboutme">About me</label>
+                                <label htmlFor="aboutme">{t('aboutCompany')}</label>
                                 <textarea
                                     className="form-control"
                                     id="information"
@@ -224,7 +238,108 @@ const ProfileIntermediary = () => {
                         </div>
                         <div className="row mb-3">
                             <div className="col">
-                                <label>Profile picture</label>
+                                <label>{t('contactFirstName')}</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    id="contactFirstName"
+                                    name="contactFirstName"
+                                    value={intermediaryFormData.contactFirstName}
+                                    onChange={handleInputChange}
+                                />
+                                {intermediaryFormErrors.contactFirstName && (
+                                    <div className="invalid-feedback">City field is required</div>
+                                )}
+                            </div>
+                            <div className="col">
+                                <label>{t('contactLastName')}</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    id="contactLastName"
+                                    name="contactLastName"
+                                    value={intermediaryFormData.contactLastName}
+                                    onChange={handleInputChange}
+                                />
+                                {intermediaryFormErrors.contactLastName && (
+                                    <div className="invalid-feedback">City field is required</div>
+                                )}
+                            </div>
+                            <div className="col">
+                                <label>{t('contactRole')}</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    id="contactRole"
+                                    name="contactRole"
+                                    value={intermediaryFormData.contactRole}
+                                    onChange={handleInputChange}
+                                />
+                                {intermediaryFormErrors.contactRole && (
+                                    <div className="invalid-feedback">City field is required</div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="row mb-3">
+                            <div className="col">
+                                <label>{t('phoneNumber')}</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    id="phoneNumber"
+                                    name="phoneNumber"
+                                    value={intermediaryFormData.phoneNumber}
+                                    onChange={handleInputChange}
+                                />
+                                {intermediaryFormErrors.phoneNumber && (
+                                    <div className="invalid-feedback">City field is required</div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="row mb-3">
+                            <div className="col">
+                                <label>{t('mainSector')}</label>
+                                <select
+                                    className="form-select"
+                                    id="industry"
+                                    name="industry"
+                                    value={intermediaryFormData.industry}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value={intermediaryFormData.industry}>{intermediaryFormData.industry}</option>
+                                    <option value="Digital">{t('Digital')}</option>
+                                    <option value="Industry">{t('Industry')}</option>
+                                    <option value="Social and Solidarity Economy">{t('Social and Solidarity Economy')}</option>
+                                    <option value="Cultural and Creative Industry">{t('Cultural and Creative Industry')}</option>
+                                </select>
+                                {intermediaryFormErrors.industry && (
+                                    <div className="invalid-feedback">City field is required</div>
+                                )}
+                            </div>
+                            <div className="col">
+                                <label>{t('maturityProject')}</label>
+                                <select
+                                    className="form-select"
+                                    id="maturity"
+                                    name="maturity"
+                                    value={intermediaryFormData.maturity}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value={intermediaryFormData.maturity}>{intermediaryFormData.maturity}</option>
+                                    <option value="Ideation">{t('Ideation')}</option>
+                                    <option value="Minimum Viable Product">{t('Minimum Viable Product')}</option>
+                                    <option value="First Customer / First Users">{t('First Customer / First Users')}</option>
+                                    <option value="Commercialization">{t('Commercialization')}</option>
+                                    <option value="International">{t('International')}</option>
+                                </select>
+                                {intermediaryFormErrors.maturity && (
+                                    <div className="invalid-feedback">City field is required</div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="row mb-3">
+                            <div className="col">
+                                <label>{t('profilepicture')}</label>
                                 <input
                                     className="form-control"
                                     type="file"

@@ -249,7 +249,7 @@ const RegisterCompanyPage = () => {
                         <div className="col">
                             <label>{t('Select your main sector')}</label>
                             <select
-                                className="form-control"
+                                className="form-select"
                                 id="industry"
                                 name="industry"
                                 value={formData.industry}
@@ -266,7 +266,7 @@ const RegisterCompanyPage = () => {
                         <div className="col">
                             <label>{t('What is the maturity of your project?')}</label>
                             <select
-                                className="form-control"
+                                className="form-select"
                                 id="maturity"
                                 name="maturity"
                                 value={formData.maturity}
@@ -284,7 +284,7 @@ const RegisterCompanyPage = () => {
                         <div className="col">
                             <label>{t('Select your primary sector')}</label>
                             <select
-                                className="form-control"
+                                className="form-select"
                                 id="primarySector"
                                 name="primarySector"
                                 value={formData.primarySector}
