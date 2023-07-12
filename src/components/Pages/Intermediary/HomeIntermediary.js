@@ -520,17 +520,17 @@ const HomeIntermediary = () => {
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>Youth full name:</b> {application.firstName} {application.lastName}</p>
+                                                        <p><b>{t('firstName')}:</b> {application.firstName} {application.lastName}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>Email:</b> {application.email}</p>
+                                                        <p><b>{t('email')}:</b> {application.email}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>Description du jeune:</b> {application.information}</p>
+                                                        <p><b>{t('description')}:</b> {application.information}</p>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -539,7 +539,7 @@ const HomeIntermediary = () => {
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>Cover Letter:</b> {application.coverLetter}</p>
+                                                        <p><b>{t('coverLetter')}:</b> {application.coverLetter}</p>
                                                     </div>
                                                 </li>
                                             </ul>
