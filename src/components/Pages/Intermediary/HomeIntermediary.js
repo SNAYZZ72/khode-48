@@ -312,7 +312,7 @@ const HomeIntermediary = () => {
         setShowModal(false);
     };
 
-    const   handleViewSelect = (view) => {
+    const handleViewSelect = (view) => {
         setSelectedView(view);
     };
 
@@ -371,7 +371,7 @@ const HomeIntermediary = () => {
 
     const renderApprovedApplication = () => {
         const visibleApprovalData = userApprovedApplications.slice(0, visibleApprovedApplications);
-        console.log('visibleApprovalData: ',visibleApprovalData);
+        console.log('visibleApprovalData: ', visibleApprovalData);
 
         //here a function able to delete an approved application. Can be useful to sort the approved applications or to cancel an approved application
         const deleteApprovedApplication = async (userIdentification, mapName) => {
@@ -394,31 +394,48 @@ const HomeIntermediary = () => {
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
-                    <h2>{t('Approved Applications')}</h2>
                     {visibleApprovalData.length > 0 ? (
-                        <ul className="list-group">
+                        <li className="list-group">
                             {visibleApprovalData.map((approved) => (
                                 <li key={approved.id} className="list-group-item profile-item">
                                     <div className="row">
-                                        <h3>{approved.programName}</h3>
-                                        <p>{t('name')}: {approved.name} {approved.lastname}</p>
-                                        <p>{t('email')}: {approved.email}</p>
+                                        <h3>{t('programName')}: {approved.programName}</h3>
                                     </div>
-                                    <button className="btn btn-primary" onClick={() => deleteApprovedApplication(approved.userIdentification, approved.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                                        {t('removeFromApproved')}
-                                    </button>
+                                    <div className="row mb-3">
+                                        <div className="col">
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('name')}:</b> {approved.name} {approved.lastname}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('email')}:</b> {approved.email}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="text-end">
+                                            <button className="btn btn-primary" onClick={() => deleteApprovedApplication(approved.userIdentification, approved.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                                {t('removeFromApproved')}
+                                            </button>
+                                        </div>
+                                    </div>
                                 </li>
                             ))}
-                        </ul>
+                        </li>
                     ) : (
                         <p>{t('No approved applications.')}</p>
                     )}
                     {visibleApprovedApplications < userApprovedApplications.length && (
                         <div className="text-center" style={{ paddingTop: '15px' }}>
-                        <button className="btn btn-primary" onClick={handleLoadMoreApprovedApplications} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                            {t('LoadMore')}
-                        </button>
-                    </div>
+                            <button className="btn btn-primary" onClick={handleLoadMoreApprovedApplications} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                {t('LoadMore')}
+                            </button>
+                        </div>
                     )}
                 </div>
 
@@ -473,25 +490,55 @@ const HomeIntermediary = () => {
             <div>
                 <div style={{ paddingTop: '15px' }}>
                     {visibleApplicationsData.length > 0 ? (
-                        <ul className="list-group">
+                        <li className="list-group">
                             {visibleApplicationsData.map((application) => (
                                 <li key={application.programId} className="list-group-item profile-item">
                                     <div className="row">
-                                        <h3>Name: {application.programName}</h3>
-                                        <p>Youth full name: {application.firstName} {application.lastName}</p>
-                                        <p>Email: {application.email}</p>
-                                        <p>Description du jeune: {application.information}</p>
-                                        <p>Cover Letter: {application.coverLetter}</p>
+                                        <h3>{t('programName')}: {application.programName}</h3>
                                     </div>
-                                    <button className="btn btn-primary" onClick={() => handleAcceptYouth(application.mapName, application.userIdentification, application.programName, application.firstName, application.lastName, application.email)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                                        {t('accept')}
-                                    </button>
-                                    <button className="btn btn-primary" onClick={() => handleRefuseYouth(application.mapName, application.userIdentification)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                                        {t('refuse')}
-                                    </button>
+                                    <div className="row mb-3">
+                                        <div className="col-md-6" style={{ paddingBottom: '20px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>Youth full name:</b> {application.firstName} {application.lastName}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>Email:</b> {application.email}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>Description du jeune:</b> {application.information}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="col-md-6" style={{ paddingBottom: '20px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>Cover Letter:</b> {application.coverLetter}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="text-end">
+                                            <button className="btn btn-primary" onClick={() => handleAcceptYouth(application.mapName, application.userIdentification, application.programName, application.firstName, application.lastName, application.email)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                                {t('accept')}
+                                            </button>
+                                            <button className="btn btn-secondary" onClick={() => handleRefuseYouth(application.mapName, application.userIdentification)} style={{ backgroundColor: '#6C757D', borderColor: '#6C757D', marginLeft: '10px' }}>
+                                                {t('decline')}
+                                            </button>
+                                        </div>
+                                    </div>
                                 </li>
                             ))}
-                        </ul>
+                        </li>
                     ) : (
                         <div className="row-md-3 text-center" style={{ paddingBottom: '10px' }}>
                             <h3>No applications found.</h3>
