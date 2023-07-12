@@ -406,7 +406,7 @@ const HomeIntermediary = () => {
                                             <ul className="list-group">
                                                 <li className="list-group-item">
                                                     <div className="row">
-                                                        <p><b>{t('name')}:</b> {approved.name} {approved.lastname}</p>
+                                                        <p><b>{t('firstName')}:</b> {approved.name} {approved.lastname}</p>
                                                     </div>
                                                 </li>
                                                 <li className="list-group-item">
