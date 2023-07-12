@@ -18,8 +18,10 @@ const existingSkills = [
 const HomeCompany = () => {
 
     const { t } = useTranslation();
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filterQuery, setFilterQuery] = useState('');
+    const [searchJobQuery, setSearchJobQuery] = useState('');
+    const [filterJobQuery, setFilterJobQuery] = useState('');
+    const [searchYoungQuery, setSearchYoungQuery] = useState('');
+    const [filterYoungQuery, setFilterYoungQuery] = useState('');
     const [selectedProfile, setSelectedProfile] = useState(null);
     const [selectedView, setSelectedView] = useState('youthProfiles');
     const [youthProfiles, setYouthProfiles] = useState([]);
@@ -109,12 +111,20 @@ const HomeCompany = () => {
         }
     };
 
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
+    const handleSearchJobChange = (event) => {
+        setSearchJobQuery(event.target.value);
     };
 
-    const handleFilterChange = (event) => {
-        setFilterQuery(event.target.value);
+    const handleFilterJobChange = (event) => {
+        setFilterJobQuery(event.target.value);
+    };
+
+    const handleSearchYoungChange = (event) => {
+        setSearchYoungQuery(event.target.value);
+    };
+
+    const handleFilterYoungChange = (event) => {
+        setFilterYoungQuery(event.target.value);
     };
 
     const handleLoadMoreYouth = () => {
@@ -127,11 +137,11 @@ const HomeCompany = () => {
 
     //fonction qui permet de filtrer les profils en fonction des skills, donc filtrer par le nombre de points qu'il y a dans ce skill pour chaque profile    
     const filterProfiles = () => {
-        if (filterQuery === '') {
+        if (filterYoungQuery === '') {
             return youthProfiles;
         }
 
-        const selectedSkill = filterQuery.toLowerCase();
+        const selectedSkill = filterYoungQuery.toLowerCase();
 
         return youthProfiles
             .filter((profile) => profile[selectedSkill] !== undefined)
@@ -144,17 +154,17 @@ const HomeCompany = () => {
 
 
     const searchedProfiles = filterProfiles().filter((profile) =>
-        profile.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        profile.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        `${profile.firstName} ${profile.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
+        profile.firstName.toLowerCase().includes(searchYoungQuery.toLowerCase()) ||
+        profile.lastName.toLowerCase().includes(searchYoungQuery.toLowerCase()) ||
+        `${profile.firstName} ${profile.lastName}`.toLowerCase().includes(searchYoungQuery.toLowerCase())
     );
 
     const filterJobs = () => {
-        if (filterQuery === '') {
+        if (filterJobQuery === '') {
             return jobs;
         }
 
-        const selectedDate = filterQuery;
+        const selectedDate = filterJobQuery;
 
         return jobs
             .filter((job) => job[selectedDate] !== undefined)
@@ -171,7 +181,7 @@ const HomeCompany = () => {
     };
 
     const searchedJobs = filterJobs().filter((job) =>
-        job.jobName.toLowerCase().includes(searchQuery.toLowerCase())
+        job.jobName.toLowerCase().includes(searchJobQuery.toLowerCase())
     );
 
     const handleSeeMore = (profile) => {
@@ -404,8 +414,8 @@ const HomeCompany = () => {
                             <input
                                 type="text"
                                 className="form-control"
-                                value={searchQuery}
-                                onChange={handleSearchChange}
+                                value={searchYoungQuery}
+                                onChange={handleSearchYoungChange}
                             />
                         </div>
                     </div>
@@ -416,8 +426,8 @@ const HomeCompany = () => {
                             </span>
                             <select
                                 className="form-select"
-                                value={filterQuery}
-                                onChange={handleFilterChange}
+                                value={filterYoungQuery}
+                                onChange={handleFilterYoungChange}
                             >
                                 <option value="">{t('all')}</option>
                                 {existingSkills.map((skill) => (
@@ -531,8 +541,8 @@ const HomeCompany = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
+                                    value={searchJobQuery}
+                                    onChange={handleSearchJobChange}
                                 />
                             </div>
                         </div>
@@ -543,8 +553,8 @@ const HomeCompany = () => {
                                 </span>
                                 <select
                                     className="form-select"
-                                    value={filterQuery}
-                                    onChange={handleFilterChange}
+                                    value={filterJobQuery}
+                                    onChange={handleFilterJobChange}
                                 >
                                     <option value="">{t('all')}</option>
                                     <option value="jobBeginDate">{t('beginDate')}</option>
