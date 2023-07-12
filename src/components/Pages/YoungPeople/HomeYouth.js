@@ -25,6 +25,23 @@ const HomeYouth = () => {
     const [selectedView, setSelectedView] = useState('programView');
     const [visibleJobs, setVisibleJobs] = useState(10); // Number of jobs to display
     const [visiblePrograms, setVisiblePrograms] = useState(10); // Number of jobs to display
+    const [coverLetter, setCoverLetter] = useState('');
+    const [pending, setPending] = useState(null);
+
+    const [selectedProgram, setSelectedProgram] = useState(null);
+    const [showProgramModal, setShowProgramModal] = useState(false);
+
+
+    const handleProgramApplication = (program) => {
+        setSelectedProgram(program);
+        setShowProgramModal(true);
+    };
+
+    const handleCloseProgramModal = () => {
+        setSelectedProgram(null);
+        setShowProgramModal(false);
+    };
+
 
 
 
@@ -70,6 +87,7 @@ const HomeYouth = () => {
     useEffect(() => {
         fetchAllPrograms();
         fetchAllJobs();
+        fetchCurrentUser();
     }, []);
 
     const handleSearchChange = (event) => {
@@ -157,6 +175,193 @@ const HomeYouth = () => {
         }
     };
 
+    const handleCoverLetterChange = (event) => {
+        setCoverLetter(event.target.value);
+    };
+
+    const [languageList, setLanguageList] = useState([
+    ]);
+
+    const [experienceList, setExperienceList] = useState([
+    ]);
+
+    const [youthFormData, setYouthFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        age: '',
+        city: '',
+        postalCode: '',
+        education: '',
+        information: '',
+        listLanguages: languageList,
+        listExperience: experienceList,
+        phoneNumber: '',
+        proactivity: 0,
+        creativity: 0,
+        initiative: 0,
+        empathy: 0,
+        leadership: 0,
+        teamwork: 0,
+    });
+
+    //funciton to calculate age of the user based on the date of birth with format : yyyy-mm-dd
+    const calculateAge = (dateOfBirth) => {
+        const today = new Date();
+        const birthDate = new Date(dateOfBirth);
+        let age = today.getFullYear() - birthDate.getFullYear();
+
+        // Check if the user hasn't had their birthday this year yet
+        // If the current month and day are before the birth month and day,
+        // subtract 1 from the age
+
+        const month = today.getMonth() - birthDate.getMonth();
+        if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    };
+
+    //function to get current user data
+    const fetchCurrentUser = async () => {
+        const userRef = firestore.collection('users').doc('usersyouth');
+        const userDoc = await userRef.get();
+        if (userDoc.exists) {
+            const userData = userDoc.data()[auth.currentUser.uid];
+            //setYouthFormData firstname, lastname, city
+            setYouthFormData({
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                email: userData.email,
+                city: userData.city,
+                postalCode: userData.postalCode,
+                education: userData.educationalLevel,
+                information: userData.information,
+                age: calculateAge(userData.dateOfBirth),
+                listLanguages: userData.listLanguages,
+                listExperience: userData.listExperience,
+                phoneNumber: userData.phoneNumber,
+                proactivity: userData.proactivity,
+                creativity: userData.creativity,
+                initiative: userData.initiative,
+                empathy: userData.empathy,
+                leadership: userData.leadership,
+                teamwork: userData.teamwork,
+            });
+            console.log('User Data:', userData);
+        } else {
+            console.log('No such document!');
+        }
+    };
+
+    const handleSubmitApplication = async () => {
+        if (coverLetter === '') {
+            alert('Please enter a cover letter');
+            return;
+        }
+        try {
+            const programsRef = firestore.collection('programs');
+            const snapshot = await programsRef.get();
+
+            snapshot.forEach(async (doc) => {
+                const programData = Object.values(doc.data())[0]; // Retrieve the program information
+
+                // Check if the program information matches the selected program
+                if (
+                    programData.companyName === selectedProgram.companyName &&
+                    programData.endDate === selectedProgram.endDate &&
+                    programData.numberOfPlaces === selectedProgram.numberOfPlaces &&
+                    programData.programDescription === selectedProgram.programDescription &&
+                    programData.programName === selectedProgram.programName &&
+                    arraysEqual(programData.skillsDeveloped, selectedProgram.skillsDeveloped) &&
+                    programData.startDate === selectedProgram.startDate
+                ) {
+                    const docName = doc.id;
+                    const mapName = Object.keys(doc.data())[0]; // Retrieve the matching map name
+                    console.log('Match found! Map Name:', mapName);
+                    console.log('Match found! Doc Name:', docName);
+
+                    //we fetched the current user data with the function fetchCurrentUser, now we can use the data to create the application
+                    console.log('Youth Form Data:', youthFormData);
+                    //create application object
+                    const sentApplication = {
+                        programName: selectedProgram.programName,
+                        firstName: youthFormData.firstName,
+                        lastName: youthFormData.lastName,
+                        email: youthFormData.email,
+                        age: youthFormData.age,
+                        city: youthFormData.city,
+                        information: youthFormData.information,
+                        education: youthFormData.education,
+                        coverLetter: coverLetter,
+                        pending: pending,
+                        mapName: mapName,
+                        userIdentification: auth.currentUser.uid,
+                    };
+
+                    const uid = auth.currentUser.uid;
+
+
+                    // Write the application to the appropriate document and subcollection
+                    //we store the application in a collection called programsApplication then to make sorting easier, we create a doc with same uid than the company and the same map name than the program
+                    const applicationsRef = firestore
+                        .collection('programsApplication')
+                        .doc(docName);
+
+                    // we combine current uid with map name to create a unique id for the application
+                    const applicationId = uid + mapName;
+                    console.log('Application ID:', applicationId);
+
+                    // Check if the user has already applied
+                    const userDoc = await applicationsRef.get();
+                    const userData = userDoc.data()[applicationId];
+                    
+                    if (userData !== undefined) {
+                        // User has already applied, show a message or handle accordingly
+                        alert('You have already applied to this program.');
+                        return;
+                    }
+
+
+
+                    // User has not applied, add the application
+                    await applicationsRef
+                        .set({ [applicationId]: sentApplication }, { merge: true })
+                        .then(() => {
+                            alert('Application added successfully');
+                            handleCloseProgramModal();
+                            // Reload the page
+                            window.location.reload();
+                        })
+                        .catch((error) => {
+                            console.error('Error adding application:', error);
+                        });
+
+                    return;
+
+                }
+            });
+
+
+        } catch (error) {
+            console.error('Error handling application:', error);
+        }
+
+
+    };
+
+    function arraysEqual(a, b) {
+        if (a === b) return true;
+        if (a.length !== b.length) return false;
+        for (let i = 0; i < a.length; i++) {
+            if (a[i] !== b[i]) return false;
+        }
+        return true;
+    }
+
+
+
+
     const renderProgramView = () => {
         const visibleProgramsData = searchedPrograms.slice(0, visiblePrograms);
 
@@ -242,6 +447,7 @@ const HomeYouth = () => {
                                         <div className="text-end">
                                             <button
                                                 className="btn btn-primary"
+                                                onClick={() => handleProgramApplication(program)}
                                                 style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
                                             >
                                                 {t('apply')}
@@ -254,6 +460,42 @@ const HomeYouth = () => {
                     ) : (
                         <p>{t('No programs found.')}</p>
                     )}
+
+                    {/* Program Modal */}
+                    <Modal show={showProgramModal} onHide={handleCloseProgramModal}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>{t('programApplication')}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            {selectedProgram && (
+                                <div>
+                                    <h4>{t('Program Name')}: {selectedProgram.programName}</h4>
+                                    <h4>{t('Company Name')}: {selectedProgram.companyName}</h4>
+
+                                    <div className="form-group">
+                                        <label htmlFor="coverLetter">{t('Cover Letter')}</label>
+                                        <textarea
+                                            className="form-control"
+                                            id="coverLetter"
+                                            rows="4"
+                                            value={coverLetter}
+                                            onChange={handleCoverLetterChange}
+                                            required
+                                        ></textarea>
+                                    </div>
+                                </div>
+                            )}
+                        </Modal.Body>
+
+                        <Modal.Footer>
+                            <Button variant="primary" onClick={handleSubmitApplication}>
+                                {t('Apply')}
+                            </Button>
+                            <Button variant="secondary" onClick={handleCloseProgramModal}>
+                                {t('Close')}
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
 
                     {/* Show the "Load More" button if there are more programs to load */}
                     {visiblePrograms < userPrograms.length && (
@@ -386,14 +628,14 @@ const HomeYouth = () => {
                     {/* Show the "Load More" button if there are more jobs to load */}
                     {visibleJobs < userJobs.length && (
                         <div className="text-center" style={{ paddingTop: '15px' }}>
-                        <button
-                            onClick={handleLoadMoreJobs}
-                            className="btn btn-primary"
-                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                        >
-                            {t('loadMore')}
-                        </button>
-                    </div>
+                            <button
+                                onClick={handleLoadMoreJobs}
+                                className="btn btn-primary"
+                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                            >
+                                {t('loadMore')}
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>
