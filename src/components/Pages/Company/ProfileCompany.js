@@ -83,7 +83,7 @@ const ProfileCompany = () => {
                             twitterPage: userData.twitterPage,
                             facebookPage: userData.facebookPage,
                             contactFirstName: userData.contactFirstName,
-                            contactLastName: userData.contactLasttName,
+                            contactLastName: userData.contactLastName,
                             contactRole: userData.contactRole,
                             information: userData.information,
                         });
