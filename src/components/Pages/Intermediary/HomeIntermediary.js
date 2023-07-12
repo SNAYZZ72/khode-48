@@ -312,8 +312,27 @@ const HomeIntermediary = () => {
         setShowModal(false);
     };
 
-    const   handleViewSelect = (view) => {
+    const handleViewSelect = (view) => {
         setSelectedView(view);
+    };
+
+    const deleteProgram = async (programId) => {
+        try {
+            const userId = auth.currentUser.uid;
+            const programsRef = firestore.collection('programs').doc(userId);
+            const programData = await programsRef.get();
+            const userData = programData.data();
+            delete userData[programId];
+
+            await programsRef.update({
+                [programId]: firebase.firestore.FieldValue.delete(),
+            });
+            alert('Program deleted successfully.');
+            fetchUserPrograms(); // Refresh the programs after deletion
+            window.location.reload();
+        } catch (error) {
+            console.log('Error deleting program:', error);
+        }
     };
 
     const renderView = () => {
@@ -371,7 +390,7 @@ const HomeIntermediary = () => {
 
     const renderApprovedApplication = () => {
         const visibleApprovalData = userApprovedApplications.slice(0, visibleApprovedApplications);
-        console.log('visibleApprovalData: ',visibleApprovalData);
+        console.log('visibleApprovalData: ', visibleApprovalData);
 
         //here a function able to delete an approved application. Can be useful to sort the approved applications or to cancel an approved application
         const deleteApprovedApplication = async (userIdentification, mapName) => {
@@ -415,10 +434,10 @@ const HomeIntermediary = () => {
                     )}
                     {visibleApprovedApplications < userApprovedApplications.length && (
                         <div className="text-center" style={{ paddingTop: '15px' }}>
-                        <button className="btn btn-primary" onClick={handleLoadMoreApprovedApplications} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                            {t('LoadMore')}
-                        </button>
-                    </div>
+                            <button className="btn btn-primary" onClick={handleLoadMoreApprovedApplications} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                {t('LoadMore')}
+                            </button>
+                        </div>
                     )}
                 </div>
 
@@ -552,8 +571,15 @@ const HomeIntermediary = () => {
                         <ul className="list-group">
                             {visibleProgramsData.map((program) => (
                                 <li key={program.programId} className="list-group-item profile-item">
-                                    <div className="row">
+                                    <div className="row" >
                                         <h3>{t('programName')}: {program.programName}</h3>
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => deleteProgram(program.programId)}
+                                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                        >
+                                            {t('deleteProgram')}
+                                        </button>
                                     </div>
                                     <div className="row">
                                         <div className="col-md-7" style={{ paddingBottom: '20px' }}>
