@@ -251,29 +251,31 @@ const ProfileIntermediary = () => {
 
                 <div className="container">
                     <div className="row mb-3 justify-content-center">
-                        <div className="col-md-2 text-center">
+                        <div className="col-md-3 text-center">
                             <img
                                 src={selectedIntermediaryImage || intermediaryImage || '../intermediary-profile-image.png'}
                                 alt="Profile"
-                                style={{ width: '90%', height: 'auto', marginBottom: '15px' }}
+                                style={{ width: '15vw', height: 'auto' }}
                             />
                         </div>
                         <div className="col-md-5">
                             <div className="row">
                                 <div className="col">
+                                    <h4>{t('city')} / {t('postalCode')}</h4>
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        {t('city')}: {intermediaryFormData.city}
+                                        {intermediaryFormData.city} / {intermediaryFormData.postalCode}
                                     </p>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col">
+                                    <h4>{t('aboutCompany')}</h4>
                                     <p
                                         style={{
                                             border: "3px solid #F24726",
                                             padding: '5px',
                                             borderRadius: '10px',
-                                            height: '140px',
+                                            height: '100px',
                                             overflowY: 'auto'
                                         }}
                                     >
@@ -283,59 +285,51 @@ const ProfileIntermediary = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="row justify-content-center">
-                        <div className="col-md-7">
+                    <div className="row mb-3 justify-content-center">
+                        <div className="col-md-8">
                             <div className="row">
                                 <div className="col">
-                                    <h3>{t('socialMedia')}</h3>
-                                    <Nav className="align-items-center" style={{ marginTop: "-15px", marginLeft: "-15px" }}>
-                                        {/* Contenu de la dernière colonne */}
-                                        <Nav.Link href="https://twitter.com" target="_blank" style={{ color: '#F24726', fontSize: '30px' }}>
-                                            <FontAwesomeIcon icon={faTwitter} />
-                                        </Nav.Link>
-                                        <Nav.Link href="https://www.facebook.com" target="_b    lank" style={{ color: '#F24726', fontSize: '30px' }}>
-                                            <FontAwesomeIcon icon={faFacebook} />
-                                        </Nav.Link>
-                                        <Nav.Link href="https://www.instagram.com" target="_blank" style={{ color: '#F24726', fontSize: '30px' }}>
-                                            <FontAwesomeIcon icon={faInstagram} />
-                                        </Nav.Link>
-                                    </Nav>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row justify-content-center">
-                        <div className="col-md-7">
-                            <div className="row">
-                                <div className="col">
-                                    <h3>{t('contact')}</h3>
-                                    <ul>
-                                        <li>{t('firstName')}: {intermediaryFormData.contactFirstName}</li>
-                                        <li>{t('lastName')}: {intermediaryFormData.contactLastName}</li>
-                                        <li>{t('role')}: {intermediaryFormData.contactRole}</li>
-                                        <li>{t('email')}: {intermediaryFormData.email}</li>
-                                        <li>{t('phoneNumber')}: {intermediaryFormData.phoneNumber}</li>
+                                    <h4>{t('Contact')}</h4>
+                                    <ul className="list-group">
+                                        <li className="list-group-item"><b>{t('firstName')}:</b> {intermediaryFormData.contactFirstName} {intermediaryFormData.contactLastName}</li>
+                                        <li className="list-group-item"><b>{t('position')}:</b> {intermediaryFormData.contactRole}</li>
+                                        <li className="list-group-item"><b>{t('email')}:</b> {intermediaryFormData.email}</li>
+                                        <li className="list-group-item"><b>{t('phoneNumber')}:</b> {intermediaryFormData.phoneNumber}</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="row justify-content-center">
-                        <div className="col-md-7">
+                    <div className="row mb-3 justify-content-center">
+                        <div className="col-md-8">
                             <div className="row">
                                 <div className="col">
-                                    <h3>{t('maturity')}</h3>
-                                    <p>{intermediaryFormData.maturity}</p>
+                                    <h4>{t('company')}</h4>
+                                    <ul className="list-group">
+                                        <li className="list-group-item"><b>{t('mainSector')}:</b> {intermediaryFormData.industry}</li>
+                                        <li className="list-group-item"><b>{t('maturityProject')}:</b> {intermediaryFormData.maturity}</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="row justify-content-center">
-                        <div className="col-md-7">
+                    <div className="row mb-3 justify-content-center">
+                        <div className="col-md-8">
                             <div className="row">
                                 <div className="col">
-                                    <h3>{t('industry')}</h3>
-                                    <p>{intermediaryFormData.industry}</p>
+                                    <h4>{t('socialMedia')}</h4>
+                                    <Nav className="align-items-center" style={{ marginTop: "-10px", marginLeft: "-15px" }}>
+                                        {/* Contenu de la dernière colonne */}
+                                        <Nav.Link href="https://twitter.com" target="_blank" style={{ color: '#F24726', fontSize: '40px' }}>
+                                            <FontAwesomeIcon icon={faTwitter} />
+                                        </Nav.Link>
+                                        <Nav.Link href="https://www.facebook.com" target="_b    lank" style={{ color: '#F24726', fontSize: '40px' }}>
+                                            <FontAwesomeIcon icon={faFacebook} />
+                                        </Nav.Link>
+                                        <Nav.Link href="https://www.instagram.com" target="_blank" style={{ color: '#F24726', fontSize: '40px' }}>
+                                            <FontAwesomeIcon icon={faInstagram} />
+                                        </Nav.Link>
+                                    </Nav>
                                 </div>
                             </div>
                         </div>

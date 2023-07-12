@@ -252,29 +252,31 @@ const ProfileCompany = () => {
 
                 <div className="container">
                     <div className="row mb-3 justify-content-center">
-                        <div className="col-md-2 text-center">
+                        <div className="col-md-3 text-center">
                             <img
-                                src={selectedCompanyImage || companyImage || '../intermediary-profile-image.png'}
+                                src={selectedCompanyImage || companyImage || '../company-profile-image.png'}
                                 alt="Profile"
-                                style={{ width: '90%', height: 'auto', marginBottom: '15px' }}
+                                style={{ width: '15vw', height: 'auto' }}
                             />
                         </div>
                         <div className="col-md-5">
                             <div className="row">
                                 <div className="col">
+                                    <h4>{t('city')} / {t('postalCode')}</h4>
                                     <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        {t('city')}: {companyFormData.city}
+                                        {companyFormData.city} / {companyFormData.postalCode}
                                     </p>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col">
+                                    <h4>{t('aboutCompany')}</h4>
                                     <p
                                         style={{
                                             border: "3px solid #F24726",
                                             padding: '5px',
                                             borderRadius: '10px',
-                                            height: '140px',
+                                            height: '100px',
                                             overflowY: 'auto'
                                         }}
                                     >
@@ -284,20 +286,49 @@ const ProfileCompany = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="row justify-content-center">
-                        <div className="col-md-7">
+                    <div className="row mb-3 justify-content-center">
+                        <div className="col-md-8">
                             <div className="row">
                                 <div className="col">
-                                    <h3>{t('socialMedia')}</h3>
-                                    <Nav className="align-items-center" style={{ marginTop: "-15px", marginLeft: "-15px" }}>
+                                    <h4>{t('Contact')}</h4>
+                                    <ul className="list-group">
+                                        <li className="list-group-item"><b>{t('firstName')}:</b> {companyFormData.contactFirstName} {companyFormData.contactLastName}</li>
+                                        <li className="list-group-item"><b>{t('position')}:</b> {companyFormData.contactRole}</li>
+                                        <li className="list-group-item"><b>{t('email')}:</b> {companyFormData.email}</li>
+                                        <li className="list-group-item"><b>{t('phoneNumber')}:</b> {companyFormData.phoneNumber}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row mb-3 justify-content-center">
+                        <div className="col-md-8">
+                            <div className="row">
+                                <div className="col">
+                                    <h4>{t('company')}</h4>
+                                    <ul className="list-group">
+                                        <li className="list-group-item"><b>{t('mainSector')}:</b> {companyFormData.industry}</li>
+                                        <li className="list-group-item"><b>{t('primarySector')}:</b> {companyFormData.primarySector}</li>
+                                        <li className="list-group-item"><b>{t('maturityProject')}:</b> {companyFormData.maturity}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row mb-3 justify-content-center">
+                        <div className="col-md-8">
+                            <div className="row">
+                                <div className="col">
+                                    <h4>{t('socialMedia')}</h4>
+                                    <Nav className="align-items-center" style={{ marginTop: "-10px", marginLeft: "-15px" }}>
                                         {/* Contenu de la dernière colonne */}
-                                        <Nav.Link href="https://twitter.com" target="_blank" style={{ color: '#F24726', fontSize: '30px' }}>
+                                        <Nav.Link href="https://twitter.com" target="_blank" style={{ color: '#F24726', fontSize: '40px' }}>
                                             <FontAwesomeIcon icon={faTwitter} />
                                         </Nav.Link>
-                                        <Nav.Link href="https://www.facebook.com" target="_b    lank" style={{ color: '#F24726', fontSize: '30px' }}>
+                                        <Nav.Link href="https://www.facebook.com" target="_b    lank" style={{ color: '#F24726', fontSize: '40px' }}>
                                             <FontAwesomeIcon icon={faFacebook} />
                                         </Nav.Link>
-                                        <Nav.Link href="https://www.instagram.com" target="_blank" style={{ color: '#F24726', fontSize: '30px' }}>
+                                        <Nav.Link href="https://www.instagram.com" target="_blank" style={{ color: '#F24726', fontSize: '40px' }}>
                                             <FontAwesomeIcon icon={faInstagram} />
                                         </Nav.Link>
                                     </Nav>

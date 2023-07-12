@@ -432,7 +432,7 @@ const ProfileYouth = () => {
                     <div className="row mb-3 justify-content-center">
                         <div className="col-md-3 text-center">
                             <img
-                                src={selectedYouthImage || youthImage || '../intermediary-profile-image.png'}
+                                src={selectedYouthImage || youthImage || '../young-profile-image.png'}
                                 alt="Profile picture"
                                 style={{ width: '15vw', height: 'auto' }}
                             />
@@ -470,47 +470,52 @@ const ProfileYouth = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="row justify-content-center">
+                    <div className="row mb-3 justify-content-center">
                         <div className="col-md-8">
                             <div className="row">
                                 <div className="col">
                                     <h4>{t('Contact')}</h4>
-                                    <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>
-                                        {youthFormData.phoneNumber} / {youthFormData.email}
-                                    </p>
-                                </div>
-                                <div className="col">
-                                    <h4>{t('education')}</h4>
-                                    <div className="col">
-                                        <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{youthFormData.education}</p>
-                                    </div>
+                                    <ul className="list-group">
+                                        <li className="list-group-item"><b>{t('firstName')}:</b> {youthFormData.firstName} {youthFormData.lastName}</li>
+                                        <li className="list-group-item"><b>{t('education')}:</b> {youthFormData.education}</li>
+                                        <li className="list-group-item"><b>{t('email')}:</b> {youthFormData.email}</li>
+                                        <li className="list-group-item"><b>{t('phoneNumber')}:</b> {youthFormData.phoneNumber}</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="row justify-content-center">
+                    <div className="row mb-3 justify-content-center">
                         <div className="col-md-8">
                             <div className="row">
                                 <div className="col">
                                     <h4>{t('language')}</h4>
-                                    {languageList.map((languageList, index) => (
-                                        <div className="col" key={index}>
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{languageList}</p>
-                                        </div>
-                                    ))}
+                                    <ul className="list-group">
+                                        {languageList.map((languageList, index) => (
+                                            <li className="list-group-item" key={index}>
+                                                <div className="col" key={index}>
+                                                    <p>{languageList}</p>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                                 <div className="col">
                                     <h4>{t('experience')}</h4>
-                                    {experienceList.map((experienceList, index) => (
-                                        <div className="col" key={index}>
-                                            <p style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}>{experienceList}</p>
-                                        </div>
-                                    ))}
+                                    <ul className="list-group">
+                                        {experienceList.map((experienceList, index) => (
+                                            <li className="list-group-item" key={index}>
+                                                <div className="col" key={index}>
+                                                    <p>{experienceList}</p>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="row justify-content-center">
+                    <div className="row mb-3 justify-content-center">
                         <div className="col-md-8">
                             <div className="row">
                                 <div className="col">
