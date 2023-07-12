@@ -295,6 +295,7 @@ const HomeIntermediary = () => {
                 endDate: createProgram.endDate,
                 numberOfPlaces: createProgram.numberOfPlaces,
                 companyName: userData.companyName,
+                mapName: mapName,
             };
 
             // Add a new program to the programs collection
@@ -308,6 +309,7 @@ const HomeIntermediary = () => {
                 startDate: '',
                 endDate: '',
                 numberOfPlaces: 0,
+                mapName: '',
             });
 
             alert('Program created successfully!');
@@ -487,7 +489,7 @@ const HomeIntermediary = () => {
             //here we add the youth to the list of approved youth
             await applicationApproval.set({ [neededId]: addYouth }, { merge: true });
             //alert('Youth accepted successfully.');
-            
+
             //we will remove 1 place from the number of places available and if the number of places available is 0, we will delete the program.
             const programRef = firestore.collection('programs').doc(userId);
             const userDoc = await programRef.get();
@@ -615,6 +617,22 @@ const HomeIntermediary = () => {
     const renderProgramView = () => {
         const visibleProgramsData = searchedPrograms.slice(0, visiblePrograms);
 
+        //function to delete a program
+        const handleDeleteProgram = async (mapName) => {
+            try {
+                const userId = auth.currentUser.uid;
+                const programRef = firestore.collection('programs').doc(userId);
+                const removeField = firebase.firestore.FieldValue.delete();
+                await programRef.update({
+                    [mapName]: removeField,
+                });
+                alert('Program deleted successfully.');
+                window.location.reload();
+            } catch (error) {
+                console.error('Error deleting program:', error);
+            }
+        };
+
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
@@ -690,6 +708,11 @@ const HomeIntermediary = () => {
                                                         <p><b>{t('skillsDeveloped')}:</b> {program.skillsDeveloped.join(', ')}</p>
                                                     </div>
                                                 </li>
+                                                <div className="row-md-3 text-center" style={{ paddingBottom: '10px' }}>
+                                                    <button className="btn btn-primary" onClick={() => handleDeleteProgram(program.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                                        {t('deleteProgram')}
+                                                    </button>
+                                                </div>
                                             </ul>
                                         </div>
                                     </div>
