@@ -4,6 +4,9 @@ import HeaderIntermediary from '../../common/Header/HeaderIntermediary';
 import { auth, firestore } from '../../firebase';
 import { v4 as uuidv4 } from 'uuid';
 import { Modal, Button, Container } from 'react-bootstrap';
+import firebase from 'firebase/compat/app';
+import { map } from 'leaflet';
+
 
 const availableSkills = [
     'Proactivity',
@@ -23,6 +26,12 @@ const HomeIntermediary = () => {
     const [selectedView, setSelectedView] = useState('programView');
     const [userPrograms, setUserPrograms] = useState([]);
     const [visiblePrograms, setVisiblePrograms] = useState(10); // Number of jobs to display
+    const [userApplications, setUserApplications] = useState([]);
+    const [visibleApplications, setVisibleApplications] = useState(10); // Number of applications to display
+    const [youthUid, setYouthUid] = useState('');
+    const [visibleApprovedApplications, setVisibleApprovedApplications] = useState(10);
+    const [userApprovedApplications, setUserApprovedApplications] = useState([]);
+
 
 
     const [createProgram, setCreateProgram] = useState({
@@ -78,8 +87,22 @@ const HomeIntermediary = () => {
         setVisiblePrograms((prevVisiblePrograms) => prevVisiblePrograms + 10);
     };
 
+    //load more applications
+    const handleLoadMoreApplications = () => {
+        // Increase the number of visible applications when the "Load More" button is clicked *useful so the website doesn't crash when loading too many jobs*
+        setVisibleApplications((prevVisibleApplications) => prevVisibleApplications + 10);
+    };
+
+    //load more approved applications
+    const handleLoadMoreApprovedApplications = () => {
+        // Increase the number of visible applications when the "Load More" button is clicked *useful so the website doesn't crash when loading too many jobs*
+        setVisibleApprovedApplications((prevVisibleApprovedApplications) => prevVisibleApprovedApplications + 10);
+    };
+
     useEffect(() => {
         fetchUserPrograms();
+        fetchUserApplications();
+        fetchUserApprovedApplications();
     }, []);
 
     const handleInputChange = (e) => {
@@ -298,6 +321,10 @@ const HomeIntermediary = () => {
             return renderProgramView();
         } else if (selectedView === 'addPoints') {
             return renderAddPoints();
+        } else if (selectedView === 'viewApplications') {
+            return renderViewApplication();
+        } else if (selectedView === 'approvedApplications') {
+            return renderApprovedApplication();
         }
     };
 
@@ -312,7 +339,175 @@ const HomeIntermediary = () => {
             setUserPrograms(programs);
         }
     };
+    const fetchUserApplications = async () => {
+        try {
+            const userId = auth.currentUser.uid;
+            const applicationsRef = firestore.collection('programsApplication').doc(userId);
+            const doc = await applicationsRef.get();
+            if (doc.exists) {
+                const userData = doc.data();
+                const applications = Object.values(userData);
+                setUserApplications(applications);
+            }
+        } catch (error) {
+            console.error('Error fetching user applications:', error);
+        }
+    };
 
+    const fetchUserApprovedApplications = async () => {
+        try {
+            const userId = auth.currentUser.uid;
+            const approvedRef = firestore.collection('programsApproval').doc(userId);
+            const doc = await approvedRef.get();
+            if (doc.exists) {
+                const userData = doc.data();
+                const approved = Object.values(userData);
+                setUserApprovedApplications(approved);
+            }
+        } catch (error) {
+            console.error('Error fetching user applications:', error);
+        }
+    };
+
+    const renderApprovedApplication = () => {
+        const visibleApprovalData = userApprovedApplications.slice(0, visibleApprovedApplications);
+        console.log('visibleApprovalData: ',visibleApprovalData);
+
+        //here a function able to delete an approved application. Can be useful to sort the approved applications or to cancel an approved application
+        const deleteApprovedApplication = async (userIdentification, mapName) => {
+            try {
+                const userId = auth.currentUser.uid;
+                const approvedRef = firestore.collection('programsApproval').doc(userId);
+                const neededId = userIdentification + mapName;
+                const removeField = firebase.firestore.FieldValue.delete();
+                await approvedRef.update({
+                    [neededId]: removeField,
+                });
+                alert('Approved application deleted successfully!');
+                window.location.reload();
+            } catch (error) {
+                console.error('Error deleting approved application:', error);
+            }
+        };
+
+
+        return (
+            <div>
+                <div style={{ paddingTop: '15px' }}>
+                    <h2>{t('Approved Applications')}</h2>
+                    {visibleApprovalData.length > 0 ? (
+                        <ul className="list-group">
+                            {visibleApprovalData.map((approved) => (
+                                <li key={approved.id} className="list-group-item profile-item">
+                                    <div className="row">
+                                        <h3>{approved.programName}</h3>
+                                        <p>{t('name')}: {approved.name} {approved.lastname}</p>
+                                        <p>{t('email')}: {approved.email}</p>
+                                    </div>
+                                    <button className="btn btn-primary" onClick={() => deleteApprovedApplication(approved.userIdentification, approved.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                        {t('removeFromApproved')}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>{t('No approved applications.')}</p>
+                    )}
+                    {visibleApprovedApplications < userApprovedApplications.length && (
+                        <div className="text-center" style={{ paddingTop: '15px' }}>
+                        <button className="btn btn-primary" onClick={handleLoadMoreApprovedApplications} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                            {t('LoadMore')}
+                        </button>
+                    </div>
+                    )}
+                </div>
+
+            </div>
+        );
+    };
+
+    const renderViewApplication = () => {
+        const visibleApplicationsData = userApplications.slice(0, visibleApplications);
+
+        const handleAcceptYouth = async (mapName, userIdentification, programName, firstName, lastName, email) => {
+            // Handle accepting the youth with the specific mapName
+            const userId = auth.currentUser.uid;
+            const applicationApproval = firestore.collection('programsApproval').doc(userId);
+            const neededId = userIdentification + mapName;
+            //we create the field that will be added to the list of approved youth
+            const addYouth = {
+                programName: programName,
+                name: firstName,
+                lastname: lastName,
+                email: email,
+                userIdentification: userIdentification,
+                mapName: mapName,
+            }
+            //here we add the youth to the list of approved youth
+            await applicationApproval.set({ [neededId]: addYouth }, { merge: true });
+            alert('Youth accepted successfully.');
+            //here we delete the youth from the list of applications
+            handleRefuseYouth(mapName, userIdentification);
+            //reload the page
+            window.location.reload();
+        };
+
+
+        const handleRefuseYouth = async (mapName, userIdentification) => {
+            try {
+                const userId = auth.currentUser.uid;
+                const applicationRef = firestore.collection('programsApplication').doc(userId);
+                const neededId = userIdentification + mapName;
+                const removeField = firebase.firestore.FieldValue.delete();
+                await applicationRef.update({
+                    [neededId]: removeField,
+                });
+                alert('Youth refused successfully.');
+                window.location.reload();
+            } catch (error) {
+                console.error('Error refusing youth:', error);
+            }
+        };
+
+        return (
+            <div>
+                <div style={{ paddingTop: '15px' }}>
+                    {visibleApplicationsData.length > 0 ? (
+                        <ul className="list-group">
+                            {visibleApplicationsData.map((application) => (
+                                <li key={application.programId} className="list-group-item profile-item">
+                                    <div className="row">
+                                        <h3>Name: {application.programName}</h3>
+                                        <p>Youth full name: {application.firstName} {application.lastName}</p>
+                                        <p>Email: {application.email}</p>
+                                        <p>Description du jeune: {application.information}</p>
+                                        <p>Cover Letter: {application.coverLetter}</p>
+                                    </div>
+                                    <button className="btn btn-primary" onClick={() => handleAcceptYouth(application.mapName, application.userIdentification, application.programName, application.firstName, application.lastName, application.email)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                        {t('accept')}
+                                    </button>
+                                    <button className="btn btn-primary" onClick={() => handleRefuseYouth(application.mapName, application.userIdentification)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                        {t('refuse')}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <div className="row-md-3 text-center" style={{ paddingBottom: '10px' }}>
+                            <h3>No applications found.</h3>
+                        </div>
+                    )}
+                    {visibleApplications < userApplications.length && (
+                        <div className="text-center" style={{ paddingTop: '15px' }}>
+                            <button className="btn btn-primary" onClick={handleLoadMoreApplications} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                {t('LoadMore')}
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    };
 
     const renderProgramView = () => {
         const visibleProgramsData = userPrograms.slice(0, visiblePrograms);
@@ -497,7 +692,7 @@ const HomeIntermediary = () => {
                         </button>
                     </div>
                 )}
-            </div>  
+            </div>
         );
     };
 
@@ -615,6 +810,26 @@ const HomeIntermediary = () => {
                             style={{ border: selectedView === 'addPoints' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'addPoints' ? '#F24726' : '#6C757D', color: 'white' }}
                         >
                             {t('addPoints')}
+                        </button>
+                    </div>
+                    <div className="col">
+                        {/* borderColor: '#F24726' si la vue viewApplication est actif sinon borderColor: 'none' */}
+                        <button
+                            onClick={() => handleViewSelect('viewApplications')}
+                            className="form-control"
+                            style={{ border: selectedView === 'viewApplications' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'viewApplications' ? '#F24726' : '#6C757D', color: 'white' }}
+                        >
+                            {t('viewApplication')}
+                        </button>
+                    </div>
+                    <div className="col">
+                        {/* borderColor: '#F24726' si la vue createProgram est actif sinon borderColor: 'none' */}
+                        <button
+                            onClick={() => handleViewSelect('approvedApplications')}
+                            className="form-control"
+                            style={{ border: selectedView === 'approvedApplications' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'approvedApplications' ? '#F24726' : '#6C757D', color: 'white' }}
+                        >
+                            {t('approvedApplications')}
                         </button>
                     </div>
                 </div>
