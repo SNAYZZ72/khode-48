@@ -76,6 +76,17 @@ const HomeIntermediary = () => {
         program.programName.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    //search by programName or by name of youth people
+
+    const searchedApplications = userApplications.filter((application) =>
+        application.programName.toLowerCase().includes(searchQuery.toLowerCase())
+        
+    );
+
+    const searchedApprovedApplications = userApprovedApplications.filter((application) =>
+        application.programName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     const handleProfileSelect = (type) => {
         setProfileType(type);
         setShowModal(true);
@@ -370,7 +381,7 @@ const HomeIntermediary = () => {
     };
 
     const renderApprovedApplication = () => {
-        const visibleApprovalData = userApprovedApplications.slice(0, visibleApprovedApplications);
+        const visibleApprovalData = searchedApprovedApplications.slice(0, visibleApprovedApplications);
         console.log('visibleApprovalData: ', visibleApprovalData);
 
         //here a function able to delete an approved application. Can be useful to sort the approved applications or to cancel an approved application
@@ -394,6 +405,19 @@ const HomeIntermediary = () => {
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
+                <div className="row mb-3">
+                        <div className="col" style={{ paddingBottom: '10px' }}>
+                            <div className="input-group">
+                                <span className="input-group-text">{t('search')}:</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
                     {visibleApprovalData.length > 0 ? (
                         <li className="list-group">
                             {visibleApprovalData.map((approved) => (
@@ -444,7 +468,7 @@ const HomeIntermediary = () => {
     };
 
     const renderViewApplication = () => {
-        const visibleApplicationsData = userApplications.slice(0, visibleApplications);
+        const visibleApplicationsData = searchedApplications.slice(0, visibleApplications);
 
         const handleAcceptYouth = async (mapName, userIdentification, programName, firstName, lastName, email) => {
             // Handle accepting the youth with the specific mapName
@@ -508,6 +532,19 @@ const HomeIntermediary = () => {
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
+                <div className="row mb-3">
+                        <div className="col" style={{ paddingBottom: '10px' }}>
+                            <div className="input-group">
+                                <span className="input-group-text">{t('search')}:</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
                     {visibleApplicationsData.length > 0 ? (
                         <li className="list-group">
                             {visibleApplicationsData.map((application) => (
