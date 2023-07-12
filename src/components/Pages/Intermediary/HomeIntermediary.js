@@ -40,7 +40,7 @@ const HomeIntermediary = () => {
         skillsDeveloped: [],
         startDate: '',
         endDate: '',
-        numberOfPlaces: '',
+        numberOfPlaces: 0,
     });
 
     const handleSearchChange = (event) => {
@@ -296,7 +296,7 @@ const HomeIntermediary = () => {
                 skillsDeveloped: [],
                 startDate: '',
                 endDate: '',
-                numberOfPlaces: '',
+                numberOfPlaces: 0,
             });
 
             alert('Program created successfully!');
@@ -445,7 +445,26 @@ const HomeIntermediary = () => {
             }
             //here we add the youth to the list of approved youth
             await applicationApproval.set({ [neededId]: addYouth }, { merge: true });
-            alert('Youth accepted successfully.');
+            //alert('Youth accepted successfully.');
+            
+            //we will remove 1 place from the number of places available and if the number of places available is 0, we will delete the program.
+            const programRef = firestore.collection('programs').doc(userId);
+            const userDoc = await programRef.get();
+            const userData = userDoc.data()[mapName];
+            //we remove 1 from variable numberOfPlaces
+            await programRef.update({
+                [mapName]: {
+                    ...userData,
+                    numberOfPlaces: userData.numberOfPlaces - 1,
+                },
+            });
+            //we check if the number of places is 0
+            if (userData.numberOfPlaces === 1) {
+                //we delete the program
+                await programRef.update({
+                    [mapName]: firebase.firestore.FieldValue.delete(),
+                });
+            }
             //here we delete the youth from the list of applications
             handleRefuseYouth(mapName, userIdentification);
             //reload the page
