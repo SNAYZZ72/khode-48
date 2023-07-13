@@ -549,7 +549,6 @@ const HomeIntermediary = () => {
                 await applicationRef.update({
                     [neededId]: removeField,
                 });
-                alert('Youth refused successfully.');
                 window.location.reload();
             } catch (error) {
                 console.error('Error refusing youth:', error);

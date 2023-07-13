@@ -24,6 +24,10 @@ const HomeCompany = () => {
     const [filterJobQuery, setFilterJobQuery] = useState('');
     const [searchYoungQuery, setSearchYoungQuery] = useState('');
     const [filterYoungQuery, setFilterYoungQuery] = useState('');
+    const [searchApplicationQuery, setSearchApplicationQuery] = useState('');
+    const [filterApplicationQuery, setFilterApplicationQuery] = useState('');
+    const [searchApprovedApplicationQuery, setSearchApprovedApplicationQuery] = useState('');
+    const [filterApprovedApplicationQuery, setFilterApprovedApplicationQuery] = useState('');
     const [selectedProfile, setSelectedProfile] = useState(null);
     const [selectedView, setSelectedView] = useState('youthProfiles');
     const [youthProfiles, setYouthProfiles] = useState([]);
@@ -133,6 +137,36 @@ const HomeCompany = () => {
     const handleFilterYoungChange = (event) => {
         setFilterYoungQuery(event.target.value);
     };
+
+    const handleSearchApplicationChange = (event) => {
+        setSearchApplicationQuery(event.target.value);
+    };
+
+    const handleFilterApplicationChange = (event) => {
+        setFilterApplicationQuery(event.target.value);
+    };
+
+    const searchedApplications = pendingApplication.filter((pendingApplication) =>
+        pendingApplication.jobName.toLowerCase().includes(searchApplicationQuery.toLowerCase()) ||
+        pendingApplication.firstName.toLowerCase().includes(searchApplicationQuery.toLowerCase()) ||
+        pendingApplication.lastName.toLowerCase().includes(searchApplicationQuery.toLowerCase()) ||
+        `${pendingApplication.firstName} ${pendingApplication.lastName}`.toLowerCase().includes(searchApplicationQuery.toLowerCase())
+    );
+
+    const handleSearchApprovedApplicationChange = (event) => {
+        setSearchApprovedApplicationQuery(event.target.value);
+    };
+
+    const handleFilterApprovedApplicationChange = (event) => {
+        setFilterApprovedApplicationQuery(event.target.value);
+    };
+
+    const searchedApprovedApplications = userApprovedApplications.filter((approved) =>
+        approved.jobName.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase()) ||
+        approved.firstName.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase()) ||
+        approved.lastName.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase()) ||
+        `${approved.firstName} ${approved.lastName}`.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase())
+    );
 
     const handleLoadMoreYouth = () => {
         setVisibleProfiles((prevVisibleProfiles) => prevVisibleProfiles + 10);
@@ -370,7 +404,7 @@ const HomeCompany = () => {
     };
     //List who have been approved
     const renderApprovedApplication = () => {
-        const visibleApprovedApplicationData = userApprovedApplications.slice(0, visibleApprovedApplications);
+        const visibleApprovedApplicationData = searchedApprovedApplications.slice(0, visibleApprovedApplications);
 
         //here a function able to delete an approved application. Can be useful to sort the approved applications or to cancel an approved application
         const deleteApprovedApplication = async (userIdentification, mapName) => {
@@ -392,19 +426,49 @@ const HomeCompany = () => {
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
-                    <h2>{t('Approved Applications')}</h2>
+                    <div className="row mb-3">
+                        <div className="col" style={{ paddingBottom: '10px' }}>
+                            <div className="input-group">
+                                <span className="input-group-text">{t('search')}:</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={searchApprovedApplicationQuery}
+                                    onChange={handleSearchApprovedApplicationChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
                     {visibleApprovedApplicationData.length > 0 ? (
                         <ul className="list-group">
                             {visibleApprovedApplicationData.map((approved) => (
                                 <li key={approved.id} className="list-group-item profile-item">
                                     <div className="row">
-                                        <h3>{approved.jobName}</h3>
-                                        <p>{t('name')}: {approved.firstName} {approved.lastName}</p>
-                                        <p>{t('email')}: {approved.email}</p>
+                                        <h3>{t('jobName')}: {approved.jobName}</h3>
                                     </div>
-                                    <button className="btn btn-primary" onClick={() => deleteApprovedApplication(approved.userIdentification, approved.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                                        {t('removeFromApproved')}
-                                    </button>
+                                    <div className="row mb-3">
+                                        <div className="col">
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('firstName')}:</b> {approved.firstName} {approved.lastName}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('email')}:</b> {approved.email}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="text-end">
+                                            <button className="btn btn-primary" onClick={() => deleteApprovedApplication(approved.userIdentification, approved.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                                {t('removeFromApproved')}
+                                            </button>
+                                        </div>
+                                    </div>
                                 </li>
                             ))}
                         </ul>
@@ -510,7 +574,7 @@ const HomeCompany = () => {
     };
 
     const renderPendingApplication = () => {
-        const visiblePendingApplicationData = pendingApplication.slice(0, visiblePendingApplication);
+        const visiblePendingApplicationData = searchedApplications.slice(0, visiblePendingApplication);
 
         const handleAcceptYouth = async (mapName, userIdentification, jobName, firstName, lastName, email) => {
             const userId = auth.currentUser.uid;
@@ -549,7 +613,6 @@ const HomeCompany = () => {
                 await applicationRef.update({
                     [neededId]: removeField,
                 });
-                alert('Youth refused');
                 //reload the page
                 window.location.reload();
             } catch (error) {
@@ -560,23 +623,66 @@ const HomeCompany = () => {
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
+                    <div className="row mb-3">
+                        <div className="col" style={{ paddingBottom: '10px' }}>
+                            <div className="input-group">
+                                <span className="input-group-text">{t('search')}:</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={searchApplicationQuery}
+                                    onChange={handleSearchApplicationChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
                     {visiblePendingApplicationData.length > 0 ? (
                         <ul className="list-group">
                             {visiblePendingApplicationData.map((pendingApplication) => (
                                 <li key={pendingApplication.id} className="list-group-item profile-item">
                                     <div className="row">
                                         <h3>{t('jobName')}: {pendingApplication.jobName}</h3>
-                                        <p>Youth full name: {pendingApplication.firstName} {pendingApplication.lastName}</p>
-                                        <p>Youth email: {pendingApplication.email}</p>
-                                        <p>Description du jeune: {pendingApplication.information}</p>
-                                        <p>Cover Letter: {pendingApplication.coverLetter}</p>
                                     </div>
-                                    <button className="btn btn-primary" onClick={() => handleAcceptYouth(pendingApplication.mapName, pendingApplication.userIdentification, pendingApplication.jobName, pendingApplication.firstName, pendingApplication.lastName, pendingApplication.email)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                                        {t('accept')}
-                                    </button>
-                                    <button className="btn btn-primary" onClick={() => handleRefuseYouth(pendingApplication.mapName, pendingApplication.userIdentification)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                                        {t('refuse')}
-                                    </button>
+                                    <div className="row mb-3">
+                                        <div className="col-md-6" style={{ paddingBottom: '20px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('firstName')}:</b> {pendingApplication.firstName} {pendingApplication.lastName}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('email')}:</b> {pendingApplication.email}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('description')}:</b> {pendingApplication.information}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="col-md-6" style={{ paddingBottom: '20px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('coverLetter')}:</b> {pendingApplication.coverLetter}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="text-end">
+                                            <button className="btn btn-primary" onClick={() => handleAcceptYouth(pendingApplication.mapName, pendingApplication.userIdentification, pendingApplication.jobName, pendingApplication.firstName, pendingApplication.lastName, pendingApplication.email)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                                {t('accept')}
+                                            </button>
+                                            <button className="btn btn-secondary" onClick={() => handleRefuseYouth(pendingApplication.mapName, pendingApplication.userIdentification)} style={{ backgroundColor: '#6C757D', borderColor: '#6C757D', marginLeft: '10px' }}>
+                                                {t('decline')}
+                                            </button>
+                                        </div>
+                                    </div>
                                 </li>
                             ))}
                         </ul>
@@ -951,7 +1057,7 @@ const HomeCompany = () => {
                             className="form-control"
                             style={{ border: selectedView === 'pendingApplication' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'pendingApplication' ? '#F24726' : '#6C757D', color: 'white' }}
                         >
-                            {t('showPendingApplication')}
+                            {t('viewApplication')}
                         </button>
                     </div>
                     <div className="col">
@@ -960,7 +1066,7 @@ const HomeCompany = () => {
                             className="form-control"
                             style={{ border: selectedView === 'approvedApplication' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'approvedApplication' ? '#F24726' : '#6C757D', color: 'white' }}
                         >
-                            {t('showApprovedApplication')}
+                            {t('approvedApplications')}
                         </button>
                     </div>
                 </div>
