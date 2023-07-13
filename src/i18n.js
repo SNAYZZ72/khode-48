@@ -5,8 +5,8 @@ import translationEs from './Locales/es.json';
 import translationEu from './Locales/eu.json';
 
 i18n.use(initReactI18next).init({
-    lng: 'en', // Default language
-    fallbackLng: 'en', // Fallback language if translation is missing
+    lng: 'eu', // Default language
+    fallbackLng: 'eu', // Fallback language if translation is missing
     resources: {
         en: {
             translation: translationEn, // English translations from en.json
