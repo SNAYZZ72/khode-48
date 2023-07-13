@@ -254,6 +254,8 @@ const RegisterPage = () => {
                                 <option value="">{t('selectGender')}</option>
                                 <option value="female">{t('female')}</option>
                                 <option value="male">{t('male')}</option>
+                                <option value="nonBinary">{t('nonBinary')}</option>
+                                <option value="preferNotToSay">{t('preferNotToSay')}</option>
                             </select>
                         </div>
                         <div className="col">
