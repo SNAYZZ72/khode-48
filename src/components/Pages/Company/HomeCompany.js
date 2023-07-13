@@ -5,6 +5,8 @@ import { Modal, Button, Container } from 'react-bootstrap';
 import { v4 as uuidv4 } from 'uuid';
 import { auth, firestore } from '../../firebase';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import firebase from 'firebase/compat/app';
+
 
 const existingSkills = [
     'Proactivity',
@@ -18,8 +20,14 @@ const existingSkills = [
 const HomeCompany = () => {
 
     const { t } = useTranslation();
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filterQuery, setFilterQuery] = useState('');
+    const [searchJobQuery, setSearchJobQuery] = useState('');
+    const [filterJobQuery, setFilterJobQuery] = useState('');
+    const [searchYoungQuery, setSearchYoungQuery] = useState('');
+    const [filterYoungQuery, setFilterYoungQuery] = useState('');
+    const [searchApplicationQuery, setSearchApplicationQuery] = useState('');
+    const [filterApplicationQuery, setFilterApplicationQuery] = useState('');
+    const [searchApprovedApplicationQuery, setSearchApprovedApplicationQuery] = useState('');
+    const [filterApprovedApplicationQuery, setFilterApprovedApplicationQuery] = useState('');
     const [selectedProfile, setSelectedProfile] = useState(null);
     const [selectedView, setSelectedView] = useState('youthProfiles');
     const [youthProfiles, setYouthProfiles] = useState([]);
@@ -28,6 +36,11 @@ const HomeCompany = () => {
     const [showProfileModal, setShowProfileModal] = useState(false);
     const [visibleProfiles, setVisibleProfiles] = useState(10);
     const [visibleJobs, setVisibleJobs] = useState(10);
+    const [visiblePendingApplication, setVisiblePendingApplication] = useState(10);
+    const [pendingApplication, setPendingApplication] = useState([]);
+    const [userApprovedApplications, setUserApprovedApplications] = useState([]);
+    const [visibleApprovedApplications, setVisibleApprovedApplications] = useState(10);
+
 
     const handleSeeMoreAbout = (profile) => {
         setSelectedProfile(profile);
@@ -109,13 +122,51 @@ const HomeCompany = () => {
         }
     };
 
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
+    const handleSearchJobChange = (event) => {
+        setSearchJobQuery(event.target.value);
     };
 
-    const handleFilterChange = (event) => {
-        setFilterQuery(event.target.value);
+    const handleFilterJobChange = (event) => {
+        setFilterJobQuery(event.target.value);
     };
+
+    const handleSearchYoungChange = (event) => {
+        setSearchYoungQuery(event.target.value);
+    };
+
+    const handleFilterYoungChange = (event) => {
+        setFilterYoungQuery(event.target.value);
+    };
+
+    const handleSearchApplicationChange = (event) => {
+        setSearchApplicationQuery(event.target.value);
+    };
+
+    const handleFilterApplicationChange = (event) => {
+        setFilterApplicationQuery(event.target.value);
+    };
+
+    const searchedApplications = pendingApplication.filter((pendingApplication) =>
+        pendingApplication.jobName.toLowerCase().includes(searchApplicationQuery.toLowerCase()) ||
+        pendingApplication.firstName.toLowerCase().includes(searchApplicationQuery.toLowerCase()) ||
+        pendingApplication.lastName.toLowerCase().includes(searchApplicationQuery.toLowerCase()) ||
+        `${pendingApplication.firstName} ${pendingApplication.lastName}`.toLowerCase().includes(searchApplicationQuery.toLowerCase())
+    );
+
+    const handleSearchApprovedApplicationChange = (event) => {
+        setSearchApprovedApplicationQuery(event.target.value);
+    };
+
+    const handleFilterApprovedApplicationChange = (event) => {
+        setFilterApprovedApplicationQuery(event.target.value);
+    };
+
+    const searchedApprovedApplications = userApprovedApplications.filter((approved) =>
+        approved.jobName.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase()) ||
+        approved.firstName.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase()) ||
+        approved.lastName.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase()) ||
+        `${approved.firstName} ${approved.lastName}`.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase())
+    );
 
     const handleLoadMoreYouth = () => {
         setVisibleProfiles((prevVisibleProfiles) => prevVisibleProfiles + 10);
@@ -125,13 +176,22 @@ const HomeCompany = () => {
         setVisibleJobs((prevVisibleJobs) => prevVisibleJobs + 10);
     };
 
+    const handleLoadMoreApplications = () => {
+        setVisiblePendingApplication((prevVisiblePendingApplication) => prevVisiblePendingApplication + 10);
+    };
+
+    const handleLoadMoreApprovedApplications = () => {
+        // Increase the number of visible applications when the "Load More" button is clicked *useful so the website doesn't crash when loading too many jobs*
+        setVisibleApprovedApplications((prevVisibleApprovedApplications) => prevVisibleApprovedApplications + 10);
+    };
+
     //fonction qui permet de filtrer les profils en fonction des skills, donc filtrer par le nombre de points qu'il y a dans ce skill pour chaque profile    
     const filterProfiles = () => {
-        if (filterQuery === '') {
+        if (filterYoungQuery === '') {
             return youthProfiles;
         }
 
-        const selectedSkill = filterQuery.toLowerCase();
+        const selectedSkill = filterYoungQuery.toLowerCase();
 
         return youthProfiles
             .filter((profile) => profile[selectedSkill] !== undefined)
@@ -144,17 +204,17 @@ const HomeCompany = () => {
 
 
     const searchedProfiles = filterProfiles().filter((profile) =>
-        profile.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        profile.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        `${profile.firstName} ${profile.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
+        profile.firstName.toLowerCase().includes(searchYoungQuery.toLowerCase()) ||
+        profile.lastName.toLowerCase().includes(searchYoungQuery.toLowerCase()) ||
+        `${profile.firstName} ${profile.lastName}`.toLowerCase().includes(searchYoungQuery.toLowerCase())
     );
 
     const filterJobs = () => {
-        if (filterQuery === '') {
+        if (filterJobQuery === '') {
             return jobs;
         }
 
-        const selectedDate = filterQuery;
+        const selectedDate = filterJobQuery;
 
         return jobs
             .filter((job) => job[selectedDate] !== undefined)
@@ -171,7 +231,7 @@ const HomeCompany = () => {
     };
 
     const searchedJobs = filterJobs().filter((job) =>
-        job.jobName.toLowerCase().includes(searchQuery.toLowerCase())
+        job.jobName.toLowerCase().includes(searchJobQuery.toLowerCase())
     );
 
     const handleSeeMore = (profile) => {
@@ -281,14 +341,38 @@ const HomeCompany = () => {
     useEffect(() => {
         fetchYouthProfiles();
         fetchJobs();
+        fetchUserApplications();
+        fetchUserApprovedApplications();
     }, []);
 
-    //choose what view to render
-    const renderView = () => {
-        if (selectedView === 'youthProfiles') {
-            return renderYouthProfiles();
-        } else if (selectedView === 'Job') {
-            return renderJob();
+    //Here we fetch pending applications
+    const fetchUserApplications = async () => {
+        try {
+            const userId = auth.currentUser.uid;
+            const applicationsRef = firestore.collection('jobsApplication').doc(userId);
+            const doc = await applicationsRef.get();
+            if (doc.exists) {
+                const userData = doc.data();
+                const applications = Object.values(userData);
+                setPendingApplication(applications);
+            }
+        } catch (error) {
+            console.error('Error fetching user applications:', error);
+        }
+    };
+    //Here we fetch approved applications
+    const fetchUserApprovedApplications = async () => {
+        try {
+            const userId = auth.currentUser.uid;
+            const approvedRef = firestore.collection('jobsApproval').doc(userId);
+            const doc = await approvedRef.get();
+            if (doc.exists) {
+                const userData = doc.data();
+                const approved = Object.values(userData);
+                setUserApprovedApplications(approved);
+            }
+        } catch (error) {
+            console.error('Error fetching user applications:', error);
         }
     };
     //Here we are fetching the jobs from the database of the current uid
@@ -304,6 +388,107 @@ const HomeCompany = () => {
             setJobs(jobs);
         }
     };
+
+    //choose what view to render
+    const renderView = () => {
+        if (selectedView === 'youthProfiles') {
+            return renderYouthProfiles();
+        } else if (selectedView === 'Job') {
+            return renderJob();
+        } else if (selectedView === 'pendingApplication') {
+            return renderPendingApplication();
+        } else if (selectedView === 'approvedApplication') {
+            return renderApprovedApplication();
+        }
+
+    };
+    //List who have been approved
+    const renderApprovedApplication = () => {
+        const visibleApprovedApplicationData = searchedApprovedApplications.slice(0, visibleApprovedApplications);
+
+        //here a function able to delete an approved application. Can be useful to sort the approved applications or to cancel an approved application
+        const deleteApprovedApplication = async (userIdentification, mapName) => {
+            try {
+                const userId = auth.currentUser.uid;
+                const approvedRef = firestore.collection('jobsApproval').doc(userId);
+                const neededId = userIdentification + mapName;
+                const removeField = firebase.firestore.FieldValue.delete();
+                await approvedRef.update({
+                    [neededId]: removeField,
+                });
+                alert('Approved application deleted successfully!');
+                window.location.reload();
+            } catch (error) {
+                console.error('Error deleting approved application:', error);
+            }
+        };
+
+        return (
+            <div>
+                <div style={{ paddingTop: '15px' }}>
+                    <div className="row mb-3">
+                        <div className="col" style={{ paddingBottom: '10px' }}>
+                            <div className="input-group">
+                                <span className="input-group-text">{t('search')}:</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={searchApprovedApplicationQuery}
+                                    onChange={handleSearchApprovedApplicationChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    {visibleApprovedApplicationData.length > 0 ? (
+                        <ul className="list-group">
+                            {visibleApprovedApplicationData.map((approved) => (
+                                <li key={approved.id} className="list-group-item profile-item">
+                                    <div className="row">
+                                        <h3>{t('jobName')}: {approved.jobName}</h3>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col">
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('firstName')}:</b> {approved.firstName} {approved.lastName}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('email')}:</b> {approved.email}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="text-end">
+                                            <button className="btn btn-primary" onClick={() => deleteApprovedApplication(approved.userIdentification, approved.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                                {t('removeFromApproved')}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>{t('No approved applications.')}</p>
+                    )}
+                    {visibleApprovedApplications < userApprovedApplications.length && (
+                        <div className="text-center" style={{ paddingTop: '15px' }}>
+                            <button className="btn btn-primary" onClick={handleLoadMoreApprovedApplications} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                {t('LoadMore')}
+                            </button>
+                        </div>
+                    )}
+                </div>
+
+            </div>
+        );
+    };
+
+
 
     //Display more info about the young user
     const renderProfileModal = () => {
@@ -388,6 +573,135 @@ const HomeCompany = () => {
         );
     };
 
+    const renderPendingApplication = () => {
+        const visiblePendingApplicationData = searchedApplications.slice(0, visiblePendingApplication);
+
+        const handleAcceptYouth = async (mapName, userIdentification, jobName, firstName, lastName, email) => {
+            const userId = auth.currentUser.uid;
+            const jobApproval = firestore.collection('jobsApproval').doc(userId);
+            const neededId = userIdentification + mapName;
+
+            //we create the job approval in the database
+            const sentJobApproval = {
+                jobName: jobName,
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                userIdentification: userIdentification,
+                mapName: mapName,
+            };
+            //here we add the youth to the list of approved youth
+            await jobApproval.set({ [neededId]: sentJobApproval }, { merge: true });
+
+            console.log('try to remove: ', mapName);
+            //We remove the job
+            const programRef = firestore.collection('jobs').doc(userId);
+            await programRef.update({
+                [mapName]: firebase.firestore.FieldValue.delete(),
+            });
+            handleRefuseYouth(mapName, userIdentification);
+            //reload the page
+            window.location.reload();
+        };
+
+        const handleRefuseYouth = async (mapName, userIdentification) => {
+            try {
+                const userId = auth.currentUser.uid;
+                const applicationRef = firestore.collection('jobsApplication').doc(userId);
+                const neededId = userIdentification + mapName;
+                const removeField = firebase.firestore.FieldValue.delete();
+                await applicationRef.update({
+                    [neededId]: removeField,
+                });
+                //reload the page
+                window.location.reload();
+            } catch (error) {
+                console.log('Error refusing youth:', error);
+            }
+        };
+
+        return (
+            <div>
+                <div style={{ paddingTop: '15px' }}>
+                    <div className="row mb-3">
+                        <div className="col" style={{ paddingBottom: '10px' }}>
+                            <div className="input-group">
+                                <span className="input-group-text">{t('search')}:</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={searchApplicationQuery}
+                                    onChange={handleSearchApplicationChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    {visiblePendingApplicationData.length > 0 ? (
+                        <ul className="list-group">
+                            {visiblePendingApplicationData.map((pendingApplication) => (
+                                <li key={pendingApplication.id} className="list-group-item profile-item">
+                                    <div className="row">
+                                        <h3>{t('jobName')}: {pendingApplication.jobName}</h3>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col-md-6" style={{ paddingBottom: '20px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('firstName')}:</b> {pendingApplication.firstName} {pendingApplication.lastName}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('email')}:</b> {pendingApplication.email}</p>
+                                                    </div>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('description')}:</b> {pendingApplication.information}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="col-md-6" style={{ paddingBottom: '20px' }}>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <div className="row">
+                                                        <p><b>{t('coverLetter')}:</b> {pendingApplication.coverLetter}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="text-end">
+                                            <button className="btn btn-primary" onClick={() => handleAcceptYouth(pendingApplication.mapName, pendingApplication.userIdentification, pendingApplication.jobName, pendingApplication.firstName, pendingApplication.lastName, pendingApplication.email)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                                {t('accept')}
+                                            </button>
+                                            <button className="btn btn-secondary" onClick={() => handleRefuseYouth(pendingApplication.mapName, pendingApplication.userIdentification)} style={{ backgroundColor: '#6C757D', borderColor: '#6C757D', marginLeft: '10px' }}>
+                                                {t('decline')}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <div className="row-md-3 text-center" style={{ paddingBottom: '10px' }}>
+                            <h3>{t('No pending application found')}</h3>
+                        </div>
+                    )}
+                    {visiblePendingApplication < pendingApplication.length && (
+                        <div className="text-center" style={{ paddingTop: '15px' }}>
+                            <button className="btn btn-primary" onClick={handleLoadMoreApplications} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                {t('LoadMore')}
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    };
 
     //View of youth profiles
     const renderYouthProfiles = () => {
@@ -404,8 +718,8 @@ const HomeCompany = () => {
                             <input
                                 type="text"
                                 className="form-control"
-                                value={searchQuery}
-                                onChange={handleSearchChange}
+                                value={searchYoungQuery}
+                                onChange={handleSearchYoungChange}
                             />
                         </div>
                     </div>
@@ -416,8 +730,8 @@ const HomeCompany = () => {
                             </span>
                             <select
                                 className="form-select"
-                                value={filterQuery}
-                                onChange={handleFilterChange}
+                                value={filterYoungQuery}
+                                onChange={handleFilterYoungChange}
                             >
                                 <option value="">{t('all')}</option>
                                 {existingSkills.map((skill) => (
@@ -485,6 +799,8 @@ const HomeCompany = () => {
 
     };
 
+
+
     //View of job
     const renderJob = () => {
         const visibleJobsData = searchedJobs.slice(0, visibleJobs);
@@ -531,8 +847,8 @@ const HomeCompany = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
+                                    value={searchJobQuery}
+                                    onChange={handleSearchJobChange}
                                 />
                             </div>
                         </div>
@@ -543,8 +859,8 @@ const HomeCompany = () => {
                                 </span>
                                 <select
                                     className="form-select"
-                                    value={filterQuery}
-                                    onChange={handleFilterChange}
+                                    value={filterJobQuery}
+                                    onChange={handleFilterJobChange}
                                 >
                                     <option value="">{t('all')}</option>
                                     <option value="jobBeginDate">{t('beginDate')}</option>
@@ -735,6 +1051,24 @@ const HomeCompany = () => {
                             {t('showJobs')}
                         </button>
                     </div>
+                    <div className="col">
+                        <button
+                            onClick={() => handleViewSelect('pendingApplication')}
+                            className="form-control"
+                            style={{ border: selectedView === 'pendingApplication' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'pendingApplication' ? '#F24726' : '#6C757D', color: 'white' }}
+                        >
+                            {t('viewApplication')}
+                        </button>
+                    </div>
+                    <div className="col">
+                        <button
+                            onClick={() => handleViewSelect('approvedApplication')}
+                            className="form-control"
+                            style={{ border: selectedView === 'approvedApplication' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'approvedApplication' ? '#F24726' : '#6C757D', color: 'white' }}
+                        >
+                            {t('approvedApplications')}
+                        </button>
+                    </div>
                 </div>
                 {renderView()}
                 {renderProfileModal()}
@@ -753,6 +1087,7 @@ const HomeCompany = () => {
                         </button>
                     </div>
                 )}
+
             </Container>
         </div>
     );

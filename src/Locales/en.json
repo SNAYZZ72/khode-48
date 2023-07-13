@@ -142,7 +142,7 @@
   "skillsDeveloped": "Skills developed",
   "beginDate": "Begin date",
   "endDate": "End date",
-  "numberOfPlaces": "Number Of Places",
+  "numberOfPlaces": "Number of places",
   "programCreate": "Create Program",
   "selectedSkills": "Selected skills",
   "close": "Close",
@@ -182,6 +182,7 @@
   "contactFirstName": "Contact first name",
   "contactLastName": "Contact last name",
   "contactRole": "Contact position",
+  "deleteProgram": "Delete program",
 
   "companyDescription": "More than 20 leading companies committed to generating value in Bizkaia are looking for young talents and challenges of social impact. If you also want to be part of KODE48 you can write to enpresak48@districtkode.com",
   "youngDescription": "More than 100 active young people, eager to develop and continue growing. Do you want to join us? We can be reached at gazteak48@districtkode.com",

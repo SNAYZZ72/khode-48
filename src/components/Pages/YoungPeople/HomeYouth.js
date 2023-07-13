@@ -17,8 +17,10 @@ const HomeYouth = () => {
     const { t } = useTranslation();
 
     const [projects, setProjects] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filterQuery, setFilterQuery] = useState('');
+    const [searchProgramQuery, setSearchProgramQuery] = useState('');
+    const [filterProgramQuery, setFilterProgramQuery] = useState('');
+    const [searchJobQuery, setSearchJobQuery] = useState('');
+    const [filterJobQuery, setFilterJobQuery] = useState('');
     const [userPrograms, setUserPrograms] = useState([]);
     const [userJobs, setUserJobs] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -30,6 +32,8 @@ const HomeYouth = () => {
 
     const [selectedProgram, setSelectedProgram] = useState(null);
     const [showProgramModal, setShowProgramModal] = useState(false);
+    const [selectedJob, setSelectedJob] = useState(null);
+    const [showJobModal, setShowJobModal] = useState(false);
 
 
     const handleProgramApplication = (program) => {
@@ -37,9 +41,19 @@ const HomeYouth = () => {
         setShowProgramModal(true);
     };
 
+    const handleJobApplication = (job) => {
+        setSelectedJob(job);
+        setShowJobModal(true);
+    };
+
     const handleCloseProgramModal = () => {
         setSelectedProgram(null);
         setShowProgramModal(false);
+    };
+
+    const handleCloseJobModal = () => {
+        setSelectedJob(null);
+        setShowJobModal(false);
     };
 
 
@@ -90,12 +104,20 @@ const HomeYouth = () => {
         fetchCurrentUser();
     }, []);
 
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
+    const handleSearchProgramChange = (event) => {
+        setSearchProgramQuery(event.target.value);
     };
 
-    const handleFilterChange = (event) => {
-        setFilterQuery(event.target.value);
+    const handleFilterProgramChange = (event) => {
+        setFilterProgramQuery(event.target.value);
+    };
+
+    const handleSearchJobChange = (event) => {
+        setSearchJobQuery(event.target.value);
+    };
+
+    const handleFilterJobChange = (event) => {
+        setFilterJobQuery(event.target.value);
     };
 
     const handleViewSelect = (view) => {
@@ -103,11 +125,11 @@ const HomeYouth = () => {
     };
 
     const filterJobs = () => {
-        if (filterQuery === '') {
+        if (filterJobQuery === '') {
             return userJobs;
         }
 
-        const selectedDate = filterQuery;
+        const selectedDate = filterJobQuery;
 
         return userJobs
             .filter((job) => job[selectedDate] !== undefined)
@@ -124,17 +146,17 @@ const HomeYouth = () => {
     };
 
     const searchedJobs = filterJobs().filter((job) =>
-        job.jobName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.companyName.toLowerCase().includes(searchQuery.toLowerCase())
+        job.jobName.toLowerCase().includes(searchJobQuery.toLowerCase()) ||
+        job.companyName.toLowerCase().includes(searchJobQuery.toLowerCase())
     );
 
 
     const filterPrograms = () => {
-        if (filterQuery === '') {
+        if (filterProgramQuery === '') {
             return userPrograms;
         }
 
-        const selectedDate = filterQuery;
+        const selectedDate = filterProgramQuery;
 
         return userPrograms
             .filter((program) => program[selectedDate] !== undefined)
@@ -151,8 +173,8 @@ const HomeYouth = () => {
     };
 
     const searchedPrograms = filterPrograms().filter((program) =>
-        program.programName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        program.companyName.toLowerCase().includes(searchQuery.toLowerCase())
+        program.programName.toLowerCase().includes(searchProgramQuery.toLowerCase()) ||
+        program.companyName.toLowerCase().includes(searchProgramQuery.toLowerCase())
     );
 
     //load more jobs 
@@ -248,12 +270,109 @@ const HomeYouth = () => {
                 leadership: userData.leadership,
                 teamwork: userData.teamwork,
             });
-            console.log('User Data:', userData);
         } else {
             console.log('No such document!');
         }
     };
 
+    //apply to job
+    const handleSubmitJob = async () => {
+        if (coverLetter === '') {
+            alert('Please enter a cover letter');
+            return;
+        }
+        try {
+            const jobsRef = firestore.collection('jobs');
+            const snapshot = await jobsRef.get();
+            let matchingJobFound = false;
+
+            for (const doc of snapshot.docs) {
+                const jobData = Object.values(doc.data())[0]; // Retrieve the job information
+
+                // Check if the job information matches the selected job
+                if (
+                    jobData.companyName === selectedJob.companyName &&
+                    jobData.jobDescription === selectedJob.jobDescription &&
+                    jobData.jobName === selectedJob.jobName &&
+                    jobData.jobBeginDate === selectedJob.jobBeginDate &&
+                    jobData.jobEndDate === selectedJob.jobEndDate &&
+                    jobData.jobLocation === selectedJob.jobLocation &&
+                    arraysEqual(jobData.jobSkills, selectedJob.jobSkills) &&
+                    jobData.jobPosition === selectedJob.jobPosition
+                ) {
+                    matchingJobFound = true;
+                    const docName = doc.id;
+                    const mapName = Object.keys(doc.data())[0];
+
+                    //we fetch the current user data
+                    const sentJobApplication = {
+                        jobName: selectedJob.jobName,
+                        firstName: youthFormData.firstName,
+                        lastName: youthFormData.lastName,
+                        email: youthFormData.email,
+                        age: youthFormData.age,
+                        city: youthFormData.city,
+                        information: youthFormData.information,
+                        education: youthFormData.education,
+                        coverLetter: coverLetter,
+                        pending: pending,
+                        mapName: mapName,
+                        userIdentification: auth.currentUser.uid,
+                        proactivity: youthFormData.proactivity,
+                        creativity: youthFormData.creativity,
+                        initiative: youthFormData.initiative,
+                        empathy: youthFormData.empathy,
+                        leadership: youthFormData.leadership,
+                        teamwork: youthFormData.teamwork,
+                    };
+
+                    const uid = auth.currentUser.uid;
+                    const checkRef = firestore.collection('jobsApplication').doc(docName);
+                    const checkDoc = await checkRef.get();
+                    if (!checkDoc.exists) {
+                        await checkRef.set({});
+                    }
+
+                    //write the application to the database
+
+                    const applicationsRef = firestore.collection('jobsApplication').doc(docName);
+
+                    //we combine current uid with map name to create a unique id for the application
+                    const applicaitonId = uid + mapName;
+
+                    const userDoc = await applicationsRef.get();
+                    const userData = await userDoc.data()[applicaitonId];
+
+                    if (userData !== undefined) {
+                        alert('You have already applied to this job');
+                        return;
+                    }
+
+                    //user has not applied to this job yet
+                    await applicationsRef.set({ [applicaitonId]: sentJobApplication }, { merge: true })
+                        .then(() => {
+                            alert('Application sent successfully');
+                            setCoverLetter('');
+                            handleCloseJobModal();
+                        })
+                        .catch((error) => {
+                            console.error('Error writing document: ', error);
+                        });
+
+                    return;
+                }
+            }
+
+            if (!matchingJobFound) {
+                alert('Please try again.');
+            }
+        } catch (error) {
+            console.log('Error getting documents: ', error);
+        }
+    };
+
+
+    //apply to program
     const handleSubmitApplication = async () => {
         if (coverLetter === '') {
             alert('Please enter a cover letter');
@@ -282,7 +401,6 @@ const HomeYouth = () => {
                     const mapName = Object.keys(doc.data())[0]; // Retrieve the matching map name
 
                     //we fetched the current user data with the function fetchCurrentUser, now we can use the data to create the application
-                    console.log('Youth Form Data:', youthFormData);
                     //create application object
                     const sentApplication = {
                         programName: selectedProgram.programName,
@@ -300,7 +418,6 @@ const HomeYouth = () => {
                     };
 
                     const uid = auth.currentUser.uid;
-
                     const checkRef = firestore.collection('programsApplication').doc(docName);
 
                     const checkDoc = await checkRef.get();
@@ -312,10 +429,8 @@ const HomeYouth = () => {
                     //we store the application in a collection called programsApplication then to make sorting easier
                     const applicationsRef = firestore.collection('programsApplication').doc(docName);
 
-                    console.log('docName :', docName);
                     // we combine current uid with map name to create a unique id for the application
                     const applicationId = uid + mapName;
-                    console.log('Application ID:', applicationId);
 
                     // Check if the user has already applied
                     const userDoc = await applicationsRef.get();
@@ -332,9 +447,10 @@ const HomeYouth = () => {
                         .set({ [applicationId]: sentApplication }, { merge: true })
                         .then(() => {
                             alert('Application added successfully');
+                            setCoverLetter('');
                             handleCloseProgramModal();
                             // Reload the page
-                            window.location.reload();
+                            //window.location.reload();
                         })
                         .catch((error) => {
                             console.error('Error adding application:', error);
@@ -377,8 +493,8 @@ const HomeYouth = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
+                                    value={searchProgramQuery}
+                                    onChange={handleSearchProgramChange}
                                 />
                             </div>
                         </div>
@@ -389,8 +505,8 @@ const HomeYouth = () => {
                                 </span>
                                 <select
                                     className="form-select"
-                                    value={filterQuery}
-                                    onChange={handleFilterChange}
+                                    value={filterProgramQuery}
+                                    onChange={handleFilterProgramChange}
                                 >
                                     <option value="">{t('all')}</option>
                                     <option value="startDate">{t('beginDate')}</option>
@@ -529,8 +645,8 @@ const HomeYouth = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
+                                    value={searchJobQuery}
+                                    onChange={handleSearchJobChange}
                                 />
                             </div>
                         </div>
@@ -541,8 +657,8 @@ const HomeYouth = () => {
                                 </span>
                                 <select
                                     className="form-select"
-                                    value={filterQuery}
-                                    onChange={handleFilterChange}
+                                    value={filterJobQuery}
+                                    onChange={handleFilterJobChange}
                                 >
                                     <option value="">{t('all')}</option>
                                     <option value="jobBeginDate">{t('beginDate')}</option>
@@ -614,6 +730,7 @@ const HomeYouth = () => {
                                         <div className="text-end">
                                             <button
                                                 className="btn btn-primary"
+                                                onClick={() => handleJobApplication(job)}
                                                 style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
                                             >
                                                 {t('apply')}
@@ -627,52 +744,88 @@ const HomeYouth = () => {
                         <p>{t('No jobs found.')}</p>
                     )}
 
-                    {/* Show the "Load More" button if there are more jobs to load */}
-                    {visibleJobs < userJobs.length && (
-                        <div className="text-center" style={{ paddingTop: '15px' }}>
-                            <button
-                                onClick={handleLoadMoreJobs}
-                                className="btn btn-primary"
-                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                            >
-                                {t('loadMore')}
-                            </button>
-                        </div>
-                    )}
-                </div>
+                    {/* Job Application Modal */}
+                    <Modal show={showJobModal} onHide={handleCloseJobModal}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>{t('jobApplication')}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            {selectedJob && (
+                                <div>
+                                    <h4>{t('jobName')}: {selectedJob.jobName}</h4>
+
+                                    <div className="form-group">
+                                        <label htmlFor="coverLetter">{t('Cover Letter')}</label>
+                                        <textarea
+                                            className="form-control"
+                                            id="coverLetter"
+                                            rows="4"
+                                            value={coverLetter}
+                                            onChange={(e) => setCoverLetter(e.target.value)}
+                                            required
+                                        ></textarea>
+                                </div>
+                                </div>
+                            )}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" onClick={handleSubmitJob}>
+                            {t('Apply')}
+                        </Button>
+                        <Button variant="secondary" onClick={handleCloseJobModal}>
+                            {t('Close')}
+                        </Button>
+
+                    </Modal.Footer>
+                </Modal>
+
+
+                {/* Show the "Load More" button if there are more jobs to load */}
+                {visibleJobs < userJobs.length && (
+                    <div className="text-center" style={{ paddingTop: '15px' }}>
+                        <button
+                            onClick={handleLoadMoreJobs}
+                            className="btn btn-primary"
+                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                        >
+                            {t('loadMore')}
+                        </button>
+                    </div>
+                )}
             </div>
+            </div >
         );
     };
 
 
-    return (
-        <div>
-            <HeaderYouth />
-            <Container>
-                <div className="row mb-3">
-                    <div className="col">
-                        <button
-                            onClick={() => handleViewSelect('programView')}
-                            className="form-control"
-                            style={{ border: selectedView === 'programView' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'programView' ? '#F24726' : '#6C757D', color: 'white' }}
-                        >
-                            {t('programView')}
-                        </button>
-                    </div>
-                    <div className="col">
-                        <button
-                            onClick={() => handleViewSelect('jobView')}
-                            className="form-control"
-                            style={{ border: selectedView === 'jobView' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'jobView' ? '#F24726' : '#6C757D', color: 'white' }}
-                        >
-                            {t('showJobs')}
-                        </button>
-                    </div>
+return (
+    <div>
+        <HeaderYouth />
+        <Container>
+            <div className="row mb-3">
+                <div className="col">
+                    <button
+                        onClick={() => handleViewSelect('programView')}
+                        className="form-control"
+                        style={{ border: selectedView === 'programView' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'programView' ? '#F24726' : '#6C757D', color: 'white' }}
+                    >
+                        {t('programView')}
+                    </button>
                 </div>
-                {renderView()}
-            </Container >
-        </div >
-    );
+                <div className="col">
+                    <button
+                        onClick={() => handleViewSelect('jobView')}
+                        className="form-control"
+                        style={{ border: selectedView === 'jobView' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'jobView' ? '#F24726' : '#6C757D', color: 'white' }}
+                    >
+                        {t('showJobs')}
+                    </button>
+                </div>
+            </div>
+            {renderView()}
+        </Container >
+    </div >
+);
 };
 
 export default HomeYouth;

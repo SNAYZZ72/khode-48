@@ -20,8 +20,12 @@ const availableSkills = [
 const HomeIntermediary = () => {
     const { t } = useTranslation();
     const [profileType, setProfileType] = useState('');
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filterQuery, setFilterQuery] = useState('');
+    const [searchProgramQuery, setSearchProgramQuery] = useState('');
+    const [filterProgramQuery, setFilterProgramQuery] = useState('');
+    const [searchApplicationQuery, setSearchApplicationQuery] = useState('');
+    const [filterApplicationQuery, setFilterApplicationQuery] = useState('');
+    const [searchApprovedApplicationQuery, setSearchApprovedApplicationQuery] = useState('');
+    const [filterApprovedApplicationQuery, setFilterApprovedApplicationQuery] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [selectedView, setSelectedView] = useState('programView');
     const [userPrograms, setUserPrograms] = useState([]);
@@ -43,20 +47,36 @@ const HomeIntermediary = () => {
         numberOfPlaces: 0,
     });
 
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
+    const handleSearchProgramChange = (event) => {
+        setSearchProgramQuery(event.target.value);
     };
 
-    const handleFilterChange = (event) => {
-        setFilterQuery(event.target.value);
+    const handleFilterProgramChange = (event) => {
+        setFilterProgramQuery(event.target.value);
+    };
+
+    const handleSearchApplicationChange = (event) => {
+        setSearchApplicationQuery(event.target.value);
+    };
+
+    const handleFilterApplicationChange = (event) => {
+        setFilterApplicationQuery(event.target.value);
+    };
+
+    const handleSearchApprovedApplicationChange = (event) => {
+        setSearchApprovedApplicationQuery(event.target.value);
+    };
+
+    const handleFilterApprovedApplicationChange = (event) => {
+        setFilterApprovedApplicationQuery(event.target.value);
     };
 
     const filterPrograms = () => {
-        if (filterQuery === '') {
+        if (filterProgramQuery === '') {
             return userPrograms;
         }
 
-        const selectedDate = filterQuery;
+        const selectedDate = filterProgramQuery;
 
         return userPrograms
             .filter((program) => program[selectedDate] !== undefined)
@@ -73,18 +93,23 @@ const HomeIntermediary = () => {
     };
 
     const searchedPrograms = filterPrograms().filter((program) =>
-        program.programName.toLowerCase().includes(searchQuery.toLowerCase())
+        program.programName.toLowerCase().includes(searchProgramQuery.toLowerCase())
     );
 
     //search by programName or by name of youth people
 
     const searchedApplications = userApplications.filter((application) =>
-        application.programName.toLowerCase().includes(searchQuery.toLowerCase())
-        
+        application.programName.toLowerCase().includes(searchApplicationQuery.toLowerCase()) ||
+        application.firstName.toLowerCase().includes(searchApplicationQuery.toLowerCase()) ||
+        application.lastName.toLowerCase().includes(searchApplicationQuery.toLowerCase()) ||
+        `${application.firstName} ${application.lastName}`.toLowerCase().includes(searchApplicationQuery.toLowerCase())
     );
 
     const searchedApprovedApplications = userApprovedApplications.filter((application) =>
-        application.programName.toLowerCase().includes(searchQuery.toLowerCase())
+        application.programName.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase()) ||
+        application.name.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase()) ||
+        application.lastname.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase()) ||
+        `${application.name} ${application.lastname}`.toLowerCase().includes(searchApprovedApplicationQuery.toLowerCase())
     );
 
     const handleProfileSelect = (type) => {
@@ -424,15 +449,15 @@ const HomeIntermediary = () => {
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
-                <div className="row mb-3">
+                    <div className="row mb-3">
                         <div className="col" style={{ paddingBottom: '10px' }}>
                             <div className="input-group">
                                 <span className="input-group-text">{t('search')}:</span>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
+                                    value={searchApprovedApplicationQuery}
+                                    onChange={handleSearchApprovedApplicationChange}
                                 />
                             </div>
                         </div>
@@ -540,7 +565,6 @@ const HomeIntermediary = () => {
                 await applicationRef.update({
                     [neededId]: removeField,
                 });
-                alert('Youth refused successfully.');
                 window.location.reload();
             } catch (error) {
                 console.error('Error refusing youth:', error);
@@ -550,15 +574,15 @@ const HomeIntermediary = () => {
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
-                <div className="row mb-3">
+                    <div className="row mb-3">
                         <div className="col" style={{ paddingBottom: '10px' }}>
                             <div className="input-group">
                                 <span className="input-group-text">{t('search')}:</span>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
+                                    value={searchApplicationQuery}
+                                    onChange={handleSearchApplicationChange}
                                 />
                             </div>
                         </div>
@@ -648,8 +672,8 @@ const HomeIntermediary = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
+                                    value={searchProgramQuery}
+                                    onChange={handleSearchProgramChange}
                                 />
                             </div>
                         </div>
@@ -660,8 +684,8 @@ const HomeIntermediary = () => {
                                 </span>
                                 <select
                                     className="form-select"
-                                    value={filterQuery}
-                                    onChange={handleFilterChange}
+                                    value={filterProgramQuery}
+                                    onChange={handleFilterProgramChange}
                                 >
                                     <option value="">{t('all')}</option>
                                     <option value="startDate">{t('beginDate')}</option>
@@ -683,7 +707,7 @@ const HomeIntermediary = () => {
                                             {t('deleteProgram')}
                                         </button>
                                     </div>
-                                    <div className="row">
+                                    <div className="row mb-3">
                                         <div className="col-md-7" style={{ paddingBottom: '20px' }}>
                                             <ul className="list-group">
                                                 <li className="list-group-item">
@@ -716,6 +740,13 @@ const HomeIntermediary = () => {
                                                     </div>
                                                 </li>
                                             </ul>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="text-end">
+                                            <button className="btn btn-primary" onClick={() => handleDeleteProgram(program.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                                {t('deleteProgram')}
+                                            </button>
                                         </div>
                                     </div>
                                 </li>

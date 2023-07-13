@@ -22,6 +22,7 @@ const Footer = () => {
                 <li><img href="#" src="/kultiva.svg" className="tw"/></li>
                 <li><img href="#" src="/c2b.png" className="in"/></li>
                 <li><img href="#" src="/bigel.png" className="be"/></li>
+                <li><img href="#" src="/guuk.png" className="gk"/></li>
               </ul>
             </div>
           </div>
