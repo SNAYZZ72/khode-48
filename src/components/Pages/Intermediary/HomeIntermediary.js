@@ -373,7 +373,6 @@ const HomeIntermediary = () => {
 
     const renderApprovedApplication = () => {
         const visibleApprovalData = userApprovedApplications.slice(0, visibleApprovedApplications);
-        console.log('visibleApprovalData: ', visibleApprovalData);
 
         //here a function able to delete an approved application. Can be useful to sort the approved applications or to cancel an approved application
         const deleteApprovedApplication = async (userIdentification, mapName) => {
