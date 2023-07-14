@@ -753,6 +753,7 @@ const HomeYouth = () => {
                             {selectedJob && (
                                 <div>
                                     <h4>{t('jobName')}: {selectedJob.jobName}</h4>
+                                    <p><b>{t('Company Name')}:</b> {selectedJob.companyName}</p>
 
                                     <div className="form-group">
                                         <label htmlFor="coverLetter">{t('Cover Letter')}</label>
@@ -769,7 +770,7 @@ const HomeYouth = () => {
                             )}
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="primary" onClick={handleSubmitJob}>
+                        <Button variant="primary" onClick={handleSubmitJob} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
                             {t('Apply')}
                         </Button>
                         <Button variant="secondary" onClick={handleCloseJobModal}>
