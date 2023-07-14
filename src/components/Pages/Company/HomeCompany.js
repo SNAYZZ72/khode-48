@@ -539,7 +539,6 @@ const HomeCompany = () => {
                 await applicationRef.update({
                     [neededId]: removeField,
                 });
-                alert('Youth refused');
                 //reload the page
                 window.location.reload();
             } catch (error) {
