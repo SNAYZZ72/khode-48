@@ -320,7 +320,6 @@ const HomeIntermediary = () => {
                 endDate: createProgram.endDate,
                 numberOfPlaces: createProgram.numberOfPlaces,
                 companyName: userData.companyName,
-                mapName: mapName,
             };
 
             // Add a new program to the programs collection
@@ -334,7 +333,6 @@ const HomeIntermediary = () => {
                 startDate: '',
                 endDate: '',
                 numberOfPlaces: 0,
-                mapName: '',
             });
 
             alert('Program created successfully!');
@@ -532,11 +530,7 @@ const HomeIntermediary = () => {
             }
             //here we add the youth to the list of approved youth
             await applicationApproval.set({ [neededId]: addYouth }, { merge: true });
-<<<<<<< HEAD
 
-=======
-            //alert('Youth accepted successfully.');
->>>>>>> 400507f (caree)
             //we will remove 1 place from the number of places available and if the number of places available is 0, we will delete the program.
             const programRef = firestore.collection('programs').doc(userId);
             const userDoc = await programRef.get();
@@ -664,22 +658,6 @@ const HomeIntermediary = () => {
     const renderProgramView = () => {
         const visibleProgramsData = searchedPrograms.slice(0, visiblePrograms);
 
-        //function to delete a program
-        const handleDeleteProgram = async (mapName) => {
-            try {
-                const userId = auth.currentUser.uid;
-                const programRef = firestore.collection('programs').doc(userId);
-                const removeField = firebase.firestore.FieldValue.delete();
-                await programRef.update({
-                    [mapName]: removeField,
-                });
-                alert('Program deleted successfully.');
-                window.location.reload();
-            } catch (error) {
-                console.error('Error deleting program:', error);
-            }
-        };
-
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
@@ -720,8 +698,15 @@ const HomeIntermediary = () => {
                         <ul className="list-group">
                             {visibleProgramsData.map((program) => (
                                 <li key={program.programId} className="list-group-item profile-item">
-                                    <div className="row">
+                                    <div className="row" >
                                         <h3>{t('programName')}: {program.programName}</h3>
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => deleteProgram(program.programId)}
+                                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                                        >
+                                            {t('deleteProgram')}
+                                        </button>
                                     </div>
                                     <div className="row mb-3">
                                         <div className="col-md-7" style={{ paddingBottom: '20px' }}>
