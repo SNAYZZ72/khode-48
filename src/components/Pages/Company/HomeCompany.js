@@ -289,6 +289,9 @@ const HomeCompany = () => {
             const userDoc = await companyRef.get();
             const userData = userDoc.data()[userId];
 
+            //Generate a random map name
+            const mapName = uuidv4();
+
             //Here we are creating the job in the database
             const sentJob = {
                 jobName: createdJobs.Name,
@@ -299,12 +302,12 @@ const HomeCompany = () => {
                 jobEndDate: createdJobs.EndDate,
                 jobPosition: createdJobs.Position,
                 companyName: userData.companyName,
+                mapName: mapName,
             };
 
             const parentDocRef = firestore.collection('jobs').doc(userId);
 
-            //Generate a random map name
-            const mapName = uuidv4();
+            
 
             await parentDocRef.set({ [mapName]: sentJob }, { merge: true });
 
@@ -336,6 +339,22 @@ const HomeCompany = () => {
 
     const handleViewSelect = (view) => {
         setSelectedView(view);
+    };
+
+    //function to delete a job
+    const handleDeleteJob = async (mapName) => {
+        try {
+            const userId = auth.currentUser.uid;
+            const programRef = firestore.collection('jobs').doc(userId);
+            const removeField = firebase.firestore.FieldValue.delete();
+            await programRef.update({
+                [mapName]: removeField,
+            });
+            alert('Job deleted successfully!');
+            window.location.reload();
+        } catch (error) {
+            console.error('Error deleting job:', error);
+        }
     };
 
     useEffect(() => {
@@ -912,6 +931,11 @@ const HomeCompany = () => {
                                                         <p><b>{t('position')}:</b> {job.jobPosition}</p>
                                                     </div>
                                                 </li>
+                                                <div className="row-md-3 text-center" style={{ paddingBottom: '10px' }}>
+                                                    <button className="btn btn-primary" onClick={() => handleDeleteJob(job.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                                        {t('deleteJob')}
+                                                    </button>
+                                                </div>
                                             </ul>
                                         </div>
                                         <div className="col-md-3">
