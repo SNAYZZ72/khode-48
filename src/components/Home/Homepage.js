@@ -21,6 +21,9 @@ const Home = () => {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [isLoggingIn, setIsLoggingIn] = useState(false); // New state to track login process
 
+    const [showResetPasswordModal, setShowResetPasswordModal] = useState(false);
+    const [resetPasswordEmail, setResetPasswordEmail] = useState('');
+
     const { dispatch } = useContext(AuthContext)
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
@@ -115,6 +118,24 @@ const Home = () => {
         if (!isLoggingIn) { // Only close the modal if not currently logging in
             setShowLoginModal(false);
         }
+    };
+
+    const handleResetPassword = () => {
+        // Call the function to send password reset email
+        resetPassword(resetPasswordEmail);
+        setShowResetPasswordModal(false);
+    };
+
+    const resetPassword = (email) => {
+        auth.sendPasswordResetEmail(email)
+            .then(() => {
+                // Password reset email sent successfully
+                alert('Password reset email sent');
+            })
+            .catch((error) => {
+                // Error occurred while sending password reset email
+                console.error('Error sending password reset email:', error);
+            });
     };
 
     const customTileLayer = (
@@ -280,6 +301,10 @@ const Home = () => {
                                     <a href="/registery" style={{ color: '#F24726' }}>
                                         {t('createYoungAccount')}
                                     </a>
+                                    <br />
+                                    <Button variant="link" onClick={() => setShowResetPasswordModal(true)} style={{ color: '#F24726' }}>
+                                        {t('forgotPassword')}
+                                    </Button>
                                 </p>
                             )}
                             {profileType === 'company' && (
@@ -288,6 +313,10 @@ const Home = () => {
                                     <a href="/registerC" style={{ color: '#F24726' }}>
                                         {t('createCompanyAccount')}
                                     </a>
+                                    <br />
+                                    <Button variant="link" onClick={() => setShowResetPasswordModal(true)} style={{ color: '#F24726' }}>
+                                        {t('forgotPassword')}
+                                    </Button>
                                 </p>
                             )}
                             {profileType === 'intermediary' && (
@@ -296,9 +325,15 @@ const Home = () => {
                                     <a href="/registerI" style={{ color: '#F24726' }}>
                                         {t('createIntermediaryAccount')}
                                     </a>
+                                    <br />
+                                    <Button variant="link" onClick={() => setShowResetPasswordModal(true)} style={{ color: '#F24726' }}>
+                                        {t('forgotPassword')}
+                                    </Button>
                                 </p>
+
                             )}
                         </div>
+
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -315,6 +350,39 @@ const Home = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+
+
+            <Modal show={showResetPasswordModal} onHide={() => setShowResetPasswordModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>{t('resetPassword')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div>
+                        <h4>{t('enterEmail')}</h4>
+                        <input
+                            style={{ border: '3px solid #F24726', padding: '5px', borderRadius: '10px' }}
+                            type="email"
+                            placeholder="Email"
+                            value={resetPasswordEmail}
+                            onChange={(e) => setResetPasswordEmail(e.target.value)}
+                        />
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                        onClick={handleResetPassword}
+                    >
+                        {t('resetPassword')}
+                    </Button>
+                    <Button variant="secondary" onClick={() => setShowResetPasswordModal(false)}>
+                        {t('close')}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
         </div>
     );
 };
