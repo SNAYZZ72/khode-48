@@ -504,6 +504,11 @@ const HomeCompany = () => {
                 <Modal.Body>
                     <ul className="list-group list-group-flush">
                         <li className="list-group-item">
+                            <div className="text-center">
+                                <img src={selectedProfile.imageUrl} alt="Profile" style={{ width: '150px', height: 'auto' }} />
+                            </div>
+                        </li>
+                        <li className="list-group-item">
                             <p><b>{t('fullName')}:</b> {selectedProfile.firstName} {selectedProfile.lastName}</p>
                         </li>
                         <li className="list-group-item">
