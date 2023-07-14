@@ -310,6 +310,20 @@ const ProfileYouth = () => {
                                     <div className="invalid-feedback">City field is required</div>
                                 )}
                             </div>
+                            <div className="col">
+                                <label>{t('postalCode')}</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    id="postalCode"
+                                    name="postalCode"
+                                    value={youthFormData.postalCode}
+                                    onChange={handleInputChange}
+                                />
+                                {youthFormErrors.postalCode && (
+                                    <div className="invalid-feedback">City field is required</div>
+                                )}
+                            </div>
                         </div>
                         <div className="row mb-3">
                             <div className="col">
