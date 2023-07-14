@@ -6,12 +6,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { auth } from '../../firebase';
 import { firestore } from '../../firebase';
+import { storage } from '../../firebase';
 
 const ProfileCompany = () => {
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
     const [hideProfile, setHideProfile] = useState(false);
     const [companyImage, setCompanyImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState('');
 
     //test
     const [companyFormErrors, setCompanyFormErrors] = useState({
@@ -30,14 +32,6 @@ const ProfileCompany = () => {
         email: false,
         information: false,
     });
-
-    const [selectedCompanyImage, setSelectedCompanyImage] = useState(null);
-
-    const [projectList, setProjectList] = useState([
-    ]);
-
-    const [challengeList, setChallengeList] = useState([
-    ]);
 
     const [companyFormData, setCompanyFormData] = useState({
         companyName: '',
@@ -64,6 +58,9 @@ const ProfileCompany = () => {
                 const userId = user.uid;
 
                 try {
+                    const storedImage = localStorage.getItem('companyImage');
+                    const initialImage = storedImage ? storedImage : '';
+                    setCompanyImage(initialImage);
                     const userDocRef = firestore.collection('users').doc('userscompany');
                     const userDoc = await userDocRef.get();
 
@@ -87,6 +84,7 @@ const ProfileCompany = () => {
                             contactRole: userData.contactRole,
                             information: userData.information,
                         });
+                        await setImageUrl(userData.imageUrl);
                         console.log('User data retrieved');
                     } else {
                         console.log('User document not found');
@@ -113,10 +111,16 @@ const ProfileCompany = () => {
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            setSelectedCompanyImage(e.target.result);
-        };
+            const imageUrl = e.target.result;
+            setCompanyImage(imageUrl);
+            setImageUrl(imageUrl); // Ajouter cette ligne
+        };        
 
-        reader.readAsDataURL(file);
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            setCompanyImage('');
+        }
     };
 
     const handleEditProfile = () => {
@@ -136,9 +140,14 @@ const ProfileCompany = () => {
     const handleSaveProfile = async (user) => {
         setIsEditing(false);
         const userId = getUserUid()
+        const storedImage = companyImage;
 
         try {
-
+            const storageRef = storage.ref();
+            const imageRef = storageRef.child(`userscompany/${getUserUid()}`);
+            await imageRef.putString(storedImage, 'data_url');
+            const imageUrl = await imageRef.getDownloadURL();
+            setCompanyImage(imageUrl);
             // Update the user's information in Firestore
             const userDocRef = firestore.collection('users').doc('userscompany');
             const userDoc = await userDocRef.get();
@@ -161,7 +170,7 @@ const ProfileCompany = () => {
                     contactFirstName: companyFormData.contactFirstName,
                     contactLastName: companyFormData.contactLastName,
                     contactRole: companyFormData.contactRole,
-
+                    imageUrl: imageUrl,
                     // Add any other fields you want to update
                 }
             });
@@ -382,7 +391,7 @@ const ProfileCompany = () => {
                                     type="file"
                                     id="companyImage"
                                     name="companyImage"
-                                    accept="companyImage/*"
+                                    accept="image/*"
                                     onChange={handleImageUpload}
                                 />
                             </div>
@@ -405,7 +414,7 @@ const ProfileCompany = () => {
                     <div className="row mb-3 justify-content-center">
                         <div className="col-md-3 text-center">
                             <img
-                                src={selectedCompanyImage || companyImage || '../company-profile-image.png'}
+                                src={imageUrl}
                                 alt="Profile"
                                 style={{ width: '15vw', height: 'auto' }}
                             />

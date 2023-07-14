@@ -7,12 +7,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { firestore } from '../../firebase';
 import { auth } from '../../firebase';
+import { storage } from '../../firebase';
 
 
 const ProfileIntermediary = () => {
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
     const [intermediaryImage, setIntermediaryImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState('');
 
     //test
     const [intermediaryFormErrors, setIntermediaryFormErrors] = useState({
@@ -32,8 +34,6 @@ const ProfileIntermediary = () => {
         email: false,
         information: false,
     });
-
-    const [selectedIntermediaryImage, setSelectedIntermediaryImage] = useState(null);
 
     const [intermediaryFormData, setIntermediaryFormData] = useState({
         // intermediaryName: 'Googaz',
@@ -62,6 +62,9 @@ const ProfileIntermediary = () => {
                 const userId = user.uid;
 
                 try {
+                    const storedImage = localStorage.getItem('intermediaryImage');
+                    const initialImage = storedImage ? storedImage : '';
+                    setIntermediaryImage(initialImage);
                     const userDocRef = firestore.collection('users').doc('usersintermediary');
                     const userDoc = await userDocRef.get();
 
@@ -85,6 +88,7 @@ const ProfileIntermediary = () => {
                             twitterPage: userData.twitterPage,
                             facebookPage: userData.facebookPage,
                         });
+                        await setImageUrl(userData.imageUrl);
                         console.log('User data retrieved');
                     } else {
                         console.log('User document not found');
@@ -110,10 +114,16 @@ const ProfileIntermediary = () => {
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            setSelectedIntermediaryImage(e.target.result);
-        };
+            const imageUrl = e.target.result;
+            setIntermediaryImage(imageUrl);
+            setImageUrl(imageUrl); // Ajouter cette ligne
+        };        
 
-        reader.readAsDataURL(file);
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            setIntermediaryImage('');
+        }
     };
 
     const handleEditProfile = () => {
@@ -133,8 +143,14 @@ const ProfileIntermediary = () => {
     const handleSaveProfile = async (user) => {
         setIsEditing(false);
         const userId = getUserUid()
+        const storedImage = intermediaryImage;
 
         try {
+            const storageRef = storage.ref();
+            const imageRef = storageRef.child(`usersintermediary/${getUserUid()}`);
+            await imageRef.putString(storedImage, 'data_url');
+            const imageUrl = await imageRef.getDownloadURL();
+            setIntermediaryImage(imageUrl);
 
             // Update the user's information in Firestore
             const userDocRef = firestore.collection('users').doc('usersintermediary');
@@ -158,6 +174,7 @@ const ProfileIntermediary = () => {
                     linkedinPage: userData.linkedinPage,
                     twitterPage: userData.twitterPage,
                     facebookPage: userData.facebookPage,
+                    imageUrl: imageUrl,
 
                     // Add any other fields you want to update
                 }
@@ -345,7 +362,7 @@ const ProfileIntermediary = () => {
                                     type="file"
                                     id="intermediaryImage"
                                     name="intermediaryImage"
-                                    accept="intermediaryImage/*"
+                                    accept="image/*"
                                     onChange={handleImageUpload}
                                 />
                             </div>
@@ -368,7 +385,7 @@ const ProfileIntermediary = () => {
                     <div className="row mb-3 justify-content-center">
                         <div className="col-md-3 text-center">
                             <img
-                                src={selectedIntermediaryImage || intermediaryImage || '../intermediary-profile-image.png'}
+                                src={imageUrl}
                                 alt="Profile"
                                 style={{ width: '15vw', height: 'auto' }}
                             />
