@@ -144,13 +144,17 @@ const ProfileIntermediary = () => {
         setIsEditing(false);
         const userId = getUserUid()
         const storedImage = intermediaryImage;
+        let imageUrl = '';
 
         try {
             const storageRef = storage.ref();
             const imageRef = storageRef.child(`usersintermediary/${getUserUid()}`);
-            await imageRef.putString(storedImage, 'data_url');
-            const imageUrl = await imageRef.getDownloadURL();
-            setIntermediaryImage(imageUrl);
+
+            if (storedImage) {
+                await imageRef.putString(storedImage, 'data_url');
+                imageUrl = await imageRef.getDownloadURL();
+                setIntermediaryImage(imageUrl);
+            }
 
             // Update the user's information in Firestore
             const userDocRef = firestore.collection('users').doc('usersintermediary');
@@ -159,12 +163,13 @@ const ProfileIntermediary = () => {
             await userDocRef.update({
 
                 [userId]: {
+                    ...userData,
                     email: userData.email,
                     companyName: userData.companyName,
                     contactFirstName: intermediaryFormData.contactFirstName,
                     contactLastName: intermediaryFormData.contactLastName,
                     contactRole: intermediaryFormData.contactRole,
-                    information: intermediaryFormData.information,
+                    information: intermediaryFormData.information || userData.information,
                     city: intermediaryFormData.city,
                     postalCode: intermediaryFormData.postalCode,
                     phoneNumber: intermediaryFormData.phoneNumber,
@@ -174,7 +179,7 @@ const ProfileIntermediary = () => {
                     linkedinPage: userData.linkedinPage,
                     twitterPage: userData.twitterPage,
                     facebookPage: userData.facebookPage,
-                    imageUrl: imageUrl,
+                    imageUrl: imageUrl || userData.imageUrl,
 
                     // Add any other fields you want to update
                 }

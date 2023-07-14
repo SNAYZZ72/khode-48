@@ -141,13 +141,18 @@ const ProfileCompany = () => {
         setIsEditing(false);
         const userId = getUserUid()
         const storedImage = companyImage;
+        let imageUrl = '';
 
         try {
             const storageRef = storage.ref();
             const imageRef = storageRef.child(`userscompany/${getUserUid()}`);
-            await imageRef.putString(storedImage, 'data_url');
-            const imageUrl = await imageRef.getDownloadURL();
-            setCompanyImage(imageUrl);
+
+            if (storedImage) {
+                await imageRef.putString(storedImage, 'data_url');
+                imageUrl = await imageRef.getDownloadURL();
+                setCompanyImage(imageUrl);
+            }
+
             // Update the user's information in Firestore
             const userDocRef = firestore.collection('users').doc('userscompany');
             const userDoc = await userDocRef.get();
@@ -155,10 +160,11 @@ const ProfileCompany = () => {
             await userDocRef.update({
 
                 [userId]: {
+                    ...userData,
                     companyName: userData.companyName,
                     city: companyFormData.city,
                     postalCode: companyFormData.postalCode,
-                    information: companyFormData.information,
+                    information: companyFormData.information || userData.information,
                     phoneNumber: companyFormData.phoneNumber,
                     email: userData.email,
                     industry: companyFormData.industry,
@@ -170,7 +176,7 @@ const ProfileCompany = () => {
                     contactFirstName: companyFormData.contactFirstName,
                     contactLastName: companyFormData.contactLastName,
                     contactRole: companyFormData.contactRole,
-                    imageUrl: imageUrl,
+                    imageUrl: imageUrl || userData.imageUrl,
                     // Add any other fields you want to update
                 }
             });

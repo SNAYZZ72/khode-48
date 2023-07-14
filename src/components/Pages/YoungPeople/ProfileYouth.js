@@ -168,6 +168,7 @@ const ProfileYouth = () => {
         setIsEditing(false);
         const userId = getUserUid();
         const storedImage = youthImage;
+        let imageUrl = '';
 
         try {
             const storageRef = storage.ref();
@@ -175,65 +176,38 @@ const ProfileYouth = () => {
 
             if (storedImage) {
                 await imageRef.putString(storedImage, 'data_url');
-                const imageUrl = await imageRef.getDownloadURL();
+                imageUrl = await imageRef.getDownloadURL();
                 setYouthImage(imageUrl);
-
-                // Mettre à jour les données utilisateur avec l'URL de l'image uniquement si une image a été sélectionnée
-                const userDocRef = firestore.collection('users').doc('usersyouth');
-                const userDoc = await userDocRef.get();
-                const userData = userDoc.data()[userId];
-                await userDocRef.update({
-                    [userId]: {
-                        firstName: userData.firstName,
-                        lastName: userData.lastName,
-                        city: youthFormData.city,
-                        postalCode: youthFormData.postalCode,
-                        educationalLevel: youthFormData.education,
-                        information: youthFormData.information,
-                        dateOfBirth: userData.dateOfBirth,
-                        gender: userData.gender,
-                        phoneNumber: userData.phoneNumber,
-                        email: userData.email,
-                        listLanguages: languageList,
-                        listExperience: experienceList,
-                        proactivity: userData.proactivity,
-                        creativity: userData.creativity,
-                        initiative: userData.initiative,
-                        empathy: userData.empathy,
-                        leadership: userData.leadership,
-                        teamwork: userData.teamwork,
-                        imageUrl: imageUrl,
-                    },
-                });
-            } else {
-                // Mettre à jour les données utilisateur sans l'URL de l'image si aucune image n'a été sélectionnée
-                const userDocRef = firestore.collection('users').doc('usersyouth');
-                const userDoc = await userDocRef.get();
-                const userData = userDoc.data()[userId];
-                await userDocRef.update({
-                    [userId]: {
-                        firstName: userData.firstName,
-                        lastName: userData.lastName,
-                        city: youthFormData.city,
-                        postalCode: youthFormData.postalCode,
-                        educationalLevel: youthFormData.education,
-                        information: youthFormData.information,
-                        dateOfBirth: userData.dateOfBirth,
-                        gender: userData.gender,
-                        phoneNumber: userData.phoneNumber,
-                        email: userData.email,
-                        listLanguages: languageList,
-                        listExperience: experienceList,
-                        proactivity: userData.proactivity,
-                        creativity: userData.creativity,
-                        initiative: userData.initiative,
-                        empathy: userData.empathy,
-                        leadership: userData.leadership,
-                        teamwork: userData.teamwork,
-                        imageUrl: userData.imageUrl,
-                    },
-                });
             }
+
+            // Mettre à jour les données utilisateur avec l'URL de l'image uniquement si une image a été sélectionnée
+            const userDocRef = firestore.collection('users').doc('usersyouth');
+            const userDoc = await userDocRef.get();
+            const userData = userDoc.data()[userId];
+            await userDocRef.update({
+                [userId]: {
+                    ...userData,
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                    city: youthFormData.city,
+                    postalCode: youthFormData.postalCode,
+                    educationalLevel: youthFormData.education,
+                    information: youthFormData.information || userData.information,
+                    dateOfBirth: userData.dateOfBirth,
+                    gender: userData.gender,
+                    phoneNumber: userData.phoneNumber,
+                    email: userData.email,
+                    listLanguages: languageList,
+                    listExperience: experienceList,
+                    proactivity: userData.proactivity,
+                    creativity: userData.creativity,
+                    initiative: userData.initiative,
+                    empathy: userData.empathy,
+                    leadership: userData.leadership,
+                    teamwork: userData.teamwork,
+                    imageUrl: imageUrl || userData.imageUrl,
+                },
+            });
 
             console.log('User data updated');
         } catch (error) {

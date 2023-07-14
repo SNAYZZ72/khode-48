@@ -56,6 +56,8 @@ const RegisterCompanyPage = () => {
         email: '',
         password: '',
         confirmPass: '',
+        imageUrl: '',
+        information: '',
     });
 
     const handleRegister = async () => {
@@ -85,6 +87,8 @@ const RegisterCompanyPage = () => {
                 contactLastName: formData.contactLastName,
                 phoneNumber: formData.phoneNumber,
                 email: formData.email,
+                imageUrl: '',
+                information: '',
             };
             // Get the user ID of the newly created user
             const userId = auth.currentUser.uid;
@@ -184,6 +188,8 @@ const RegisterCompanyPage = () => {
                     email: '',
                     password: '',
                     confirmPass: '',
+                    imageUrl: '',
+                    information: '',
                 });
                 setTimeout(() => {
                     navigate('/');
