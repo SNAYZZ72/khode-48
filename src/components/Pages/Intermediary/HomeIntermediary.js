@@ -571,6 +571,7 @@ const HomeIntermediary = () => {
             }
         };
 
+
         return (
             <div>
                 <div style={{ paddingTop: '15px' }}>
@@ -744,7 +745,7 @@ const HomeIntermediary = () => {
                                     </div>
                                     <div className="row">
                                         <div className="text-end">
-                                            <button className="btn btn-primary" onClick={() => handleDeleteProgram(program.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                            <button className="btn btn-primary" onClick={() => deleteProgram(program.mapName)} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
                                                 {t('deleteProgram')}
                                             </button>
                                         </div>
