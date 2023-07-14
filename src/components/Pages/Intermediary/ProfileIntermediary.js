@@ -117,7 +117,7 @@ const ProfileIntermediary = () => {
             const imageUrl = e.target.result;
             setIntermediaryImage(imageUrl);
             setImageUrl(imageUrl); // Ajouter cette ligne
-        };        
+        };
 
         if (file) {
             reader.readAsDataURL(file);

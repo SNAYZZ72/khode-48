@@ -114,7 +114,7 @@ const ProfileCompany = () => {
             const imageUrl = e.target.result;
             setCompanyImage(imageUrl);
             setImageUrl(imageUrl); // Ajouter cette ligne
-        };        
+        };
 
         if (file) {
             reader.readAsDataURL(file);

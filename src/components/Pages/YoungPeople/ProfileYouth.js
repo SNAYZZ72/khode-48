@@ -140,7 +140,7 @@ const ProfileYouth = () => {
             const imageUrl = e.target.result;
             setYouthImage(imageUrl);
             setImageUrl(imageUrl); // Ajouter cette ligne
-        };        
+        };
 
         if (file) {
             reader.readAsDataURL(file);
