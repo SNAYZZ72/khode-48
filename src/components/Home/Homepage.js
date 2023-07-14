@@ -302,7 +302,7 @@ const Home = () => {
                                         {t('createYoungAccount')}
                                     </a>
                                     <br />
-                                    <Button variant="link" onClick={() => setShowResetPasswordModal(true)} style={{ color: '#F24726' }}>
+                                    <Button variant="link" onClick={() => setShowResetPasswordModal(true)} style={{ color: '#F24726', textDecoration: 'none' }}>
                                         {t('forgotPassword')}
                                     </Button>
                                 </p>
@@ -314,7 +314,7 @@ const Home = () => {
                                         {t('createCompanyAccount')}
                                     </a>
                                     <br />
-                                    <Button variant="link" onClick={() => setShowResetPasswordModal(true)} style={{ color: '#F24726' }}>
+                                    <Button variant="link" onClick={() => setShowResetPasswordModal(true)} style={{ color: '#F24726', textDecoration: 'none' }}>
                                         {t('forgotPassword')}
                                     </Button>
                                 </p>
@@ -326,7 +326,7 @@ const Home = () => {
                                         {t('createIntermediaryAccount')}
                                     </a>
                                     <br />
-                                    <Button variant="link" onClick={() => setShowResetPasswordModal(true)} style={{ color: '#F24726' }}>
+                                    <Button variant="link" onClick={() => setShowResetPasswordModal(true)} style={{ color: '#F24726', textDecoration: 'none' }}>
                                         {t('forgotPassword')}
                                     </Button>
                                 </p>
@@ -357,15 +357,17 @@ const Home = () => {
                     <Modal.Title>{t('resetPassword')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div>
-                        <h4>{t('enterEmail')}</h4>
-                        <input
-                            style={{ border: '3px solid #F24726', padding: '5px', borderRadius: '10px' }}
-                            type="email"
-                            placeholder="Email"
-                            value={resetPasswordEmail}
-                            onChange={(e) => setResetPasswordEmail(e.target.value)}
-                        />
+                    <div className="col" style={{ paddingLeft: "20px", paddingRight: "20px" }}>
+                        <div className="row mb-3">
+                            <h4>{t('enterEmail')}</h4>
+                            <input
+                                style={{ border: '3px solid #F24726', padding: '5px', borderRadius: '10px' }}
+                                type="email"
+                                placeholder="Email"
+                                value={resetPasswordEmail}
+                                onChange={(e) => setResetPasswordEmail(e.target.value)}
+                            />
+                        </div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
