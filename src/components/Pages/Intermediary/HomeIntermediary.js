@@ -532,7 +532,11 @@ const HomeIntermediary = () => {
             }
             //here we add the youth to the list of approved youth
             await applicationApproval.set({ [neededId]: addYouth }, { merge: true });
+<<<<<<< HEAD
 
+=======
+            //alert('Youth accepted successfully.');
+>>>>>>> 400507f (caree)
             //we will remove 1 place from the number of places available and if the number of places available is 0, we will delete the program.
             const programRef = firestore.collection('programs').doc(userId);
             const userDoc = await programRef.get();
