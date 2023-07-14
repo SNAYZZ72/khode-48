@@ -354,6 +354,25 @@ const HomeIntermediary = () => {
         setSelectedView(view);
     };
 
+    const deleteProgram = async (programId) => {
+        try {
+            const userId = auth.currentUser.uid;
+            const programsRef = firestore.collection('programs').doc(userId);
+            const programData = await programsRef.get();
+            const userData = programData.data();
+            delete userData[programId];
+
+            await programsRef.update({
+                [programId]: firebase.firestore.FieldValue.delete(),
+            });
+            alert('Program deleted successfully.');
+
+            window.location.reload();
+        } catch (error) {
+            console.log('Error deleting program:', error);
+        }
+    };
+
     const renderView = () => {
         if (selectedView === 'programView') {
             return renderProgramView();
