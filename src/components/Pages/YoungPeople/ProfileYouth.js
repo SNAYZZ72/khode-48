@@ -5,6 +5,7 @@ import HeaderYouth from '../../common/Header/HeaderYouth';
 import { auth } from '../../firebase';
 import { firestore } from '../../firebase';
 import { use } from 'i18next';
+import { storage } from '../../firebase';
 
 //let authStateChangedExecuted = false;
 
@@ -15,6 +16,7 @@ const ProfileYouth = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [hideProfile, setHideProfile] = useState(false);
     const [youthImage, setYouthImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState('');
 
     //test
     const [youthFormErrors, setYouthFormErrors] = useState({
@@ -42,11 +44,6 @@ const ProfileYouth = () => {
         }
         return age;
     };
-
-
-
-
-    const [selectedYouthImage, setSelectedYouthImage] = useState(null);
 
     const [languageList, setLanguageList] = useState([
     ]);
@@ -85,6 +82,9 @@ const ProfileYouth = () => {
                 const userId = user.uid;
 
                 try {
+                    const storedImage = localStorage.getItem('youthImage');
+                    const initialImage = storedImage ? storedImage : '';
+                    setYouthImage(initialImage);
                     const userDocRef = firestore.collection('users').doc('usersyouth');
                     const userDoc = await userDocRef.get();
 
@@ -110,6 +110,7 @@ const ProfileYouth = () => {
                             leadership: userData.leadership,
                             teamwork: userData.teamwork,
                         });
+                        await setImageUrl(userData.imageUrl);
                         await setLanguageList(userData.listLanguages);
                         await setExperienceList(userData.listExperience);
                         console.log('User data retrieved');
@@ -136,10 +137,16 @@ const ProfileYouth = () => {
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            setSelectedYouthImage(e.target.result);
-        };
+            const imageUrl = e.target.result;
+            setYouthImage(imageUrl);
+            setImageUrl(imageUrl); // Ajouter cette ligne
+        };        
 
-        reader.readAsDataURL(file);
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            setYouthImage('');
+        }
     };
 
     const handleEditProfile = () => {
@@ -157,18 +164,21 @@ const ProfileYouth = () => {
     };
 
     const handleSaveProfile = async (user) => {
-        // Effectuer la logique de sauvegarde du profil
         setIsEditing(false);
-        const userId = getUserUid()
+        const userId = getUserUid();
+        const storedImage = youthImage;
 
         try {
+            const storageRef = storage.ref();
+            const imageRef = storageRef.child(`usersyouth/${getUserUid()}`);
+            await imageRef.putString(storedImage, 'data_url');
+            const imageUrl = await imageRef.getDownloadURL();
+            setYouthImage(imageUrl);
 
-            // Update the user's information in Firestore
             const userDocRef = firestore.collection('users').doc('usersyouth');
             const userDoc = await userDocRef.get();
             const userData = userDoc.data()[userId];
             await userDocRef.update({
-
                 [userId]: {
                     firstName: userData.firstName,
                     lastName: userData.lastName,
@@ -188,15 +198,15 @@ const ProfileYouth = () => {
                     empathy: userData.empathy,
                     leadership: userData.leadership,
                     teamwork: userData.teamwork,
-
-                    // Add any other fields you want to update
-                }
+                    imageUrl: imageUrl,
+                },
             });
             console.log('User data updated');
         } catch (error) {
             console.log('Error updating user data:', error);
         }
     };
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -324,9 +334,10 @@ const ProfileYouth = () => {
                                     type="file"
                                     id="youthImage"
                                     name="youthImage"
-                                    accept="youthImage/*"
+                                    accept="image/*"
                                     onChange={handleImageUpload}
                                 />
+
                                 {youthFormErrors.image && (
                                     <div className="invalid-feedback">Image field is required</div>
                                 )}
@@ -432,7 +443,7 @@ const ProfileYouth = () => {
                     <div className="row mb-3 justify-content-center">
                         <div className="col-md-3 text-center">
                             <img
-                                src={selectedYouthImage || youthImage || '../young-profile-image.png'}
+                                src={imageUrl}
                                 alt="Profile picture"
                                 style={{ width: '15vw', height: 'auto' }}
                             />
