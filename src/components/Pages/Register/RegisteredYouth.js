@@ -55,7 +55,11 @@ const RegisterPage = () => {
 
     const handleRegister = async () => {
         try {
-            await auth.createUserWithEmailAndPassword(formData.email, formData.password);
+            const userCredential = await auth.createUserWithEmailAndPassword(formData.email, formData.password);
+
+            // Send email verification
+            await userCredential.user.sendEmailVerification();
+
             setExistEmail(false);
             // Wait for the user to be authenticated and logged in
             await auth.signInWithEmailAndPassword(formData.email, formData.password);
@@ -89,10 +93,10 @@ const RegisterPage = () => {
 
             // Set the user data directly under the parent document
             await parentDocRef.set({ [userId]: sentData }, { merge: true });
+
             return true;
         } catch (error) {
             setError(error.message);
-            alert(error.message);
             setExistEmail(true);
             return false;
         }
@@ -439,7 +443,7 @@ const RegisterPage = () => {
                     <Modal.Title>{t('Congratulations!')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>{t('Your account has been successfully created.')}</p>
+                    <p>{t('Your account has been successfully created. Please verify your email.')}</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleModalClose}>
