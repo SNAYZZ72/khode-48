@@ -391,7 +391,7 @@ const ProfileIntermediary = () => {
                         <div className="col-md-3 text-center">
                             <img
                                 src={imageUrl}
-                                alt="Profile"
+                                alt={t('profilepicture')}
                                 style={{ width: '15vw', height: 'auto' }}
                             />
                         </div>
