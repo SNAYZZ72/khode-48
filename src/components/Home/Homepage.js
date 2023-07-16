@@ -6,7 +6,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useContext } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { auth } from '../firebase';
 import { firestore } from '../firebase';
 import { doc, getDoc } from "firebase/firestore";
@@ -19,13 +19,17 @@ const Home = () => {
     const [companyCount, setCompanyCount] = useState(0);
     const [intermediaryCount, setIntermediaryCount] = useState(0);
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const [showAdminLoginModal, setShowAdminLoginModal] = useState(false);
     const [isLoggingIn, setIsLoggingIn] = useState(false); // New state to track login process
 
     const [showResetPasswordModal, setShowResetPasswordModal] = useState(false);
     const [resetPasswordEmail, setResetPasswordEmail] = useState('');
 
-    const { dispatch } = useContext(AuthContext)
+    const [hasModalBeenDisplayed, setHasModalBeenDisplayed] = useState(false);
+
+    const { dispatch } = useContext(AuthContext);
     const navigate = useNavigate();
+    const location = useLocation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -36,6 +40,10 @@ const Home = () => {
 
     const handleLoginDisplay = () => {
         setShowLoginModal(true);
+    };
+
+    const handleAdminLoginDisplay = () => {
+        setShowAdminLoginModal(true);
     };
 
     // Fetch user counts from the database
@@ -61,11 +69,46 @@ const Home = () => {
         setIntermediaryCount(intermediaryCount);
     };
 
+    useEffect(() => {
+        if (location.pathname === '/admin') {
+            const adminModalDisplayed = localStorage.getItem('adminModalDisplayed');
+    
+            if (!adminModalDisplayed) {
+                handleAdminLoginDisplay();
+                localStorage.setItem('adminModalDisplayed', 'true');
+            } else {
+                localStorage.removeItem('adminModalDisplayed'); // Réinitialiser la valeur de adminModalDisplayed lorsque l'utilisateur visite une autre page
+            }
 
+        } else {
+            localStorage.removeItem('adminModalDisplayed'); // Réinitialiser la valeur de adminModalDisplayed lorsque l'utilisateur visite une autre page
+        }
+    }, [location]);
 
     useEffect(() => {
         fetchUserCounts();
     }, []);
+
+    const handleAdminLogin = async (e) => {
+        e.preventDefault();
+        setIsLoggingIn(true); // Set isLoggingIn to true when login starts
+        await signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                dispatch({ type: 'LOGIN', payload: user });
+                navigate('/adminPage');
+                //login successful
+                console.log('admin login successful');
+            })
+            .catch((error) => {
+                alert('Wrong email or password');
+                console.log(error);
+                //login failed
+            });
+        setIsLoggingIn(false); // Set isLoggingIn to false when login finishes
+        handleCloseAdminModal(); // Close the modal
+        setHasModalBeenDisplayed(false);
+    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -73,7 +116,7 @@ const Home = () => {
         await signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                dispatch({ type: 'LOGIN', payload: user })
+                dispatch({ type: 'LOGIN', payload: user });
                 if (profileType === 'young') {
                     navigate('/homeYouth');
                 }
@@ -90,7 +133,6 @@ const Home = () => {
                 //login failed
             });
         setIsLoggingIn(false); // Set isLoggingIn to false when login finishes
-        handleCloseModal(); // Close the modal
     };
 
     auth.onAuthStateChanged(async (user) => {
@@ -117,6 +159,12 @@ const Home = () => {
     const handleCloseModal = () => {
         if (!isLoggingIn) { // Only close the modal if not currently logging in
             setShowLoginModal(false);
+        }
+    };
+
+    const handleCloseAdminModal = () => {
+        if (!isLoggingIn) { // Only close the modal if not currently logging in
+            setShowAdminLoginModal(false);
         }
     };
 
@@ -381,6 +429,48 @@ const Home = () => {
                     </Button>
                     <Button variant="secondary" onClick={() => setShowResetPasswordModal(false)}>
                         {t('close')}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={showAdminLoginModal} centered>
+                <Modal.Header>
+                    <Modal.Title>{t('adminLogin')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div>
+                        <div className="col" style={{ paddingLeft: "20px", paddingRight: "20px" }}>
+                            <div className="row mb-3">
+                                <h4>{t('email')}</h4>
+                                <input
+                                    style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}
+                                    type="email"
+                                    placeholder="Email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
+                            <div className="row mb-3">
+                                <h4>{t('password')}</h4>
+                                <input
+                                    style={{ border: "3px solid #F24726", padding: '5px', borderRadius: '10px' }}
+                                    type="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                        onClick={handleAdminLogin}
+                    >
+                        {t('login')}
                     </Button>
                 </Modal.Footer>
             </Modal>

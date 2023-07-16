@@ -31,6 +31,13 @@ function App() {
 
   const { currentUser, role } = useContext(AuthContext); // Ajout de "role" dans la destructuration
 
+  const isUserInAdminDocument = async (uid) => {
+    const userRef = firestore.collection('users').doc('admin');
+    const userDoc = await userRef.get();
+    const userExists = userDoc.data().hasOwnProperty(uid);
+    return userExists;
+  };
+
   const isUserInYouthDocument = async (uid) => {
     const userRef = firestore.collection('users').doc('usersyouth');
     const userDoc = await userRef.get();
@@ -58,11 +65,12 @@ function App() {
     const [allowed, setAllowed] = useState(false);
 
     const checkUserRole = async () => {
+      const isAdmin = await isUserInAdminDocument(currentUser.uid);
       const isYouth = await isUserInYouthDocument(currentUser.uid);
       const isCompany = await isUserInCompanyDocument(currentUser.uid);
       const isIntermediary = await isUserInIntermediaryDocument(currentUser.uid);
 
-      if ((isYouth && role === 'youth') || (isCompany && role === 'company') || (isIntermediary && role === 'intermediary')) {
+      if ((isYouth && role === 'youth') || (isCompany && role === 'company') || (isIntermediary && role === 'intermediary') || (isAdmin && role === 'admin')) {
         setAllowed(true);
       } else {
         console.log("Redirection non autorisée");
@@ -111,8 +119,8 @@ function App() {
               <Route path="/profileYouth" element={<RequireAuth role="youth"><ProfileYouth /></RequireAuth>} />
               <Route path="/profileCompany" element={<RequireAuth role="company"><ProfileCompany /></RequireAuth>} />
               <Route path="/profileIntermediary" element={<RequireAuth role="intermediary"><ProfileIntermediary /></RequireAuth>} />
-              {/* <Route path="/admin" element={<RequireAuth role="admin"><Admin /></RequireAuth>} /> */}
-              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin" element={<Home />} />
+              <Route path="/adminPage" element={<RequireAuth role="admin"><Admin /></RequireAuth>} />
             </Routes>
           </div>
           <Footer />

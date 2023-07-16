@@ -3,7 +3,7 @@ import { Table, Button, Modal, Form, Col, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { firestore } from '../../firebase';
 
-const AdminPage = () => {
+const Admin = () => {
     const { t } = useTranslation();
     const [intermediaries, setIntermediaries] = useState([]);
     const [companies, setCompanies] = useState([]);
@@ -772,4 +772,4 @@ const AdminPage = () => {
     );
 };
 
-export default AdminPage;
+export default Admin;
