@@ -321,6 +321,7 @@ const HomeIntermediary = () => {
                 numberOfPlaces: createProgram.numberOfPlaces,
                 companyName: userData.companyName,
                 mapName: mapName,
+                Id: userId,
             };
 
             // Add a new program to the programs collection

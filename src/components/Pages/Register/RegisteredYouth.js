@@ -66,6 +66,9 @@ const RegisterPage = () => {
             // Wait for the user to be authenticated and logged in
             await auth.signInWithEmailAndPassword(formData.email, formData.password);
 
+            // Get the user ID of the newly created user
+            const userId = auth.currentUser.uid;
+
             // Set the user data
             const sentData = {
                 firstName: formData.firstName || '',
@@ -87,9 +90,9 @@ const RegisterPage = () => {
                 leadership: 0,
                 teamwork: 0,
                 imageUrl: '',
+                Id: userId,
             };
-            // Get the user ID of the newly created user
-            const userId = auth.currentUser.uid;
+            
 
             // Get a reference to the parent document
             const parentDocRef = firestore.collection('users').doc('usersyouth');
