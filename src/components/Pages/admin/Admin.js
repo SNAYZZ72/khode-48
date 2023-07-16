@@ -16,6 +16,8 @@ const AdminPage = () => {
     const [showIntermediaryModal, setShowIntermediaryModal] = useState(false);
     const [showCompanyModal, setShowCompanyModal] = useState(false);
     const [showYouthModal, setShowYouthModal] = useState(false);
+    const [approvedApplications, setApprovedApplications] = useState([]);
+    const [appliedRequests, setAppliedRequests] = useState([]);
 
     useEffect(() => {
         const fetchIntermediaries = async () => {
@@ -245,6 +247,109 @@ const AdminPage = () => {
         setShowYouthModal(false);
     };
 
+    const renderApprovedApplication = () => {
+        return (
+            <div>
+                {approvedApplications.length > 0 ? (
+                    <ul className="list-group">
+                        {approvedApplications.map((application) => (
+                            <li key={application.userIdentification} className="list-group-item">
+                                <div className="row">
+                                    <p><b>{t('programName')}:</b> {application.programName}</p>
+                                </div>
+                                <div className="row">
+                                    <p><b>{t('firstName')}:</b> {application.name}</p>
+                                </div>
+                                <div className="row">
+                                    <p><b>{t('email')}:</b> {application.email}</p>
+                                </div>
+                                {/* Add more information as needed */}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>{t('No approved applications.')}</p>
+                )}
+            </div>
+        );
+    };
+    const renderAppliedRequests = () => {
+        return (
+            <div>
+                {appliedRequests.length > 0 ? (
+                    <ul className="list-group">
+                        {appliedRequests.map((request) => (
+                            <li key={request.requestId} className="list-group-item">
+                                <div className="row">
+                                    <p><b>{t('programName')}:</b> {request.programName}</p>
+                                </div>
+                                <div className="row">
+                                    <p><b>{t('firstName')}:</b> {request.name}</p>
+                                </div>
+                                <div className="row">
+                                    <p><b>{t('email')}:</b> {request.email}</p>
+                                </div>
+                                {/* Add more information as needed */}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>{t('No applied requests.')}</p>
+                )}
+            </div>
+        );
+    };
+    useEffect(() => {
+        const fetchApprovedApplications = async () => {
+            try {
+                const approvedRef = firestore.collection('programsApproval');
+                const snapshot = await approvedRef.get();
+                const approvedList = [];
+
+                snapshot.forEach((doc) => {
+                    if (doc.exists) {
+                        const approvedData = doc.data();
+                        const intermediaryApprovedApplications = Object.values(approvedData);
+                        approvedList.push(...intermediaryApprovedApplications);
+                    } else {
+                        console.log('No such document!');
+                    }
+                });
+
+                setApprovedApplications(approvedList);
+            } catch (error) {
+                console.log('Error retrieving approved applications:', error);
+            }
+        };
+
+        const fetchAppliedRequests = async () => {
+            try {
+                const requestsRef = firestore.collection('appliedRequests');
+                const snapshot = await requestsRef.get();
+                const requestsList = [];
+
+                snapshot.forEach((doc) => {
+                    if (doc.exists) {
+                        const requestData = doc.data();
+                        const intermediaryRequests = Object.values(requestData);
+                        requestsList.push(...intermediaryRequests);
+                    } else {
+                        console.log('No such document!');
+                    }
+                });
+
+                setAppliedRequests(requestsList);
+            } catch (error) {
+                console.log('Error retrieving applied requests:', error);
+            }
+        };
+
+        fetchApprovedApplications();
+        fetchAppliedRequests();
+    }, []);
+
+
+
     return (
         <div className="container">
             <h1 className="mt-4">{t('adminPageTitle')}</h1>
@@ -275,6 +380,9 @@ const AdminPage = () => {
                                 <Button variant="danger" onClick={() => handleDeleteIntermediary(intermediary.email)}>
                                     {t('delete')}
                                 </Button>
+                                <Button variant="secondary" onClick={() => console.log('View intermediary')}>
+                                    {t('view intermediary')}
+                                </Button>
                             </td>
                         </tr>
                     ))}
@@ -304,6 +412,9 @@ const AdminPage = () => {
                                 </Button>
                                 <Button variant="danger" onClick={() => handleDeleteCompany(company.email)}>
                                     {t('delete')}
+                                </Button>
+                                <Button variant="secondary" onClick={() => console.log('View Company')}>
+                                    {t('viewCompany')}
                                 </Button>
                             </td>
                         </tr>
@@ -337,6 +448,11 @@ const AdminPage = () => {
                                 <Button variant="danger" onClick={() => handleDeleteYouth(youth.email)}>
                                     {t('delete')}
                                 </Button>
+                                <Button variant="secondary" onClick={() => console.log('viewYouth')}>
+                                    View Youth Details
+                                </Button>
+
+
                             </td>
                         </tr>
                     ))}
@@ -362,6 +478,9 @@ const AdminPage = () => {
                                 <Button variant="danger" onClick={() => handleDeleteProgram(program.programId)}>
                                     {t('delete')}
                                 </Button>
+                                <Button variant="secondary" onClick={() => console.log('View Program')}>
+                                    {t('viewProgram')}
+                                </Button>
                             </td>
                         </tr>
                     ))}
@@ -386,6 +505,9 @@ const AdminPage = () => {
                             <td>
                                 <Button variant="danger" onClick={() => handleDeleteJob(job.jobId)}>
                                     {t('delete')}
+                                </Button>
+                                <Button variant="secondary" onClick={() => console.log('View Jobs')}>
+                                    {t('viewjobs')}
                                 </Button>
                             </td>
                         </tr>
@@ -639,6 +761,13 @@ const AdminPage = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+
+            {/* Approved Applications */}
+            <h2 className="mt-4">{t('approvedApplicationsTitle')}</h2>
+            {renderApprovedApplication()}
+            {/* Display Applied Requests */}
+            <h2 className="mt-4">{t('appliedRequestsTitle')}</h2>
+            {renderAppliedRequests()}
         </div>
     );
 };
