@@ -139,15 +139,16 @@ const ProfileYouth = () => {
         reader.onload = (e) => {
             const imageUrl = e.target.result;
             setYouthImage(imageUrl);
-            setImageUrl(imageUrl); // Ajouter cette ligne
+            setImageUrl(imageUrl);
         };
 
         if (file) {
             reader.readAsDataURL(file);
         } else {
-            setYouthImage('');
+            setYouthImage(''); // Définir une valeur vide si aucun fichier n'est sélectionné
         }
     };
+
 
     const handleEditProfile = () => {
         setIsEditing(true);
@@ -167,25 +168,31 @@ const ProfileYouth = () => {
         setIsEditing(false);
         const userId = getUserUid();
         const storedImage = youthImage;
+        let imageUrl = '';
 
         try {
             const storageRef = storage.ref();
             const imageRef = storageRef.child(`usersyouth/${getUserUid()}`);
-            await imageRef.putString(storedImage, 'data_url');
-            const imageUrl = await imageRef.getDownloadURL();
-            setYouthImage(imageUrl);
 
+            if (storedImage) {
+                await imageRef.putString(storedImage, 'data_url');
+                imageUrl = await imageRef.getDownloadURL();
+                setYouthImage(imageUrl);
+            }
+
+            // Mettre à jour les données utilisateur avec l'URL de l'image uniquement si une image a été sélectionnée
             const userDocRef = firestore.collection('users').doc('usersyouth');
             const userDoc = await userDocRef.get();
             const userData = userDoc.data()[userId];
             await userDocRef.update({
                 [userId]: {
+                    ...userData,
                     firstName: userData.firstName,
                     lastName: userData.lastName,
                     city: youthFormData.city,
                     postalCode: youthFormData.postalCode,
                     educationalLevel: youthFormData.education,
-                    information: youthFormData.information,
+                    information: youthFormData.information || userData.information,
                     dateOfBirth: userData.dateOfBirth,
                     gender: userData.gender,
                     phoneNumber: userData.phoneNumber,
@@ -198,15 +205,15 @@ const ProfileYouth = () => {
                     empathy: userData.empathy,
                     leadership: userData.leadership,
                     teamwork: userData.teamwork,
-                    imageUrl: imageUrl,
+                    imageUrl: imageUrl || userData.imageUrl,
                 },
             });
+
             console.log('User data updated');
         } catch (error) {
             console.log('Error updating user data:', error);
         }
     };
-
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -444,7 +451,7 @@ const ProfileYouth = () => {
                         <div className="col-md-3 text-center">
                             <img
                                 src={imageUrl}
-                                alt="Profile picture"
+                                alt={t('profilepicture')}
                                 style={{ width: '15vw', height: 'auto' }}
                             />
                         </div>

@@ -183,6 +183,18 @@
     "contactRole": "Harremanetarako posizioa",
     "deleteProgram": "Ezabatu programa",
 
+    "programApplication": "Programaren aplikazioa",
+    "jobApplication": "Lan-eskaera",
+    "forgotPassword": "Pasahitza ahaztua?",
+    "resetPassword": "Berrezarri pasahitza",
+    "home": "Hasiera",
+    "logout": "Saioa amaitu",
+    "highSchool": "Institutua",
+    "bachelorsDegree": "Lizentziatura",
+    "mastersDegree": "Master titulua",
+    "doctoralDegree": "Doktorego titulua",
+    "selectEducationalLevel": "Aukeratu hezkuntza maila",
+
     "companyDescription": "Bizkaian balioa sortzeko konpromisoa hartu duten erreferentziazko 20 enpresa baino gehiago, talentu gazteak eta inpaktu sozialeko erronkak bilatzen. Zuk ere KODE48eko kide izan nahi baduzu, enpresak48@districtkode.com helbidera idatz diezagukezu.",
     "youngDescription": "100 gazte aktibo baino gehiago, garatzeko eta hazten jarraitzeko gogoz. Bat egiten duzu? gazteak48@districtkode.com helbidean hitz egin dugu.",
     "intermediaryDescription": "Bizkaiko gazteen gaitasunak egiaztatzen dituzten 10 elkarte baino gehiago. Zuk ere zure inguruko gazteei balioa eman nahi badiezu, idatzi bitartekariak48@districtkode.com helbidera",

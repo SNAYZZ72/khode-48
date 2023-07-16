@@ -51,6 +51,8 @@ const RegisterPage = () => {
         phoneNumber: '',
         educationalLevel: '',
         information: '',
+        imageUrl: '',
+        information: '',
     });
 
     const handleRegister = async () => {
@@ -84,6 +86,7 @@ const RegisterPage = () => {
                 empathy: 0,
                 leadership: 0,
                 teamwork: 0,
+                imageUrl: '',
             };
             // Get the user ID of the newly created user
             const userId = auth.currentUser.uid;
@@ -193,6 +196,7 @@ const RegisterPage = () => {
                     phoneNumber: '',
                     educationalLevel: '',
                     information: '',
+                    imageUrl: '',
                 });
                 setTimeout(() => {
                     navigate('/');
