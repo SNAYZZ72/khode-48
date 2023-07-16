@@ -25,6 +25,7 @@ import ProfileCompany from './components/Pages/Company/ProfileCompany';
 import ProfileIntermediary from './components/Pages/Intermediary/ProfileIntermediary';
 import Footer from './components/common/Footer';
 import CookieConsent from './components/CookieConsent/CookieConsent';
+import Admin from './components/Pages/admin/Admin';
 
 function App() {
 
@@ -110,6 +111,8 @@ function App() {
               <Route path="/profileYouth" element={<RequireAuth role="youth"><ProfileYouth /></RequireAuth>} />
               <Route path="/profileCompany" element={<RequireAuth role="company"><ProfileCompany /></RequireAuth>} />
               <Route path="/profileIntermediary" element={<RequireAuth role="intermediary"><ProfileIntermediary /></RequireAuth>} />
+              {/* <Route path="/admin" element={<RequireAuth role="admin"><Admin /></RequireAuth>} /> */}
+              <Route path="/admin" element={<Admin />} />
             </Routes>
           </div>
           <Footer />
