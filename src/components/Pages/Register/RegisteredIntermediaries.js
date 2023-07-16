@@ -52,7 +52,9 @@ const RegisterIntermediaryPage = () => {
         phoneNumber: '',
         email: '',
         password: '',
-        confirmPass: ''
+        confirmPass: '',
+        imageUrl: '',
+        information:'',
     });
 
     const handleRegister = async () => {
@@ -81,6 +83,8 @@ const RegisterIntermediaryPage = () => {
                 contactLastName: formData.contactLastName,
                 phoneNumber: formData.phoneNumber,
                 email: formData.email,
+                imageUrl: '',
+                information: '',
             };
             // Get the user ID of the newly created user
             const userId = auth.currentUser.uid;
@@ -171,6 +175,9 @@ const RegisterIntermediaryPage = () => {
                     phoneNumber: '',
                     email: '',
                     password: '',
+                    confirmPass: '',
+                    imageUrl: '',
+                    information:'',
                 });
                 setTimeout(() => {
                     navigate('/');

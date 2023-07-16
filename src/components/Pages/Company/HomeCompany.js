@@ -524,7 +524,7 @@ const HomeCompany = () => {
                     <ul className="list-group list-group-flush">
                         <li className="list-group-item">
                             <div className="text-center">
-                                <img src={selectedProfile.imageUrl} alt="Profile" style={{ width: '150px', height: 'auto' }} />
+                                <img src={selectedProfile.imageUrl} alt={t('profilepicture')} style={{ width: '150px', height: 'auto' }} />
                             </div>
                         </li>
                         <li className="list-group-item">

@@ -2,8 +2,11 @@ import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 //import footer.css
 import './footer.css';
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <div>
       <footer className="footer-59391">
@@ -11,9 +14,9 @@ const Footer = () => {
           <div className="row mb-3">
             <div className="col-md-6 ">
               <ul className="nav-links list-unstyled nav-left">
-                <li><a href="/contact">Contact</a></li>
-                <li><a href="/about">About us</a></li>
-                <li><a href="/terms">Terms & Conditions</a></li>
+                <li><a href="/contact">{t('Contact')}</a></li>
+                <li><a href="/about">{t('aboutTitle')}</a></li>
+                <li><a href="/terms">{t('termsTitle')}</a></li>
               </ul>
             </div>
             <div className="col-md-6 text-md-end">
