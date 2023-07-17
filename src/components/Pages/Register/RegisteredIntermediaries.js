@@ -68,6 +68,9 @@ const RegisterIntermediaryPage = () => {
             // Wait for the user to be authenticated and logged in
             await auth.signInWithEmailAndPassword(formData.email, formData.password);
 
+            // Get the user ID of the newly created user
+            const userId = auth.currentUser.uid;
+
             // Set the user data
             const sentData = {
                 companyName: formData.companyName,
@@ -85,9 +88,9 @@ const RegisterIntermediaryPage = () => {
                 email: formData.email,
                 imageUrl: '',
                 information: '',
+                Id: userId,
             };
-            // Get the user ID of the newly created user
-            const userId = auth.currentUser.uid;
+            
 
             // Get a reference to the parent document
             const parentDocRef = firestore.collection('users').doc('usersintermediary');

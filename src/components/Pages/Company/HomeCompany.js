@@ -303,6 +303,8 @@ const HomeCompany = () => {
                 jobPosition: createdJobs.Position,
                 companyName: userData.companyName,
                 mapName: mapName,
+                email: userData.email,
+                Id: userId,
             };
 
             const parentDocRef = firestore.collection('jobs').doc(userId);

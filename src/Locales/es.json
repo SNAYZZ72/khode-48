@@ -183,6 +183,18 @@
   "contactRole": "Puesto de contacto",
   "deleteProgram": "Borrar programa",
 
+  "programApplication": "Solicitud de programa",
+  "jobApplication": "Solicitud de trabajo",
+  "forgotPassword": "¿Ha olvidado su contraseña?",
+  "resetPassword": "Restablecer contraseña",
+  "home": "Inicio",
+  "logout": "Salir",
+  "highSchool": "Bachillerato",
+  "bachelorsDegree": "Licenciatura",
+  "mastersDegree": "Máster",
+  "doctoralDegree": "Doctorado",
+  "selectEducationalLevel": "Seleccione el nivel educativo",
+
   "companyDescription": "Más de 20 empresas referentes comprometidas con generar valor en Bizkaia en buscan jóvenes talentos y retos de impacto social. Si tu también quieres formar parte de KODE48 puedes escribirnos a enpresak48@districtkode.com",
   "youngDescription": "Más de 100 jóvenes activos, con ganas de desarrollarse y seguir creciendo. ¿Te sumas? Hablamos en gazteak48@districtkode.com",
   "intermediaryDescription": "Más de 10 asociaciones acreditando las competencias de las personas jóvenes de Bizkaia. Si tu también quieres poner en valor a los jóvenes de tu entorno, escríbenos a bitartekariak48@districtkode.com",
