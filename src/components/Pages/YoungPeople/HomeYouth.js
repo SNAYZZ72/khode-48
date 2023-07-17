@@ -34,6 +34,7 @@ const HomeYouth = () => {
     const [showProgramModal, setShowProgramModal] = useState(false);
     const [selectedJob, setSelectedJob] = useState(null);
     const [showJobModal, setShowJobModal] = useState(false);
+    const [error, setError] = useState('');
 
 
     const handleProgramApplication = (program) => {
@@ -278,7 +279,8 @@ const HomeYouth = () => {
     //apply to job
     const handleSubmitJob = async () => {
         if (coverLetter === '') {
-            alert('Please enter a cover letter');
+            // alert('Please enter a cover letter');
+            setError('Please enter a cover letter');
             return;
         }
         try {
@@ -344,14 +346,16 @@ const HomeYouth = () => {
                     const userData = await userDoc.data()[applicaitonId];
 
                     if (userData !== undefined) {
-                        alert('You have already applied to this job');
+                        // alert('You have already applied to this job');
+                        setError('You have already applied to this job');
                         return;
                     }
 
                     //user has not applied to this job yet
                     await applicationsRef.set({ [applicaitonId]: sentJobApplication }, { merge: true })
                         .then(() => {
-                            alert('Application sent successfully');
+                            // alert('Application sent successfully');
+                            setError('Application sent successfully');
                             setCoverLetter('');
                             handleCloseJobModal();
                         })
@@ -364,7 +368,8 @@ const HomeYouth = () => {
             }
 
             if (!matchingJobFound) {
-                alert('Please try again.');
+                // alert('Please try again.');
+                setError("Sorry, we couldn't find any jobs that match your criteria.");
             }
         } catch (error) {
             console.log('Error getting documents: ', error);
@@ -375,7 +380,8 @@ const HomeYouth = () => {
     //apply to program
     const handleSubmitApplication = async () => {
         if (coverLetter === '') {
-            alert('Please enter a cover letter');
+            // alert('Please enter a cover letter');
+            setError('Please enter a cover letter');
             return;
         }
         try {
@@ -438,7 +444,8 @@ const HomeYouth = () => {
 
                     if (userData !== undefined) {
                         // User has already applied, show a message or handle accordingly
-                        alert('You have already applied to this program.');
+                        // alert('You have already applied to this program.');
+                        setError('You have already applied to this program.');
                         return;
                     }
 
@@ -446,7 +453,8 @@ const HomeYouth = () => {
                     await applicationsRef
                         .set({ [applicationId]: sentApplication }, { merge: true })
                         .then(() => {
-                            alert('Application added successfully');
+                            // alert('Application added successfully');
+                            setError('Application added successfully');
                             setCoverLetter('');
                             handleCloseProgramModal();
                             // Reload the page
@@ -462,7 +470,8 @@ const HomeYouth = () => {
 
             if (!matchingProgramFound) {
                 // No matching program found, display an error message or handle it accordingly
-                alert('Please try again.');
+                // alert('Please try again.');
+                setError('Please try again.');
                 return;
             }
         } catch (error) {
@@ -765,68 +774,81 @@ const HomeYouth = () => {
                                             onChange={(e) => setCoverLetter(e.target.value)}
                                             required
                                         ></textarea>
-                                </div>
+                                    </div>
                                 </div>
                             )}
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="primary" onClick={handleSubmitJob} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
-                            {t('Apply')}
-                        </Button>
-                        <Button variant="secondary" onClick={handleCloseJobModal}>
-                            {t('Close')}
-                        </Button>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="primary" onClick={handleSubmitJob} style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}>
+                                {t('Apply')}
+                            </Button>
+                            <Button variant="secondary" onClick={handleCloseJobModal}>
+                                {t('Close')}
+                            </Button>
 
-                    </Modal.Footer>
-                </Modal>
+                        </Modal.Footer>
+                    </Modal>
 
 
-                {/* Show the "Load More" button if there are more jobs to load */}
-                {visibleJobs < userJobs.length && (
-                    <div className="text-center" style={{ paddingTop: '15px' }}>
-                        <button
-                            onClick={handleLoadMoreJobs}
-                            className="btn btn-primary"
-                            style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
-                        >
-                            {t('loadMore')}
-                        </button>
-                    </div>
-                )}
-            </div>
+                    {/* Show the "Load More" button if there are more jobs to load */}
+                    {visibleJobs < userJobs.length && (
+                        <div className="text-center" style={{ paddingTop: '15px' }}>
+                            <button
+                                onClick={handleLoadMoreJobs}
+                                className="btn btn-primary"
+                                style={{ backgroundColor: '#F24726', borderColor: '#F24726' }}
+                            >
+                                {t('loadMore')}
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div >
         );
     };
 
 
-return (
-    <div>
-        <HeaderYouth />
-        <Container>
-            <div className="row mb-3">
-                <div className="col">
-                    <button
-                        onClick={() => handleViewSelect('programView')}
-                        className="form-control"
-                        style={{ border: selectedView === 'programView' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'programView' ? '#F24726' : '#6C757D', color: 'white' }}
-                    >
-                        {t('programView')}
-                    </button>
+    return (
+        <div>
+            <HeaderYouth />
+            <Container>
+                <div className="row mb-3">
+                    <div className="col">
+                        <button
+                            onClick={() => handleViewSelect('programView')}
+                            className="form-control"
+                            style={{ border: selectedView === 'programView' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'programView' ? '#F24726' : '#6C757D', color: 'white' }}
+                        >
+                            {t('programView')}
+                        </button>
+                    </div>
+                    <div className="col">
+                        <button
+                            onClick={() => handleViewSelect('jobView')}
+                            className="form-control"
+                            style={{ border: selectedView === 'jobView' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'jobView' ? '#F24726' : '#6C757D', color: 'white' }}
+                        >
+                            {t('showJobs')}
+                        </button>
+                    </div>
                 </div>
-                <div className="col">
-                    <button
-                        onClick={() => handleViewSelect('jobView')}
-                        className="form-control"
-                        style={{ border: selectedView === 'jobView' ? '3px solid #F24726' : '3px solid #6C757D', backgroundColor: selectedView === 'jobView' ? '#F24726' : '#6C757D', color: 'white' }}
-                    >
-                        {t('showJobs')}
-                    </button>
-                </div>
-            </div>
-            {renderView()}
-        </Container >
-    </div >
-);
+                {renderView()}
+            </Container >
+            <Modal show={error !== ''} onHide={() => setError('')} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Error</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>{error}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setError('')}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </div >
+    );
 };
 
 export default HomeYouth;

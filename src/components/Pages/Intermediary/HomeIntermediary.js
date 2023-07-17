@@ -35,6 +35,7 @@ const HomeIntermediary = () => {
     const [youthUid, setYouthUid] = useState('');
     const [visibleApprovedApplications, setVisibleApprovedApplications] = useState(10);
     const [userApprovedApplications, setUserApprovedApplications] = useState([]);
+    const [error, setError] = useState('');
 
 
 
@@ -240,13 +241,15 @@ const HomeIntermediary = () => {
                             }
 
                             //reload the page
-                            alert('Points added successfully.');
+                            // alert('Points added successfully.');
+                            setError('Points added successfully.');
                             window.location.reload();
                             return;
                         }
                     }
                 }
-                alert('User not found.');
+                // alert('User not found.');
+                setError("User doesn't exists.");
             } else {
                 // Document does not exist
                 console.log('Document does not exist.');
@@ -271,7 +274,8 @@ const HomeIntermediary = () => {
 
 
             if (selectedSkills.length === 0) {
-                alert('Please select at least one skill.');
+                // alert('Please select at least one skill.');
+                setError('Please select at least one skill.');
                 return;
             }
 
@@ -280,17 +284,20 @@ const HomeIntermediary = () => {
             const endDate = new Date(createProgram.endDate);
 
             if (startDate < currentDate) {
-                alert('Start date cannot be in the past.');
+                // alert('Start date cannot be in the past.');
+                setError("Start date can't be in the future.");
                 return;
             }
 
             if (endDate < startDate) {
-                alert('End date cannot be before start date.');
+                // alert('End date cannot be before start date.');
+                setError("End date can't come earlier then Start date");
                 return;
             }
 
             if (createProgram.numberOfPlaces < 1) {
-                alert('Number of places must be greater than 0.');
+                // alert('Number of places must be greater than 0.');
+                setError(`The number of available positions should be more than zero.`);
                 return;
             }
 
@@ -338,7 +345,8 @@ const HomeIntermediary = () => {
                 mapName: '',
             });
 
-            alert('Program created successfully!');
+            // alert('Program created successfully!');
+            setError('Program created successfully!');
             window.location.reload();
         }
     };
@@ -422,7 +430,8 @@ const HomeIntermediary = () => {
                 await approvedRef.update({
                     [neededId]: removeField,
                 });
-                alert('Approved application deleted successfully!');
+                // alert('Approved application deleted successfully!');
+                setError('Approved application deleted successfully!');
                 window.location.reload();
             } catch (error) {
                 console.error('Error deleting approved application:', error);
@@ -650,7 +659,8 @@ const HomeIntermediary = () => {
                 await programRef.update({
                     [mapName]: removeField,
                 });
-                alert('Program deleted successfully.');
+                // alert('Program deleted successfully.');
+                setError('Program deleted successfully.');
                 window.location.reload();
             } catch (error) {
                 console.error('Error deleting program:', error);
@@ -984,6 +994,19 @@ const HomeIntermediary = () => {
                 </div>
                 {renderView()}
             </Container>
+            <Modal show={error !== ''} onHide={() => setError('')} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Error</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>{error}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setError('')}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

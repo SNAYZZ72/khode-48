@@ -72,7 +72,7 @@ const Home = () => {
     useEffect(() => {
         if (location.pathname === '/admin') {
             const adminModalDisplayed = localStorage.getItem('adminModalDisplayed');
-    
+
             if (!adminModalDisplayed) {
                 handleAdminLoginDisplay();
                 localStorage.setItem('adminModalDisplayed', 'true');
@@ -101,7 +101,8 @@ const Home = () => {
                 console.log('admin login successful');
             })
             .catch((error) => {
-                alert('Wrong email or password');
+                // alert('Wrong email or password');
+                setError('Wrong email or password');
                 console.log(error);
                 //login failed
             });
@@ -129,7 +130,8 @@ const Home = () => {
                 //login successful
             })
             .catch((error) => {
-                alert('Wrong email or password');
+                // alert('Wrong email or password');
+                setError('Wrong email or password');
                 //login failed
             });
         setIsLoggingIn(false); // Set isLoggingIn to false when login finishes
@@ -177,11 +179,11 @@ const Home = () => {
     const resetPassword = (email) => {
         auth.sendPasswordResetEmail(email)
             .then(() => {
-                // Password reset email sent successfully
-                alert('Password reset email sent');
+                setShowResetPasswordModal(false);
+                // alert('Password reset email sent');
+                setError({ messageText:'success', severity:'success'});
             })
             .catch((error) => {
-                // Error occurred while sending password reset email
                 console.error('Error sending password reset email:', error);
             });
     };
@@ -474,7 +476,19 @@ const Home = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-
+            <Modal show={error !== ''} onHide={() => setError('')} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Error</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>{error}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setError('')}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

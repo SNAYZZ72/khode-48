@@ -40,6 +40,7 @@ const HomeCompany = () => {
     const [pendingApplication, setPendingApplication] = useState([]);
     const [userApprovedApplications, setUserApprovedApplications] = useState([]);
     const [visibleApprovedApplications, setVisibleApprovedApplications] = useState(10);
+    const [error, setError] = useState('');
 
 
     const handleSeeMoreAbout = (profile) => {
@@ -266,15 +267,18 @@ const HomeCompany = () => {
         //if we are on the job view
         if (selectedView === 'Job') {
             if (createdJobs.Name === '' || createdJobs.Description === '' || createdJobs.Skills === '' || createdJobs.Location === '' || createdJobs.BeginDate === '' || createdJobs.EndDate === '' || createdJobs.Position === '') {
-                alert('Please fill out all the fields');
+                // alert('Please fill out all the fields');
+                setError('Please fill out all the fields');
                 return;
             }
             if (beginDate < currentDate) {
-                alert('Begin date must be after today');
+                // alert('Begin date must be after today');
+                setError('Begin date must be after today');
                 return;
             }
             if (endDate < beginDate) {
-                alert('End date must be after begin date');
+                // alert('End date must be after begin date');
+                setError('End date must be after begin date');
                 return;
             }
 
@@ -309,11 +313,12 @@ const HomeCompany = () => {
 
             const parentDocRef = firestore.collection('jobs').doc(userId);
 
-            
+
 
             await parentDocRef.set({ [mapName]: sentJob }, { merge: true });
 
-            alert('Job created successfully');
+            // alert('Job created successfully');
+            setError('Job created successfully');
 
             //Here we are resetting the form
             setCreatedJobs({
@@ -352,7 +357,8 @@ const HomeCompany = () => {
             await programRef.update({
                 [mapName]: removeField,
             });
-            alert('Job deleted successfully!');
+            // alert('Job deleted successfully!');
+            setError('Job deleted successfully!');
             window.location.reload();
         } catch (error) {
             console.error('Error deleting job:', error);
@@ -437,7 +443,8 @@ const HomeCompany = () => {
                 await approvedRef.update({
                     [neededId]: removeField,
                 });
-                alert('Approved application deleted successfully!');
+                // alert('Approved application deleted successfully!');
+                setError('Approved application deleted successfully!')
                 window.location.reload();
             } catch (error) {
                 console.error('Error deleting approved application:', error);
@@ -1120,6 +1127,19 @@ const HomeCompany = () => {
                 )}
 
             </Container>
+            <Modal show={error !== ''} onHide={() => setError('')} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Error</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>{error}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setError('')}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };
