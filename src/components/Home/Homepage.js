@@ -42,9 +42,9 @@ const Home = () => {
         setShowLoginModal(true);
     };
 
-    const handleAdminLoginDisplay = () => {
+    /* const handleAdminLoginDisplay = () => {
         setShowAdminLoginModal(true);
-    };
+    }; */
 
     // Fetch user counts from the database
     const fetchUserCounts = async () => {
@@ -89,7 +89,7 @@ const Home = () => {
         fetchUserCounts();
     }, []);
 
-    const handleAdminLogin = async (e) => {
+    /* const handleAdminLogin = async (e) => {
         e.preventDefault();
         setIsLoggingIn(true); // Set isLoggingIn to true when login starts
         await signInWithEmailAndPassword(auth, email, password)
@@ -109,7 +109,7 @@ const Home = () => {
         setIsLoggingIn(false); // Set isLoggingIn to false when login finishes
         handleCloseAdminModal(); // Close the modal
         setHasModalBeenDisplayed(false);
-    };
+    }; */
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -164,11 +164,11 @@ const Home = () => {
         }
     };
 
-    const handleCloseAdminModal = () => {
+    /* const handleCloseAdminModal = () => {
         if (!isLoggingIn) { // Only close the modal if not currently logging in
             setShowAdminLoginModal(false);
         }
-    };
+    }; */
 
     const handleResetPassword = () => {
         // Call the function to send password reset email
@@ -435,7 +435,7 @@ const Home = () => {
                 </Modal.Footer>
             </Modal>
 
-            <Modal show={showAdminLoginModal} centered>
+            {/* <Modal show={showAdminLoginModal} centered>
                 <Modal.Header>
                     <Modal.Title>{t('adminLogin')}</Modal.Title>
                 </Modal.Header>
@@ -475,7 +475,8 @@ const Home = () => {
                         {t('login')}
                     </Button>
                 </Modal.Footer>
-            </Modal>
+            </Modal> */}
+            
             <Modal show={error !== ''} onHide={() => setError('')} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Error</Modal.Title>

@@ -182,154 +182,157 @@ const Admin = () => {
     };
 
     return (
-        <div className="container">
-            <h1 className="mt-4">{t('adminPageTitle')}</h1>
+        <div>
+            <Header />
+            <div className="container">
+                <h1 className="mt-4">{t('adminPageTitle')}</h1>
 
-            {/* Intermediaries Table */}
-            <h2 className="mt-4">{t('intermediariesTitle')}</h2>
-            <Table striped bordered hover responsive>
-                <thead>
-                    <tr>
-                        <th>{t('companyName')}</th>
-                        <th>{t('email')}</th>
-                        <th>{t('city')}</th>
-                        <th>{t('industry')}</th>
-                        <th>{t('maturity')}</th>
-                        <th>{t('action')}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {intermediaries.map((intermediary) => (
-                        <tr key={intermediary.email}>
-                            <td>{intermediary.companyName}</td>
-                            <td>{intermediary.email}</td>
-                            <td>{intermediary.city}</td>
-                            <td>{intermediary.industry}</td>
-                            <td>{intermediary.maturity}</td>
-                            <td>
-                                <Button variant="danger" onClick={() => handleDeleteIntermediary(intermediary.Id)}>
-                                    {t('delete')}
-                                </Button>
-                            </td>
+                {/* Intermediaries Table */}
+                <h2 className="mt-4">{t('intermediariesTitle')}</h2>
+                <Table striped bordered hover responsive>
+                    <thead>
+                        <tr>
+                            <th>{t('companyName')}</th>
+                            <th>{t('email')}</th>
+                            <th>{t('city')}</th>
+                            <th>{t('industry')}</th>
+                            <th>{t('maturity')}</th>
+                            <th>{t('action')}</th>
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {intermediaries.map((intermediary) => (
+                            <tr key={intermediary.email}>
+                                <td>{intermediary.companyName}</td>
+                                <td>{intermediary.email}</td>
+                                <td>{intermediary.city}</td>
+                                <td>{intermediary.industry}</td>
+                                <td>{intermediary.maturity}</td>
+                                <td>
+                                    <Button variant="danger" onClick={() => handleDeleteIntermediary(intermediary.Id)}>
+                                        {t('delete')}
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
 
-            {/* Companies Table */}
-            <h2 className="mt-4">{t('companiesTitle')}</h2>
-            <Table striped bordered hover responsive>
-                <thead>
-                    <tr>
-                        <th>{t('companyName')}</th>
-                        <th>{t('email')}</th>
-                        <th>{t('city')}</th>
-                        <th>{t('industry')}</th>
-                        <th>{t('action')}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {companies.map((company) => (
-                        <tr key={company.email}>
-                            <td>{company.companyName}</td>
-                            <td>{company.email}</td>
-                            <td>{company.city}</td>
-                            <td>{company.industry}</td>
-                            <td>
-                                <Button variant="danger" onClick={() => handleDeleteCompany(company.Id)}>
-                                    {t('delete')}
-                                </Button>
-                            </td>
+                {/* Companies Table */}
+                <h2 className="mt-4">{t('companiesTitle')}</h2>
+                <Table striped bordered hover responsive>
+                    <thead>
+                        <tr>
+                            <th>{t('companyName')}</th>
+                            <th>{t('email')}</th>
+                            <th>{t('city')}</th>
+                            <th>{t('industry')}</th>
+                            <th>{t('action')}</th>
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {companies.map((company) => (
+                            <tr key={company.email}>
+                                <td>{company.companyName}</td>
+                                <td>{company.email}</td>
+                                <td>{company.city}</td>
+                                <td>{company.industry}</td>
+                                <td>
+                                    <Button variant="danger" onClick={() => handleDeleteCompany(company.Id)}>
+                                        {t('delete')}
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
 
-            {/* Youths Table */}
-            <h2 className="mt-4">{t('youthsTitle')}</h2>
-            <Table striped bordered hover responsive>
-                <thead>
-                    <tr>
-                        <th>{t('firstName')}</th>
-                        <th>{t('lastName')}</th>
-                        <th>{t('email')}</th>
-                        <th>{t('city')}</th>
-                        <th>{t('age')}</th>
-                        <th>{t('action')}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {youths.map((youth) => (
-                        <tr key={youth.email}>
-                            <td>{youth.firstName}</td>
-                            <td>{youth.lastName}</td>
-                            <td>{youth.email}</td>
-                            <td>{youth.city}</td>
-                            <td>{youth.dateOfBirth}</td>
-                            <td>
-                                <Button variant="danger" onClick={() => handleDeleteYouth(youth.Id)}>
-                                    {t('delete')}
-                                </Button>
-                            </td>
+                {/* Youths Table */}
+                <h2 className="mt-4">{t('youthsTitle')}</h2>
+                <Table striped bordered hover responsive>
+                    <thead>
+                        <tr>
+                            <th>{t('firstName')}</th>
+                            <th>{t('lastName')}</th>
+                            <th>{t('email')}</th>
+                            <th>{t('city')}</th>
+                            <th>{t('age')}</th>
+                            <th>{t('action')}</th>
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {youths.map((youth) => (
+                            <tr key={youth.email}>
+                                <td>{youth.firstName}</td>
+                                <td>{youth.lastName}</td>
+                                <td>{youth.email}</td>
+                                <td>{youth.city}</td>
+                                <td>{youth.dateOfBirth}</td>
+                                <td>
+                                    <Button variant="danger" onClick={() => handleDeleteYouth(youth.Id)}>
+                                        {t('delete')}
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
 
-            {/* Programs Table */}
-            <h2 className="mt-4">{t('programsTitle')}</h2>
-            <Table striped bordered hover responsive>
-                <thead>
-                    <tr>
-                        <th>{t('programName')}</th>
-                        <th>{t('companyName')}</th>
-                        <th>{t('email')}</th>
-                        <th>{t('action')}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {programs.map((program) => (
-                        <tr key={program.programId}>
-                            <td>{program.programName}</td>
-                            <td>{program.companyName}</td>
-                            <td>{program.email}</td>
-                            <td>
-                                <Button variant="danger" onClick={() => handleDeleteProgram(program.mapName, program.Id)}>
-                                    {t('delete')}
-                                </Button>
-                            </td>
+                {/* Programs Table */}
+                <h2 className="mt-4">{t('programsTitle')}</h2>
+                <Table striped bordered hover responsive>
+                    <thead>
+                        <tr>
+                            <th>{t('programName')}</th>
+                            <th>{t('companyName')}</th>
+                            <th>{t('email')}</th>
+                            <th>{t('action')}</th>
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {programs.map((program) => (
+                            <tr key={program.programId}>
+                                <td>{program.programName}</td>
+                                <td>{program.companyName}</td>
+                                <td>{program.email}</td>
+                                <td>
+                                    <Button variant="danger" onClick={() => handleDeleteProgram(program.mapName, program.Id)}>
+                                        {t('delete')}
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
 
-            {/* Jobs Table */}
-            <h2 className="mt-4">{t('jobsTitle')}</h2>
-            <Table striped bordered hover responsive>
-                <thead>
-                    <tr>
-                        <th>{t('jobName')}</th>
-                        <th>{t('companyName')}</th>
-                        <th>{t('email')}</th>
-                        <th>{t('action')}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {jobs.map((job) => (
-                        <tr key={job.jobId}>
-                            <td>{job.jobName}</td>
-                            <td>{job.companyName}</td>
-                            <td>{job.email}</td>
-                            <td>
-                                <Button variant="danger" onClick={() => handleDeleteJob(job.mapName, job.Id)}>
-                                    {t('delete')}
-                                </Button>
-                            </td>
+                {/* Jobs Table */}
+                <h2 className="mt-4">{t('jobsTitle')}</h2>
+                <Table striped bordered hover responsive>
+                    <thead>
+                        <tr>
+                            <th>{t('jobName')}</th>
+                            <th>{t('companyName')}</th>
+                            <th>{t('email')}</th>
+                            <th>{t('action')}</th>
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {jobs.map((job) => (
+                            <tr key={job.jobId}>
+                                <td>{job.jobName}</td>
+                                <td>{job.companyName}</td>
+                                <td>{job.email}</td>
+                                <td>
+                                    <Button variant="danger" onClick={() => handleDeleteJob(job.mapName, job.Id)}>
+                                        {t('delete')}
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
 
+            </div>
         </div>
     );
 };
