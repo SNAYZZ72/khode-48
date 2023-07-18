@@ -3,6 +3,9 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import logo from './kode48-color-only.png';
 import { useTranslation } from 'react-i18next';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase';
+
 
 //import components
 import LanguageSelector from '../LanguageSelector';
@@ -12,6 +15,16 @@ const HeaderAdmin = () => {
     const [showHeader, setShowHeader] = useState(true);
     const location = useLocation();
 
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            localStorage.removeItem('user'); // Supprimer l'utilisateur du localStorage
+            // Effectuez d'autres actions, telles que la redirection vers une page de déconnexion réussie
+        } catch (error) {
+            console.log('Erreur lors de la déconnexion :', error);
+        }
+    };
+    
     useEffect(() => {
         const handleScroll = () => {
             const isTop = window.scrollY === 0;
@@ -37,11 +50,18 @@ const HeaderAdmin = () => {
                 <Nav className="ms-auto">
                     <Nav.Link
                         href="/"
-                        className={location.pathname === '/' ? 'active-link' : ''}
-                        style={{ color: location.pathname === '/' ? '#F24726' : 'black', textDecoration: location.pathname === '/' ? 'underline' : 'none', fontWeight: '650', marginLeft: '10px', marginRight: '50px' }}
+                        style={{
+                            color: 'black',
+                            textDecoration: 'none',
+                            fontWeight: '650',
+                            marginLeft: '10px',
+                            marginRight: '50px',
+                        }}
+                        onClick={handleLogout}
                     >
                         {t('logout')}
                     </Nav.Link>
+
                     <div style={{ marginLeft: '10px' }}>
                         <LanguageSelector />
                     </div>
