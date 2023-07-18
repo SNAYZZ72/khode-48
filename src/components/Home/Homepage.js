@@ -69,7 +69,7 @@ const Home = () => {
         setIntermediaryCount(intermediaryCount);
     };
 
-    useEffect(() => {
+/*     useEffect(() => {
         if (location.pathname === '/admin') {
             const adminModalDisplayed = localStorage.getItem('adminModalDisplayed');
 
@@ -83,7 +83,7 @@ const Home = () => {
         } else {
             localStorage.removeItem('adminModalDisplayed'); // Réinitialiser la valeur de adminModalDisplayed lorsque l'utilisateur visite une autre page
         }
-    }, [location]);
+    }, [location]); */
 
     useEffect(() => {
         fetchUserCounts();
@@ -476,7 +476,7 @@ const Home = () => {
                     </Button>
                 </Modal.Footer>
             </Modal> */}
-            
+
             <Modal show={error !== ''} onHide={() => setError('')} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Error</Modal.Title>

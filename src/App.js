@@ -119,8 +119,8 @@ function App() {
               <Route path="/profileYouth" element={<RequireAuth role="youth"><ProfileYouth /></RequireAuth>} />
               <Route path="/profileCompany" element={<RequireAuth role="company"><ProfileCompany /></RequireAuth>} />
               <Route path="/profileIntermediary" element={<RequireAuth role="intermediary"><ProfileIntermediary /></RequireAuth>} />
-              <Route path="/admin" element={<Home />} />
-              <Route path="/adminPage" element={<RequireAuth role="admin"><Admin /></RequireAuth>} />
+              {/* <Route path="/admin" element={<Home />} /> */}
+              <Route path="/admin" element={<RequireAuth role="admin"><Admin /></RequireAuth>} />
             </Routes>
           </div>
           <Footer />

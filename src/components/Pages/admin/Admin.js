@@ -3,6 +3,7 @@ import { Table, Button, Modal, Form, Col, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { auth, firestore } from '../../firebase';
 import firebase from 'firebase/compat/app';
+import HeaderAdmin from '../../common/Header/HeaderAdmin';
 
 
 const Admin = () => {
@@ -183,7 +184,7 @@ const Admin = () => {
 
     return (
         <div>
-            <Header />
+            <HeaderAdmin />
             <div className="container">
                 <h1 className="mt-4">{t('adminPageTitle')}</h1>
 
