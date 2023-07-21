@@ -369,7 +369,7 @@ const RegisterCompanyPage = () => {
                         <div className="col">
                             <label>{t('phoneNumber')}</label>
                             <input
-                                type="text"
+                                type="tel"
                                 className="form-control"
                                 id="phoneNumber"
                                 name="phoneNumber"
